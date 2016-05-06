@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="city-platform">
+		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenInstitucione</class>
+		<class>city.model.dao.entidades.GenParametro</class>
+		<class>city.model.dao.entidades.GenPersona</class>
+		<class>city.model.dao.entidades.GenPersonaDetalle</class>
+		<class>city.model.dao.entidades.GenSectore</class>
+		<class>city.model.dao.entidades.GenSitFoto</class>
+		<class>city.model.dao.entidades.GenSitio</class>
+		<class>city.model.dao.entidades.GenTipoSitio</class>
+		<class>city.model.dao.entidades.IntSitiosCcaaDepartamento</class>
+		<class>city.model.dao.entidades.IntSitiosCcaaDepartamentoPK</class>
 	</persistence-unit>
 </persistence>
