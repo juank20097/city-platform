@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Persona
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>PERSONAS</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Nuevo" iconAwesome="file-o"
+						action="#{personaBean.nuevaPersona}" />
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+		<h:form id="frm">
+			<p:messages closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<b:dataTable value="#{personaBean.listPersona}" var="per"
+					styleClass="table table-striped table-bordered"  fixedHeader="true" responsive="true" lang="it" style="width:100%">
+					<h:column width="100">
+						<f:facet name="header">
+							<h:outputText value="OPCIONES" />
+						</f:facet>
+						<p:commandButton icon="ui-icon-pencil"
+							action="#{personaBean.cargarPersona(per)}">
+						</p:commandButton>
+							&nbsp;&nbsp;&nbsp;
+						<p:commandButton icon="ui-icon-close"
+							action="#{informacionBean.changePersona(per)}" update="frm">
+							<p:confirm header="Confirmación"
+								message="Estas seguro de cambiar el estado de la Persona?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="DNI" />
+						</f:facet>
+						<h:outputText value="#{per.perDni}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="TIPO DNI" />
+						</f:facet>
+						<h:outputText value="#{per.perTipoDni}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="NOMBRES" />
+						</f:facet>
+						<h:outputText value="#{per.perNombres} #{per.perApellidos}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="FECHA NACIMIENTO" />
+						</f:facet>
+						<h:outputText value="#{per.perFechaNacimiento}" pattern="yyyy-MM-dd" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="TELEFONO" />
+						</f:facet>
+						<h:outputText value="#{per.perTelefono}" />
+					</h:column>
+					<h:column width="150">
+						<f:facet name="header">
+							<h:outputText value="CORREO" />
+						</f:facet>
+						<h:outputText value="#{per.perCorreo}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ESTADO CIVIL" />
+						</f:facet>
+						<h:outputText value="#{per.perEstadoCivil}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ESTADO" />
+						</f:facet>
+						<h:outputText value="#{per.perEstado}" />
+					</h:column>
+				</b:dataTable>
+			</b:panel>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>
