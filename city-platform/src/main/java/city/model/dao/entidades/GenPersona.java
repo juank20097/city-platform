@@ -28,7 +28,7 @@ public class GenPersona implements Serializable {
 	@Column(name="per_correo")
 	private String perCorreo;
 
-	@Column(name="per_estado")
+	@Column(name="per_estado",columnDefinition="bpchar")
 	private String perEstado;
 
 	@Column(name="per_estado_civil")

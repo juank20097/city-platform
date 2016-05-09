@@ -34,6 +34,15 @@ public class GenPersonaDetalle implements Serializable {
 	@Column(name="pde_direccion")
 	private String pdeDireccion;
 
+	@Column(name="pde_emerg_contacto_id")
+	private String pdeEmergContactoId;
+
+	@Column(name="pde_emerg_contacto_nombres")
+	private String pdeEmergContactoNombres;
+
+	@Column(name="pde_emerg_contacto_telefono")
+	private String pdeEmergContactoTelefono;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="pde_fecha_defuncion")
 	private Date pdeFechaDefuncion;
@@ -135,6 +144,30 @@ public class GenPersonaDetalle implements Serializable {
 
 	public void setPdeDireccion(String pdeDireccion) {
 		this.pdeDireccion = pdeDireccion;
+	}
+
+	public String getPdeEmergContactoId() {
+		return this.pdeEmergContactoId;
+	}
+
+	public void setPdeEmergContactoId(String pdeEmergContactoId) {
+		this.pdeEmergContactoId = pdeEmergContactoId;
+	}
+
+	public String getPdeEmergContactoNombres() {
+		return this.pdeEmergContactoNombres;
+	}
+
+	public void setPdeEmergContactoNombres(String pdeEmergContactoNombres) {
+		this.pdeEmergContactoNombres = pdeEmergContactoNombres;
+	}
+
+	public String getPdeEmergContactoTelefono() {
+		return this.pdeEmergContactoTelefono;
+	}
+
+	public void setPdeEmergContactoTelefono(String pdeEmergContactoTelefono) {
+		this.pdeEmergContactoTelefono = pdeEmergContactoTelefono;
 	}
 
 	public Date getPdeFechaDefuncion() {
