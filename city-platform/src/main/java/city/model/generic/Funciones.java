@@ -300,4 +300,6 @@ public class Funciones {
 		else
 			return false;
 	}
+	
+	
 }
