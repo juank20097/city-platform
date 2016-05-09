@@ -17,251 +17,350 @@
 			<p:messages closable="true">
 				<p:effect type="pulsate" event="load" delay="500" />
 			</p:messages>
-			<p:growl id="growl" showDetail="false" sticky="true" />
-			<b:panel title="Registro de Datos Persona" look="primary">
-				<b:tabView activeIndex="0" contentStyle="border: 1px solid #ddd;padding:10px">
+			<b:panel title="Registro de Datos Persona" collapsible="false"
+				look="primary">
+				<b:tabView activeIndex="0"
+					contentStyle="border: 1px solid #ddd;padding:10px">
 					<b:tab title="Generales">
-					<br/>
+						<br />
 						<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Tipo de Identificación:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perTipoDni}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listTiposDni}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="N° Identificación:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perDni}" required="true"
-							requiredMessage="Campo identificación requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Nombres:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perNombres}" required="true"
-							requiredMessage="Campo nombres requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Apellidos:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perApellidos}" required="true"
-							requiredMessage="Campo apellidos requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel for="popup" value="Fecha de Nacimiento:*" />
-					</b:column>
-					<b:column span="4">
-						<p:calendar id="popup" value="#{personaBean.perFechaNacimiento}" />
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Genero:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perGenero}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listGeneros}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-				</b:row>
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Telefono:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perTelefono}" required="true"
-							requiredMessage="Campo telefono requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Celular:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perCelular}" required="true"
-							requiredMessage="Campo celular requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Correo:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perCorreo}" required="true"
-							requiredMessage="Campo correo requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Estado Civil:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perEstadoCivil}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listEstadoCivil}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel rendered="#{personaBean.edicion}" value="Estado:" />
-					</b:column>
-					<b:column span="10">
-						<b:selectOneMenu rendered="#{personaBean.edicion}"
-							styleClass="mar" value="#{personaBean.perEstado}">
-							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
-							<f:selectItems value="#{personaBean.listEstado}">
-							</f:selectItems>
-						</b:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:commandButton value="Guardar"
-					action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+							<b:column span="2">
+								<h:outputLabel value="Tipo de Identificación:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.perTipoDni}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listTiposDni}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="N° Identificación:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perDni}" required="true"
+									requiredMessage="Campo identificación requerido">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombres:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perNombres}" required="true"
+									requiredMessage="Campo nombres requerido">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Apellidos:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perApellidos}" required="true"
+									requiredMessage="Campo apellidos requerido">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel for="popup" value="Fecha de Nacimiento:*" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar id="popup" value="#{personaBean.perFechaNacimiento}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Genero:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.perGenero}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listGeneros}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Telefono:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perTelefono}" required="true"
+									requiredMessage="Campo telefono requerido">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Celular:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perCelular}" required="true"
+									requiredMessage="Campo celular requerido">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Correo:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perCorreo}" required="true"
+									requiredMessage="Campo correo requerido">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Estado Civil:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.perEstadoCivil}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listEstadoCivil}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel rendered="#{personaBean.edicion}" value="Estado:" />
+							</b:column>
+							<b:column span="10">
+								<b:selectOneMenu rendered="#{personaBean.edicion}"
+									styleClass="mar" value="#{personaBean.perEstado}">
+									<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+									<f:selectItems value="#{personaBean.listEstado}">
+									</f:selectItems>
+								</b:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:commandButton value="Guardar"
+							action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 				<b:commandButton value="Cancelar" action="#{personaBean.cancelar}"
-					immediate="true" update="frm" look="info"></b:commandButton>
+							immediate="true" update="frm" look="info"></b:commandButton>
 					</b:tab>
 					<b:tab title="Detalles">
+						<h4>Datos de Ubicación</h4>
+						<p:separator />
+						<b:row>
+							<b:column offset="1" span="2">
+								<h4>Nacimiento:</h4>
+							</b:column>
+							<b:column offset="4" span="2">
+								<h4>Residencia:</h4>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Pais:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeCiudadNacimiento}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listPaises}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Pais:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdePaisResidencia}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listPaises}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Provincia:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeProvinciaNacimiento}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listProvincias}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Provincia:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeProvinciaResidencia}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listProvincias}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Ciudad:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeCiudadNacimiento}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listCiudades}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Ciudad:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeCiudadResidencia}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listCiudades}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Lugar:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeLugarNacimiento}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Dirección:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeDireccion}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Datos Familiares</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Padre:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeNombrePadre}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Madre:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeNombreMadre}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nacionalidad Padre:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeNacionalidadPadre}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listPaises}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Nacionalidad Madre:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeNacionalidadMadre}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.listPaises}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
 						<br/>
 						<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Tipo de Identificación:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perTipoDni}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listTiposDni}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="N° Identificación:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perDni}" required="true"
-							requiredMessage="Campo identificación requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Nombres:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perNombres}" required="true"
-							requiredMessage="Campo nombres requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Apellidos:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perApellidos}" required="true"
-							requiredMessage="Campo apellidos requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel for="popup2" value="Fecha de Nacimiento:*" />
-					</b:column>
-					<b:column span="4">
-						<p:calendar id="popup2" value="#{personaBean.perFechaNacimiento}" />
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Genero:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perGenero}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listGeneros}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-				</b:row>
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Telefono:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perTelefono}" required="true"
-							requiredMessage="Campo telefono requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Celular:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perCelular}" required="true"
-							requiredMessage="Campo celular requerido">
-						</b:inputText>
-					</b:column>
-				</b:row>
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Correo:*" />
-					</b:column>
-					<b:column span="4">
-						<b:inputText value="#{personaBean.perCorreo}" required="true"
-							requiredMessage="Campo correo requerido">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Estado Civil:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{personaBean.perEstadoCivil}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{personaBean.listEstadoCivil}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel rendered="#{personaBean.edicion}" value="Estado:" />
-					</b:column>
-					<b:column span="10">
-						<b:selectOneMenu rendered="#{personaBean.edicion}"
-							styleClass="mar" value="#{personaBean.perEstado}">
-							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
-							<f:selectItems value="#{personaBean.listEstado}">
-							</f:selectItems>
-						</b:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:commandButton value="Guardar"
-					action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
-				<b:commandButton value="Cancelar" action="#{personaBean.cancelar}"
-					immediate="true" update="frm" look="info"></b:commandButton>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Conyuge:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeConyuge}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Fecha Matrimonio:" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar value="#{personaBean.pdeFechaMatrimonio}" />
+							</b:column>
+						</b:row>
+						<br/>
+						<h4>Datos de Emergencia</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Contacto Emergencia:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Id Contacto Emergencia:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeEmergContactoId}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Telefono Contacto Emergencia:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br/>
+						<h4>Datos de Defunción </h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Inscripción Defunción:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Fecha Defunción:" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar value="#{personaBean.pdeFechaDefuncion}" />
+							</b:column>
+						</b:row>
+						<br/>	
+						<h4>Observación</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="12">
+								<b:inputTextarea value="#{personaBean.pdeObservacion}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
 					</b:tab>
 				</b:tabView>
 
 
-				
+
 			</b:panel>
 		</h:form>
 	</ui:define>
