@@ -21,7 +21,7 @@ public class GenParametro implements Serializable {
 	@Column(name="par_descripcion")
 	private String parDescripcion;
 
-	@Column(name="par_estado")
+	@Column(name="par_estado", columnDefinition="bpchar")
 	private String parEstado;
 
 	@Column(name="par_nombre")
