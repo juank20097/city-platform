@@ -28,12 +28,13 @@
 		</h:form>
 		<br />
 		<h:form id="frm">
-			<p:messages closable="true">
-				<p:effect type="pulsate" event="load" delay="500" />
-			</p:messages>
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+        		global-only="false" show-summary="true" allow-dismiss="true"
+        		animation-enter="animated bounceInDown" animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-				<b:dataTable value="#{personaBean.listPersona}" var="per"
-					styleClass="table table-striped table-bordered"  fixedHeader="true" responsive="true" lang="it" style="width:100%">
+				<b:dataTable  value="#{personaBean.l_persona}" var="per"
+					styleClass="table table-striped table-bordered dt-responsive nowrap" 
+					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
 					<h:column width="100">
 						<f:facet name="header">
 							<h:outputText value="OPCIONES" />
@@ -43,7 +44,7 @@
 						</p:commandButton>
 							&nbsp;&nbsp;&nbsp;
 						<p:commandButton icon="ui-icon-close"
-							action="#{informacionBean.changePersona(per)}" update="frm">
+							action="#{personaBean.changePersona(per)}" update="frm">
 							<p:confirm header="Confirmación"
 								message="Estas seguro de cambiar el estado de la Persona?"
 								icon="ui-icon-alert" />
@@ -78,7 +79,8 @@
 						<f:facet name="header">
 							<h:outputText value="FECHA NACIMIENTO" />
 						</f:facet>
-						<h:outputText value="#{per.perFechaNacimiento}" pattern="yyyy-MM-dd" />
+						<h:outputText value="#{per.perFechaNacimiento}"
+							pattern="yyyy-MM-dd" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -86,11 +88,17 @@
 						</f:facet>
 						<h:outputText value="#{per.perTelefono}" />
 					</h:column>
-					<h:column width="150">
+					<h:column>
 						<f:facet name="header">
-							<h:outputText value="CORREO" />
+							<h:outputText value="ESTADO" />
 						</f:facet>
-						<h:outputText value="#{per.perCorreo}" />
+						<h:outputText value="#{per.perEstado}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="CELULAR" />
+						</f:facet>
+						<h:outputText value="#{per.perCelular}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -100,9 +108,15 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="ESTADO" />
+							<h:outputText value="GENERO" />
 						</f:facet>
-						<h:outputText value="#{per.perEstado}" />
+						<h:outputText value="#{per.perGenero}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="CORREO" />
+						</f:facet>
+						<h:outputText value="#{per.perCorreo}" />
 					</h:column>
 				</b:dataTable>
 			</b:panel>

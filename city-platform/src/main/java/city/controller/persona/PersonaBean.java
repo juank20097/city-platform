@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,9 +12,14 @@ import javax.faces.model.SelectItem;
 
 import city.model.dao.entidades.GenItem;
 import city.model.dao.entidades.GenPersona;
+import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerPersona;
 
+/**
+ * @author jestevez
+ *
+ */
 @SessionScoped
 @ManagedBean
 public class PersonaBean {
@@ -60,11 +66,72 @@ public class PersonaBean {
 	private String pdeProvinciaNacimiento;
 	private String pdeProvinciaResidencia;
 
+	// manejo de vistas
+	List<GenPersona> l_persona;
+	List<SelectItem> l_estados;
+	List<SelectItem> l_tipo_dni;
+	List<SelectItem> l_genero;
+	List<SelectItem> l_estado_civil;
+	List<SelectItem> l_pais;
+	List<SelectItem> l_provincia;
+	List<SelectItem> l_ciudad;
+
 	// valor de edición e inserción
 	private boolean edicion;
+	
+	//valor de provincias y ciudades
+	private boolean select_n;
+	private boolean select_r;
 
 	public PersonaBean() {
+	}
+
+	@PostConstruct
+	public void init() {
 		edicion = false;
+		select_n = true;
+		select_r = true;
+		l_ciudad = new ArrayList<SelectItem>();
+		l_estado_civil = new ArrayList<SelectItem>();
+		l_estados = new ArrayList<SelectItem>();
+		l_genero = new ArrayList<SelectItem>();
+		l_pais = new ArrayList<SelectItem>();
+		l_provincia = new ArrayList<SelectItem>();
+		l_tipo_dni = new ArrayList<SelectItem>();
+		l_persona =new ArrayList<GenPersona>();
+		cargarEstadoCivil();
+		cargarGeneros();
+		cargarPaises();
+		cargarTiposDni();
+		cargarPersonas();
+	}
+
+	/**
+	 * @return the select_n
+	 */
+	public boolean isSelect_n() {
+		return select_n;
+	}
+
+	/**
+	 * @param select_n the select_n to set
+	 */
+	public void setSelect_n(boolean select_n) {
+		this.select_n = select_n;
+	}
+
+	/**
+	 * @return the select_r
+	 */
+	public boolean isSelect_r() {
+		return select_r;
+	}
+
+	/**
+	 * @param select_r the select_r to set
+	 */
+	public void setSelect_r(boolean select_r) {
+		this.select_r = select_r;
 	}
 
 	/**
@@ -238,7 +305,7 @@ public class PersonaBean {
 	public boolean isEdicion() {
 		return edicion;
 	}
-
+	
 	// Getteres and Setteres de persona
 	// detalle/////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
@@ -246,6 +313,118 @@ public class PersonaBean {
 	 */
 	public String getPdeCiudadNacimiento() {
 		return pdeCiudadNacimiento;
+	}
+
+	/**
+	 * @return the l_persona
+	 */
+	public List<GenPersona> getL_persona() {
+		return l_persona;
+	}
+
+	/**
+	 * @param l_persona the l_persona to set
+	 */
+	public void setL_persona(List<GenPersona> l_persona) {
+		this.l_persona = l_persona;
+	}
+
+	/**
+	 * @return the l_estados
+	 */
+	public List<SelectItem> getL_estados() {
+		return l_estados;
+	}
+
+	/**
+	 * @param l_estados the l_estados to set
+	 */
+	public void setL_estados(List<SelectItem> l_estados) {
+		this.l_estados = l_estados;
+	}
+
+	/**
+	 * @return the l_tipo_dni
+	 */
+	public List<SelectItem> getL_tipo_dni() {
+		return l_tipo_dni;
+	}
+
+	/**
+	 * @param l_tipo_dni the l_tipo_dni to set
+	 */
+	public void setL_tipo_dni(List<SelectItem> l_tipo_dni) {
+		this.l_tipo_dni = l_tipo_dni;
+	}
+
+	/**
+	 * @return the l_genero
+	 */
+	public List<SelectItem> getL_genero() {
+		return l_genero;
+	}
+
+	/**
+	 * @param l_genero the l_genero to set
+	 */
+	public void setL_genero(List<SelectItem> l_genero) {
+		this.l_genero = l_genero;
+	}
+
+	/**
+	 * @return the l_estado_civil
+	 */
+	public List<SelectItem> getL_estado_civil() {
+		return l_estado_civil;
+	}
+
+	/**
+	 * @param l_estado_civil the l_estado_civil to set
+	 */
+	public void setL_estado_civil(List<SelectItem> l_estado_civil) {
+		this.l_estado_civil = l_estado_civil;
+	}
+
+	/**
+	 * @return the l_pais
+	 */
+	public List<SelectItem> getL_pais() {
+		return l_pais;
+	}
+
+	/**
+	 * @param l_pais the l_pais to set
+	 */
+	public void setL_pais(List<SelectItem> l_pais) {
+		this.l_pais = l_pais;
+	}
+
+	/**
+	 * @return the l_provincia
+	 */
+	public List<SelectItem> getL_provincia() {
+		return l_provincia;
+	}
+
+	/**
+	 * @param l_provincia the l_provincia to set
+	 */
+	public void setL_provincia(List<SelectItem> l_provincia) {
+		this.l_provincia = l_provincia;
+	}
+
+	/**
+	 * @return the l_ciudad
+	 */
+	public List<SelectItem> getL_ciudad() {
+		return l_ciudad;
+	}
+
+	/**
+	 * @param l_ciudad the l_ciudad to set
+	 */
+	public void setL_ciudad(List<SelectItem> l_ciudad) {
+		this.l_ciudad = l_ciudad;
 	}
 
 	/**
@@ -627,25 +806,30 @@ public class PersonaBean {
 	public String crearPersona() {
 		String r = "";
 		try {
-			if (edicion) {
-				manager.editarPersona(getPerDni(), getPerTipoDni(),
-						getPerNombres(), getPerApellidos(),
-						getPerFechaNacimiento(), getPerGenero(),
-						getPerTelefono(), getPerCelular(), getPerCorreo(),
-						getPerEstadoCivil(), getPerEstado());
-				this.editarPersonaDetalle();
-				Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
+			if (this.validarCampos()) {
+				Mensaje.crearMensajeERROR("Todos los datos generales son requeridos");
 			} else {
-				manager.insertarPersona(getPerDni(), getPerTipoDni(),
-						getPerNombres(), getPerApellidos(),
-						getPerFechaNacimiento(), getPerGenero(),
-						getPerTelefono(), getPerCelular(), getPerCorreo(),
-						getPerEstadoCivil());
-				this.crearPersonaDetalle();
-				Mensaje.crearMensajeINFO("Registrado - Persona Creada");
+				if (edicion) {
+					manager.editarPersona(getPerDni(), getPerTipoDni(),
+							getPerNombres(), getPerApellidos(),
+							getPerFechaNacimiento(), getPerGenero(),
+							getPerTelefono(), getPerCelular(), getPerCorreo(),
+							getPerEstadoCivil(), getPerEstado());
+					this.editarPersonaDetalle();
+					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
+				} else {
+					manager.insertarPersona(getPerDni(), getPerTipoDni(),
+							getPerNombres(), getPerApellidos(),
+							getPerFechaNacimiento(), getPerGenero(),
+							getPerTelefono(), getPerCelular(), getPerCorreo(),
+							getPerEstadoCivil());
+					this.crearPersonaDetalle();
+					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
+				}
+				r = "persona?faces-redirect=true";
+				this.cleanDatos();
+				this.cargarPersonas();
 			}
-			r = "persona?faces-redirect=true";
-			this.cleanDatos();
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -660,6 +844,7 @@ public class PersonaBean {
 	 */
 	public String cargarPersona(GenPersona persona) {
 		try {
+			cargarEstados();
 			setPerDni(persona.getPerDni());
 			setPerTipoDni(persona.getPerTipoDni());
 			setPerNombres(persona.getPerNombres());
@@ -671,6 +856,10 @@ public class PersonaBean {
 			setPerCorreo(persona.getPerCorreo());
 			setPerEstadoCivil(persona.getPerEstadoCivil());
 			setPerEstado(persona.getPerEstado());
+			// carga de persona detalle
+			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona
+					.getPerDni());
+			this.cargarPersonaDetalle(pd);
 			setEdicion(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -686,6 +875,7 @@ public class PersonaBean {
 	 */
 	public String cancelar() {
 		this.cleanDatos();
+		this.cargarPersonas();
 		return "persona?faces-redirect=true";
 	}
 
@@ -697,6 +887,20 @@ public class PersonaBean {
 	public void changePersona(GenPersona persona) {
 		try {
 			manager.cambioEstadoPersona(persona);
+			this.cargarPersonas();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Lista de Personas
+	 */
+	public void cargarPersonas() {
+		try {
+			getL_persona().clear();
+			getL_persona().addAll(manager.findAllPersonas());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -705,100 +909,80 @@ public class PersonaBean {
 
 	/**
 	 * Lista de TiposDNI
-	 * 
-	 * @return lista de todos los tiposDNI
 	 */
-	public List<SelectItem> getlistTiposDni() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarTiposDni() {
+		getL_tipo_dni().clear();
 		List<GenItem> completo = manager.AllofItems("cat_tipo_dni");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_tipo_dni().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	/**
 	 * Lista de Generos
-	 * 
-	 * @return lista de todos los Generos
 	 */
-	public List<SelectItem> getlistGeneros() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarGeneros() {
+		getL_genero().clear();
 		List<GenItem> completo = manager.AllofItems("cat_genero");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_genero().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	/**
 	 * Lista de EstadoCivil
-	 * 
-	 * @return lista de todos los EstadoCivil
 	 */
-	public List<SelectItem> getlistEstadoCivil() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarEstadoCivil() {
+		getL_estado_civil().clear();
 		List<GenItem> completo = manager.AllofItems("cat_estado_civil");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_estado_civil().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	/**
 	 * Lista de Paises
-	 * 
-	 * @return lista de todos los Paises
 	 */
-	public List<SelectItem> getlistPaises() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarPaises() {
+		getL_pais().clear();
 		List<GenItem> completo = manager.AllofItems("cat_paises");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_pais().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	/**
 	 * Lista de Provincias
-	 * 
-	 * @return lista de todos los Provincias
 	 */
-	public List<SelectItem> getlistProvincias() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarProvincias() {
+		getL_provincia().clear();
 		List<GenItem> completo = manager.AllofItems("cat_provincias");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_provincia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	/**
 	 * Lista de Ciudades
-	 * 
-	 * @return lista de todos los Ciudades
 	 */
-	public List<SelectItem> getlistCiudades() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
-		List<GenItem> completo = manager.AllofItems("cat_ciudades");
+	public void cargarCiudades(String provincia) {
+		getL_ciudad().clear();
+		List<GenItem> completo = manager.AllofItems("cat_ciudades",provincia);
+		if (completo!=null){
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
-		}
-		return lista;
+			getL_ciudad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}}
 	}
 
 	/**
 	 * Lista de Estado
-	 * 
-	 * @return lista de todos los Estado
 	 */
-	public List<SelectItem> getlistEstado() {
-		List<SelectItem> lista = new ArrayList<SelectItem>();
+	public void cargarEstados() {
+		getL_estados().clear();
 		List<GenItem> completo = manager.AllofItems("cat_estados");
 		for (GenItem i : completo) {
-			lista.add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_estados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
-		return lista;
 	}
 
 	// ////////////////////////////////////////////////////////PERSONA -
@@ -853,6 +1037,105 @@ public class PersonaBean {
 	}
 
 	/**
+	 * Metodo para cargar una Persona-Detalle para su edicion
+	 * 
+	 * @param persona
+	 * @return
+	 */
+	public String cargarPersonaDetalle(GenPersonaDetalle persona) {
+		try {
+			setPdeCiudadNacimiento(persona.getPdeCiudadNacimiento());
+			setPdeCiudadResidencia(persona.getPdeCiudadResidencia());
+			setPdeCondicionCiudadana(persona.getPdeCondicionCiudadana());
+			setPdeConyuge(persona.getPdeConyuge());
+			setPdeDireccion(persona.getPdeDireccion());
+			setPdeEmergContactoId(persona.getPdeEmergContactoId());
+			setPdeEmergContactoNombres(persona.getPdeEmergContactoNombres());
+			setPdeEmergContactoTelefono(persona.getPdeEmergContactoTelefono());
+			setPdeFechaDefuncion(persona.getPdeFechaDefuncion());
+			setPdeFechaMatrimonio(persona.getPdeFechaMatrimonio());
+			setPdeFoto(persona.getPdeFoto());
+			setPdeHuella(persona.getPdeHuella());
+			setPdeInscripcionDefuncion(persona.getPdeInscripcionDefuncion());
+			setPdeLugarNacimiento(persona.getPdeLugarNacimiento());
+			setPdeNacionalidadMadre(persona.getPdeNacionalidadMadre());
+			setPdeNacionalidadPadre(persona.getPdeNacionalidadPadre());
+			setPdeNombreMadre(persona.getPdeNombreMadre());
+			setPdeNombrePadre(persona.getPdeNombrePadre());
+			setPdeObservacion(persona.getPdeObservacion());
+			setPdePaisNacimiento(persona.getPdePaisNacimiento());
+			setPdePaisResidencia(persona.getPdePaisResidencia());
+			setPdeProvinciaNacimiento(persona.getPdeProvinciaNacimiento());
+			setPdeProvinciaResidencia(persona.getPdeProvinciaResidencia());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "npersona?faces-redirect=true";
+	}
+	
+	/**
+	 * Metodo para habilitar campos
+	 */
+	public void habilitarCamposNac(){
+		if (getPdePaisNacimiento().equals("EC")){
+			setSelect_n(false);
+			cargarProvincias();
+		}else{
+			setSelect_n(true);
+		}
+	}
+	
+	/**
+	 * Metodo para habilitar campos
+	 */
+	public void habilitarCamposRer(){
+		if (getPdePaisResidencia().equals("EC")){
+			setSelect_r(false);
+			cargarProvincias();
+		}else{
+			setSelect_r(true);
+		}
+	}
+	
+	/**
+	 * Metod para mostrar la ciudad dependiendo de la provincia
+	 */
+	public void mostrarCiudadNac(String provincia){
+		cargarCiudades(provincia);
+	}
+	
+	/**
+	 * Metod para mostrar la ciudad dependiendo de la provincia
+	 */
+	public void mostrarCiudadRes(String provincia){
+		cargarCiudades(provincia);
+	}
+	
+
+	/**
+	 * Metodo para validar los campos generales de la persona
+	 * 
+	 * @return
+	 */
+	public boolean validarCampos() {
+		if ((getPerApellidos() == null || getPerApellidos().isEmpty())
+				|| (getPerCelular() == null || getPerCelular().isEmpty())
+				|| (getPerCorreo() == null || getPerCorreo().isEmpty())
+				|| (getPerDni() == null || getPerDni().isEmpty())
+				|| (getPerEstadoCivil() == null || getPerEstadoCivil().equals(
+						"-1")) || (getPerFechaNacimiento() == null)
+				|| (getPerGenero() == null || getPerGenero().equals("-1"))
+				|| (getPerNombres() == null || getPerNombres().isEmpty())
+				|| (getPerTipoDni() == null || getPerTipoDni().equals("-1"))
+				|| (getPerTelefono() == null || getPerTelefono().isEmpty())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Metodo de seteo de datos
 	 */
 	public void cleanDatos() {
@@ -867,7 +1150,7 @@ public class PersonaBean {
 		setPerCorreo("");
 		setPerEstadoCivil("");
 		setPerEstado("");
-		// pd
+		// (persona-detalle)
 		setPdeCiudadNacimiento("");
 		setPdeCiudadResidencia("");
 		setPdeCondicionCiudadana("");

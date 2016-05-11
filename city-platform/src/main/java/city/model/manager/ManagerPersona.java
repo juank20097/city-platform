@@ -147,10 +147,12 @@ public class ManagerPersona {
 		try {
 			if (persona.getPerEstado().equals("A")) {
 				persona.setPerEstado("I");
+			}else{ 
+				if (persona.getPerEstado().equals("I")) {
+					persona.setPerEstado("A");
+				}
 			}
-			if (persona.getPerEstado().equals("I")) {
-				persona.setPerEstado("A");
-			}
+			mngDao.actualizar(persona);
 			Mensaje.crearMensajeINFO("Persona cambiada de estado correctamente.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -229,6 +231,23 @@ public class ManagerPersona {
 		}
 	}// Cierre del metodo
 
+	/**
+	 * Metodo para listar
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenItem> AllofItems(String cat_nombre, String padre) {
+		List<GenItem> li = mngDao.findWhere(GenItem.class,
+				"o.genCatalogo.catCodigo='" + cat_nombre + "' and o.itePadre='"
+						+ padre + "'", null);
+		if (li == null || li.isEmpty()) {
+			return null;
+		} else {
+			return li;
+		}
+	}// Cierre del metodo
+
 	// //////////////////////////////////////////////////////////(PERSONAS -
 	// DETALLES)/////////////////////////////////////////////////////////////////////
 	/**
@@ -285,15 +304,16 @@ public class ManagerPersona {
 	 * @param observacion
 	 * @throws Exception
 	 */
-	public void insertarPersonaDetalle(String dni,String foto, String pais_nac,
-			String provincia_nac, String ciudad_nac, String lugar_nac,
-			String pais_rec, String provincia_rec, String ciudad_rec,
-			String direccion_rec, String condicion_ciudadana, String conyuge,
-			Date fecha_matrimonio, String nombre_pad, String nacionalidad_pad,
-			String nombre_madre, String nacionalidad_madre,
-			String nombre_emergencia, String id_emergencia,
-			String telefono_emergencia, String inscripcion_defuncion,
-			Date fecha_defuncion, String observacion) throws Exception {
+	public void insertarPersonaDetalle(String dni, String foto,
+			String pais_nac, String provincia_nac, String ciudad_nac,
+			String lugar_nac, String pais_rec, String provincia_rec,
+			String ciudad_rec, String direccion_rec,
+			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,
+			String nombre_pad, String nacionalidad_pad, String nombre_madre,
+			String nacionalidad_madre, String nombre_emergencia,
+			String id_emergencia, String telefono_emergencia,
+			String inscripcion_defuncion, Date fecha_defuncion,
+			String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
 			personad.setPdeDni(dni);
@@ -354,7 +374,7 @@ public class ManagerPersona {
 	 * @param observacion
 	 * @throws Exception
 	 */
-	public void editarPersonaDetalle(String dni,String foto, String pais_nac,
+	public void editarPersonaDetalle(String dni, String foto, String pais_nac,
 			String provincia_nac, String ciudad_nac, String lugar_nac,
 			String pais_rec, String provincia_rec, String ciudad_rec,
 			String direccion_rec, String condicion_ciudadana, String conyuge,
