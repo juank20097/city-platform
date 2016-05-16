@@ -6,10 +6,10 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/city-platformDatasource</jta-data-source>
 		<class>city.model.dao.entidades.GenParametro</class>
-		<class>city.model.dao.entidades.GenCatalogo</class>
-		<class>city.model.dao.entidades.GenItem</class>
 		<class>city.model.dao.entidades.GenPersona</class>
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
+		<class>city.model.dao.entidades.GenCatalogo</class>
+		<class>city.model.dao.entidades.GenCatalogoItem</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import city.model.dao.entidades.GenItem;
+import city.model.dao.entidades.GenCatalogoItem;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.generic.Mensaje;
@@ -912,8 +912,8 @@ public class PersonaBean {
 	 */
 	public void cargarTiposDni() {
 		getL_tipo_dni().clear();
-		List<GenItem> completo = manager.AllofItems("cat_tipo_dni");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_tipo_dni");
+		for (GenCatalogoItem i : completo) {
 			getL_tipo_dni().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -923,8 +923,8 @@ public class PersonaBean {
 	 */
 	public void cargarGeneros() {
 		getL_genero().clear();
-		List<GenItem> completo = manager.AllofItems("cat_genero");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_genero");
+		for (GenCatalogoItem i : completo) {
 			getL_genero().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -934,8 +934,8 @@ public class PersonaBean {
 	 */
 	public void cargarEstadoCivil() {
 		getL_estado_civil().clear();
-		List<GenItem> completo = manager.AllofItems("cat_estado_civil");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_estado_civil");
+		for (GenCatalogoItem i : completo) {
 			getL_estado_civil().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -945,8 +945,8 @@ public class PersonaBean {
 	 */
 	public void cargarPaises() {
 		getL_pais().clear();
-		List<GenItem> completo = manager.AllofItems("cat_paises");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_paises");
+		for (GenCatalogoItem i : completo) {
 			getL_pais().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -956,8 +956,8 @@ public class PersonaBean {
 	 */
 	public void cargarProvincias() {
 		getL_provincia().clear();
-		List<GenItem> completo = manager.AllofItems("cat_provincias");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_provincias");
+		for (GenCatalogoItem i : completo) {
 			getL_provincia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -967,9 +967,9 @@ public class PersonaBean {
 	 */
 	public void cargarCiudades(String provincia) {
 		getL_ciudad().clear();
-		List<GenItem> completo = manager.AllofItems("cat_ciudades",provincia);
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_ciudades",provincia);
 		if (completo!=null){
-		for (GenItem i : completo) {
+		for (GenCatalogoItem i : completo) {
 			getL_ciudad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}}
 	}
@@ -979,8 +979,8 @@ public class PersonaBean {
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		List<GenItem> completo = manager.AllofItems("cat_estados");
-		for (GenItem i : completo) {
+		List<GenCatalogoItem> completo = manager.AllofItems("cat_estados");
+		for (GenCatalogoItem i : completo) {
 			getL_estados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}

@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the gen_item database table.
+ * The persistent class for the gen_catalogo_items database table.
  * 
  */
 @Entity
-@Table(name="gen_item")
-@NamedQuery(name="GenItem.findAll", query="SELECT g FROM GenItem g")
-public class GenItem implements Serializable {
+@Table(name="gen_catalogo_items")
+@NamedQuery(name="GenCatalogoItem.findAll", query="SELECT g FROM GenCatalogoItem g")
+public class GenCatalogoItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,7 +29,7 @@ public class GenItem implements Serializable {
 	@JoinColumn(name="cat_codigo")
 	private GenCatalogo genCatalogo;
 
-	public GenItem() {
+	public GenCatalogoItem() {
 	}
 
 	public String getIteCodigo() {

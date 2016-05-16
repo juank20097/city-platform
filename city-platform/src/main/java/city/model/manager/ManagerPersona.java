@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import city.model.dao.entidades.GenCatalogo;
-import city.model.dao.entidades.GenItem;
+import city.model.dao.entidades.GenCatalogoItem;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.generic.Mensaje;
@@ -200,8 +200,8 @@ public class ManagerPersona {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenItem> findAllItems() throws Exception {
-		return mngDao.findAll(GenItem.class);
+	public List<GenCatalogoItem> findAllItems() throws Exception {
+		return mngDao.findAll(GenCatalogoItem.class);
 	}// Cierre del metodo
 
 	/**
@@ -211,8 +211,8 @@ public class ManagerPersona {
 	 * @return Objeto
 	 * @throws Exception
 	 */
-	public GenItem ItemByID(String dni) throws Exception {
-		return (GenItem) mngDao.findById(GenItem.class, dni);
+	public GenCatalogoItem ItemByID(String dni) throws Exception {
+		return (GenCatalogoItem) mngDao.findById(GenCatalogoItem.class, dni);
 	}// Cierre del metodo
 
 	/**
@@ -221,8 +221,8 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenItem> AllofItems(String cat_nombre) {
-		List<GenItem> li = mngDao.findWhere(GenItem.class,
+	public List<GenCatalogoItem> AllofItems(String cat_nombre) {
+		List<GenCatalogoItem> li = mngDao.findWhere(GenCatalogoItem.class,
 				"o.genCatalogo.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
@@ -237,8 +237,8 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenItem> AllofItems(String cat_nombre, String padre) {
-		List<GenItem> li = mngDao.findWhere(GenItem.class,
+	public List<GenCatalogoItem> AllofItems(String cat_nombre, String padre) {
+		List<GenCatalogoItem> li = mngDao.findWhere(GenCatalogoItem.class,
 				"o.genCatalogo.catCodigo='" + cat_nombre + "' and o.itePadre='"
 						+ padre + "'", null);
 		if (li == null || li.isEmpty()) {

@@ -25,9 +25,9 @@ public class GenCatalogo implements Serializable {
 	@Column(name="cat_nombre")
 	private String catNombre;
 
-	//bi-directional many-to-one association to GenItem
+	//bi-directional many-to-one association to GenCatalogoItem
 	@OneToMany(mappedBy="genCatalogo")
-	private List<GenItem> genItems;
+	private List<GenCatalogoItem> genCatalogoItems;
 
 	public GenCatalogo() {
 	}
@@ -56,26 +56,26 @@ public class GenCatalogo implements Serializable {
 		this.catNombre = catNombre;
 	}
 
-	public List<GenItem> getGenItems() {
-		return this.genItems;
+	public List<GenCatalogoItem> getGenCatalogoItems() {
+		return this.genCatalogoItems;
 	}
 
-	public void setGenItems(List<GenItem> genItems) {
-		this.genItems = genItems;
+	public void setGenCatalogoItems(List<GenCatalogoItem> genCatalogoItems) {
+		this.genCatalogoItems = genCatalogoItems;
 	}
 
-	public GenItem addGenItem(GenItem genItem) {
-		getGenItems().add(genItem);
-		genItem.setGenCatalogo(this);
+	public GenCatalogoItem addGenCatalogoItem(GenCatalogoItem genCatalogoItem) {
+		getGenCatalogoItems().add(genCatalogoItem);
+		genCatalogoItem.setGenCatalogo(this);
 
-		return genItem;
+		return genCatalogoItem;
 	}
 
-	public GenItem removeGenItem(GenItem genItem) {
-		getGenItems().remove(genItem);
-		genItem.setGenCatalogo(null);
+	public GenCatalogoItem removeGenCatalogoItem(GenCatalogoItem genCatalogoItem) {
+		getGenCatalogoItems().remove(genCatalogoItem);
+		genCatalogoItem.setGenCatalogo(null);
 
-		return genItem;
+		return genCatalogoItem;
 	}
 
 }
