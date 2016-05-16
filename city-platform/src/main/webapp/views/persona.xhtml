@@ -18,7 +18,8 @@
 			<b:row>
 				<b:column span="1">
 					<b:commandButton value="Nuevo" iconAwesome="file-o"
-						action="#{personaBean.nuevaPersona}" />
+						action="#{personaBean.nuevaPersona}" onclick="PF('statusDialog').show()"
+									oncomplete="PF('statusDialog').hide()" />
 				</b:column>
 				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -29,8 +30,9 @@
 		<br />
 		<h:form id="frm">
 			<b:growl delay="4000" placementFrom="top" show-detail="false"
-        		global-only="false" show-summary="true" allow-dismiss="true"
-        		animation-enter="animated bounceInDown" animation-exit="animated flipOutX" escape="true" />
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
 				<b:dataTable  value="#{personaBean.l_persona}" var="per"
 					styleClass="table table-striped table-bordered dt-responsive nowrap" 
@@ -39,23 +41,14 @@
 						<f:facet name="header">
 							<h:outputText value="OPCIONES" />
 						</f:facet>
-						<p:commandButton icon="ui-icon-pencil"
-							action="#{personaBean.cargarPersona(per)}">
-						</p:commandButton>
+						<b:commandButton iconAwesome="fa fa-pencil-square-o" look="info"
+							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{personaBean.cargarPersona(per)}">
+						</b:commandButton>
 							&nbsp;&nbsp;&nbsp;
-						<p:commandButton icon="ui-icon-close"
-							action="#{personaBean.changePersona(per)}" update="frm">
-							<p:confirm header="Confirmación"
-								message="Estas seguro de cambiar el estado de la Persona?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
+						<b:commandButton iconAwesome="fa fa-exchange" look="info" 
+							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{personaBean.changePersona(per)}" update="frm">
+						</b:commandButton>
 
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-							<p:commandButton value="Si" type="button"
-								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-							<p:commandButton value="No" type="button"
-								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-						</p:confirmDialog>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -100,29 +93,16 @@
 						</f:facet>
 						<h:outputText value="#{per.perCelular}" />
 					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="ESTADO CIVIL" />
-						</f:facet>
-						<h:outputText value="#{per.perEstadoCivil}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="GENERO" />
-						</f:facet>
-						<h:outputText value="#{per.perGenero}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="CORREO" />
-						</f:facet>
-						<h:outputText value="#{per.perCorreo}" />
-					</h:column>
-				</b:dataTable>
+					</b:dataTable>
+					
 			</b:panel>
-
-
 		</h:form>
+
+		
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 

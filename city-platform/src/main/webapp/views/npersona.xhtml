@@ -130,8 +130,8 @@
 							</b:column>
 						</b:row>
 						<b:commandButton value="Guardar"
-							action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
-				<b:commandButton value="Cancelar" action="#{personaBean.cancelar}"
+						 onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"	action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" action="#{personaBean.cancelar}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
 							immediate="true" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 							 <b:label text="Recuerda que el guardar tambien almacenara los datos de la pestaña detalles" severity="success"/>
 					</b:tab>
@@ -357,11 +357,12 @@
 						</b:row>
 					</b:tab>
 				</b:tabView>
-
-
-
 			</b:panel>
 		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 </html>
