@@ -795,7 +795,7 @@ public class PersonaBean {
 	 */
 	public String nuevaPersona() {
 		edicion = false;
-		return "npersona?faces-redirect=true";
+		return "npersona.xhtml";
 	}
 
 	/**
