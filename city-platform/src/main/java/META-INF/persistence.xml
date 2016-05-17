@@ -10,6 +10,12 @@
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
 		<class>city.model.dao.entidades.GenCatalogo</class>
 		<class>city.model.dao.entidades.GenCatalogoItem</class>
+		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenInstitucione</class>
+		<class>city.model.dao.entidades.GenSectore</class>
+		<class>city.model.dao.entidades.GenSitFoto</class>
+		<class>city.model.dao.entidades.GenSitio</class>
+		<class>city.model.dao.entidades.GenTipoSitio</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
