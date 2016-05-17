@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Sectores
+        </ui:define>
+	<ui:define name="contenido">
+		<br />
+		<h:form id="frm">
+			<p:messages closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+			<b:panel title="Registro de Sectores" look="primary"
+				collapsible="false">
+				<b:panelGrid colSpans="2,10">
+					<h:outputLabel value="Nombre*" />
+					<b:inputText value="#{sectorBean.secNombre}" required="true"
+						requiredMessage="Campo nombre requerido"></b:inputText>
+					<h:outputLabel value="Dirección*" />
+					<b:inputText value="#{sectorBean.secDireccionReferencial}" required="true"
+						requiredMessage="Campo dirección requerido" />
+					<h:outputLabel value="Dirección*" />
+					<b:inputTextarea value="#{sectorBean.secDescripcion}" required="true"
+						requiredMessage="Campo dirección requerido" />
+					<h:outputLabel value="Estado*" rendered="#{sectorBean.edicion}" />
+					<b:selectOneMenu value="#{sectorBean.secEstado}"
+						rendered="#{sectorBean.edicion}">
+						<f:selectItems value="#{sectorBean.l_estados}" />
+					</b:selectOneMenu>
+				</b:panelGrid>
+				<br />
+				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{sectorBean.crearSector}"
+					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+					<h:commandButton type="button" value="Cancelar"
+					action="#{sectorBean.cancelar}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" styleClass="btn btn-info">
+					<f:ajax />
+				</h:commandButton>
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
