@@ -34,7 +34,7 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-				<b:dataTable  value="#{personaBean.l_persona}" var="per"
+				<b:dataTable id="dt_per" value="#{personaBean.l_persona}" var="per"
 					styleClass="table table-striped table-bordered dt-responsive nowrap" 
 					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
 					<h:column width="100">
@@ -94,7 +94,6 @@
 						<h:outputText value="#{per.perCelular}" />
 					</h:column>
 					</b:dataTable>
-					
 			</b:panel>
 		</h:form>
 
