@@ -27,7 +27,7 @@
 			</b:row>
 		</h:form>
 		<br />
-		<h:form id="frmbicis">
+		<h:form id="frm">
 			<b:growl delay="4000" placementFrom="top" show-detail="false"
 				global-only="false" show-summary="true" allow-dismiss="true"
 				animation-enter="animated bounceInDown"
@@ -40,7 +40,8 @@
 						<f:facet name="header">
 							<h:outputText value="OPCIONES" />
 						</f:facet>
-						<b:commandButton iconAwesome="fa fa-pencil-square-o" look="info"
+						&nbsp;&nbsp;&nbsp;
+						<b:commandButton iconAwesome="fa fa-pencil-square-o" style="padding: 0; border: none; background: none;color: #000"
 							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{sectorBean.cargarSector(sec)}">
 						</b:commandButton>
 					</h:column>
