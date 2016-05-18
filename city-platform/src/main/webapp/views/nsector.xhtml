@@ -14,9 +14,10 @@
 	<ui:define name="contenido">
 		<br />
 		<h:form id="frm">
-			<p:messages closable="true">
-				<p:effect type="pulsate" event="load" delay="500" />
-			</p:messages>
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Registro de Sectores" look="primary"
 				collapsible="false">
 				<b:panelGrid colSpans="2,10">
@@ -26,9 +27,9 @@
 					<h:outputLabel value="Dirección*" />
 					<b:inputText value="#{sectorBean.secDireccionReferencial}" required="true"
 						requiredMessage="Campo dirección requerido" />
-					<h:outputLabel value="Dirección*" />
+					<h:outputLabel value="Descripción*" />
 					<b:inputTextarea value="#{sectorBean.secDescripcion}" required="true"
-						requiredMessage="Campo dirección requerido" />
+						requiredMessage="Campo descripción requerido" />
 					<h:outputLabel value="Estado*" rendered="#{sectorBean.edicion}" />
 					<b:selectOneMenu value="#{sectorBean.secEstado}"
 						rendered="#{sectorBean.edicion}">
