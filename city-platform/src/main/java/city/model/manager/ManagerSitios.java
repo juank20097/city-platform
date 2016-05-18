@@ -7,7 +7,9 @@ import javax.ejb.Stateless;
 
 import city.model.dao.entidades.GenArea;
 import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenSectore;
+import city.model.dao.entidades.GenTipoSitio;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -129,7 +131,7 @@ public class ManagerSitios {
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar
 	 * 
@@ -139,7 +141,7 @@ public class ManagerSitios {
 	public List<GenSectore> AllSectoresActivos() {
 		List<GenSectore> l = mngDao.findWhere(GenSectore.class,
 				"o.secEstado='A'", null);
-			return l;
+		return l;
 	}// Cierre del metodo
 
 	// //////////////////////////////////////////////////////////(AREAS)/////////////////////////////////////////////////////////////////////
@@ -234,8 +236,9 @@ public class ManagerSitios {
 	 * @param padre
 	 * @throws Exception
 	 */
-	public void editarArea(Integer area,Integer sector, String nombre, String descripcion,
-			String latitud, String longitud, String padre, String estado) throws Exception {
+	public void editarArea(Integer area, Integer sector, String nombre,
+			String descripcion, String latitud, String longitud, String padre,
+			String estado) throws Exception {
 		try {
 			GenArea are = this.AreaByID(area);
 			are.setGenSectore(this.SectoresByID(sector));
@@ -249,6 +252,187 @@ public class ManagerSitios {
 			System.out.println("Bien_mod_area");
 		} catch (Exception e) {
 			System.out.println("Error_mod_area");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	// //////////////////////////////////////////////////////////(TIPO_SITIO)/////////////////////////////////////////////////////////////////////
+	/**
+	 * Creación de metodos para el manejo de la tabla TIPO SITIO
+	 * 
+	 */
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenTipoSitio> findAllTipoSitios() throws Exception {
+		return mngDao.findAll(GenTipoSitio.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenTipoSitio TipoSitioByID(Integer dni) throws Exception {
+		return (GenTipoSitio) mngDao.findById(GenTipoSitio.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para generar el id
+	 * 
+	 * @return
+	 */
+	public Integer tsitioId() {
+		Integer id = 0;
+		try {
+			List<GenTipoSitio> l = this.findAllTipoSitios();
+			if (l == null || l.size() == 0) {
+				id = 1;
+			} else {
+				id = l.size() + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param nombre
+	 * @param descripcion
+	 * @throws Exception
+	 */
+	public void insertarTipoSitio(String nombre, String descripcion)
+			throws Exception {
+		try {
+			GenTipoSitio tsitio = new GenTipoSitio();
+			tsitio.setTsiNombre(nombre);
+			tsitio.setTsiDescripcion(descripcion);
+			tsitio.setTsiEstado("A");
+			mngDao.insertar(tsitio);
+			System.out.println("Bien_insertar_Tipo_Sitio");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_Tipo_Sitio");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para editar un Atributo en la base de datos
+	 * 
+	 * @param tsitio
+	 * @param nombre
+	 * @param descripcion
+	 * @param estado
+	 * @throws Exception
+	 */
+	public void editarTipoSitio(Integer tsitio, String nombre,
+			String descripcion, String estado) throws Exception {
+		try {
+			GenTipoSitio ts = this.TipoSitioByID(tsitio);
+			ts.setTsiNombre(nombre);
+			ts.setTsiDescripcion(descripcion);
+			ts.setTsiEstado(estado);
+			mngDao.actualizar(ts);
+			System.out.println("Bien_mod_Tipo_Sitio");
+		} catch (Exception e) {
+			System.out.println("Error_mod_Tipo_Sitio");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	// //////////////////////////////////////////////////////////(INSTITUCIÓN)/////////////////////////////////////////////////////////////////////
+	/**
+	 * Creación de metodos para el manejo de la tabla INSTITUCIÓN
+	 * 
+	 */
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenInstitucione> findAllInstituciones() throws Exception {
+		return mngDao.findAll(GenInstitucione.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenInstitucione InstitucionByID(String dni) throws Exception {
+		return (GenInstitucione) mngDao.findById(GenInstitucione.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param codio
+	 * @param nombre
+	 * @param descripcion
+	 * @param ruc
+	 * @param razon_social
+	 * @param categoria
+	 * @throws Exception
+	 */
+	public void insertarInstitucion(String codigo, String nombre,
+			String descripcion, String ruc, String razon_social,
+			String categoria) throws Exception {
+		try {
+			GenInstitucione insti = new GenInstitucione();
+			insti.setInsCodigo(codigo);
+			insti.setInsNombre(nombre);
+			insti.setInsCategoria(categoria);
+			insti.setInsDescripcion(descripcion);
+			insti.setInsEstado("A");
+			insti.setInsRazonSocial(razon_social);
+			insti.setInsRuc(ruc);
+			mngDao.insertar(insti);
+			System.out.println("Bien_insertar_Institución");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_Institución");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para editar un Atributo en la base de datos
+	 * 
+	 * @param tsitio
+	 * @param nombre
+	 * @param descripcion
+	 * @param estado
+	 * @throws Exception
+	 */
+	public void editarInstitucion(String codigo, String nombre,
+			String descripcion, String ruc, String razon_social,
+			String categoria, String estado) throws Exception {
+		try {
+			GenInstitucione insti = this.InstitucionByID(codigo);
+			insti.setInsNombre(nombre);
+			insti.setInsCategoria(categoria);
+			insti.setInsDescripcion(descripcion);
+			insti.setInsEstado("A");
+			insti.setInsRazonSocial(razon_social);
+			insti.setInsRuc(ruc);
+			mngDao.actualizar(insti);
+			System.out.println("Bien_mod_Institucion");
+		} catch (Exception e) {
+			System.out.println("Error_mod_Institucion");
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
