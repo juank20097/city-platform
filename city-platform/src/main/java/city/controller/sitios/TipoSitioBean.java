@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-
 import city.model.dao.entidades.GenCatalogoItem;
 import city.model.dao.entidades.GenTipoSitio;
 import city.model.generic.Mensaje;
@@ -34,6 +33,7 @@ public class TipoSitioBean {
 	private String tsiNombre;
 
 	// manejo de vistas
+	List<GenTipoSitio> l_tsitio;
 	List<SelectItem> l_estados;
 
 	// valor de edición e inserción
@@ -46,7 +46,24 @@ public class TipoSitioBean {
 	public void init() {
 		edicion = false;
 		l_estados = new ArrayList<SelectItem>();
+		l_tsitio = new ArrayList<GenTipoSitio>();
 		cargarEstados();
+		cargarTipoSitio();
+	}
+
+	/**
+	 * @return the l_tsitio
+	 */
+	public List<GenTipoSitio> getL_tsitio() {
+		return l_tsitio;
+	}
+
+	/**
+	 * @param l_tsitio
+	 *            the l_tsitio to set
+	 */
+	public void setL_tsitio(List<GenTipoSitio> l_tsitio) {
+		this.l_tsitio = l_tsitio;
 	}
 
 	/**
@@ -158,7 +175,8 @@ public class TipoSitioBean {
 		String r = "";
 		try {
 			if (edicion) {
-				manager.editarTipoSitio(getTsiId(), getTsiNombre(), getTsiDescripcion(), getTsiEstado());
+				manager.editarTipoSitio(getTsiId(), getTsiNombre(),
+						getTsiDescripcion(), getTsiEstado());
 				Mensaje.crearMensajeINFO("Actualizado - Tipo Sitio Modificado");
 			} else {
 				manager.insertarTipoSitio(getTsiNombre(), getTsiDescripcion());
@@ -166,6 +184,7 @@ public class TipoSitioBean {
 			}
 			r = "tsitio?faces-redirect=true";
 			this.cleanDatos();
+			this.cargarTipoSitio();
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -189,9 +208,10 @@ public class TipoSitioBean {
 	 * @param tsitio
 	 * @return
 	 */
-	public String cargarTiposSitio(GenTipoSitio tsitio) {
+	public String cargarTipoSitio(GenTipoSitio tsitio) {
 		try {
 			cargarEstados();
+			setTsiId(tsitio.getTsiId());
 			setTsiNombre(tsitio.getTsiNombre());
 			setTsiDescripcion(tsitio.getTsiDescripcion());
 			setTsiEstado(tsitio.getTsiEstado());
@@ -213,6 +233,19 @@ public class TipoSitioBean {
 		return "tsitio?faces-redirect=true";
 	}
 
+	/**
+	 * Lista de Tipo Sitios
+	 */
+	public void cargarTipoSitio() {
+		try {
+			getL_tsitio().clear();
+			getL_tsitio().addAll(manager.findAllTipoSitios());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Lista de Estado
 	 */

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Tipo Sitio
+        </ui:define>
+	<ui:define name="contenido">
+		<br />
+		<h:form id="frm">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Registro de Tipos de Sitio" collapsible="false"
+				look="primary">
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Nombre:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputText required="true"
+							requiredMessage="Campo Nombre requerido"
+							value="#{tipoSitioBean.tsiNombre}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Descripción:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputTextarea required="true"
+							requiredMessage="Campo Descripción requerido"
+							value="#{tipoSitioBean.tsiDescripcion}">
+						</b:inputTextarea>
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel rendered="#{tipoSitioBean.edicion}" value="Estado:" />
+					</b:column>
+					<b:column span="10">
+						<b:selectOneMenu rendered="#{tipoSitioBean.edicion}" styleClass="mar"
+							value="#{tipoSitioBean.tsiEstado}">
+							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+							<f:selectItems value="#{tipoSitioBean.l_estados}">
+							</f:selectItems>
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
+					action="#{tipoSitioBean.crearTipoSitio}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" action="#{tipoSitioBean.cancelar}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" immediate="true"
+					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+			</b:panel>
+		</h:form>
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>
+</html>

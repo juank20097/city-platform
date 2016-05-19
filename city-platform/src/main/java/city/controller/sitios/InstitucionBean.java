@@ -37,6 +37,7 @@ public class InstitucionBean {
 
 	// manejo de vistas
 	List<SelectItem> l_estados;
+	List<GenInstitucione> l_insti;
 
 	// valor de edición e inserción
 	private boolean edicion;
@@ -48,7 +49,24 @@ public class InstitucionBean {
 	public void init() {
 		edicion = false;
 		l_estados = new ArrayList<SelectItem>();
+		l_insti = new ArrayList<GenInstitucione>();
 		cargarEstados();
+		cargarInstitucion();
+	}
+
+	/**
+	 * @return the l_insti
+	 */
+	public List<GenInstitucione> getL_insti() {
+		return l_insti;
+	}
+
+	/**
+	 * @param l_insti
+	 *            the l_insti to set
+	 */
+	public void setL_insti(List<GenInstitucione> l_insti) {
+		this.l_insti = l_insti;
 	}
 
 	/**
@@ -217,6 +235,7 @@ public class InstitucionBean {
 			}
 			r = "institucion?faces-redirect=true";
 			this.cleanDatos();
+			this.cargarInstitucion();
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -272,12 +291,24 @@ public class InstitucionBean {
 	}
 
 	/**
+	 * Lista de Institucion
+	 */
+	public void cargarInstitucion() {
+		try {
+			getL_insti().clear();
+			getL_insti().addAll(manager.findAllInstituciones());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Lista de Estado
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		List<GenCatalogoItem> completo = manager.AllofItems("cat_estados");
-		for (GenCatalogoItem i : completo) {
+		for (GenCatalogoItem i : manager.AllofItems("cat_estados")) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}

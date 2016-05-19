@@ -316,6 +316,7 @@ public class ManagerSitios {
 			throws Exception {
 		try {
 			GenTipoSitio tsitio = new GenTipoSitio();
+			tsitio.setTsiId(this.tsitioId());
 			tsitio.setTsiNombre(nombre);
 			tsitio.setTsiDescripcion(descripcion);
 			tsitio.setTsiEstado("A");
