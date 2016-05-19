@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Institución
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>INSTITUCIÓN</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Nuevo" iconAwesome="file-o"
+						action="#{institucionBean.nuevaInstitucion}" />
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+		<h:form id="frm">
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Listado" look="primary" collapsible="false">
+			<b:dataTable id="dt_ins" value="#{institucionBean.l_insti}" var="ins"
+					styleClass="table table-striped table-bordered dt-responsive nowrap" 
+					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
+					<h:column width="100">
+						<f:facet name="header">
+							<h:outputText value="OPCIONES" />
+						</f:facet>
+						&nbsp;&nbsp;&nbsp;
+						<b:commandButton iconAwesome="fa fa-pencil-square-o" style="padding: 0; border: none; background: none;color: #000"
+							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{institucionBean.cargarInstitucion(ins)}">
+						</b:commandButton>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="NOMBRE" />
+						</f:facet>
+						<h:outputText value="#{ins.insNombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="RAZON SOCIAL" />
+						</f:facet>
+						<h:outputText value="#{ins.insRazonSocial}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="RUC" />
+						</f:facet>
+						<h:outputText value="#{ins.insRuc}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="CATEGORIA" />
+						</f:facet>
+						<h:outputText value="#{ins.insCategoria}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="DESCRIPCIÓN" />
+						</f:facet>
+						<h:outputText value="#{ins.insDescripcion}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ESTADO" />
+						</f:facet>
+						<h:outputText value="#{ins.insEstado}" />
+					</h:column>
+					</b:dataTable>
+			</b:panel>
+			
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>
