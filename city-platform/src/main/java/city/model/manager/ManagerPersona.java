@@ -6,8 +6,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import city.model.dao.entidades.GenCatalogo;
-import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenCatalogoCab;
+import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.generic.Mensaje;
@@ -172,8 +172,8 @@ public class ManagerPersona {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCatalogo> findAllCatalogo() throws Exception {
-		return mngDao.findAll(GenCatalogo.class);
+	public List<GenCatalogoCab> findAllCatalogo() throws Exception {
+		return mngDao.findAll(GenCatalogoCab.class);
 	}// Cierre del metodo
 
 	/**
@@ -183,8 +183,8 @@ public class ManagerPersona {
 	 * @return Objeto
 	 * @throws Exception
 	 */
-	public GenCatalogo CatalogoByID(String codigo) throws Exception {
-		return (GenCatalogo) mngDao.findById(GenCatalogo.class, codigo);
+	public GenCatalogoCab CatalogoByID(String codigo) throws Exception {
+		return (GenCatalogoCab) mngDao.findById(GenCatalogoCab.class, codigo);
 	}// Cierre del metodo
 
 	// ////////////////////////////////////////////////////////////(ITEM)///////////////////////////////////////////////////////////////////////
@@ -200,8 +200,8 @@ public class ManagerPersona {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCatalogoItem> findAllItems() throws Exception {
-		return mngDao.findAll(GenCatalogoItem.class);
+	public List<GenCatalogoItemsDet> findAllItems() throws Exception {
+		return mngDao.findAll(GenCatalogoItemsDet.class);
 	}// Cierre del metodo
 
 	/**
@@ -211,8 +211,8 @@ public class ManagerPersona {
 	 * @return Objeto
 	 * @throws Exception
 	 */
-	public GenCatalogoItem ItemByID(String dni) throws Exception {
-		return (GenCatalogoItem) mngDao.findById(GenCatalogoItem.class, dni);
+	public GenCatalogoItemsDet ItemByID(String dni) throws Exception {
+		return (GenCatalogoItemsDet) mngDao.findById(GenCatalogoItemsDet.class, dni);
 	}// Cierre del metodo
 
 	/**
@@ -221,9 +221,9 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCatalogoItem> AllofItems(String cat_nombre) {
-		List<GenCatalogoItem> li = mngDao.findWhere(GenCatalogoItem.class,
-				"o.genCatalogo.catCodigo='" + cat_nombre + "'", null);
+	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.GenCatalogoCab.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -237,9 +237,9 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCatalogoItem> AllofItems(String cat_nombre, String padre) {
-		List<GenCatalogoItem> li = mngDao.findWhere(GenCatalogoItem.class,
-				"o.genCatalogo.catCodigo='" + cat_nombre + "' and o.itePadre='"
+	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.GenCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='"
 						+ padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;

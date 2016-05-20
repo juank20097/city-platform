@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import city.model.dao.entidades.GenArea;
-import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenSectore;
 import city.model.dao.entidades.GenSitio;
@@ -584,8 +584,8 @@ public class ManagerSitios {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCatalogoItem> AllofItems(String cat_nombre) {
-		List<GenCatalogoItem> li = mngDao.findWhere(GenCatalogoItem.class,
+	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
 				"o.genCatalogo.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;

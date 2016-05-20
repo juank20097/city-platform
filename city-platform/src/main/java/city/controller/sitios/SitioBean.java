@@ -11,7 +11,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import city.model.dao.entidades.GenArea;
-import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenSitio;
 import city.model.dao.entidades.GenTipoSitio;
@@ -554,7 +554,7 @@ public class SitioBean {
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		for (GenCatalogoItem i : manager.AllofItems("cat_estados")) {
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_estados")) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}

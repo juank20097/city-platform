@@ -17,7 +17,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 import city.model.dao.entidades.GenArea;
-import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenSectore;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSitios;
@@ -445,7 +445,7 @@ public class AreaBean {
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		for (GenCatalogoItem i : manager.AllofItems("cat_estados")) {
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_estados")) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}

@@ -9,7 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import city.model.dao.entidades.GenCatalogoItem;
+import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenTipoSitio;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSitios;
@@ -251,8 +251,8 @@ public class TipoSitioBean {
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		List<GenCatalogoItem> completo = manager.AllofItems("cat_estados");
-		for (GenCatalogoItem i : completo) {
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estados");
+		for (GenCatalogoItemsDet i : completo) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
