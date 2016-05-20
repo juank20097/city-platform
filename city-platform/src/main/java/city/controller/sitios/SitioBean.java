@@ -66,10 +66,25 @@ public class SitioBean {
 		l_estados = new ArrayList<SelectItem>();
 		l_tsitios = new ArrayList<SelectItem>();
 		l_insti = new ArrayList<SelectItem>();
+		l_areas = new ArrayList<SelectItem>();
 		cargarSitios();
 		cargarAreas();
 		cargarInstituciones();
 		cargarTipoSitios();
+	}
+
+	/**
+	 * @return the l_areas
+	 */
+	public List<SelectItem> getL_areas() {
+		return l_areas;
+	}
+
+	/**
+	 * @param l_areas the l_areas to set
+	 */
+	public void setL_areas(List<SelectItem> l_areas) {
+		this.l_areas = l_areas;
 	}
 
 	/**
@@ -295,21 +310,6 @@ public class SitioBean {
 	 */
 	public void setL_sitios(List<GenSitio> l_sitios) {
 		this.l_sitios = l_sitios;
-	}
-
-	/**
-	 * @return the l_areas
-	 */
-	public List<SelectItem> getL_areas() {
-		return l_areas;
-	}
-
-	/**
-	 * @param l_areas
-	 *            the l_areas to set
-	 */
-	public void setL_areas(List<SelectItem> l_areas) {
-		this.l_areas = l_areas;
 	}
 
 	/**

@@ -586,7 +586,7 @@ public class ManagerSitios {
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
 		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.genCatalogo.catCodigo='" + cat_nombre + "'", null);
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
