@@ -223,7 +223,7 @@ public class ManagerPersona {
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
 		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.GenCatalogoCab.catCodigo='" + cat_nombre + "'", null);
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -239,7 +239,7 @@ public class ManagerPersona {
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
 		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.GenCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='"
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='"
 						+ padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
