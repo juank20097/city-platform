@@ -1,5 +1,6 @@
 package city.model.manager;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,6 +10,7 @@ import city.model.dao.entidades.GenArea;
 import city.model.dao.entidades.GenCatalogoItem;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenSectore;
+import city.model.dao.entidades.GenSitio;
 import city.model.dao.entidades.GenTipoSitio;
 
 /**
@@ -399,9 +401,9 @@ public class ManagerSitios {
 			insti.setInsNombre(nombre);
 			insti.setInsCategoria(categoria);
 			insti.setInsDescripcion(descripcion);
-			insti.setInsEstado("A");
 			insti.setInsRazonSocial(razon_social);
 			insti.setInsRuc(ruc);
+			insti.setInsEstado("A");
 			mngDao.insertar(insti);
 			System.out.println("Bien_insertar_Institución");
 		} catch (Exception e) {
@@ -436,6 +438,142 @@ public class ManagerSitios {
 			System.out.println("Error_mod_Institucion");
 			e.printStackTrace();
 		}
+	}// Cierre del metodo
+
+	// //////////////////////////////////////////////////////////(SITIOS)/////////////////////////////////////////////////////////////////////
+	/**
+	 * Creación de metodos para el manejo de la tabla SITIOS
+	 * 
+	 */
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenSitio> findAllSitios() throws Exception {
+		return mngDao.findAll(GenSitio.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenSitio SitioByID(String dni) throws Exception {
+		return (GenSitio) mngDao.findById(GenSitio.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param nombre
+	 * @param direccion
+	 * @param descripcion
+	 * @throws Exception
+	 */
+	public void insertarSitio(String sit_id,Integer tsitio,Integer area,String institucion, String nombre, String numero,
+			String descripcion, String calleP, String calleS,
+			Integer capacidad, BigDecimal costo, Integer piso, Boolean acceso)
+			throws Exception {
+		try {
+			GenSitio sitio = new GenSitio();
+			sitio.setGenArea(this.AreaByID(area));
+			sitio.setGenInstitucione(this.InstitucionByID(institucion));
+			sitio.setGenTipoSitio(this.TipoSitioByID(tsitio));
+			sitio.setSitId(sit_id);
+			sitio.setSitCallePrincipal(calleP);
+			sitio.setSitCalleSecundaria(calleS);
+			sitio.setSitCapacidad(capacidad);
+			sitio.setSitCostoArriendo(costo);
+			sitio.setSitDescripcion(descripcion);
+			sitio.setSitEstado("A");
+			sitio.setSitIntegracionAccesos(acceso);
+			sitio.setSitNombre(nombre);
+			sitio.setSitNumero(numero);
+			sitio.setSitPiso(piso);
+			mngDao.insertar(sitio);
+			System.out.println("Bien_insertar_sitio");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_sitio");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para editar un Atributo en la base de datos
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param direccion
+	 * @param descripcion
+	 * @param estado
+	 * @throws Exception
+	 */
+	public void editarSitio(String sit_id,Integer tsitio,Integer area,String institucion, String nombre, String numero,
+			String descripcion, String calleP, String calleS,
+			Integer capacidad, BigDecimal costo, Integer piso, Boolean acceso,String estado) throws Exception {
+		try {
+			GenSitio sitio = this.SitioByID(sit_id);
+			sitio.setGenArea(this.AreaByID(area));
+			sitio.setGenInstitucione(this.InstitucionByID(institucion));
+			sitio.setGenTipoSitio(this.TipoSitioByID(tsitio));
+			sitio.setSitId(sit_id);
+			sitio.setSitCallePrincipal(calleP);
+			sitio.setSitCalleSecundaria(calleS);
+			sitio.setSitCapacidad(capacidad);
+			sitio.setSitCostoArriendo(costo);
+			sitio.setSitDescripcion(descripcion);
+			sitio.setSitEstado(estado);
+			sitio.setSitIntegracionAccesos(acceso);
+			sitio.setSitNombre(nombre);
+			sitio.setSitNumero(numero);
+			sitio.setSitPiso(piso);
+			mngDao.actualizar(sitio);
+			System.out.println("Bien_mod_sitio");
+		} catch (Exception e) {
+			System.out.println("Error_mod_sitio");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para listar
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenArea> AllAreasActivas() {
+		List<GenArea> l = mngDao.findWhere(GenArea.class,
+				"o.areEstado='A'", null);
+		return l;
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenTipoSitio> AllTipoSitioActivos() {
+		List<GenTipoSitio> l = mngDao.findWhere(GenTipoSitio.class,
+				"o.tsiEstado='A'", null);
+		return l;
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenInstitucione> AllInstitucionesActivas() {
+		List<GenInstitucione> l = mngDao.findWhere(GenInstitucione.class,
+				"o.insEstado='A'", null);
+		return l;
 	}// Cierre del metodo
 
 	// //////////////////////////////////////////////////////////(Items)/////////////////////////////////////////////////////////////////////
