@@ -51,8 +51,8 @@
 						<h:outputLabel value="Ubicación:*" />
 					</b:column>
 					<b:column span="2">
-						<b:commandButton value="Ver Mapa" immediate="true" update="frm"
-							look="info" action="#{areaBean.abrirDialog}"></b:commandButton>
+						<b:commandButton value="Ver Mapa" immediate="true" look="info"
+							action="#{areaBean.abrirDialog}"></b:commandButton>
 					</b:column>
 					<b:column span="1">
 						<h:outputLabel value="Latitud:*" />
@@ -135,18 +135,12 @@
 					center="0.4078066,-78.18406390000001" zoom="15" type="hybrid"
 					model="#{areaBean.geoModel}" style="width:900px;height:400px">
 					<p:ajax event="markerDrag" listener="#{areaBean.TomarMarca}"
-						update="frm:growl" />
+						update="frm:growl :frm:lat :frm:lon" />
 				</p:gmap>
 				<br />
-				<center>
-					<h:button styleClass="btn btn-info" value="Guardar"
-						onclick="PF('mapDialog').hide()" update=":frm:lat :frm:lon">
-					</h:button>
-					<br /> <br />
-					<b:label
-						text="Para seleccionar un punto mueve el marcador hasta la posición deseada"
-						severity="success"></b:label>
-				</center>
+				<b:label
+					text="Para seleccionar un punto mueve el marcador hasta la posición deseada"
+					severity="success"></b:label>
 			</h:form>
 		</p:dialog>
 
