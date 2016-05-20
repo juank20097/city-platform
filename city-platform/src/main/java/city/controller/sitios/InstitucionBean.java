@@ -38,6 +38,7 @@ public class InstitucionBean {
 	// manejo de vistas
 	List<SelectItem> l_estados;
 	List<GenInstitucione> l_insti;
+	List<SelectItem> l_categorias;
 
 	// valor de edición e inserción
 	private boolean edicion;
@@ -50,8 +51,25 @@ public class InstitucionBean {
 		edicion = false;
 		l_estados = new ArrayList<SelectItem>();
 		l_insti = new ArrayList<GenInstitucione>();
+		l_categorias = new ArrayList<SelectItem>();
 		cargarEstados();
 		cargarInstitucion();
+		cargarCategorias();
+	}
+
+	/**
+	 * @return the l_categorias
+	 */
+	public List<SelectItem> getL_categorias() {
+		return l_categorias;
+	}
+
+	/**
+	 * @param l_categorias
+	 *            the l_categorias to set
+	 */
+	public void setL_categorias(List<SelectItem> l_categorias) {
+		this.l_categorias = l_categorias;
 	}
 
 	/**
@@ -222,24 +240,45 @@ public class InstitucionBean {
 	public String crearInstitucion() {
 		String r = "";
 		try {
-			if (edicion) {
-				manager.editarInstitucion(getInsCodigo(), getInsNombre(),
-						getInsDescripcion(), getInsRuc(), getInsRazonSocial(),
-						getInsCategoria(), getInsEstado());
-				Mensaje.crearMensajeINFO("Actualizado - Institución Modificada");
-			} else {
-				manager.insertarInstitucion(getInsCodigo(), getInsNombre(),
-						getInsDescripcion(), getInsRuc(), getInsRazonSocial(),
-						getInsCategoria());
-				Mensaje.crearMensajeINFO("Registrado - Institución Creada");
+			if (!validarCampos()) {
+				if (edicion) {
+					manager.editarInstitucion(getInsCodigo(), getInsNombre(),
+							getInsDescripcion(), getInsRuc(),
+							getInsRazonSocial(), getInsCategoria(),
+							getInsEstado());
+					Mensaje.crearMensajeINFO("Actualizado - Institución Modificada");
+				} else {
+					manager.insertarInstitucion(getInsCodigo(), getInsNombre(),
+							getInsDescripcion(), getInsRuc(),
+							getInsRazonSocial(), getInsCategoria());
+					Mensaje.crearMensajeINFO("Registrado - Institución Creada");
+				}
+				r = "institucion?faces-redirect=true";
+				this.cleanDatos();
+				this.cargarInstitucion();
 			}
-			r = "institucion?faces-redirect=true";
-			this.cleanDatos();
-			this.cargarInstitucion();
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
 		return r;
+	}
+
+	/**
+	 * Metodo para valida campos de SelectItems
+	 * 
+	 * @return
+	 */
+	public boolean validarCampos() {
+		if (getInsCategoria() == null || getInsCategoria().equals("-1")) {
+			Mensaje.crearMensajeERROR("Campo categoria requerido");
+			return true;
+		} else if ((edicion == true && getInsEstado() == null)
+				|| (edicion == true && getInsEstado().equals("-1"))) {
+			Mensaje.crearMensajeERROR("Campo estado requerido");
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -300,6 +339,17 @@ public class InstitucionBean {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Lista de Categorias
+	 */
+	public void cargarCategorias() {
+		getL_categorias().clear();
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_categorias")) {
+			getL_categorias().add(
+					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 

@@ -66,10 +66,12 @@
 						<h:outputLabel value="Categoria:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText required="true"
-							requiredMessage="Campo Categoria requerido"
+						<h:selectOneMenu styleClass="form-control"
 							value="#{institucionBean.insCategoria}">
-						</b:inputText>
+							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+							<f:selectItems value="#{institucionBean.l_categorias}">
+							</f:selectItems>
+						</h:selectOneMenu>
 					</b:column>
 				</b:row>
 				<b:row>
