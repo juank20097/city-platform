@@ -38,7 +38,7 @@ public class Funciones {
 	
 	public static Integer mayoriaDeEdad = 18;
 		
-	public static String hostWS = "http://sgupy.yachay.gob.ec/";
+	public static String hostWS = "http://10.1.0.158:8080/sgupy/";
 	
 	public static Boolean validacionCedula(String cedula){
         //verifica que los dos primeros dígitos correspondan a un valor entre 1 y NUMERO_DE_PROVINCIAS
