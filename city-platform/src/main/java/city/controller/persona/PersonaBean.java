@@ -74,7 +74,8 @@ public class PersonaBean {
 	List<SelectItem> l_estado_civil;
 	List<SelectItem> l_pais;
 	List<SelectItem> l_provincia;
-	List<SelectItem> l_ciudad;
+	List<SelectItem> l_ciudad_n;
+	List<SelectItem> l_ciudad_r;
 
 	// valor de edición e inserción
 	private boolean edicion;
@@ -91,7 +92,8 @@ public class PersonaBean {
 		edicion = false;
 		select_n = true;
 		select_r = true;
-		l_ciudad = new ArrayList<SelectItem>();
+		l_ciudad_n = new ArrayList<SelectItem>();
+		l_ciudad_r = new ArrayList<SelectItem>();
 		l_estado_civil = new ArrayList<SelectItem>();
 		l_estados = new ArrayList<SelectItem>();
 		l_genero = new ArrayList<SelectItem>();
@@ -104,6 +106,34 @@ public class PersonaBean {
 		cargarPaises();
 		cargarTiposDni();
 		cargarPersonas();
+	}
+
+	/**
+	 * @return the l_ciudad_n
+	 */
+	public List<SelectItem> getL_ciudad_n() {
+		return l_ciudad_n;
+	}
+
+	/**
+	 * @param l_ciudad_n the l_ciudad_n to set
+	 */
+	public void setL_ciudad_n(List<SelectItem> l_ciudad_n) {
+		this.l_ciudad_n = l_ciudad_n;
+	}
+
+	/**
+	 * @return the l_ciudad_r
+	 */
+	public List<SelectItem> getL_ciudad_r() {
+		return l_ciudad_r;
+	}
+
+	/**
+	 * @param l_ciudad_r the l_ciudad_r to set
+	 */
+	public void setL_ciudad_r(List<SelectItem> l_ciudad_r) {
+		this.l_ciudad_r = l_ciudad_r;
 	}
 
 	/**
@@ -413,19 +443,7 @@ public class PersonaBean {
 		this.l_provincia = l_provincia;
 	}
 
-	/**
-	 * @return the l_ciudad
-	 */
-	public List<SelectItem> getL_ciudad() {
-		return l_ciudad;
-	}
-
-	/**
-	 * @param l_ciudad the l_ciudad to set
-	 */
-	public void setL_ciudad(List<SelectItem> l_ciudad) {
-		this.l_ciudad = l_ciudad;
-	}
+	
 
 	/**
 	 * @param pdeCiudadNacimiento
@@ -795,6 +813,8 @@ public class PersonaBean {
 	 */
 	public String nuevaPersona() {
 		edicion = false;
+		setSelect_n(true);
+		setSelect_r(true);
 		return "npersona.xhtml";
 	}
 
@@ -844,6 +864,8 @@ public class PersonaBean {
 	 */
 	public String cargarPersona(GenPersona persona) {
 		try {
+			setSelect_n(false);
+			setSelect_r(false);
 			cargarEstados();
 			setPerDni(persona.getPerDni());
 			setPerTipoDni(persona.getPerTipoDni());
@@ -877,21 +899,6 @@ public class PersonaBean {
 		this.cleanDatos();
 		this.cargarPersonas();
 		return "persona?faces-redirect=true";
-	}
-
-	/**
-	 * metodo para cambio de estado de Persona
-	 * 
-	 * @param persona
-	 */
-	public void changePersona(GenPersona persona) {
-		try {
-			manager.cambioEstadoPersona(persona);
-			this.cargarPersonas();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -945,8 +952,7 @@ public class PersonaBean {
 	 */
 	public void cargarPaises() {
 		getL_pais().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_paises");
-		for (GenCatalogoItemsDet i : completo) {
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_paises")) {
 			getL_pais().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
@@ -956,21 +962,30 @@ public class PersonaBean {
 	 */
 	public void cargarProvincias() {
 		getL_provincia().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_provincias");
-		for (GenCatalogoItemsDet i : completo) {
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_provincias")) {
 			getL_provincia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
 	/**
-	 * Lista de Ciudades
+	 * Lista de Ciudades Nacimiento
 	 */
-	public void cargarCiudades(String provincia) {
-		getL_ciudad().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_ciudades",provincia);
-		if (completo!=null){
-		for (GenCatalogoItemsDet i : completo) {
-			getL_ciudad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+	public void cargarCiudadesNac(String provincia) {
+		getL_ciudad_n().clear();
+		if (manager.AllofItems("cat_ciudades",provincia)!=null){
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades",provincia)) {
+			getL_ciudad_n().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}}
+	}
+	
+	/**
+	 * Lista de Ciudades Residencia
+	 */
+	public void cargarCiudadesRes(String provincia) {
+		getL_ciudad_r().clear();
+		if (manager.AllofItems("cat_ciudades",provincia)!=null){
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades",provincia)) {
+			getL_ciudad_r().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}}
 	}
 
@@ -1067,6 +1082,9 @@ public class PersonaBean {
 			setPdePaisResidencia(persona.getPdePaisResidencia());
 			setPdeProvinciaNacimiento(persona.getPdeProvinciaNacimiento());
 			setPdeProvinciaResidencia(persona.getPdeProvinciaResidencia());
+			//actualización de lista de sitios
+			cargarCiudadesNac(persona.getPdeProvinciaNacimiento());
+			cargarCiudadesRes(persona.getPdeProvinciaResidencia());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1082,6 +1100,8 @@ public class PersonaBean {
 			setSelect_n(false);
 			cargarProvincias();
 		}else{
+			setPdeProvinciaNacimiento(null);
+			setPdeCiudadNacimiento(null);
 			setSelect_n(true);
 		}
 	}
@@ -1094,6 +1114,8 @@ public class PersonaBean {
 			setSelect_r(false);
 			cargarProvincias();
 		}else{
+			setPdeProvinciaResidencia(null);
+			setPdeCiudadResidencia(null);
 			setSelect_r(true);
 		}
 	}
@@ -1102,14 +1124,14 @@ public class PersonaBean {
 	 * Metod para mostrar la ciudad dependiendo de la provincia
 	 */
 	public void mostrarCiudadNac(String provincia){
-		cargarCiudades(provincia);
+		cargarCiudadesNac(provincia);
 	}
 	
 	/**
 	 * Metod para mostrar la ciudad dependiendo de la provincia
 	 */
 	public void mostrarCiudadRes(String provincia){
-		cargarCiudades(provincia);
+		cargarCiudadesRes(provincia);
 	}
 	
 
