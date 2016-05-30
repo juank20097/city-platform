@@ -16,22 +16,23 @@
 </h:head>
 <h:body>
 
-	<div class="wrapper">
+	<div style=" margin-top: 0;  top: 0;  background: linear-gradient(to bottom right, #63F1EF 0%, #011F13 100%);" class="wrapper">
 		<div class="container">
-			<h1>Yachay</h1>
+			<h1 style="color:white;">Yachay City Platform</h1>
 			
 			<h:form id="frmlog" class="form">
-				<p:messages closable="true" >
-						 <p:effect type="pulsate" event="load" delay="500" />
-						</p:messages>
-				<b:inputText type="text" placeholder="USUARIO" value="#{sesionBean.usuario}">
+				<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+				<b:inputText style="color:black; width: 350px;" placeholder="USUARIO" value="#{sesionBean.usuario}">
 				</b:inputText>
-				<b:inputSecret type="password" placeholder="CONTRASE&Ntilde;A"
+				<b:inputSecret style="color:black; width: 350px;" placeholder="CONTRASE&Ntilde;A"
 								value="#{sesionBean.pass}">
 				</b:inputSecret>
-				<b:commandButton id="login-button" value="Ingresar" iconAwesome="check-square-o"
+				<b:commandButton size="lg" id="login-button" value="Ingresar" iconAwesome="check-square-o"
 							action="#{sesionBean.logIn()}" styleClass="btn-block btnSend"
-							look="primary" update="frmlog" />
+							look="info" update="frmlog" />
 			</h:form>
 		</div>
 
