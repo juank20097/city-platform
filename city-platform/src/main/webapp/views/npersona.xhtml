@@ -351,6 +351,86 @@
 							</b:column>
 						</b:row>
 					</b:tab>
+					<b:tab title="Roles">
+						<br />
+						<center>
+						<b:row>
+							<b:column offset="3" span="2">
+								<h:outputLabel value="Institución:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.institucion}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_instituciones}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br/>
+						<b:row>
+							<b:column offset="3" span="2">
+								<h:outputLabel value="Rol:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.peiRol}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_rol}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br/>
+						<b:commandButton value="Insertar"
+						 onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"	action="#{personaBean.crearPersonaIns}" update="frm:dt_perI" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+						</center>
+						<br/>
+						<b:dataTable id="dt_perI" value="#{personaBean.l_personaIns}" var="pei"
+					styleClass="table table-striped table-bordered dt-responsive nowrap" 
+					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
+					<h:column width="100">
+						<f:facet name="header">
+							<h:outputText value="OPCIONES" />
+						</f:facet>
+						&nbsp;&nbsp;&nbsp;
+						<b:commandButton iconAwesome="fa fa-trash"  style="padding: 0; border: none; background: none;color: #000"
+							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{personaBean.eliminarPersonaIns(pei)}">
+						</b:commandButton>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="DNI" />
+						</f:facet>
+						<h:outputText value="#{pei.id.perDni}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="INSTITUCIÓN" />
+						</f:facet>
+						<h:outputText value="#{pei.genInstitucione.insNombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ROL" />
+						</f:facet>
+						<h:outputText value="#{pei.id.peiRol}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="FECHA REGISTRO" />
+						</f:facet>
+						<h:outputText value="#{pei.peiFechaRegistro}"
+							pattern="yyyy-MM-dd" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ESTADO" />
+						</f:facet>
+						<h:outputText value="#{pei.peiEstado}" />
+					</h:column>
+					</b:dataTable>
+					</b:tab>
 				</b:tabView>
 			</b:panel>
 			<b:commandButton value="Guardar"
