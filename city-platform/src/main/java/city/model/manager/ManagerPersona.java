@@ -8,9 +8,11 @@ import javax.ejb.Stateless;
 
 import city.model.dao.entidades.GenCatalogoCab;
 import city.model.dao.entidades.GenCatalogoItemsDet;
+import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
-import city.model.generic.Mensaje;
+import city.model.dao.entidades.GenPersonaInstitucion;
+import city.model.dao.entidades.GenPersonaInstitucionPK;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -138,26 +140,118 @@ public class ManagerPersona {
 		}
 	}// Cierre del metodo
 
+	// //////////////////////////////////////////////////////////(PERSONAS-INSTITUCION)/////////////////////////////////////////////////////////////////////
 	/**
-	 * Metodo para cambiar un estado en la base de datos
+	 * Creación de metodos para el manejo de la tabla PERSONAS - INSTITUCION
+	 * 
+	 */
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenPersonaInstitucion> findAllPersonasInstitucion()
+			throws Exception {
+		return mngDao.findAll(GenPersonaInstitucion.class);
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para obtener PersonasIns por Dni
 	 * 
 	 * @param dni
+	 * @return
 	 */
-	public void cambioEstadoPersona(GenPersona persona) throws Exception {
+	@SuppressWarnings("unchecked")
+	public List<GenPersonaInstitucion> PersonaInsxDni(String dni){
+		return mngDao.findWhere(GenPersonaInstitucion.class, "o.id.perDni='"+ dni + "'", null);
+//		return mngDao.findAll(GenPersonaInstitucion.class);
+	}
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenPersonaInstitucion PersonaInsByID(String dni) throws Exception {
+		return (GenPersonaInstitucion) mngDao.findById(
+				GenPersonaInstitucion.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenInstitucione InstitucionByID(String dni) throws Exception {
+		return (GenInstitucione) mngDao.findById(GenInstitucione.class, dni);
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenInstitucione> findAllInstituciones() throws Exception {
+		return mngDao.findAll(GenInstitucione.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param dni
+	 * @param cod_ins
+	 * @param rol
+	 * @param fecha
+	 * @param estado
+	 * @throws Exception
+	 */
+	public void insertarPersonaIns(String dni, String cod_ins, String rol) throws Exception {
 		try {
-			if (persona.getPerEstado().equals("A")) {
-				persona.setPerEstado("I");
-			}else{ 
-				if (persona.getPerEstado().equals("I")) {
-					persona.setPerEstado("A");
-				}
-			}
-			mngDao.actualizar(persona);
-			Mensaje.crearMensajeINFO("Persona cambiada de estado correctamente.");
+			GenPersonaInstitucion personaIns = new GenPersonaInstitucion();
+			//creacion del id
+			GenPersonaInstitucionPK perInspk = new GenPersonaInstitucionPK();
+			perInspk.setPerDni(dni);
+			perInspk.setInsCodigo(cod_ins);
+			perInspk.setPeiRol(rol);
+			//insercion del id
+			personaIns.setId(perInspk);
+			personaIns.setGenInstitucione(this.InstitucionByID(cod_ins));
+			personaIns.setGenPersona(this.PersonaByID(dni));
+			personaIns.setPeiEstado("A");
+			personaIns.setPeiFechaRegistro(new Date());
+			personaIns.setPeiRol(rol);
+			mngDao.insertar(personaIns);
+			System.out.println("Bien_insertar_personaInstitución");
 		} catch (Exception e) {
+			System.out.println("Error_insertar_personaInstitución");
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
+	
+	/**
+	 * Metodo para eliminar una PersonaInstitución
+	 * 
+	 * @param dni
+	 */
+	public void eliminarPersonaIns(String dni,String codigo_ins,String rol){
+		try {
+			GenPersonaInstitucionPK p = new GenPersonaInstitucionPK();
+			p.setInsCodigo(codigo_ins);
+			p.setPeiRol(rol);
+			p.setPerDni(dni);
+			mngDao.eliminar(GenPersonaInstitucion.class, p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	// ////////////////////////////////////////////////////////////(CATALOGO)///////////////////////////////////////////////////////////////////////
 
@@ -212,7 +306,8 @@ public class ManagerPersona {
 	 * @throws Exception
 	 */
 	public GenCatalogoItemsDet ItemByID(String dni) throws Exception {
-		return (GenCatalogoItemsDet) mngDao.findById(GenCatalogoItemsDet.class, dni);
+		return (GenCatalogoItemsDet) mngDao.findById(GenCatalogoItemsDet.class,
+				dni);
 	}// Cierre del metodo
 
 	/**
@@ -222,8 +317,9 @@ public class ManagerPersona {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
-		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(
+				GenCatalogoItemsDet.class, "o.genCatalogoCab.catCodigo='"
+						+ cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -238,9 +334,10 @@ public class ManagerPersona {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
-		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.genCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='"
-						+ padre + "'", null);
+		List<GenCatalogoItemsDet> li = mngDao
+				.findWhere(GenCatalogoItemsDet.class,
+						"o.genCatalogoCab.catCodigo='" + cat_nombre
+								+ "' and o.itePadre='" + padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {

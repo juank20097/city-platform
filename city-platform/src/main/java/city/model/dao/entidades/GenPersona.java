@@ -1,58 +1,68 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the gen_persona database table.
  * 
  */
 @Entity
-@Table(name="gen_persona")
-@NamedQuery(name="GenPersona.findAll", query="SELECT g FROM GenPersona g")
+@Table(name = "gen_persona")
+@NamedQuery(name = "GenPersona.findAll", query = "SELECT g FROM GenPersona g")
 public class GenPersona implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="per_dni")
+	@Column(name = "per_dni")
 	private String perDni;
 
-	@Column(name="per_apellidos")
+	@Column(name = "per_apellidos")
 	private String perApellidos;
 
-	@Column(name="per_celular")
+	@Column(name = "per_celular")
 	private String perCelular;
 
-	@Column(name="per_correo")
+	@Column(name = "per_correo")
 	private String perCorreo;
 
-	@Column(name="per_estado",columnDefinition="bpchar")
+	@Column(name = "per_estado", columnDefinition = "bpchar")
 	private String perEstado;
 
-	@Column(name="per_estado_civil")
+	@Column(name = "per_estado_civil")
 	private String perEstadoCivil;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="per_fecha_nacimiento")
+	@Column(name = "per_fecha_nacimiento")
 	private Date perFechaNacimiento;
 
-	@Column(name="per_genero")
+	@Column(name = "per_genero")
 	private String perGenero;
 
-	@Column(name="per_nombres")
+	@Column(name = "per_nombres")
 	private String perNombres;
 
-	@Column(name="per_telefono")
+	@Column(name = "per_telefono")
 	private String perTelefono;
 
-	@Column(name="per_tipo_dni")
+	@Column(name = "per_tipo_dni")
 	private String perTipoDni;
 
-	//bi-directional one-to-one association to GenPersonaDetalle
-	@OneToOne(mappedBy="genPersona")
+	// bi-directional one-to-one association to GenPersonaDetalle
+	@OneToOne(mappedBy = "genPersona")
 	private GenPersonaDetalle genPersonaDetalle;
+
+	// bi-directional one-to-one association to GenSalud
+	@OneToOne(mappedBy = "genPersona")
+	private GenSalud genSalud;
+
+	// bi-directional one-to-one association to GenPersonaInstitucion
+	@OneToMany(mappedBy = "genPersona")
+	private List<GenPersonaInstitucion> genPersonaInstitucions;
 
 	public GenPersona() {
 	}
@@ -152,5 +162,30 @@ public class GenPersona implements Serializable {
 	public void setGenPersonaDetalle(GenPersonaDetalle genPersonaDetalle) {
 		this.genPersonaDetalle = genPersonaDetalle;
 	}
+
+	public GenSalud getGenSalud() {
+		return this.genSalud;
+	}
+
+	public void setGenSalud(GenSalud genSalud) {
+		this.genSalud = genSalud;
+	}
+
+	/**
+	 * @return the genPersonaInstitucions
+	 */
+	public List<GenPersonaInstitucion> getGenPersonaInstitucions() {
+		return genPersonaInstitucions;
+	}
+
+	/**
+	 * @param genPersonaInstitucions the genPersonaInstitucions to set
+	 */
+	public void setGenPersonaInstitucions(
+			List<GenPersonaInstitucion> genPersonaInstitucions) {
+		this.genPersonaInstitucions = genPersonaInstitucions;
+	}
+	
+	
 
 }
