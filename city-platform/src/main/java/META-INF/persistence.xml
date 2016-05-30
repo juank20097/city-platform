@@ -5,17 +5,20 @@
 	<persistence-unit name="city-platformPU">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/city-platformDatasource</jta-data-source>
+		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenCatalogoCab</class>
+		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
+		<class>city.model.dao.entidades.GenInstitucione</class>
 		<class>city.model.dao.entidades.GenParametro</class>
 		<class>city.model.dao.entidades.GenPersona</class>
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
-		<class>city.model.dao.entidades.GenArea</class>
-		<class>city.model.dao.entidades.GenInstitucione</class>
+		<class>city.model.dao.entidades.GenPersonaInstitucion</class>
+		<class>city.model.dao.entidades.GenPersonaInstitucionPK</class>
+		<class>city.model.dao.entidades.GenSalud</class>
 		<class>city.model.dao.entidades.GenSectore</class>
 		<class>city.model.dao.entidades.GenSitFoto</class>
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
-		<class>city.model.dao.entidades.GenCatalogoCab</class>
-		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

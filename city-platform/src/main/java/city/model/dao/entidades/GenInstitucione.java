@@ -1,45 +1,50 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
 
+import javax.persistence.*;
+
+import java.util.List;
 
 /**
  * The persistent class for the gen_instituciones database table.
  * 
  */
 @Entity
-@Table(name="gen_instituciones")
-@NamedQuery(name="GenInstitucione.findAll", query="SELECT g FROM GenInstitucione g")
+@Table(name = "gen_instituciones")
+@NamedQuery(name = "GenInstitucione.findAll", query = "SELECT g FROM GenInstitucione g")
 public class GenInstitucione implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ins_codigo")
+	@Column(name = "ins_codigo")
 	private String insCodigo;
 
-	@Column(name="ins_categoria")
+	@Column(name = "ins_categoria")
 	private String insCategoria;
 
-	@Column(name="ins_descripcion")
+	@Column(name = "ins_descripcion")
 	private String insDescripcion;
 
-	@Column(name="ins_estado",columnDefinition="bpchar")
+	@Column(name = "ins_estado", columnDefinition = "bpchar")
 	private String insEstado;
 
-	@Column(name="ins_nombre")
+	@Column(name = "ins_nombre")
 	private String insNombre;
 
-	@Column(name="ins_razon_social")
+	@Column(name = "ins_razon_social")
 	private String insRazonSocial;
 
-	@Column(name="ins_ruc")
+	@Column(name = "ins_ruc")
 	private String insRuc;
 
-	//bi-directional many-to-one association to GenSitio
-	@OneToMany(mappedBy="genInstitucione")
+	// bi-directional many-to-one association to GenSitio
+	@OneToMany(mappedBy = "genInstitucione")
 	private List<GenSitio> genSitios;
+
+	// bi-directional many-to-one association to GenPersonaInstitucion
+	@OneToMany(mappedBy = "genInstitucione")
+	private List<GenPersonaInstitucion> genPersonaInstitucions;
 
 	public GenInstitucione() {
 	}
@@ -120,6 +125,28 @@ public class GenInstitucione implements Serializable {
 		genSitio.setGenInstitucione(null);
 
 		return genSitio;
+	}
+	
+	public List<GenPersonaInstitucion> getGenPersonaInstitucions() {
+		return this.genPersonaInstitucions;
+	}
+
+	public void setGenPersonaInstitucions(List<GenPersonaInstitucion> genPersonaInstitucions) {
+		this.genPersonaInstitucions = genPersonaInstitucions;
+	}
+
+	public GenPersonaInstitucion addGenPersonaInstitucion(GenPersonaInstitucion genPersonaInstitucion) {
+		getGenPersonaInstitucions().add(genPersonaInstitucion);
+		genPersonaInstitucion.setGenInstitucione(this);
+
+		return genPersonaInstitucion;
+	}
+
+	public GenPersonaInstitucion removeGenPersonaInstitucion(GenPersonaInstitucion genPersonaInstitucion) {
+		getGenPersonaInstitucions().remove(genPersonaInstitucion);
+		genPersonaInstitucion.setGenInstitucione(null);
+
+		return genPersonaInstitucion;
 	}
 
 }
