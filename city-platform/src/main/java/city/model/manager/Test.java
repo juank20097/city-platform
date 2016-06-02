@@ -1,5 +1,7 @@
 package city.model.manager;
 
+
+
 public class Test {
 
 	public static void main(String[] args) {
@@ -11,7 +13,7 @@ public class Test {
 		
 //		i.nombreImg("http://localhost:8080/y-mobile/resources/img/asda_Yachay Tech.jpg");
 		
-	
+//	System.out.println(Funciones.validarEmail("juank20097@y.com"));
 		
 //		DateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 //		

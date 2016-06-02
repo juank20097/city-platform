@@ -1,5 +1,6 @@
 package city.controller.persona;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,8 @@ import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenPersonaInstitucion;
+import city.model.dao.entidades.GenSalud;
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerPersona;
 
@@ -68,6 +71,25 @@ public class PersonaBean {
 	private String pdeProvinciaNacimiento;
 	private String pdeProvinciaResidencia;
 
+	// Atributos de la clase salud
+	private String sldAlergias;
+	private BigDecimal sldAltura;
+	private String sldAsegurado;
+	private String sldCarnetConadies;
+	private String sldConsumeAlcohol;
+	private String sldConsumeTabaco;
+	private String sldDiscapacidadGrado;
+	private String sldDiscapacidadTipo;
+	private String sldFrecienciaConsumoMedicame;
+	private String sldGrupoSanguineo;
+	private String sldMedicamentos;
+	private String sldNivelAzucar;
+	private String sldPeriodicidadEjercicio;
+	private BigDecimal sldPeso;
+	private String sldPresion;
+	private Boolean sldRealizaEjercicio;
+	private Boolean sldVegetariano;
+
 	// atributos de la clase persona - institucion
 	private String peiEstado;
 	private Date peiFechaRegistro;
@@ -93,6 +115,9 @@ public class PersonaBean {
 	// valor de edición e inserción
 	private boolean edicion;
 
+	// mensaje de validación de campos
+	private String sms_validacion;
+
 	// valor de provincias y ciudades
 	private boolean select_n;
 	private boolean select_r;
@@ -114,11 +139,282 @@ public class PersonaBean {
 		l_provincia = new ArrayList<SelectItem>();
 		l_tipo_dni = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
-		
 		l_instituciones = new ArrayList<SelectItem>();
 		l_personaIns = new ArrayList<GenPersonaInstitucion>();
 		l_rol = new ArrayList<SelectItem>();
+		sms_validacion = "";
 		cargarPersonas();
+	}
+
+	/**
+	 * @return the sms_validacion
+	 */
+	public String getSms_validacion() {
+		return sms_validacion;
+	}
+
+	/**
+	 * @param sms_validacion
+	 *            the sms_validacion to set
+	 */
+	public void setSms_validacion(String sms_validacion) {
+		this.sms_validacion = sms_validacion;
+	}
+
+	/**
+	 * @return the sldAlergias
+	 */
+	public String getSldAlergias() {
+		return sldAlergias;
+	}
+
+	/**
+	 * @param sldAlergias
+	 *            the sldAlergias to set
+	 */
+	public void setSldAlergias(String sldAlergias) {
+		this.sldAlergias = sldAlergias;
+	}
+
+	/**
+	 * @return the sldAltura
+	 */
+	public BigDecimal getSldAltura() {
+		return sldAltura;
+	}
+
+	/**
+	 * @param sldAltura
+	 *            the sldAltura to set
+	 */
+	public void setSldAltura(BigDecimal sldAltura) {
+		this.sldAltura = sldAltura;
+	}
+
+	/**
+	 * @return the sldAsegurado
+	 */
+	public String getSldAsegurado() {
+		return sldAsegurado;
+	}
+
+	/**
+	 * @param sldAsegurado
+	 *            the sldAsegurado to set
+	 */
+	public void setSldAsegurado(String sldAsegurado) {
+		this.sldAsegurado = sldAsegurado;
+	}
+
+	/**
+	 * @return the sldCarnetConadies
+	 */
+	public String getSldCarnetConadies() {
+		return sldCarnetConadies;
+	}
+
+	/**
+	 * @param sldCarnetConadies
+	 *            the sldCarnetConadies to set
+	 */
+	public void setSldCarnetConadies(String sldCarnetConadies) {
+		this.sldCarnetConadies = sldCarnetConadies;
+	}
+
+	/**
+	 * @return the sldConsumeAlcohol
+	 */
+	public String getSldConsumeAlcohol() {
+		return sldConsumeAlcohol;
+	}
+
+	/**
+	 * @param sldConsumeAlcohol
+	 *            the sldConsumeAlcohol to set
+	 */
+	public void setSldConsumeAlcohol(String sldConsumeAlcohol) {
+		this.sldConsumeAlcohol = sldConsumeAlcohol;
+	}
+
+	/**
+	 * @return the sldConsumeTabaco
+	 */
+	public String getSldConsumeTabaco() {
+		return sldConsumeTabaco;
+	}
+
+	/**
+	 * @param sldConsumeTabaco
+	 *            the sldConsumeTabaco to set
+	 */
+	public void setSldConsumeTabaco(String sldConsumeTabaco) {
+		this.sldConsumeTabaco = sldConsumeTabaco;
+	}
+
+	/**
+	 * @return the sldDiscapacidadGrado
+	 */
+	public String getSldDiscapacidadGrado() {
+		return sldDiscapacidadGrado;
+	}
+
+	/**
+	 * @param sldDiscapacidadGrado
+	 *            the sldDiscapacidadGrado to set
+	 */
+	public void setSldDiscapacidadGrado(String sldDiscapacidadGrado) {
+		this.sldDiscapacidadGrado = sldDiscapacidadGrado;
+	}
+
+	/**
+	 * @return the sldDiscapacidadTipo
+	 */
+	public String getSldDiscapacidadTipo() {
+		return sldDiscapacidadTipo;
+	}
+
+	/**
+	 * @param sldDiscapacidadTipo
+	 *            the sldDiscapacidadTipo to set
+	 */
+	public void setSldDiscapacidadTipo(String sldDiscapacidadTipo) {
+		this.sldDiscapacidadTipo = sldDiscapacidadTipo;
+	}
+
+	/**
+	 * @return the sldFrecienciaConsumoMedicame
+	 */
+	public String getSldFrecienciaConsumoMedicame() {
+		return sldFrecienciaConsumoMedicame;
+	}
+
+	/**
+	 * @param sldFrecienciaConsumoMedicame
+	 *            the sldFrecienciaConsumoMedicame to set
+	 */
+	public void setSldFrecienciaConsumoMedicame(
+			String sldFrecienciaConsumoMedicame) {
+		this.sldFrecienciaConsumoMedicame = sldFrecienciaConsumoMedicame;
+	}
+
+	/**
+	 * @return the sldGrupoSanguineo
+	 */
+	public String getSldGrupoSanguineo() {
+		return sldGrupoSanguineo;
+	}
+
+	/**
+	 * @param sldGrupoSanguineo
+	 *            the sldGrupoSanguineo to set
+	 */
+	public void setSldGrupoSanguineo(String sldGrupoSanguineo) {
+		this.sldGrupoSanguineo = sldGrupoSanguineo;
+	}
+
+	/**
+	 * @return the sldMedicamentos
+	 */
+	public String getSldMedicamentos() {
+		return sldMedicamentos;
+	}
+
+	/**
+	 * @param sldMedicamentos
+	 *            the sldMedicamentos to set
+	 */
+	public void setSldMedicamentos(String sldMedicamentos) {
+		this.sldMedicamentos = sldMedicamentos;
+	}
+
+	/**
+	 * @return the sldNivelAzucar
+	 */
+	public String getSldNivelAzucar() {
+		return sldNivelAzucar;
+	}
+
+	/**
+	 * @param sldNivelAzucar
+	 *            the sldNivelAzucar to set
+	 */
+	public void setSldNivelAzucar(String sldNivelAzucar) {
+		this.sldNivelAzucar = sldNivelAzucar;
+	}
+
+	/**
+	 * @return the sldPeriodicidadEjercicio
+	 */
+	public String getSldPeriodicidadEjercicio() {
+		return sldPeriodicidadEjercicio;
+	}
+
+	/**
+	 * @param sldPeriodicidadEjercicio
+	 *            the sldPeriodicidadEjercicio to set
+	 */
+	public void setSldPeriodicidadEjercicio(String sldPeriodicidadEjercicio) {
+		this.sldPeriodicidadEjercicio = sldPeriodicidadEjercicio;
+	}
+
+	/**
+	 * @return the sldPeso
+	 */
+	public BigDecimal getSldPeso() {
+		return sldPeso;
+	}
+
+	/**
+	 * @param sldPeso
+	 *            the sldPeso to set
+	 */
+	public void setSldPeso(BigDecimal sldPeso) {
+		this.sldPeso = sldPeso;
+	}
+
+	/**
+	 * @return the sldPresion
+	 */
+	public String getSldPresion() {
+		return sldPresion;
+	}
+
+	/**
+	 * @param sldPresion
+	 *            the sldPresion to set
+	 */
+	public void setSldPresion(String sldPresion) {
+		this.sldPresion = sldPresion;
+	}
+
+	/**
+	 * @return the sldRealizaEjercicio
+	 */
+	public Boolean getSldRealizaEjercicio() {
+		return sldRealizaEjercicio;
+	}
+
+	/**
+	 * @param sldRealizaEjercicio
+	 *            the sldRealizaEjercicio to set
+	 */
+	public void setSldRealizaEjercicio(Boolean sldRealizaEjercicio) {
+		this.sldRealizaEjercicio = sldRealizaEjercicio;
+	}
+
+	/**
+	 * @return the sldVegetariano
+	 */
+	public Boolean getSldVegetariano() {
+		return sldVegetariano;
+	}
+
+	/**
+	 * @param sldVegetariano
+	 *            the sldVegetariano to set
+	 */
+	public void setSldVegetariano(Boolean sldVegetariano) {
+		this.sldVegetariano = sldVegetariano;
 	}
 
 	/**
@@ -129,7 +425,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param peiEstado the peiEstado to set
+	 * @param peiEstado
+	 *            the peiEstado to set
 	 */
 	public void setPeiEstado(String peiEstado) {
 		this.peiEstado = peiEstado;
@@ -143,7 +440,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param peiFechaRegistro the peiFechaRegistro to set
+	 * @param peiFechaRegistro
+	 *            the peiFechaRegistro to set
 	 */
 	public void setPeiFechaRegistro(Date peiFechaRegistro) {
 		this.peiFechaRegistro = peiFechaRegistro;
@@ -157,7 +455,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param peiRol the peiRol to set
+	 * @param peiRol
+	 *            the peiRol to set
 	 */
 	public void setPeiRol(String peiRol) {
 		this.peiRol = peiRol;
@@ -171,7 +470,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param institucion the institucion to set
+	 * @param institucion
+	 *            the institucion to set
 	 */
 	public void setInstitucion(String institucion) {
 		this.institucion = institucion;
@@ -185,7 +485,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param l_personaIns the l_personaIns to set
+	 * @param l_personaIns
+	 *            the l_personaIns to set
 	 */
 	public void setL_personaIns(List<GenPersonaInstitucion> l_personaIns) {
 		this.l_personaIns = l_personaIns;
@@ -199,7 +500,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param l_instituciones the l_instituciones to set
+	 * @param l_instituciones
+	 *            the l_instituciones to set
 	 */
 	public void setL_instituciones(List<SelectItem> l_instituciones) {
 		this.l_instituciones = l_instituciones;
@@ -213,7 +515,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param l_rol the l_rol to set
+	 * @param l_rol
+	 *            the l_rol to set
 	 */
 	public void setL_rol(List<SelectItem> l_rol) {
 		this.l_rol = l_rol;
@@ -922,10 +1225,10 @@ public class PersonaBean {
 		setSelect_r(true);
 		this.carga();
 		cargarPersonasIns();
-		return "npersona.xhtml";
+		return "npersona?faces-redirect=true";
 	}
-	
-	public void carga(){
+
+	public void carga() {
 		cargarEstadoCivil();
 		cargarGeneros();
 		cargarPaises();
@@ -944,23 +1247,28 @@ public class PersonaBean {
 		String r = "";
 		try {
 			if (this.validarCampos()) {
-				Mensaje.crearMensajeERROR("Todos los datos generales son requeridos");
+				Mensaje.crearMensajeERROR(getSms_validacion());
 			} else {
 				if (edicion) {
-					manager.editarPersona(getPerDni(), getPerTipoDni(),
-							getPerNombres(), getPerApellidos(),
-							getPerFechaNacimiento(), getPerGenero(),
-							getPerTelefono(), getPerCelular(), getPerCorreo(),
-							getPerEstadoCivil(), getPerEstado());
-					this.editarPersonaDetalle();
+					manager.editarPersona(getPerDni().trim(), getPerTipoDni()
+							.trim(), getPerNombres().trim(), getPerApellidos()
+							.trim(), getPerFechaNacimiento(), getPerGenero()
+							.trim(), getPerTelefono().trim(), getPerCelular()
+							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
+							.trim(), getPerEstado().trim());
+					this.comprobarEdicion();
+					// this.editarPersonaDetalle();
+					// this.editarSalud();
 					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
 				} else {
-					manager.insertarPersona(getPerDni(), getPerTipoDni(),
-							getPerNombres(), getPerApellidos(),
-							getPerFechaNacimiento(), getPerGenero(),
-							getPerTelefono(), getPerCelular(), getPerCorreo(),
-							getPerEstadoCivil());
+					manager.insertarPersona(getPerDni().trim(), getPerTipoDni()
+							.trim(), getPerNombres().trim(), getPerApellidos()
+							.trim(), getPerFechaNacimiento(), getPerGenero()
+							.trim(), getPerTelefono().trim(), getPerCelular()
+							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
+							.trim());
 					this.crearPersonaDetalle();
+					this.crearSalud();
 					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
 				}
 				r = "npersona?faces-redirect=true";
@@ -971,6 +1279,27 @@ public class PersonaBean {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
 		return r;
+	}
+
+	/**
+	 * Metodo para verificar la creación o edición de detalles
+	 */
+	public void comprobarEdicion() {
+		try {
+			if (manager.PersonaDetalleByID(getPerDni()) == null) {
+				this.crearPersonaDetalle();
+			} else {
+				this.editarPersonaDetalle();
+			}
+			if (manager.SaludByID(getPerDni()) == null) {
+				this.crearSalud();
+			} else {
+				this.editarSalud();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -985,7 +1314,6 @@ public class PersonaBean {
 			setSelect_n(false);
 			setSelect_r(false);
 			cargarEstados();
-			
 			setPerDni(persona.getPerDni());
 			setPerTipoDni(persona.getPerTipoDni());
 			setPerNombres(persona.getPerNombres());
@@ -997,11 +1325,21 @@ public class PersonaBean {
 			setPerCorreo(persona.getPerCorreo());
 			setPerEstadoCivil(persona.getPerEstadoCivil());
 			setPerEstado(persona.getPerEstado());
-			// carga de persona detalle
+
+			// carga de Persona-Institución
+			cargarPersonasIns();
+
+			// carga de persona detalle si existe
 			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona
 					.getPerDni());
+			if (pd!=null)
 			this.cargarPersonaDetalle(pd);
-			cargarPersonasIns();
+
+			// carga de Salud si existe
+			GenSalud sl = manager.SaludByID(persona.getPerDni());
+			if (sl!=null)
+			this.cargarSalud(sl);
+			
 			setEdicion(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1132,8 +1470,45 @@ public class PersonaBean {
 		}
 	}
 
-	// ////////////////////////////////////////////////////////PERSONA -
-	// DETALLE/////////////////////////////////////////////////////////
+	/**
+	 * Metodo para cambiar el char nombre por el nombre completo
+	 * 
+	 * @param estado
+	 * @return
+	 */
+	public String cambiarNombreEstado(String estado) {
+		String result = "";
+
+		if (estado.equals("A"))
+			result = "Activo";
+		else if (estado.equals("P"))
+			result = "Pendiente";
+		else if (estado.equals("I"))
+			result = "Inactivo";
+
+		return result;
+	}
+
+	/**
+	 * Metodo para cambiar de color segun los estados
+	 * 
+	 * @param estado
+	 * @return
+	 */
+	public String cambiarColorEstado(String estado) {
+		String color = "";
+
+		if (estado.equals("A"))
+			color = "green";
+		else if (estado.equals("P"))
+			color = "yellow";
+		else if (estado.equals("I"))
+			color = "red";
+
+		return color;
+	}
+
+	// ////////////////////////////////////////////////////////PERSONA-DETALLE/////////////////////////////////////////////////////////
 
 	/**
 	 * Permite la creacion de una persona detalle
@@ -1142,18 +1517,22 @@ public class PersonaBean {
 	 */
 	public void crearPersonaDetalle() {
 		try {
-			manager.insertarPersonaDetalle(getPerDni(), getPdeFoto(),
-					getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
-					getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
-					getPdePaisResidencia(), getPdeProvinciaResidencia(),
-					getPdeCiudadResidencia(), getPdeDireccion(),
-					getPdeCondicionCiudadana(), getPdeConyuge(),
-					getPdeFechaMatrimonio(), getPdeNombrePadre(),
-					getPdeNacionalidadPadre(), getPdeNombreMadre(),
-					getPdeNacionalidadMadre(), getPdeEmergContactoNombres(),
-					getPdeEmergContactoId(), getPdeEmergContactoTelefono(),
-					getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
-					getPdeObservacion());
+			manager.insertarPersonaDetalle(getPerDni().trim(), getPdeFoto()
+					.trim(), getPdePaisNacimiento().trim(),
+					getPdeProvinciaNacimiento().trim(),
+					getPdeCiudadNacimiento().trim(), getPdeLugarNacimiento()
+							.trim(), getPdePaisResidencia().trim(),
+					getPdeProvinciaResidencia().trim(),
+					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
+					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
+					getPdeFechaMatrimonio(), getPdeNombrePadre().trim(),
+					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
+							.trim(), getPdeNacionalidadMadre().trim(),
+					getPdeEmergContactoNombres().trim(),
+					getPdeEmergContactoId().trim(),
+					getPdeEmergContactoTelefono().trim(),
+					getPdeInscripcionDefuncion().trim(),
+					getPdeFechaDefuncion(), getPdeObservacion().trim());
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -1166,18 +1545,22 @@ public class PersonaBean {
 	 */
 	public void editarPersonaDetalle() {
 		try {
-			manager.editarPersonaDetalle(getPerDni(), getPdeFoto(),
-					getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
-					getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
-					getPdePaisResidencia(), getPdeProvinciaResidencia(),
-					getPdeCiudadResidencia(), getPdeDireccion(),
-					getPdeCondicionCiudadana(), getPdeConyuge(),
-					getPdeFechaMatrimonio(), getPdeNombrePadre(),
-					getPdeNacionalidadPadre(), getPdeNombreMadre(),
-					getPdeNacionalidadMadre(), getPdeEmergContactoNombres(),
-					getPdeEmergContactoId(), getPdeEmergContactoTelefono(),
-					getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
-					getPdeObservacion());
+			manager.editarPersonaDetalle(getPerDni().trim(), getPdeFoto()
+					.trim(), getPdePaisNacimiento().trim(),
+					getPdeProvinciaNacimiento().trim(),
+					getPdeCiudadNacimiento().trim(), getPdeLugarNacimiento()
+							.trim(), getPdePaisResidencia().trim(),
+					getPdeProvinciaResidencia().trim(),
+					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
+					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
+					getPdeFechaMatrimonio(), getPdeNombrePadre().trim(),
+					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
+							.trim(), getPdeNacionalidadMadre().trim(),
+					getPdeEmergContactoNombres().trim(),
+					getPdeEmergContactoId().trim(),
+					getPdeEmergContactoTelefono().trim(),
+					getPdeInscripcionDefuncion().trim(),
+					getPdeFechaDefuncion(), getPdeObservacion().trim());
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -1282,6 +1665,10 @@ public class PersonaBean {
 				|| (getPerNombres() == null || getPerNombres().isEmpty())
 				|| (getPerTipoDni() == null || getPerTipoDni().equals("-1"))
 				|| (getPerTelefono() == null || getPerTelefono().isEmpty())) {
+			setSms_validacion("Todos los datos generales son requeridos.");
+			return true;
+		} else if (!Funciones.validarEmail(getPerCorreo())) {
+			setSms_validacion("EL formato del correo es incorrecto.");
 			return true;
 		} else {
 			return false;
@@ -1326,11 +1713,29 @@ public class PersonaBean {
 		setPdePaisResidencia("");
 		setPdeProvinciaNacimiento("");
 		setPdeProvinciaResidencia("");
+		// salud
+		setSldAlergias("");
+		setSldAltura(null);
+		setSldAsegurado("");
+		setSldCarnetConadies("");
+		setSldConsumeAlcohol("");
+		setSldConsumeTabaco("");
+		setSldDiscapacidadGrado("");
+		setSldDiscapacidadTipo("");
+		setSldFrecienciaConsumoMedicame("");
+		setSldGrupoSanguineo("");
+		setSldMedicamentos("");
+		setSldNivelAzucar("");
+		setSldPeriodicidadEjercicio("");
+		setSldPeso(null);
+		setSldPresion("");
+		setSldRealizaEjercicio(null);
+		setSldVegetariano(null);
 		setEdicion(false);
 	}
-	
-	/////////////////////////////////////////////////////PERSONA-INSTITUCION///////////////////////////////////////
-	
+
+	// ///////////////////////////////////////////////////PERSONA-INSTITUCION///////////////////////////////////////
+
 	/**
 	 * Permite la creacion de una personaIns
 	 * 
@@ -1342,7 +1747,8 @@ public class PersonaBean {
 			if (this.validarCamposRol()) {
 				Mensaje.crearMensajeERROR("El dato Institución o Rol no está definido.");
 			} else {
-				manager.insertarPersonaIns(getPerDni(), getInstitucion(), getPeiRol());
+				manager.insertarPersonaIns(getPerDni(), getInstitucion(),
+						getPeiRol());
 				this.cargarPersonasIns();
 			}
 		} catch (Exception e) {
@@ -1350,28 +1756,29 @@ public class PersonaBean {
 		}
 		return r;
 	}
-	
+
 	/**
 	 * Metodo para eliminar una Persona Instituición
 	 * 
 	 * @param dni
 	 */
-	public void eliminarPersonaIns(GenPersonaInstitucion t){
-		manager.eliminarPersonaIns(t.getId().getPerDni(),t.getId().getInsCodigo(),t.getId().getPeiRol());
+	public void eliminarPersonaIns(GenPersonaInstitucion t) {
+		manager.eliminarPersonaIns(t.getId().getPerDni(), t.getId()
+				.getInsCodigo(), t.getId().getPeiRol());
 		cargarPersonasIns();
 	}
-	
+
 	/**
 	 * Metodo para validar los campos selectItems
 	 * 
 	 * @return
 	 */
-	public boolean validarCamposRol(){
-		if (getInstitucion()==null || getInstitucion().equals("-1")){
+	public boolean validarCamposRol() {
+		if (getInstitucion() == null || getInstitucion().equals("-1")) {
 			return true;
-		}else if (getPeiRol()==null || getPeiRol().equals("-1")){
+		} else if (getPeiRol() == null || getPeiRol().equals("-1")) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -1388,11 +1795,11 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Lista de Instituciones
 	 */
-	public void cargarInstituciones(){
+	public void cargarInstituciones() {
 		try {
 			getL_instituciones().clear();
 			for (GenInstitucione i : manager.findAllInstituciones()) {
@@ -1404,15 +1811,93 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Lista de Roles
 	 */
 	public void cargarRoles() {
 		getL_rol().clear();
 		for (GenCatalogoItemsDet i : manager.AllofItems("cat_rol")) {
-			getL_rol().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_rol().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
+	}
+
+	// ////////////////////////////////////////////////////////SALUD/////////////////////////////////////////////////////////
+
+	/**
+	 * Permite la creacion de una SALUD
+	 * 
+	 * @return
+	 */
+	public void crearSalud() {
+		try {
+			manager.insertarSalud(getPerDni().trim(), getSldAlergias().trim(),
+					getSldAltura(), getSldAsegurado().trim(),
+					getSldCarnetConadies().trim(), getSldConsumeAlcohol()
+							.trim(), getSldConsumeTabaco().trim(),
+					getSldDiscapacidadTipo().trim(), getSldDiscapacidadGrado()
+							.trim(), getSldFrecienciaConsumoMedicame().trim(),
+					getSldGrupoSanguineo().trim(), getSldMedicamentos().trim(),
+					getSldNivelAzucar().trim(), getSldPeriodicidadEjercicio()
+							.trim(), getSldPeso(), getSldPresion().trim(),
+					getSldRealizaEjercicio(), getSldVegetariano());
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR(e.getMessage());
+		}
+	}
+
+	/**
+	 * Permite la edición de salud
+	 * 
+	 * @return
+	 */
+	public void editarSalud() {
+		try {
+			manager.editarSalud(getPerDni().trim(), getSldAlergias().trim(),
+					getSldAltura(), getSldAsegurado().trim(),
+					getSldCarnetConadies().trim(), getSldConsumeAlcohol()
+							.trim(), getSldConsumeTabaco().trim(),
+					getSldDiscapacidadTipo().trim(), getSldDiscapacidadGrado()
+							.trim(), getSldFrecienciaConsumoMedicame().trim(),
+					getSldGrupoSanguineo().trim(), getSldMedicamentos().trim(),
+					getSldNivelAzucar().trim(), getSldPeriodicidadEjercicio()
+							.trim(), getSldPeso(), getSldPresion().trim(),
+					getSldRealizaEjercicio(), getSldVegetariano());
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR(e.getMessage());
+		}
+	}
+
+	/**
+	 * Metodo para cargar Salud para su edicion
+	 * 
+	 * @param persona
+	 * @return
+	 */
+	public String cargarSalud(GenSalud salud) {
+		try {
+			setSldAlergias(salud.getSldAlergias());
+			setSldAltura(salud.getSldAltura());
+			setSldAsegurado(salud.getSldAsegurado());
+			setSldCarnetConadies(salud.getSldCarnetConadies());
+			setSldConsumeAlcohol(salud.getSldConsumeAlcohol());
+			setSldConsumeTabaco(salud.getSldConsumeTabaco());
+			setSldDiscapacidadGrado(salud.getSldDiscapacidadGrado());
+			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
+			setSldFrecienciaConsumoMedicame(salud
+					.getSldFrecienciaConsumoMedicame());
+			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
+			setSldMedicamentos(salud.getSldMedicamentos());
+			setSldNivelAzucar(salud.getSldNivelAzucar());
+			setSldPeriodicidadEjercicio(salud.getSldPeriodicidadEjercicio());
+			setSldPeso(salud.getSldPeso());
+			setSldPresion(salud.getSldPresion());
+			setSldRealizaEjercicio(salud.getSldRealizaEjercicio());
+			setSldVegetariano(salud.getSldVegetariano());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "npersona?faces-redirect=true";
 	}
 }

@@ -1,5 +1,6 @@
 package city.model.manager;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenPersonaInstitucion;
 import city.model.dao.entidades.GenPersonaInstitucionPK;
+import city.model.dao.entidades.GenSalud;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -156,7 +158,7 @@ public class ManagerPersona {
 			throws Exception {
 		return mngDao.findAll(GenPersonaInstitucion.class);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para obtener PersonasIns por Dni
 	 * 
@@ -164,9 +166,10 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenPersonaInstitucion> PersonaInsxDni(String dni){
-		return mngDao.findWhere(GenPersonaInstitucion.class, "o.id.perDni='"+ dni + "'", null);
-//		return mngDao.findAll(GenPersonaInstitucion.class);
+	public List<GenPersonaInstitucion> PersonaInsxDni(String dni) {
+		return mngDao.findWhere(GenPersonaInstitucion.class, "o.id.perDni='"
+				+ dni + "'", null);
+		// return mngDao.findAll(GenPersonaInstitucion.class);
 	}
 
 	/**
@@ -191,7 +194,7 @@ public class ManagerPersona {
 	public GenInstitucione InstitucionByID(String dni) throws Exception {
 		return (GenInstitucione) mngDao.findById(GenInstitucione.class, dni);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
@@ -212,15 +215,16 @@ public class ManagerPersona {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void insertarPersonaIns(String dni, String cod_ins, String rol) throws Exception {
+	public void insertarPersonaIns(String dni, String cod_ins, String rol)
+			throws Exception {
 		try {
 			GenPersonaInstitucion personaIns = new GenPersonaInstitucion();
-			//creacion del id
+			// creacion del id
 			GenPersonaInstitucionPK perInspk = new GenPersonaInstitucionPK();
 			perInspk.setPerDni(dni);
 			perInspk.setInsCodigo(cod_ins);
 			perInspk.setPeiRol(rol);
-			//insercion del id
+			// insercion del id
 			personaIns.setId(perInspk);
 			personaIns.setGenInstitucione(this.InstitucionByID(cod_ins));
 			personaIns.setGenPersona(this.PersonaByID(dni));
@@ -234,13 +238,13 @@ public class ManagerPersona {
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para eliminar una PersonaInstitución
 	 * 
 	 * @param dni
 	 */
-	public void eliminarPersonaIns(String dni,String codigo_ins,String rol){
+	public void eliminarPersonaIns(String dni, String codigo_ins, String rol) {
 		try {
 			GenPersonaInstitucionPK p = new GenPersonaInstitucionPK();
 			p.setInsCodigo(codigo_ins);
@@ -345,8 +349,7 @@ public class ManagerPersona {
 		}
 	}// Cierre del metodo
 
-	// //////////////////////////////////////////////////////////(PERSONAS -
-	// DETALLES)/////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////(PERSONAS-DETALLES)/////////////////////////////////////////////////////////////////////
 	/**
 	 * Creación de metodos para el manejo de la tabla PERSONAS - DETALLES
 	 * 
@@ -508,6 +511,147 @@ public class ManagerPersona {
 			System.out.println("Bien_mod_personaDetalle");
 		} catch (Exception e) {
 			System.out.println("Error_mod_personaDetalle");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	// //////////////////////////////////////////////////////////(SALUD)/////////////////////////////////////////////////////////////////////
+	/**
+	 * Creación de metodos para el manejo de la tabla SALUD
+	 * 
+	 */
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenSalud> findAllSalud() throws Exception {
+		return mngDao.findAll(GenSalud.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenSalud SaludByID(String dni) throws Exception {
+		return (GenSalud) mngDao.findById(GenSalud.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param dni
+	 * @param alergias
+	 * @param altura
+	 * @param asegurado
+	 * @param carnet
+	 * @param con_alcohol
+	 * @param con_tabaco
+	 * @param dis_tipo
+	 * @param dis_grado
+	 * @param con_medicina
+	 * @param gru_sanguineo
+	 * @param medicamentos
+	 * @param niv_azucar
+	 * @param ejercicios
+	 * @param peso
+	 * @param presion
+	 * @param rea_ejercicio
+	 * @param vegetariano
+	 * @throws Exception
+	 */
+	public void insertarSalud(String dni, String alergias, BigDecimal altura,
+			String asegurado, String carnet, String con_alcohol,
+			String con_tabaco, String dis_tipo, String dis_grado,
+			String con_medicina, String gru_sanguineo, String medicamentos,
+			String niv_azucar, String ejercicios, BigDecimal peso,
+			String presion, Boolean rea_ejercicio, Boolean vegetariano)
+			throws Exception {
+		try {
+			GenSalud salud = new GenSalud();
+			salud.setPerDni(dni);
+			salud.setSldAlergias(alergias);
+			salud.setSldAltura(altura);
+			salud.setSldAsegurado(asegurado);
+			salud.setSldCarnetConadies(carnet);
+			salud.setSldConsumeAlcohol(con_alcohol);
+			salud.setSldConsumeTabaco(con_tabaco);
+			salud.setSldDiscapacidadGrado(dis_grado);
+			salud.setSldDiscapacidadTipo(dis_tipo);
+			salud.setSldFrecienciaConsumoMedicame(con_medicina);
+			salud.setSldGrupoSanguineo(gru_sanguineo);
+			salud.setSldMedicamentos(medicamentos);
+			salud.setSldNivelAzucar(niv_azucar);
+			salud.setSldPeriodicidadEjercicio(ejercicios);
+			salud.setSldPeso(peso);
+			salud.setSldPresion(presion);
+			salud.setSldRealizaEjercicio(rea_ejercicio);
+			salud.setSldVegetariano(vegetariano);
+			mngDao.insertar(salud);
+			System.out.println("Bien_insertar_salud");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_salud");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para editar un Atributo en la base de datos
+	 * 
+	 * @param dni
+	 * @param alergias
+	 * @param altura
+	 * @param asegurado
+	 * @param carnet
+	 * @param con_alcohol
+	 * @param con_tabaco
+	 * @param dis_tipo
+	 * @param dis_grado
+	 * @param con_medicina
+	 * @param gru_sanguineo
+	 * @param medicamentos
+	 * @param niv_azucar
+	 * @param ejercicios
+	 * @param peso
+	 * @param presion
+	 * @param rea_ejercicio
+	 * @param vegetariano
+	 * @throws Exception
+	 */
+	public void editarSalud(String dni, String alergias, BigDecimal altura,
+			String asegurado, String carnet, String con_alcohol,
+			String con_tabaco, String dis_tipo, String dis_grado,
+			String con_medicina, String gru_sanguineo, String medicamentos,
+			String niv_azucar, String ejercicios, BigDecimal peso,
+			String presion, Boolean rea_ejercicio, Boolean vegetariano) throws Exception {
+		try {
+			GenSalud salud = this.SaludByID(dni);
+			salud.setSldAlergias(alergias);
+			salud.setSldAltura(altura);
+			salud.setSldAsegurado(asegurado);
+			salud.setSldCarnetConadies(carnet);
+			salud.setSldConsumeAlcohol(con_alcohol);
+			salud.setSldConsumeTabaco(con_tabaco);
+			salud.setSldDiscapacidadGrado(dis_grado);
+			salud.setSldDiscapacidadTipo(dis_tipo);
+			salud.setSldFrecienciaConsumoMedicame(con_medicina);
+			salud.setSldGrupoSanguineo(gru_sanguineo);
+			salud.setSldMedicamentos(medicamentos);
+			salud.setSldNivelAzucar(niv_azucar);
+			salud.setSldPeriodicidadEjercicio(ejercicios);
+			salud.setSldPeso(peso);
+			salud.setSldPresion(presion);
+			salud.setSldRealizaEjercicio(rea_ejercicio);
+			salud.setSldVegetariano(vegetariano);
+			mngDao.actualizar(salud);
+			System.out.println("Bien_mod_salud");
+		} catch (Exception e) {
+			System.out.println("Error_mod_salud");
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
