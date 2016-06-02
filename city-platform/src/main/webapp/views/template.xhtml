@@ -19,10 +19,9 @@ and open the template in the editor.
 	<title><ui:insert name="titulo">Template</ui:insert></title>
 	<link rel="shortcut icon" type="image/x-icon"
 		href="../resources/img/favicon.ico" />
-	<h:outputStylesheet library="css" name="style.css" />
 	<ui:insert name="google"></ui:insert>
 </h:head>
-<h:body style="padding-bottom: 60px;">
+<h:body>
 	<b:navBar brand="City Platform" inverse="true" brandHref="index.xhtml"
 		role="navigation">
 		<b:navbarLinks>
@@ -59,15 +58,5 @@ and open the template in the editor.
 			</p:confirmDialog>
 		</h:form>
 	</b:container>
-	<b:navBar class="navbar-fixed-bottom" look="info" inverse="true" role="navigation">
-		<center>
-			<p style="color: white; font-size:smaller;">
-				Sistema Desarrollado por: <a href="http://www.yachay.gob.ec/">Yachay
-					EP</a>; Amazonas N26-146 y la Niña Tel: (593 2 3949100).<br /> Este
-				sistema se debe ejecutar en los navegadores Google Chrome o Mozilla
-				Firefox para un correcto funcionamiento.
-			</p>
-		</center>
-	</b:navBar>
 </h:body>
 </html>
