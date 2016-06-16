@@ -5,6 +5,7 @@ package city.model.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import org.json.simple.JSONArray;
@@ -12,6 +13,7 @@ import org.json.simple.JSONObject;
 
 import city.model.access.Menu;
 import city.model.access.Submenu;
+import city.model.dao.entidades.GenParametro;
 import city.model.generic.ConsumeREST;
 import city.model.generic.Funciones;
 
@@ -20,10 +22,22 @@ import city.model.generic.Funciones;
 @Stateless
 public class ManagerAcceso {
 	
+	@EJB
+	private ManagerDAO mngDao;
 
 	public ManagerAcceso() {
 	}
 	
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public GenParametro ParametroByID(String codigo) throws Exception {
+		return (GenParametro) mngDao.findById(GenParametro.class, codigo);
+	}// Cierre del metodo
 	
 	/**
 	 * Lista de menus para menú dinámico
@@ -58,10 +72,13 @@ public class ManagerAcceso {
 	@SuppressWarnings("unchecked")
 	public List<Menu> loginWS(String usr, String pass, String aplicacion) throws Exception
 	{
+		GenParametro login= ParametroByID("login_ws");
+		if (login==null)
+			throw new Exception("Error al consultar parámetro de login");
 		List<Menu> lmenu = new ArrayList<Menu>();
 		JSONObject salida = new JSONObject();
 		salida.put("usr", usr);salida.put("pwd", pass);salida.put("apl", aplicacion);
-		JSONObject respuesta = ConsumeREST.postClient(Funciones.hostWS+"WSLogin/postPermisos",salida);
+		JSONObject respuesta = ConsumeREST.postClient(login.getParValor(),salida);
 		if(!respuesta.get("status").equals("OK"))
 			throw new Exception("ERROR al consultar sus permisos: "+respuesta.get("mensaje").toString());
 		else

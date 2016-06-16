@@ -12,10 +12,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
-import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
-import city.model.dao.entidades.GenPersonaInstitucion;
 import city.model.dao.entidades.GenSalud;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
@@ -97,11 +95,6 @@ public class PersonaBean {
 	private String institucion;
 
 	// manejo de vistas
-	List<GenPersonaInstitucion> l_personaIns;
-	List<SelectItem> l_instituciones;
-	List<SelectItem> l_rol;
-
-	// manejo de vistas
 	List<GenPersona> l_persona;
 	List<SelectItem> l_estados;
 	List<SelectItem> l_tipo_dni;
@@ -139,9 +132,6 @@ public class PersonaBean {
 		l_provincia = new ArrayList<SelectItem>();
 		l_tipo_dni = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
-		l_instituciones = new ArrayList<SelectItem>();
-		l_personaIns = new ArrayList<GenPersonaInstitucion>();
-		l_rol = new ArrayList<SelectItem>();
 		sms_validacion = "";
 		cargarPersonas();
 	}
@@ -475,51 +465,6 @@ public class PersonaBean {
 	 */
 	public void setInstitucion(String institucion) {
 		this.institucion = institucion;
-	}
-
-	/**
-	 * @return the l_personaIns
-	 */
-	public List<GenPersonaInstitucion> getL_personaIns() {
-		return l_personaIns;
-	}
-
-	/**
-	 * @param l_personaIns
-	 *            the l_personaIns to set
-	 */
-	public void setL_personaIns(List<GenPersonaInstitucion> l_personaIns) {
-		this.l_personaIns = l_personaIns;
-	}
-
-	/**
-	 * @return the l_instituciones
-	 */
-	public List<SelectItem> getL_instituciones() {
-		return l_instituciones;
-	}
-
-	/**
-	 * @param l_instituciones
-	 *            the l_instituciones to set
-	 */
-	public void setL_instituciones(List<SelectItem> l_instituciones) {
-		this.l_instituciones = l_instituciones;
-	}
-
-	/**
-	 * @return the l_rol
-	 */
-	public List<SelectItem> getL_rol() {
-		return l_rol;
-	}
-
-	/**
-	 * @param l_rol
-	 *            the l_rol to set
-	 */
-	public void setL_rol(List<SelectItem> l_rol) {
-		this.l_rol = l_rol;
 	}
 
 	/**
@@ -1224,7 +1169,6 @@ public class PersonaBean {
 		setSelect_n(true);
 		setSelect_r(true);
 		this.carga();
-		cargarPersonasIns();
 		return "npersona?faces-redirect=true";
 	}
 
@@ -1234,8 +1178,7 @@ public class PersonaBean {
 		cargarPaises();
 		cargarProvincias();
 		cargarTiposDni();
-		cargarInstituciones();
-		cargarRoles();
+		cargarEstados();
 	}
 
 	/**
@@ -1270,6 +1213,7 @@ public class PersonaBean {
 					this.crearPersonaDetalle();
 					this.crearSalud();
 					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
+					setEdicion(true);
 				}
 				r = "npersona?faces-redirect=true";
 				// this.cleanDatos();
@@ -1326,20 +1270,17 @@ public class PersonaBean {
 			setPerEstadoCivil(persona.getPerEstadoCivil());
 			setPerEstado(persona.getPerEstado());
 
-			// carga de Persona-Institución
-			cargarPersonasIns();
-
 			// carga de persona detalle si existe
 			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona
 					.getPerDni());
-			if (pd!=null)
-			this.cargarPersonaDetalle(pd);
+			if (pd != null)
+				this.cargarPersonaDetalle(pd);
 
 			// carga de Salud si existe
 			GenSalud sl = manager.SaludByID(persona.getPerDni());
-			if (sl!=null)
-			this.cargarSalud(sl);
-			
+			if (sl != null)
+				this.cargarSalud(sl);
+
 			setEdicion(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1732,94 +1673,6 @@ public class PersonaBean {
 		setSldRealizaEjercicio(null);
 		setSldVegetariano(null);
 		setEdicion(false);
-	}
-
-	// ///////////////////////////////////////////////////PERSONA-INSTITUCION///////////////////////////////////////
-
-	/**
-	 * Permite la creacion de una personaIns
-	 * 
-	 * @return
-	 */
-	public String crearPersonaIns() {
-		String r = "";
-		try {
-			if (this.validarCamposRol()) {
-				Mensaje.crearMensajeERROR("El dato Institución o Rol no está definido.");
-			} else {
-				manager.insertarPersonaIns(getPerDni(), getInstitucion(),
-						getPeiRol());
-				this.cargarPersonasIns();
-			}
-		} catch (Exception e) {
-			Mensaje.crearMensajeERROR(e.getMessage());
-		}
-		return r;
-	}
-
-	/**
-	 * Metodo para eliminar una Persona Instituición
-	 * 
-	 * @param dni
-	 */
-	public void eliminarPersonaIns(GenPersonaInstitucion t) {
-		manager.eliminarPersonaIns(t.getId().getPerDni(), t.getId()
-				.getInsCodigo(), t.getId().getPeiRol());
-		cargarPersonasIns();
-	}
-
-	/**
-	 * Metodo para validar los campos selectItems
-	 * 
-	 * @return
-	 */
-	public boolean validarCamposRol() {
-		if (getInstitucion() == null || getInstitucion().equals("-1")) {
-			return true;
-		} else if (getPeiRol() == null || getPeiRol().equals("-1")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Lista de PersonasIns
-	 */
-	public void cargarPersonasIns() {
-		try {
-			getL_personaIns().clear();
-			getL_personaIns().addAll(manager.PersonaInsxDni(getPerDni()));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Lista de Instituciones
-	 */
-	public void cargarInstituciones() {
-		try {
-			getL_instituciones().clear();
-			for (GenInstitucione i : manager.findAllInstituciones()) {
-				getL_instituciones().add(
-						new SelectItem(i.getInsCodigo(), i.getInsNombre()));
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Lista de Roles
-	 */
-	public void cargarRoles() {
-		getL_rol().clear();
-		for (GenCatalogoItemsDet i : manager.AllofItems("cat_rol")) {
-			getL_rol().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
-		}
 	}
 
 	// ////////////////////////////////////////////////////////SALUD/////////////////////////////////////////////////////////

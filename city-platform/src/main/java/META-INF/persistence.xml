@@ -5,15 +5,16 @@
 	<persistence-unit name="city-platformPU">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/city-platformDatasource</jta-data-source>
+		<class>city.model.dao.entidades.AudActividadInterna</class>
 		<class>city.model.dao.entidades.GenArea</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
 		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
+		<class>city.model.dao.entidades.GenFuncionariosInstitucion</class>
+		<class>city.model.dao.entidades.GenFuncionariosInstitucionPK</class>
 		<class>city.model.dao.entidades.GenInstitucione</class>
 		<class>city.model.dao.entidades.GenParametro</class>
 		<class>city.model.dao.entidades.GenPersona</class>
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
-		<class>city.model.dao.entidades.GenPersonaInstitucion</class>
-		<class>city.model.dao.entidades.GenPersonaInstitucionPK</class>
 		<class>city.model.dao.entidades.GenSalud</class>
 		<class>city.model.dao.entidades.GenSectore</class>
 		<class>city.model.dao.entidades.GenSitFoto</class>

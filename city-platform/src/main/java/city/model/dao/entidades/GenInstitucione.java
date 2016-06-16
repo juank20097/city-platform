@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+
 import java.util.List;
 
 /**
@@ -38,13 +39,13 @@ public class GenInstitucione implements Serializable {
 	@Column(name = "ins_ruc")
 	private String insRuc;
 
+	// bi-directional many-to-one association to GenFuncionariosInstitucion
+	@OneToMany(mappedBy = "genInstitucione")
+	private List<GenFuncionariosInstitucion> genFuncionariosInstitucions;
+
 	// bi-directional many-to-one association to GenSitio
 	@OneToMany(mappedBy = "genInstitucione")
 	private List<GenSitio> genSitios;
-
-	// bi-directional many-to-one association to GenPersonaInstitucion
-	@OneToMany(mappedBy = "genInstitucione")
-	private List<GenPersonaInstitucion> genPersonaInstitucions;
 
 	public GenInstitucione() {
 	}
@@ -126,27 +127,30 @@ public class GenInstitucione implements Serializable {
 
 		return genSitio;
 	}
-	
-	public List<GenPersonaInstitucion> getGenPersonaInstitucions() {
-		return this.genPersonaInstitucions;
+
+	public List<GenFuncionariosInstitucion> getGenFuncionariosInstitucions() {
+		return this.genFuncionariosInstitucions;
 	}
 
-	public void setGenPersonaInstitucions(List<GenPersonaInstitucion> genPersonaInstitucions) {
-		this.genPersonaInstitucions = genPersonaInstitucions;
+	public void setGenFuncionariosInstitucions(
+			List<GenFuncionariosInstitucion> genFuncionariosInstitucions) {
+		this.genFuncionariosInstitucions = genFuncionariosInstitucions;
 	}
 
-	public GenPersonaInstitucion addGenPersonaInstitucion(GenPersonaInstitucion genPersonaInstitucion) {
-		getGenPersonaInstitucions().add(genPersonaInstitucion);
-		genPersonaInstitucion.setGenInstitucione(this);
+	public GenFuncionariosInstitucion addGenFuncionariosInstitucion(
+			GenFuncionariosInstitucion genFuncionariosInstitucion) {
+		getGenFuncionariosInstitucions().add(genFuncionariosInstitucion);
+		genFuncionariosInstitucion.setGenInstitucione(this);
 
-		return genPersonaInstitucion;
+		return genFuncionariosInstitucion;
 	}
 
-	public GenPersonaInstitucion removeGenPersonaInstitucion(GenPersonaInstitucion genPersonaInstitucion) {
-		getGenPersonaInstitucions().remove(genPersonaInstitucion);
-		genPersonaInstitucion.setGenInstitucione(null);
+	public GenFuncionariosInstitucion removeGenFuncionariosInstitucion(
+			GenFuncionariosInstitucion genFuncionariosInstitucion) {
+		getGenFuncionariosInstitucions().remove(genFuncionariosInstitucion);
+		genFuncionariosInstitucion.setGenInstitucione(null);
 
-		return genPersonaInstitucion;
+		return genFuncionariosInstitucion;
 	}
 
 }
