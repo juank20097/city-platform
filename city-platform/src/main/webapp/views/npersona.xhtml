@@ -24,443 +24,377 @@
 			<b:tabView orientation="left" pills="true" tabPosition="left"
 				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 				<b:tab disabled="false" title="Generales">
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Tipo de Identificación:*" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu disabled="#{personaBean.edicion}" styleClass="form-control"
-								value="#{personaBean.perTipoDni}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_tipo_dni}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="N° Identificación:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText disabled="#{personaBean.edicion}" value="#{personaBean.perDni}">
-								<f:validateRegex pattern="^[0-9A-Z]+$" />
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nombres:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText validatorMessage="Ingrese solo letras en el nombre" value="#{personaBean.perNombres}">
-							<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Apellidos:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText validatorMessage="Ingrese solo letras en el apellido" value="#{personaBean.perApellidos}">
-								<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Fecha de Nacimiento:*" />
-						</b:column>
-						<b:column span="4">
-							<p:calendar value="#{personaBean.perFechaNacimiento}"
-								pattern="dd-MM-yyyy" mask="true" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Genero:*" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.perGenero}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_genero}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Teléfono:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText validatorMessage="Ingrese solo números en el teléfono" maxlength="9" value="#{personaBean.perTelefono}">
-								<f:validateRegex pattern="^[0-9]+$" />
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Celular:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText maxlength="10" validatorMessage="Ingrese solo números en el celular" value="#{personaBean.perCelular}">
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Correo:*" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.perCorreo}">
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Estado Civil:*" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.perEstadoCivil}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_estado_civil}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel rendered="#{personaBean.edicion}" value="Estado:" />
-						</b:column>
-						<b:column span="10">
-							<b:selectOneMenu rendered="#{personaBean.edicion}"
-								styleClass="mar" value="#{personaBean.perEstado}">
-								<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
-								<f:selectItems value="#{personaBean.l_estados}">
-								</f:selectItems>
-							</b:selectOneMenu>
-						</b:column>
-					</b:row>
+					<f:facet name="anchor">
+						<b:iconAwesome name="user" />
+					</f:facet>
+					<b:panel>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Tipo de Identificación:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu disabled="#{personaBean.edicion}"
+									styleClass="form-control" value="#{personaBean.perTipoDni}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_tipo_dni}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="N° Identificación:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText disabled="#{personaBean.edicion}"
+									value="#{personaBean.perDni}">
+									<f:validateRegex pattern="^[0-9A-Z]+$" />
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombres:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText validatorMessage="Ingrese solo letras en el nombre"
+									value="#{personaBean.perNombres}">
+									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Apellidos:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText
+									validatorMessage="Ingrese solo letras en el apellido"
+									value="#{personaBean.perApellidos}">
+									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Fecha de Nacimiento:*" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar value="#{personaBean.perFechaNacimiento}"
+									pattern="dd-MM-yyyy" mask="true" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Genero:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.perGenero}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_genero}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Teléfono:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText
+									validatorMessage="Ingrese solo números en el teléfono"
+									maxlength="9" value="#{personaBean.perTelefono}">
+									<f:validateRegex pattern="^[0-9]+$" />
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Celular:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText maxlength="10"
+									validatorMessage="Ingrese solo números en el celular"
+									value="#{personaBean.perCelular}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Correo:*" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.perCorreo}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Estado Civil:*" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.perEstadoCivil}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_estado_civil}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel rendered="#{personaBean.edicion}" value="Estado:" />
+							</b:column>
+							<b:column span="10">
+								<b:selectOneMenu rendered="#{personaBean.edicion}"
+									styleClass="mar" value="#{personaBean.perEstado}">
+									<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+									<f:selectItems value="#{personaBean.l_estados}">
+									</f:selectItems>
+								</b:selectOneMenu>
+							</b:column>
+						</b:row>
+					</b:panel>
 				</b:tab>
 				<b:tab disabled="true" title="Detalles">
-					<h4>Datos de Ubicación</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h4>Nacimiento:</h4>
-						</b:column>
-						<b:column offset="4" span="2">
-							<h4>Residencia:</h4>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="1">
-							<h:outputLabel value="Pais:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.pdePaisNacimiento}">
-								<p:ajax listener="#{personaBean.habilitarCamposNac}"
-									update=":frm:p1 :frm:c1"></p:ajax>
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_pais}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-						<b:column offset="1" span="1">
-							<h:outputLabel value="Pais:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.pdePaisResidencia}">
-								<p:ajax listener="#{personaBean.habilitarCamposRer}"
-									update=":frm:p2 :frm:c2"></p:ajax>
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_pais}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="1">
-							<h:outputLabel value="Provincia:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu id="p1" disabled="#{personaBean.select_n}"
-								styleClass="form-control"
-								value="#{personaBean.pdeProvinciaNacimiento}">
-								<p:ajax
-									listener="#{personaBean.mostrarCiudadNac(personaBean.pdeProvinciaNacimiento)}"
-									update=":frm:c1"></p:ajax>
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_provincia}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-						<b:column offset="1" span="1">
-							<h:outputLabel value="Provincia:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu id="p2" disabled="#{personaBean.select_r}"
-								styleClass="form-control"
-								value="#{personaBean.pdeProvinciaResidencia}">
-								<p:ajax
-									listener="#{personaBean.mostrarCiudadRes(personaBean.pdeProvinciaResidencia)}"
-									update=":frm:c2"></p:ajax>
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_provincia}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="1">
-							<h:outputLabel value="Ciudad:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu id="c1" disabled="#{personaBean.select_n}"
-								styleClass="form-control"
-								value="#{personaBean.pdeCiudadNacimiento}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_ciudad_n}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-						<b:column offset="1" span="1">
-							<h:outputLabel value="Ciudad:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu id="c2" disabled="#{personaBean.select_r}"
-								styleClass="form-control"
-								value="#{personaBean.pdeCiudadResidencia}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_ciudad_r}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="1">
-							<h:outputLabel value="Lugar:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeLugarNacimiento}">
-							</b:inputText>
-						</b:column>
-						<b:column offset="1" span="1">
-							<h:outputLabel value="Dirección:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeDireccion}">
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<br />
-					<h4>Datos Familiares</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nombre Padre:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeNombrePadre}">
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Nombre Madre:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeNombreMadre}">
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nacionalidad Padre:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.pdeNacionalidadPadre}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_pais}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Nacionalidad Madre:" />
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{personaBean.pdeNacionalidadMadre}">
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{personaBean.l_pais}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nombre Conyuge:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeConyuge}">
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Fecha Matrimonio:" />
-						</b:column>
-						<b:column span="4">
-							<p:calendar value="#{personaBean.pdeFechaMatrimonio}"
-								pattern="dd-MM-yyyy" mask="true" />
-						</b:column>
-					</b:row>
-					<br />
-					<h4>Datos de Emergencia</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nombre Contacto Emergencia:" />
-						</b:column>
-						<b:column span="10">
-							<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Dni Contacto Emergencia:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeEmergContactoId}">
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Teléfono Contacto Emergencia:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
-							</b:inputText>
-						</b:column>
-					</b:row>
-					<br />
-					<h4>Datos de Defunción</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Inscripción Defunción:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
-							</b:inputText>
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Fecha Defunción:" />
-						</b:column>
-						<b:column span="4">
-							<p:calendar value="#{personaBean.pdeFechaDefuncion}"
-								pattern="dd-MM-yyyy" mask="true" />
-						</b:column>
-					</b:row>
-					<br />
-					<h4>Observación</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="12">
-							<b:inputTextarea
-								placeholder="Escribe observaciones de la persona en caso de tenerla....."
-								value="#{personaBean.pdeObservacion}">
-							</b:inputTextarea>
-						</b:column>
-					</b:row>
-				</b:tab>
-				<b:tab disabled="true" title="Roles">
-					<br />
-					<center>
+					<f:facet name="anchor">
+						<b:iconAwesome name="male" />
+					</f:facet>
+					<b:panel>
+						<h4>Datos de Ubicación</h4>
+						<p:separator />
 						<b:row>
-							<b:column offset="3" span="2">
-								<h:outputLabel value="Institución:*" />
+							<b:column span="2">
+								<h4>Nacimiento:</h4>
+							</b:column>
+							<b:column offset="4" span="2">
+								<h4>Residencia:</h4>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="1">
+								<h:outputLabel value="Pais:" />
 							</b:column>
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
-									value="#{personaBean.institucion}">
+									value="#{personaBean.pdePaisNacimiento}">
+									<p:ajax listener="#{personaBean.habilitarCamposNac}"
+										update=":frm:p1 :frm:c1"></p:ajax>
 									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-									<f:selectItems value="#{personaBean.l_instituciones}">
+									<f:selectItems value="#{personaBean.l_pais}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column offset="1" span="1">
+								<h:outputLabel value="Pais:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdePaisResidencia}">
+									<p:ajax listener="#{personaBean.habilitarCamposRer}"
+										update=":frm:p2 :frm:c2"></p:ajax>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_pais}">
 									</f:selectItems>
 								</h:selectOneMenu>
 							</b:column>
 						</b:row>
 						<br />
 						<b:row>
-							<b:column offset="3" span="2">
-								<h:outputLabel value="Rol:*" />
+							<b:column span="1">
+								<h:outputLabel value="Provincia:" />
 							</b:column>
 							<b:column span="4">
-								<h:selectOneMenu styleClass="form-control"
-									value="#{personaBean.peiRol}">
+								<h:selectOneMenu id="p1" disabled="#{personaBean.select_n}"
+									styleClass="form-control"
+									value="#{personaBean.pdeProvinciaNacimiento}">
+									<p:ajax
+										listener="#{personaBean.mostrarCiudadNac(personaBean.pdeProvinciaNacimiento)}"
+										update=":frm:c1"></p:ajax>
 									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-									<f:selectItems value="#{personaBean.l_rol}">
+									<f:selectItems value="#{personaBean.l_provincia}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column offset="1" span="1">
+								<h:outputLabel value="Provincia:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu id="p2" disabled="#{personaBean.select_r}"
+									styleClass="form-control"
+									value="#{personaBean.pdeProvinciaResidencia}">
+									<p:ajax
+										listener="#{personaBean.mostrarCiudadRes(personaBean.pdeProvinciaResidencia)}"
+										update=":frm:c2"></p:ajax>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_provincia}">
 									</f:selectItems>
 								</h:selectOneMenu>
 							</b:column>
 						</b:row>
 						<br />
-						<b:commandButton value="Insertar"
-							onclick="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							action="#{personaBean.crearPersonaIns}" update="frm:dt_perI"
-							look="info"></b:commandButton>
-						&nbsp;&nbsp;&nbsp;
-					</center>
-					<br />
-					<b:dataTable id="dt_perI" value="#{personaBean.l_personaIns}"
-						var="pei"
-						styleClass="table table-striped table-bordered dt-responsive nowrap"
-						fixedHeader="true" responsive="true" lang="es" style="width:100%">
-						<h:column width="100">
-							<f:facet name="header">
-								<h:outputText value="OPCIONES" />
-							</f:facet>
-						&nbsp;&nbsp;&nbsp;
-						<b:commandButton iconAwesome="fa fa-trash"
-								style="padding: 0; border: none; background: none;color: #000"
-								onclick="PF('statusDialog').show()"
-								oncomplete="PF('statusDialog').hide()"
-								action="#{personaBean.eliminarPersonaIns(pei)}">
-							</b:commandButton>
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="DNI" />
-							</f:facet>
-							<h:outputText value="#{pei.id.perDni}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="INSTITUCIÓN" />
-							</f:facet>
-							<h:outputText value="#{pei.genInstitucione.insNombre}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="ROL" />
-							</f:facet>
-							<h:outputText value="#{pei.id.peiRol}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="FECHA REGISTRO" />
-							</f:facet>
-							<h:outputText value="#{pei.peiFechaRegistro}"
-								pattern="yyyy-MM-dd" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">
-								<h:outputText value="ESTADO" />
-							</f:facet>
-							<h:outputText value="#{personaBean.cambiarNombreEstado(pei.peiEstado)}" style="color:#{personaBean.cambiarColorEstado(pei.peiEstado)}" />
-						</h:column>
-					</b:dataTable>
+						<b:row>
+							<b:column span="1">
+								<h:outputLabel value="Ciudad:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu id="c1" disabled="#{personaBean.select_n}"
+									styleClass="form-control"
+									value="#{personaBean.pdeCiudadNacimiento}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_ciudad_n}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column offset="1" span="1">
+								<h:outputLabel value="Ciudad:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu id="c2" disabled="#{personaBean.select_r}"
+									styleClass="form-control"
+									value="#{personaBean.pdeCiudadResidencia}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_ciudad_r}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="1">
+								<h:outputLabel value="Lugar:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeLugarNacimiento}">
+								</b:inputText>
+							</b:column>
+							<b:column offset="1" span="1">
+								<h:outputLabel value="Dirección:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeDireccion}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Datos Familiares</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Padre:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeNombrePadre}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Madre:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeNombreMadre}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nacionalidad Padre:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeNacionalidadPadre}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_pais}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Nacionalidad Madre:" />
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.pdeNacionalidadMadre}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_pais}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Conyuge:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeConyuge}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Fecha Matrimonio:" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar value="#{personaBean.pdeFechaMatrimonio}"
+									pattern="dd-MM-yyyy" mask="true" />
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Datos de Emergencia</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nombre Contacto Emergencia:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Dni Contacto Emergencia:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeEmergContactoId}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Teléfono Contacto Emergencia:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
+								</b:inputText>
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Datos de Defunción</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Inscripción Defunción:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
+								</b:inputText>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Fecha Defunción:" />
+							</b:column>
+							<b:column span="4">
+								<p:calendar value="#{personaBean.pdeFechaDefuncion}"
+									pattern="dd-MM-yyyy" mask="true" />
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Observación</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="12">
+								<b:inputTextarea
+									placeholder="Escribe observaciones de la persona en caso de tenerla....."
+									value="#{personaBean.pdeObservacion}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+					</b:panel>
 				</b:tab>
 				<b:tab disabled="true" title="Salud">
+					<f:facet name="anchor">
+						<b:iconAwesome name="heartbeat" />
+					</f:facet>
+					<b:panel>
 					<br />
 					<h4>Datos Generales</h4>
 					<p:separator />
@@ -541,7 +475,7 @@
 							<b:inputText value="#{personaBean.sldNivelAzucar}" />
 						</b:column>
 					</b:row>
-					<br/>
+					<br />
 					<h4>Hábitos</h4>
 					<p:separator />
 					<b:row>
@@ -549,8 +483,9 @@
 							<h:outputLabel value="Realiza Ejercicio:" />
 						</b:column>
 						<b:column span="4">
-							<b:switch value="#{personaBean.sldRealizaEjercicio}" onText="Si" on-text="Si"
-							offText="No" off-text="No" offColor="success" onColor="primary" />
+							<b:switch value="#{personaBean.sldRealizaEjercicio}" onText="Si"
+								on-text="Si" offText="No" off-text="No" offColor="success"
+								onColor="primary" />
 						</b:column>
 						<b:column span="2">
 							<h:outputLabel value="Peridiocidad Ejercicio:" />
@@ -593,14 +528,16 @@
 							<h:outputLabel value="Frecuencia de consumo de medicamentos:" />
 						</b:column>
 						<b:column span="10">
-							<b:inputTextarea value="#{personaBean.sldFrecienciaConsumoMedicame}">
+							<b:inputTextarea
+								value="#{personaBean.sldFrecienciaConsumoMedicame}">
 							</b:inputTextarea>
 						</b:column>
 					</b:row>
-					<br/>
+					<br />
+					</b:panel>
 				</b:tab>
 			</b:tabView>
-			<br/>
+			<br />
 			<center>
 				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
 					oncomplete="PF('statusDialog').hide()"
