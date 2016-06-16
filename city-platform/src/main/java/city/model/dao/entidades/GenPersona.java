@@ -64,6 +64,13 @@ public class GenPersona implements Serializable {
 	@OneToOne(mappedBy = "genPersona")
 	private GenSalud genSalud;
 
+	// bi-directional many-to-one association to GenEstudianteInstitucion
+	@OneToMany(mappedBy = "genPersona")
+	private List<GenEstudianteInstitucion> genEstudianteInstitucions;
+
+	// bi-directional one-to-one association to GenExterno
+	@OneToOne(mappedBy = "genPersona")
+	private GenExterno genExterno;
 
 	public GenPersona() {
 	}
@@ -195,6 +202,39 @@ public class GenPersona implements Serializable {
 		genFuncionariosInstitucion.setGenPersona(null);
 
 		return genFuncionariosInstitucion;
+	}
+
+	public List<GenEstudianteInstitucion> getGenEstudianteInstitucions() {
+		return this.genEstudianteInstitucions;
+	}
+
+	public void setGenEstudianteInstitucions(
+			List<GenEstudianteInstitucion> genEstudianteInstitucions) {
+		this.genEstudianteInstitucions = genEstudianteInstitucions;
+	}
+
+	public GenEstudianteInstitucion addGenEstudianteInstitucion(
+			GenEstudianteInstitucion genEstudianteInstitucion) {
+		getGenEstudianteInstitucions().add(genEstudianteInstitucion);
+		genEstudianteInstitucion.setGenPersona(this);
+
+		return genEstudianteInstitucion;
+	}
+
+	public GenEstudianteInstitucion removeGenEstudianteInstitucion(
+			GenEstudianteInstitucion genEstudianteInstitucion) {
+		getGenEstudianteInstitucions().remove(genEstudianteInstitucion);
+		genEstudianteInstitucion.setGenPersona(null);
+
+		return genEstudianteInstitucion;
+	}
+
+	public GenExterno getGenExterno() {
+		return this.genExterno;
+	}
+
+	public void setGenExterno(GenExterno genExterno) {
+		this.genExterno = genExterno;
 	}
 
 }

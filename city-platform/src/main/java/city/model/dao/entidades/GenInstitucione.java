@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 import java.util.List;
 
 /**
@@ -46,6 +45,10 @@ public class GenInstitucione implements Serializable {
 	// bi-directional many-to-one association to GenSitio
 	@OneToMany(mappedBy = "genInstitucione")
 	private List<GenSitio> genSitios;
+
+	// bi-directional many-to-one association to GenEstudianteInstitucion
+	@OneToMany(mappedBy = "genInstitucione")
+	private List<GenEstudianteInstitucion> genEstudianteInstitucions;
 
 	public GenInstitucione() {
 	}
@@ -151,6 +154,28 @@ public class GenInstitucione implements Serializable {
 		genFuncionariosInstitucion.setGenInstitucione(null);
 
 		return genFuncionariosInstitucion;
+	}
+	
+	public List<GenEstudianteInstitucion> getGenEstudianteInstitucions() {
+		return this.genEstudianteInstitucions;
+	}
+
+	public void setGenEstudianteInstitucions(List<GenEstudianteInstitucion> genEstudianteInstitucions) {
+		this.genEstudianteInstitucions = genEstudianteInstitucions;
+	}
+
+	public GenEstudianteInstitucion addGenEstudianteInstitucion(GenEstudianteInstitucion genEstudianteInstitucion) {
+		getGenEstudianteInstitucions().add(genEstudianteInstitucion);
+		genEstudianteInstitucion.setGenInstitucione(this);
+
+		return genEstudianteInstitucion;
+	}
+
+	public GenEstudianteInstitucion removeGenEstudianteInstitucion(GenEstudianteInstitucion genEstudianteInstitucion) {
+		getGenEstudianteInstitucions().remove(genEstudianteInstitucion);
+		genEstudianteInstitucion.setGenInstitucione(null);
+
+		return genEstudianteInstitucion;
 	}
 
 }

@@ -9,6 +9,9 @@
 		<class>city.model.dao.entidades.GenArea</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
 		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
+		<class>city.model.dao.entidades.GenEstudianteInstitucion</class>
+		<class>city.model.dao.entidades.GenEstudianteInstitucionPK</class>
+		<class>city.model.dao.entidades.GenExterno</class>
 		<class>city.model.dao.entidades.GenFuncionariosInstitucion</class>
 		<class>city.model.dao.entidades.GenFuncionariosInstitucionPK</class>
 		<class>city.model.dao.entidades.GenInstitucione</class>
