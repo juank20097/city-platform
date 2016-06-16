@@ -1,53 +1,57 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.*;
+
+import java.util.Date;
 
 /**
  * The persistent class for the gen_funcionarios_institucion database table.
  * 
  */
 @Entity
-@Table(name="gen_funcionarios_institucion")
-@NamedQuery(name="GenFuncionariosInstitucion.findAll", query="SELECT g FROM GenFuncionariosInstitucion g")
+@Table(name = "gen_funcionarios_institucion")
+@NamedQuery(name = "GenFuncionariosInstitucion.findAll", query = "SELECT g FROM GenFuncionariosInstitucion g")
 public class GenFuncionariosInstitucion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private GenFuncionariosInstitucionPK id;
 
-	@Column(name="fun_cargo")
+	@Column(name = "fun_cargo")
 	private String funCargo;
 
-	@Column(name="fun_direccion")
+	@Column(name = "fun_direccion")
 	private String funDireccion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fun_fecha_ingreso")
+	@Column(name = "fun_fecha_ingreso")
 	private Date funFechaIngreso;
 
-	@Column(name="fun_gerencia")
+	@Column(name = "fun_gerencia")
 	private String funGerencia;
 
-	@Column(name="fun_jefe_inmediato")
+	@Column(name = "fun_jefe_inmediato")
 	private String funJefeInmediato;
 
-	@Column(name="fun_tipo")
+	@Column(name = "fun_tipo")
 	private String funTipo;
 
-	@Column(name="fun_tipo_evaluacion")
+	@Column(name = "fun_tipo_evaluacion")
 	private String funTipoEvaluacion;
 
-	//bi-directional many-to-one association to GenInstitucione
+	@Column(name = "fun_estado", columnDefinition = "bpchar")
+	private String funEstado;
+
+	// bi-directional many-to-one association to GenInstitucione
 	@ManyToOne
-	@JoinColumn(name="ins_codigo", insertable=false, updatable=false)
+	@JoinColumn(name = "ins_codigo", insertable = false, updatable = false)
 	private GenInstitucione genInstitucione;
 
-	//bi-directional many-to-one association to GenPersona
+	// bi-directional many-to-one association to GenPersona
 	@ManyToOne
-	@JoinColumn(name="per_dni", insertable=false, updatable=false)
+	@JoinColumn(name = "per_dni", insertable = false, updatable = false)
 	private GenPersona genPersona;
 
 	public GenFuncionariosInstitucion() {
@@ -75,6 +79,14 @@ public class GenFuncionariosInstitucion implements Serializable {
 
 	public void setFunDireccion(String funDireccion) {
 		this.funDireccion = funDireccion;
+	}
+
+	public String getFunEstado() {
+		return this.funEstado;
+	}
+
+	public void setFunEstado(String funEstado) {
+		this.funEstado = funEstado;
 	}
 
 	public Date getFunFechaIngreso() {
