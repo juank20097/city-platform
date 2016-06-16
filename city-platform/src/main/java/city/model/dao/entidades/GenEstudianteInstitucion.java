@@ -26,7 +26,7 @@ public class GenEstudianteInstitucion implements Serializable {
 	@Column(name="est_correo")
 	private String estCorreo;
 
-	@Column(name="est_estado")
+	@Column(name="est_estado", columnDefinition="bpchar")
 	private String estEstado;
 
 	@Column(name="est_modalidad")
@@ -37,12 +37,12 @@ public class GenEstudianteInstitucion implements Serializable {
 
 	//bi-directional many-to-one association to GenInstitucione
 	@ManyToOne
-	@JoinColumn(name="ins_codigo")
+	@JoinColumn(name="ins_codigo", insertable = false, updatable = false)
 	private GenInstitucione genInstitucione;
 
 	//bi-directional many-to-one association to GenPersona
 	@ManyToOne
-	@JoinColumn(name="per_dni")
+	@JoinColumn(name="per_dni", insertable = false, updatable = false)
 	private GenPersona genPersona;
 
 	public GenEstudianteInstitucion() {
