@@ -115,6 +115,9 @@ public class PersonaBean {
 	private boolean select_n;
 	private boolean select_r;
 
+	// valor de ususario
+	private String usuario;
+
 	public PersonaBean() {
 	}
 
@@ -134,6 +137,21 @@ public class PersonaBean {
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
 		cargarPersonas();
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario
+	 *            the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 	/**
@@ -1199,6 +1217,7 @@ public class PersonaBean {
 							.trim(), getPerTelefono().trim(), getPerCelular()
 							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
 							.trim(), getPerEstado().trim());
+					//mngAud.insertarAuditoria(session.validarSesion());
 					this.comprobarEdicion();
 					// this.editarPersonaDetalle();
 					// this.editarSalud();

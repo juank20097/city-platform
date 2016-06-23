@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 
 import jxl.Cell;
@@ -22,6 +23,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import city.model.dao.entidades.GenEstudianteInstitucion;
+import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.extras.Estudiante;
 import city.model.generic.Mensaje;
@@ -42,10 +44,11 @@ public class EstudiantesBean {
 	// Atriutos de la clase persona detalle
 	private String insCodigo;
 
-	private int NUMERO_COLUMNAS_EXCEL_ESTUDIANTE = 16;
+	private int NUMERO_COLUMNAS_EXCEL_ESTUDIANTE = 14;
 
 	// listas de registros
 	private List<Estudiante> l_estudiantes;
+	private List<Estudiante> l_estudiantes_total;
 	private List<String> errores;
 
 	// string con todos los errores
@@ -60,13 +63,13 @@ public class EstudiantesBean {
 	@PostConstruct
 	public void ini() {
 		l_estudiantes = new ArrayList<Estudiante>();
+		l_estudiantes_total = new ArrayList<Estudiante>();
 		errores = new ArrayList<String>();
 		InputStream stream = ((ServletContext) FacesContext
 				.getCurrentInstance().getExternalContext().getContext())
-				.getResourceAsStream("/resources/excel/excelbase.xls");
+				.getResourceAsStream("/resources/doc/excelbase.xls");
 		file = new DefaultStreamedContent(stream, "texto/xls",
-				"archivo_Ejemplo_Matriculados.xls");
-		ListEstudiantes();
+				"archivo_Ejemplo_Estudiantes.xls");
 	}
 
 	/**
@@ -82,6 +85,20 @@ public class EstudiantesBean {
 	 */
 	public void setInsCodigo(String insCodigo) {
 		this.insCodigo = insCodigo;
+	}
+
+	/**
+	 * @return the l_estudiantes_total
+	 */
+	public List<Estudiante> getL_estudiantes_total() {
+		return l_estudiantes_total;
+	}
+
+	/**
+	 * @param l_estudiantes_total the l_estudiantes_total to set
+	 */
+	public void setL_estudiantes_total(List<Estudiante> l_estudiantes_total) {
+		this.l_estudiantes_total = l_estudiantes_total;
 	}
 
 	/**
@@ -146,7 +163,11 @@ public class EstudiantesBean {
 
 	private void ListEstudiantes() {
 		try {
-			for (GenEstudianteInstitucion est : manager.findAllEstudiantes()) {
+			l_estudiantes_total = new ArrayList<Estudiante>();
+			if (getInsCodigo()==null || getInsCodigo().equals("-1")){
+				Mensaje.crearMensajeWARN("No existe los estudiantes respectivos para la institución seleccionada");
+			}else{
+			for (GenEstudianteInstitucion est : manager.findAllEstudiantesXInstitucion(getInsCodigo())) {
 				GenPersona per = manager.PersonaByID(est.getGenPersona()
 						.getPerDni());
 				Estudiante estudiante = new Estudiante();
@@ -169,13 +190,16 @@ public class EstudiantesBean {
 				estudiante.setPerNombres(per.getPerNombres());
 				estudiante.setPerTelefono(per.getPerTelefono());
 				estudiante.setPerTipoDni(per.getPerTipoDni());
-				l_estudiantes.add(estudiante);
+				l_estudiantes_total.add(estudiante);
+			}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	//MÉTODOS_DE_EXCEL///////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Maneja el proceso de selección, carga e inserción de datos de
@@ -193,9 +217,9 @@ public class EstudiantesBean {
 					throw new Exception("No se ha seleccionado archivo");
 				else {
 					validarGuardarDatosExcel(event.getFile());
+					this.ListEstudiantes();
 				}
 			}
-			this.ListEstudiantes();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Mensaje.crearMensajeERROR(e.getMessage());
@@ -223,9 +247,7 @@ public class EstudiantesBean {
 				datosFila.clear();
 				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL_ESTUDIANTE; j++) {
 					datosFila.add(hoja.getCell(j, i).getContents().trim());
-					if (j == 2)
-						System.out.println("FECHA--> "
-								+ hoja.getCell(j, i).getContents());
+					System.out.println("fila:"+i+" ,columna:"+j+" dato:"+hoja.getCell(j, i).getContents());
 				}
 				l_estudiantes
 						.add(manager.crearEstudiante(datosFila, insCodigo));
@@ -281,4 +303,27 @@ public class EstudiantesBean {
 		}
 	}
 
+	/////////////////////////////////////////CIERRE_MÉTODOS//////////////////////////////////////////////
+	
+	public List<SelectItem> selecInsti(){
+		try {
+			List<SelectItem> lista = new ArrayList<SelectItem>();
+			for (GenInstitucione insti : manager.findAllInstitucionesEducativas()) {
+				lista.add(new SelectItem(insti.getInsCodigo(), insti.getInsNombre()));
+			}
+			return lista;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Metodo para cargar los sitios
+	 */
+	public void cargarEstudiantes() {
+		this.ListEstudiantes();
+	}
+	
 }
