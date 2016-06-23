@@ -29,25 +29,6 @@ import java.util.regex.Pattern;
 public class Funciones {
 
 	private static final int num_provincias = 24;
-	/**
-	 * Atributos para el manejo de estados
-	 */
-	public static String estadoActivo = "A";
-	public static String valorEstadoActivo = "Activo";
-	public static String estadoInactivo = "I";
-	public static String valorEstadoInactivo = "Inactivo";
-	public static String estadoEnviado = "E";
-	public static String valorEstadoEnviado = "Enviado";
-	public static String estadoNegado = "N";
-	public static String valorEstadoNegado = "Negado";
-	public static String estadoFinalizado = "F";
-	public static String valorEstadoFinalizado = "Finalizado";
-
-	// Atributos de Genero
-	public static String estadoFemenino = "F";
-	public static String valorEstadoFemenino = "Femenino";
-	public static String estadoMasculino = "M";
-	public static String valorEstadoMasculino = "Masculino";
 
 	public static Integer mayoriaDeEdad = 18;
 

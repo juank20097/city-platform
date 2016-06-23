@@ -2,7 +2,7 @@ package city.model.dao.entidades;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -17,11 +17,10 @@ public class AudActividadInterna implements Serializable {
 
 	@Id
 	@Column(name="aud_id")
-	private Long audId;
+	private Integer audId;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="aud_fecha_registro")
-	private Date audFechaRegistro;
+	private Timestamp audFechaRegistro;
 
 	@Column(name="aud_ip")
 	private String audIp;
@@ -35,19 +34,19 @@ public class AudActividadInterna implements Serializable {
 	public AudActividadInterna() {
 	}
 
-	public Long getAudId() {
+	public Integer getAudId() {
 		return this.audId;
 	}
 
-	public void setAudId(Long audId) {
+	public void setAudId(Integer audId) {
 		this.audId = audId;
 	}
 
-	public Date getAudFechaRegistro() {
+	public Timestamp getAudFechaRegistro() {
 		return this.audFechaRegistro;
 	}
 
-	public void setAudFechaRegistro(Date audFechaRegistro) {
+	public void setAudFechaRegistro(Timestamp audFechaRegistro) {
 		this.audFechaRegistro = audFechaRegistro;
 	}
 

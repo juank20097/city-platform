@@ -73,6 +73,26 @@ public class ManagerTipos {
 	public List<GenEstudianteInstitucion> findAllEstudiantes() throws Exception {
 		return mngDao.findAll(GenEstudianteInstitucion.class);
 	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenInstitucione> findAllInstitucionesEducativas() throws Exception {
+		return mngDao.findWhere(GenInstitucione.class, "o.insCategoria='Educación'", null);
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucion(String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenEstudianteInstitucion.class, "o.id.insCodigo='"+ins_codigo+"'", null);
+	}// Cierre del metodo
 
 	/**
 	 * Metodo para obtener el Atributo mediante un ID

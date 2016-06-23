@@ -122,7 +122,7 @@ public class SesionBean implements Serializable{
 		 HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
 	                .getExternalContext().getSession(false);
 	     SesionBean user = (SesionBean) session.getAttribute("sesionBean");
-	     if (user==null || user.getUsuario() == null) {
+	     if (user == null || user.getUsuario() == null) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/parametros/index.xhtml");
             } catch (IOException ex) {
