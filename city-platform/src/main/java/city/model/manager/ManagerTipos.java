@@ -258,7 +258,7 @@ public class ManagerTipos {
 			errores += " CÉDULA ESTUDIANTE vacío, ";
 		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
 				.getContents().trim()) != true)
-			errores += " CÉDULA ESTUDIANTE invalido, ";
+			errores += " CÉDULA ESTUDIANTE inválido, ";
 		// validar nombre
 		if (column[POSICION_NOMBRES].getContents() == null
 				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
@@ -291,7 +291,7 @@ public class ManagerTipos {
 		} else {
 			if (Funciones.validarEmail(column[POSICION_CORREO_INS]
 					.getContents().trim()) != true)
-				errores += " CORREO INSTITUCIONAL invalido, ";
+				errores += " CORREO INSTITUCIONAL inválido, ";
 		}
 		// validar correo
 		if (column[POSICION_CORREO_PRO].getContents() == null
@@ -300,7 +300,7 @@ public class ManagerTipos {
 		} else {
 			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
 					.getContents().trim()) != true)
-				errores += " CORREO PROPIO invalido, ";
+				errores += " CORREO PROPIO inválido, ";
 		}
 		// validar genero
 		if (column[POSICION_GENERO].getContents() == null
