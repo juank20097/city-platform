@@ -144,6 +144,85 @@
 					<f:facet name="anchor">
 						<b:iconAwesome name="fa-eye" />
 					</f:facet>
+					<b:row>
+					<center>
+						<h1>VISTA DE ESTUDIANTES</h1>
+						<br />
+						<b:column offset="4" span="1">
+							<p:outputLabel>Institución: </p:outputLabel>
+						</b:column>
+						<b:column span="4">
+							<h:selectOneMenu styleClass="form-control"
+								value="#{estudiantesBean.insCodigo}">
+								<p:ajax listener="#{estudiantesBean.cargarEstudiantesTotal()}"
+									onstart="PF('statusDialog').show()"
+									oncomplete="PF('statusDialog').hide()" update="frm:tbb_total mensaje2"></p:ajax>
+								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+								<f:selectItems value="#{estudiantesBean.l_instituciones}">
+								</f:selectItems>
+							</h:selectOneMenu>
+						</b:column>
+					</center>
+					</b:row>
+					<br/>
+					<p:messages id="mensaje2" closable="true"></p:messages>
+					<b:panel title="Listado" look="primary" collapsible="false">
+						<b:dataTable id="tbb_total"
+							value="#{estudiantesBean.l_estudiantes_total}" var="est"
+							styleClass="table table-striped table-bordered dt-responsive nowrap"
+							fixedHeader="true" responsive="true" lang="es" style="width:100%">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CÉDULA" />
+								</f:facet>
+								<h:outputText value="#{est.perDni}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="NOMBRE COMPLETO" />
+								</f:facet>
+								<h:outputText value="#{est.perNombres} #{est.perApellidos}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CORREO INSTITUCIONAL" />
+								</f:facet>
+								<h:outputText value="#{est.estCorreo}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CORREO PERSONAL" />
+								</f:facet>
+								<h:outputText value="#{est.perCorreo}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="FECHA DE NACIMIENTO" />
+								</f:facet>
+								<h:outputText value="#{est.perFechaNacimiento}">
+									<f:convertDateTime pattern="dd/MM/yy" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CARRERA" />
+								</f:facet>
+								<h:outputText value="#{est.estCarrera}"></h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="NIVEL" />
+								</f:facet>
+								<h:outputText value="#{est.estNivel}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="GENERO" />
+								</f:facet>
+								<h:outputText value="#{est.perGenero}"></h:outputText>
+							</h:column>
+						</b:dataTable>
+					</b:panel>
 				</b:tab>
 			</b:tabView>
 		</h:form>

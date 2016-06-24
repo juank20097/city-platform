@@ -356,4 +356,11 @@ public class EstudiantesBean {
 		System.out.println(getInsCodigo());
 	}
 	
+	/**
+	 * Metodo para cargar todos los estudiantes
+	 */
+	public void cargarEstudiantesTotal(){
+		this.ListEstudiantes();
+	}
+	
 }
