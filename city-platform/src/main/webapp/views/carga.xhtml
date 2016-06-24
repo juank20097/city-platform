@@ -12,103 +12,140 @@
         </ui:define>
 	<ui:define name="contenido">
 		<h:form id="frm">
-			<center>
-				<h1>CARGA DE ESTUDIANTES</h1>
-				<br />
-				<b:column offset="4" span="1">
-					<p:outputLabel>Institución: </p:outputLabel>
-				</b:column>
-				<b:column span="4">
-					<h:selectOneMenu styleClass="form-control"
-						value="#{estudiantesBean.insCodigo}">
-						<p:ajax listener="#{estudiantesBean.cargarEstudiantes()}"
-							 onstart="PF('statusDialog').show()"
-									oncomplete="PF('statusDialog').hide()" update="frm"></p:ajax>
-						<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-						<f:selectItems value="#{estudiantesBean.selecInsti()}">
-						</f:selectItems>
-					</h:selectOneMenu>
-				</b:column>
-			</center>
-			<br />
-			<br />
-			<br />
-			<center>
-				<br />
-				<b:row>
-					<b:column span="6">
-						<p:fileUpload
-							fileUploadListener="#{estudiantesBean.handleFileUpload}"
-							mode="advanced" dragDropSupport="false" multiple="false"
-							sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
-							update="mensaje tbb" cancelLabel="Cancelar" uploadLabel="Subir"
-							label="Seleccionar"
-							invalidFileMessage="Solo se aceptan archivos excel con extensión XLS" />
-					</b:column>
-					<b:column offset="2" span="3">
-						<p:commandLink ajax="false">
-							<p:fileDownload value="#{estudiantesBean.file}" />
-							<h:outputLabel value="Plantilla Ejemplo" />
-							<p:graphicImage width="30%" height="30%"
-								value="#{facesContex}/resources/img/excel.png"
-								styleClass="img-responsive" />
-						</p:commandLink>
-					</b:column>
-				</b:row>
-				<br />
-			</center>
-			<br />
-			<p:messages id="mensaje" closable="true"></p:messages>
-			<b:panel title="Listado" look="primary" collapsible="false">
-				<p:dataTable id="tbb" value="#{estudiantesBean.l_estudiantes_total}"
-					reflow="true" var="est" rows="8" emptyMessage="Sin Datos"
-					paginator="true"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-					<p:column filterBy="#{mat.id.perDni}" filterMatchMode="contains"
-						headerText="CÉDULA" width="100">
-						<h:outputText value="#{est.perDni}"></h:outputText>
-					</p:column>
-					<p:column headerText="NOMBRE COMPLETO" width="200">
-						<h:outputText value="#{est.perNombres} #{est.perApellidos}"></h:outputText>
-					</p:column>
-					<p:column headerText="CORREO INSTITUCIONAL" width="100">
-						<h:outputText value="#{est.estCorreo}"></h:outputText>
-					</p:column>
-					<p:column headerText="CORREO" width="100">
-						<h:outputText value="#{est.perCorreo}"></h:outputText>
-					</p:column>
-					<p:column headerText="FECHA NACIMIENTO" width="100">
-						<h:outputText value="#{est.perFechaNacimiento}">
-							<f:convertDateTime pattern="dd/MM/yy" />
-						</h:outputText>
-					</p:column>
-					<p:column headerText="CARRERA" width="100">
-						<h:outputText value="#{est.estCarrera}"></h:outputText>
-					</p:column>
-					<p:column headerText="NIVEL" width="40">
-						<h:outputText value="#{est.estNivel}" />
-					</p:column>
-					<p:column headerText="GENERO" width="60">
-						<h:outputText value="#{est.perGenero}"></h:outputText>
-					</p:column>
-				</p:dataTable>
-			</b:panel>
+			<b:tabView pills="true"
+				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+				<b:tab disabled="false" title="Carga de Datos">
+					<f:facet name="anchor">
+						<b:iconAwesome name="fa-file-excel-o" />
+					</f:facet>
+					<center>
+						<h1>CARGA DE ESTUDIANTES</h1>
+						<br />
+						<b:column offset="4" span="1">
+							<p:outputLabel>Institución: </p:outputLabel>
+						</b:column>
+						<b:column span="4">
+							<h:selectOneMenu styleClass="form-control"
+								value="#{estudiantesBean.insCodigo}">
+								<p:ajax listener="#{estudiantesBean.mostrarInstitucion()}"
+									update="mensaje"></p:ajax>
+								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+								<f:selectItems value="#{estudiantesBean.l_instituciones}">
+								</f:selectItems>
+							</h:selectOneMenu>
+						</b:column>
+					</center>
+					<br />
+					<br />
+					<br />
+					<center>
+						<br />
+						<b:row>
+							<b:column span="6">
+								<p:fileUpload
+									fileUploadListener="#{estudiantesBean.handleFileUpload}"
+									mode="advanced" dragDropSupport="false" multiple="false"
+									sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
+									update="frm" cancelLabel="Cancelar" uploadLabel="Subir"
+									label="Seleccionar" onstart="PF('statusDialog').show()"
+									oncomplete="PF('statusDialog').hide()"
+									invalidFileMessage="Solo se aceptan archivos excel con extensión XLS" />
+							</b:column>
+							<b:column offset="2" span="3">
+								<p:commandLink ajax="false">
+									<p:fileDownload value="#{estudiantesBean.file}" />
+									<h:outputLabel value="Plantilla Ejemplo" />
+									<p:graphicImage width="30%" height="30%"
+										value="#{facesContex}/resources/img/excel.png"
+										styleClass="img-responsive" />
+								</p:commandLink>
+							</b:column>
+						</b:row>
+						<br />
+					</center>
+					<br />
+					<p:messages id="mensaje" closable="true"></p:messages>
+					<b:panel title="Listado" look="primary" collapsible="false">
+						<b:dataTable id="tbb" value="#{estudiantesBean.l_estudiantes}"
+							var="est"
+							styleClass="table table-striped table-bordered dt-responsive nowrap"
+							fixedHeader="true" responsive="true" lang="es" style="width:100%">
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CÉDULA" />
+								</f:facet>
+								<h:outputText value="#{est.perDni}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="NOMBRE COMPLETO" />
+								</f:facet>
+								<h:outputText value="#{est.perNombres} #{est.perApellidos}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CORREO INSTITUCIONAL" />
+								</f:facet>
+								<h:outputText value="#{est.estCorreo}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CORREO PERSONAL" />
+								</f:facet>
+								<h:outputText value="#{est.perCorreo}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="FECHA DE NACIMIENTO" />
+								</f:facet>
+								<h:outputText value="#{est.perFechaNacimiento}">
+									<f:convertDateTime pattern="dd/MM/yy" />
+								</h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="CARRERA" />
+								</f:facet>
+								<h:outputText value="#{est.estCarrera}"></h:outputText>
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="NIVEL" />
+								</f:facet>
+								<h:outputText value="#{est.estNivel}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<h:outputText value="GENERO" />
+								</f:facet>
+								<h:outputText value="#{est.perGenero}"></h:outputText>
+							</h:column>
+						</b:dataTable>
+					</b:panel>
 
-			<p:dialog style="padding-top:50px;" header="Errores de contenido" widgetVar="dlgerr"
-				width="500" modal="true" resizable="false" closable="true"
-				position="top">
-				<p:column headerText="Error">
-					<h:outputText value="#{estudiantesBean.errores}" />
-				</p:column>
-				<b:row style="margin-top: 100px;">
-					<b:column span="2" offset="4">
-						<h:commandButton type="button" value="Aceptar"
-							onclick="PF('dlgerr').hide()" styleClass="btn btn-default">
-							<f:ajax />
-						</h:commandButton>
-					</b:column>
-				</b:row>
-			</p:dialog>
+					<p:dialog style="padding-top:50px;" header="Errores de contenido"
+						widgetVar="dlgerr" width="500" modal="true" resizable="false"
+						closable="true" position="top">
+						<p:column headerText="Error">
+							<h:outputText value="#{estudiantesBean.errores}" />
+						</p:column>
+						<b:row style="margin-top: 100px;">
+							<b:column span="2" offset="4">
+								<h:commandButton type="button" value="Aceptar"
+									onclick="PF('dlgerr').hide()" styleClass="btn btn-default">
+									<f:ajax />
+								</h:commandButton>
+							</b:column>
+						</b:row>
+					</p:dialog>
+
+				</b:tab>
+				<b:tab disabled="false" title="Ver Datos">
+					<f:facet name="anchor">
+						<b:iconAwesome name="fa-eye" />
+					</f:facet>
+				</b:tab>
+			</b:tabView>
 		</h:form>
 
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"

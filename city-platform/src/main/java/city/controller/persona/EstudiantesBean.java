@@ -50,6 +50,7 @@ public class EstudiantesBean {
 	private List<Estudiante> l_estudiantes;
 	private List<Estudiante> l_estudiantes_total;
 	private List<String> errores;
+	private List<SelectItem> l_instituciones;
 
 	// string con todos los errores
 	private String error;
@@ -62,6 +63,7 @@ public class EstudiantesBean {
 
 	@PostConstruct
 	public void ini() {
+		l_instituciones = new ArrayList<SelectItem>();
 		l_estudiantes = new ArrayList<Estudiante>();
 		l_estudiantes_total = new ArrayList<Estudiante>();
 		errores = new ArrayList<String>();
@@ -70,6 +72,21 @@ public class EstudiantesBean {
 				.getResourceAsStream("/resources/doc/excelbase.xls");
 		file = new DefaultStreamedContent(stream, "texto/xls",
 				"archivo_Ejemplo_Estudiantes.xls");
+		selecInsti();
+	}
+
+	/**
+	 * @return the l_instituciones
+	 */
+	public List<SelectItem> getL_instituciones() {
+		return l_instituciones;
+	}
+
+	/**
+	 * @param l_instituciones the l_instituciones to set
+	 */
+	public void setL_instituciones(List<SelectItem> l_instituciones) {
+		this.l_instituciones = l_instituciones;
 	}
 
 	/**
@@ -209,6 +226,7 @@ public class EstudiantesBean {
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		try {
+			
 			if (getInsCodigo() == null || getInsCodigo().isEmpty()
 					|| getInsCodigo().equals("-1")) {
 				Mensaje.crearMensajeWARN("Debe seleccionar una institución para ser añadida la información");
@@ -217,7 +235,7 @@ public class EstudiantesBean {
 					throw new Exception("No se ha seleccionado archivo");
 				else {
 					validarGuardarDatosExcel(event.getFile());
-					this.ListEstudiantes();
+					//this.ListEstudiantes();
 				}
 			}
 		} catch (Exception e) {
@@ -234,7 +252,7 @@ public class EstudiantesBean {
 	 */
 	public void validarGuardarDatosExcel(UploadedFile archivo) throws Exception {
 		l_estudiantes = new ArrayList<Estudiante>();
-		errores = new ArrayList<>();
+		errores = new ArrayList<String>();
 		List<String> datosFila = new ArrayList<String>();
 		// Toma la primera hoja
 		Sheet hoja = Workbook.getWorkbook(archivo.getInputstream()).getSheet(0);
@@ -270,8 +288,8 @@ public class EstudiantesBean {
 	private void mostrarListaErrores() {
 		error = "";
 		RequestContext.getCurrentInstance().execute("PF('dlgerr').show()");
-		for (String error : errores) {
-			error = error + error + "\n";
+		for (String e : errores) {
+			error = error + e + "\n";
 			System.out.println(error);
 		}
 	}
@@ -305,13 +323,17 @@ public class EstudiantesBean {
 
 	/////////////////////////////////////////CIERRE_MÉTODOS//////////////////////////////////////////////
 	
+	/**
+	 * Método para cargar los selectItems de Institución
+	 * 
+	 * @return
+	 */
 	public List<SelectItem> selecInsti(){
 		try {
-			List<SelectItem> lista = new ArrayList<SelectItem>();
 			for (GenInstitucione insti : manager.findAllInstitucionesEducativas()) {
-				lista.add(new SelectItem(insti.getInsCodigo(), insti.getInsNombre()));
+				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti.getInsNombre()));
 			}
-			return lista;
+			return l_instituciones;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -324,6 +346,13 @@ public class EstudiantesBean {
 	 */
 	public void cargarEstudiantes() {
 		this.ListEstudiantes();
+	}
+	
+	/**
+	 * Metodo para verificar la institución seleccionada
+	 */
+	public void mostrarInstitucion(){
+		System.out.println(getInsCodigo());
 	}
 	
 }

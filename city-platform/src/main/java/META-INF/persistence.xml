@@ -18,6 +18,7 @@
 		<class>city.model.dao.entidades.GenParametro</class>
 		<class>city.model.dao.entidades.GenPersona</class>
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
+		<class>city.model.dao.entidades.GenRegistroExcel</class>
 		<class>city.model.dao.entidades.GenSalud</class>
 		<class>city.model.dao.entidades.GenSectore</class>
 		<class>city.model.dao.entidades.GenSitFoto</class>
