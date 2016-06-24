@@ -73,25 +73,29 @@ public class ManagerTipos {
 	public List<GenEstudianteInstitucion> findAllEstudiantes() throws Exception {
 		return mngDao.findAll(GenEstudianteInstitucion.class);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenInstitucione> findAllInstitucionesEducativas() throws Exception {
-		return mngDao.findWhere(GenInstitucione.class, "o.insCategoria='Educación'", null);
+	public List<GenInstitucione> findAllInstitucionesEducativas()
+			throws Exception {
+		return mngDao.findWhere(GenInstitucione.class,
+				"o.insCategoria='Educación'", null);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucion(String ins_codigo) throws Exception {
-		return mngDao.findWhere(GenEstudianteInstitucion.class, "o.id.insCodigo='"+ins_codigo+"'", null);
+	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucion(
+			String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenEstudianteInstitucion.class,
+				"o.id.insCodigo='" + ins_codigo + "'", null);
 	}// Cierre del metodo
 
 	/**
@@ -123,12 +127,19 @@ public class ManagerTipos {
 	 * @return Objeto
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public GenEstudianteInstitucion EstudianteByID(String ins_codigo,
 			String per_dni) throws Exception {
-		return (GenEstudianteInstitucion) mngDao.findWhere(
+		List<GenEstudianteInstitucion> l_est = mngDao.findWhere(
 				GenEstudianteInstitucion.class, "o.id.insCodigo = '"
 						+ ins_codigo + "' and o.id.perDni = '" + per_dni + "'",
 				null);
+		if (l_est == null || l_est.size() == 0) {
+			return null;
+		} else {
+			return l_est.get(0);
+		}
+
 	}// Cierre del metodo
 
 	/**
@@ -406,18 +417,15 @@ public class ManagerTipos {
 				p.setPerTelefono(e.getPerTelefono());
 				p.setPerTipoDni("Cédula");
 			}
-			if (validarExistenciaEstudiante(e.getPerDni(),e.getIns_codigo())) {
-				editarEstudiante(e.getIns_codigo(),
-						e.getPerDni(),
-						e.getEstCorreo(), e.getEstNivel(),
-						e.getEstCarrera(), e.getEstModalidad(),
-						e.getEstAreaEstudio(), e.getEstEstado());
+			if (validarExistenciaEstudiante(e.getPerDni(), e.getIns_codigo())) {
+				editarEstudiante(e.getIns_codigo(), e.getPerDni(),
+						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
+						e.getEstModalidad(), e.getEstAreaEstudio(),
+						e.getEstEstado());
 			} else {
-				insertarEstudiante(e.getIns_codigo(),
-						e.getPerDni(),
-						e.getEstCorreo(), e.getEstNivel(),
-						e.getEstCarrera(), e.getEstModalidad(),
-						e.getEstAreaEstudio());
+				insertarEstudiante(e.getIns_codigo(), e.getPerDni(),
+						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
+						e.getEstModalidad(), e.getEstAreaEstudio());
 			}
 		}
 	}
@@ -432,17 +440,18 @@ public class ManagerTipos {
 			return true;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public boolean validarExistenciaEstudiante(String dni,String codigo_ins) {
-		List<GenEstudianteInstitucion> l_e = mngDao.findWhere(GenEstudianteInstitucion.class, "o.id.perDni='"
-				+ dni + "' and o.id.insCodigo='"+codigo_ins+"'", null);
+	public boolean validarExistenciaEstudiante(String dni, String codigo_ins) {
+		List<GenEstudianteInstitucion> l_e = mngDao.findWhere(
+				GenEstudianteInstitucion.class, "o.id.perDni='" + dni
+						+ "' and o.id.insCodigo='" + codigo_ins + "'", null);
 		if (l_e == null || l_e.size() == 0) {
 			return false;
 		} else {
 			return true;
 		}
-	}	
+	}
 
 	// //////////////////////////////////////////////////////////(FUNCIONARIO-INSTITUCION)/////////////////////////////////////////////////////////////////////
 	/**

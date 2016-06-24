@@ -352,6 +352,7 @@ public class EstudiantesBean {
 	 * Metodo para verificar la institución seleccionada
 	 */
 	public void mostrarInstitucion(){
+		l_estudiantes = new ArrayList<Estudiante>();
 		System.out.println(getInsCodigo());
 	}
 	
