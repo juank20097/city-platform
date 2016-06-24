@@ -1,8 +1,12 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+
 import javax.persistence.*;
-import java.sql.Time;
+
+
+
 
 
 /**
@@ -26,7 +30,7 @@ public class GenRegistroExcel implements Serializable {
 	private Integer excErrores;
 
 	@Column(name="exc_fecha")
-	private Time excFecha;
+	private Timestamp excFecha;
 
 	@Column(name="exc_inactivos")
 	private Integer excInactivos;
@@ -70,11 +74,11 @@ public class GenRegistroExcel implements Serializable {
 		this.excErrores = excErrores;
 	}
 
-	public Time getExcFecha() {
+	public Timestamp getExcFecha() {
 		return this.excFecha;
 	}
 
-	public void setExcFecha(Time excFecha) {
+	public void setExcFecha(Timestamp excFecha) {
 		this.excFecha = excFecha;
 	}
 

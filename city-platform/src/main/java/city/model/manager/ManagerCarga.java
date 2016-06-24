@@ -1,8 +1,10 @@
 package city.model.manager;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -14,6 +16,7 @@ import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenFuncionariosInstitucionPK;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
+import city.model.dao.entidades.GenRegistroExcel;
 import city.model.dao.entidades.extras.Estudiante;
 import city.model.generic.Funciones;
 
@@ -30,6 +33,12 @@ public class ManagerCarga {
 
 	@EJB
 	private ManagerDAO mngDao;
+	
+	//atributos de registro excel
+	private Integer exc_nuevos=0;
+	private Integer exc_actualizados=0;
+	private Integer exc_inactivados;
+	private Integer exc_error=0;
 
 	// POSICIONES DEL ARRAY DE DATOS DE Estudiantes
 	private int POSICION_CEDULA = 0;
@@ -57,6 +66,8 @@ public class ManagerCarga {
 	 */
 	public ManagerCarga() {
 	}// Cierre del Constructor
+	
+	
 
 	// //////////////////////////////////////////////////////////(ESTUDIANTE-INSTITUCION)/////////////////////////////////////////////////////////////////////
 	/**
@@ -267,81 +278,98 @@ public class ManagerCarga {
 		if (column[POSICION_CEDULA].getContents() == null
 				|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA ESTUDIANTE vacío, ";
+			exc_error+=1;
 		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
 				.getContents().trim()) != true)
 			errores += " CÉDULA ESTUDIANTE inválido, ";
+			exc_error=+1;
 		// validar nombre
 		if (column[POSICION_NOMBRES].getContents() == null
 				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
 			errores += " NOMBRE ESTUDIANTE vacío, ";
+			exc_error+=1;
 		}
 		// validar apellidos
 		if (column[POSICION_APELLIDOS].getContents() == null
 				|| column[POSICION_APELLIDOS].getContents().trim().isEmpty()) {
 			errores += " APELLIDOS ESTUDIANTE vacío, ";
+			exc_error+=1;
 		}
 		// validar fecha nacimiento
 		if (column[POSICION_FECHA].getContents() == null
 				|| column[POSICION_FECHA].getContents().trim().isEmpty()) {
 			errores += " FECHA NACIMIENTO vacío, ";
+			exc_error+=1;
 		}
 		// validar nivel
 		if (column[POSICION_NIVEL].getContents() == null
 				|| column[POSICION_NIVEL].getContents().trim().isEmpty()) {
 			errores += " NIVEL vacío, ";
+			exc_error+=1;
 		}
 		// validar carrera
 		if (column[POSICION_CARRERA].getContents() == null
 				|| column[POSICION_CARRERA].getContents().trim().isEmpty()) {
 			errores += " CARRERA vacío, ";
+			exc_error+=1;
 		}
 		// validar correo_institucional
 		if (column[POSICION_CORREO_INS].getContents() == null
 				|| column[POSICION_CORREO_INS].getContents().trim().isEmpty()) {
 			errores += " CORREO INSTITUCIONAL vacío, ";
+			exc_error+=1;
 		} else {
 			if (Funciones.validarEmail(column[POSICION_CORREO_INS]
 					.getContents().trim()) != true)
 				errores += " CORREO INSTITUCIONAL inválido, ";
+			exc_error+=1;
 		}
 		// validar correo
 		if (column[POSICION_CORREO_PRO].getContents() == null
 				|| column[POSICION_CORREO_PRO].getContents().trim().isEmpty()) {
 			errores += " CORREO PROPIO vacío, ";
+			exc_error+=1;
 		} else {
 			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
 					.getContents().trim()) != true)
 				errores += " CORREO PROPIO inválido, ";
+			exc_error+=1;
 		}
 		// validar genero
 		if (column[POSICION_GENERO].getContents() == null
 				|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
 			errores += " GENERO vacío, ";
+			exc_error+=1;
 		}
 		// validar area_estudio
 		if (column[POSICION_AREA].getContents() == null
 				|| column[POSICION_AREA].getContents().trim().isEmpty()) {
 			errores += " AREA ESTUDIO vacío, ";
+			exc_error+=1;
 		}
 		// validar celular
 		if (column[POSICION_CELULAR].getContents() == null
 				|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
 			errores += " CELULAR ESTUDIO vacío, ";
+			exc_error+=1;
 		}
 		// validar telefono
 		if (column[POSICION_TELEFONO].getContents() == null
 				|| column[POSICION_TELEFONO].getContents().trim().isEmpty()) {
 			errores += " TELÉFONO vacío, ";
+			exc_error+=1;
 		}
 		// validar estado_civil
 		if (column[POSICION_ESTADO_CIV].getContents() == null
 				|| column[POSICION_ESTADO_CIV].getContents().trim().isEmpty()) {
 			errores += " ESTADO CIVIL vacío, ";
+			exc_error+=1;
 		}
 		// validar modalidad
 		if (column[POSICION_MODALIDAD].getContents() == null
 				|| column[POSICION_MODALIDAD].getContents().trim().isEmpty()) {
 			errores += " MODALIDAD vacío, ";
+			exc_error+=1;
 		}
 		// retornar errores
 		return errores;
@@ -403,6 +431,7 @@ public class ManagerCarga {
 				p.setPerTelefono(e.getPerTelefono());
 				p.setPerTipoDni("Cédula");
 				mngDao.actualizar(p);
+				System.out.println("Bien_actualizado_persona");
 			} else {
 				GenPersona p = new GenPersona();
 				p.setPerDni(e.getPerDni());
@@ -416,16 +445,20 @@ public class ManagerCarga {
 				p.setPerNombres(e.getPerNombres());
 				p.setPerTelefono(e.getPerTelefono());
 				p.setPerTipoDni("Cédula");
+				mngDao.insertar(p);
+				System.out.println("Bien_insertado_persona");
 			}
 			if (validarExistenciaEstudiante(e.getPerDni(), e.getIns_codigo())) {
 				editarEstudiante(e.getIns_codigo(), e.getPerDni(),
 						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
 						e.getEstModalidad(), e.getEstAreaEstudio(),
 						e.getEstEstado());
+				exc_actualizados=exc_actualizados+1;
 			} else {
 				insertarEstudiante(e.getIns_codigo(), e.getPerDni(),
 						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
 						e.getEstModalidad(), e.getEstAreaEstudio());
+				exc_nuevos=exc_nuevos+1;
 			}
 		}
 	}
@@ -643,4 +676,62 @@ public class ManagerCarga {
 		}
 	}// Cierre del metodo
 
+	// //////////////////////////////////////////////////////////(REGISTRO-EXCEL)/////////////////////////////////////////////////////////////////////
+	/**
+	 * Creación de metodos para el manejo de la tabla REGISTRO EXCEL
+	 * 
+	 */
+
+	/**
+	 * Metodo para ingresar un Atributo a la base de datos
+	 * 
+	 * @param id
+	 * @param usuario
+	 * @param nombre_archivo
+	 * @param nuevos
+	 * @param actualizados
+	 * @param inactivos
+	 * @param errores
+	 * @throws Exception
+	 */
+	public void insertarExcel(String usuario, String nombre_archivo) throws Exception {
+		try {
+			GenRegistroExcel excel = new GenRegistroExcel();
+			excel.setExcId(ingresarIDRegistroExcel());
+			excel.setExcUsuario(usuario);
+			excel.setExcFecha(new Timestamp(new Date().getTime()));
+			excel.setExcNombreArchivo(nombre_archivo);
+			excel.setExcNuevos(exc_nuevos);
+			excel.setExcActualizados(exc_actualizados);
+			excel.setExcErrores(exc_error);
+			//excel.setExcInactivos(inactivos);
+			excel.setExcIp(Funciones.getIp());
+			mngDao.insertar(excel);
+			System.out.println("Bien_insertar_registro_excel");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_registro_excel");
+			e.printStackTrace();
+		}
+		exc_error=0;
+		exc_actualizados=0;
+		exc_nuevos=0;
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para poner id a los metodos
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Integer ingresarIDRegistroExcel() {
+		List<GenRegistroExcel> l_exc = mngDao.findAll(GenRegistroExcel.class);
+		if (l_exc == null) {
+			System.out.println("valor nulo");
+			return null;
+		} else if (l_exc.size() == 0) {
+			return 1;
+		} else {
+			return l_exc.size() + 1;
+		}
+	}// Cierre del metodo
 }

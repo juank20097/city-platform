@@ -57,6 +57,11 @@ public class EstudiantesBean {
 
 	// content de el archivo base a ser descargado
 	private StreamedContent file;
+	
+	//atributos de Registro excel
+	private String exc_usuario;
+	private String exc_nombre_archivo;
+	private Integer exc_errores;
 
 	public EstudiantesBean() {
 	}
@@ -235,6 +240,8 @@ public class EstudiantesBean {
 					throw new Exception("No se ha seleccionado archivo");
 				else {
 					validarGuardarDatosExcel(event.getFile());
+					//Método para cargar Registro de Excel
+					manager.insertarExcel("juank", "excel_doc");
 					//this.ListEstudiantes();
 				}
 			}
@@ -263,6 +270,7 @@ public class EstudiantesBean {
 		for (int i = 1; i < hoja.getRows(); i++) {
 			if (filaValida(hoja.getRow(i), i + 1)) {
 				datosFila.clear();
+//				Método para saber los datos de todo el excel
 				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL_ESTUDIANTE; j++) {
 					datosFila.add(hoja.getCell(j, i).getContents().trim());
 					System.out.println("fila:"+i+" ,columna:"+j+" dato:"+hoja.getCell(j, i).getContents());
@@ -291,7 +299,9 @@ public class EstudiantesBean {
 		for (String e : errores) {
 			error = error + e + "\n";
 			System.out.println(error);
+			exc_errores=exc_errores+1;
 		}
+		System.out.println(exc_errores);
 	}
 
 	/**
