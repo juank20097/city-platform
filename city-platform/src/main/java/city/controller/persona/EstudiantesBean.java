@@ -27,7 +27,7 @@ import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.extras.Estudiante;
 import city.model.generic.Mensaje;
-import city.model.manager.ManagerTipos;
+import city.model.manager.ManagerCarga;
 
 /**
  * @author jestevez
@@ -39,7 +39,7 @@ public class EstudiantesBean {
 
 	// Atributos de la Clase
 	@EJB
-	private ManagerTipos manager;
+	private ManagerCarga manager;
 
 	// Atriutos de la clase persona detalle
 	private String insCodigo;

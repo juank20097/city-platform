@@ -26,7 +26,7 @@ import city.model.generic.Funciones;
  * 
  */
 @Stateless
-public class ManagerTipos {
+public class ManagerCarga {
 
 	@EJB
 	private ManagerDAO mngDao;
@@ -55,7 +55,7 @@ public class ManagerTipos {
 	/**
 	 * Metodo de inicialización de contructor
 	 */
-	public ManagerTipos() {
+	public ManagerCarga() {
 	}// Cierre del Constructor
 
 	// //////////////////////////////////////////////////////////(ESTUDIANTE-INSTITUCION)/////////////////////////////////////////////////////////////////////
