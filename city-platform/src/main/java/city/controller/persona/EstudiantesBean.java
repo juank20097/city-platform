@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 import jxl.Cell;
@@ -22,6 +23,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenEstudianteInstitucion;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
@@ -40,6 +42,8 @@ public class EstudiantesBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerCarga manager;
+	@Inject
+	private SesionBean session;
 
 	// Atriutos de la clase persona detalle
 	private String insCodigo;
@@ -59,15 +63,15 @@ public class EstudiantesBean {
 	private StreamedContent file;
 	
 	//atributos de Registro excel
+	private String exc_nombre;
 	private String exc_usuario;
-	private String exc_nombre_archivo;
-	private Integer exc_errores;
 
 	public EstudiantesBean() {
 	}
 
 	@PostConstruct
 	public void ini() {
+		exc_usuario = session.validarSesion();
 		l_instituciones = new ArrayList<SelectItem>();
 		l_estudiantes = new ArrayList<Estudiante>();
 		l_estudiantes_total = new ArrayList<Estudiante>();
@@ -239,9 +243,8 @@ public class EstudiantesBean {
 				if (event.getFile() == null)
 					throw new Exception("No se ha seleccionado archivo");
 				else {
+					exc_nombre = event.getFile().getFileName();
 					validarGuardarDatosExcel(event.getFile());
-					//Método para cargar Registro de Excel
-					manager.insertarExcel("juank", "excel_doc");
 					//this.ListEstudiantes();
 				}
 			}
@@ -288,6 +291,8 @@ public class EstudiantesBean {
 					+ "pero los datos sin error fueron guardados.");
 		} else
 			Mensaje.crearMensajeINFO("Datos ingresados correctamente");
+		//Método para cargar Registro de Excel
+		manager.insertarExcel(exc_usuario, exc_nombre);
 	}
 
 	/**
@@ -298,10 +303,8 @@ public class EstudiantesBean {
 		RequestContext.getCurrentInstance().execute("PF('dlgerr').show()");
 		for (String e : errores) {
 			error = error + e + "\n";
-			System.out.println(error);
-			exc_errores=exc_errores+1;
+			System.out.println(error);	
 		}
-		System.out.println(exc_errores);
 	}
 
 	/**
