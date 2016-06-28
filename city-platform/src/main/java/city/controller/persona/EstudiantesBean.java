@@ -283,6 +283,7 @@ public class EstudiantesBean {
 			}
 		}
 		// ingresar personas
+		manager.inactivarEstudiantes(l_estudiantes,getInsCodigo());
 		manager.ingresarEstudiantePersona(l_estudiantes);
 		// mostrar errores
 		if (errores.size() > 0) {

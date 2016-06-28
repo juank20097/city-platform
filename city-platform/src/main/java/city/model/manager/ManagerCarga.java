@@ -221,6 +221,25 @@ public class ManagerCarga {
 		}
 	}// Cierre del metodo
 
+	/**
+	 * Método para inactivar un estudiante
+	 * 
+	 * @param e
+	 */
+	public void inactivarEstadoEstudiante(GenEstudianteInstitucion e,
+			String ins_codigo) {
+		try {
+			if (e.getId().getInsCodigo().equals(ins_codigo)) {
+				e.setEstEstado("I");
+				mngDao.actualizar(e);
+				System.out.println("Bien_mod_estudiante");
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
 	// ////////////////////////////////////////////PROCESOS_DE_EXCEL_(ESTUDIANTES)//////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -271,8 +290,8 @@ public class ManagerCarga {
 	 * @return String
 	 */
 	public String validarFilaExcelEstudiante(Cell[] column) {
-		//seteo de variable de conteo
-		exc_error=0;
+		// seteo de variable de conteo
+		exc_error = 0;
 		String errores = "";
 		// validar cedula
 		if (column[POSICION_CEDULA].getContents() == null
@@ -468,10 +487,14 @@ public class ManagerCarga {
 				exc_nuevos = exc_nuevos + 1;
 			}
 		}
-		System.out.println(exc_actualizados + "VALOR EN METODO");
-		System.out.println(exc_nuevos + "VALOR EN METODO");
 	}
 
+	/**
+	 * Método para comprobar si la persona esta creada
+	 * 
+	 * @param dni
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaPersona(String dni) {
 		List<GenPersona> l_p = mngDao.findWhere(GenPersona.class, "o.perDni='"
@@ -483,6 +506,13 @@ public class ManagerCarga {
 		}
 	}
 
+	/**
+	 * Método para comprobar si el estudiante esta creado
+	 * 
+	 * @param dni
+	 * @param codigo_ins
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaEstudiante(String dni, String codigo_ins) {
 		List<GenEstudianteInstitucion> l_e = mngDao.findWhere(
@@ -493,6 +523,26 @@ public class ManagerCarga {
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Método para inactivar un estudiante
+	 * 
+	 * @param estudiantes_excel
+	 */
+	public void inactivarEstudiantes(List<Estudiante> estudiantes_excel,
+			String ins_codigo) {
+			exc_inactivados=0;
+		try {
+			for (GenEstudianteInstitucion estudiante : findAllEstudiantesXInstitucion(ins_codigo)) {
+				inactivarEstadoEstudiante(estudiante, ins_codigo);
+				exc_inactivados = exc_inactivados + 1;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	// //////////////////////////////////////////////////////////(FUNCIONARIO-INSTITUCION)/////////////////////////////////////////////////////////////////////
@@ -706,10 +756,10 @@ public class ManagerCarga {
 	public void insertarExcel(String usuario, String nombre_archivo)
 			throws Exception {
 		try {
-			System.out.println(exc_actualizados + " vALOR DE ACTUALIZADO");
-			System.out.println(exc_error + " vALOR DE ERROR");
-			System.out.println(exc_nuevos + " vALOR DE NUEVO");
-
+			System.out.println(exc_inactivados);
+			System.out.println(exc_nuevos);
+			System.out.println(exc_actualizados);
+			exc_inactivados=exc_inactivados-exc_actualizados;
 			GenRegistroExcel excel = new GenRegistroExcel();
 			excel.setExcId(ingresarIDRegistroExcel());
 			excel.setExcUsuario(usuario);
@@ -718,7 +768,7 @@ public class ManagerCarga {
 			excel.setExcNuevos(exc_nuevos);
 			excel.setExcActualizados(exc_actualizados);
 			excel.setExcErrores(exc_error);
-			// excel.setExcInactivos(inactivos);
+			excel.setExcInactivos(exc_inactivados);
 			excel.setExcIp(Funciones.getIp());
 			mngDao.insertar(excel);
 			System.out.println("Bien_insertar_registro_excel");
