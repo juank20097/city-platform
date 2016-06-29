@@ -106,6 +106,18 @@ public class ManagerCarga {
 		return mngDao.findWhere(GenEstudianteInstitucion.class,
 				"o.id.insCodigo='" + ins_codigo + "'", null);
 	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucionActivos(
+			String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenEstudianteInstitucion.class,
+				"o.id.insCodigo='" + ins_codigo + "' and o.estEstado='A'", null);
+	}// Cierre del metodo
 
 	/**
 	 * Metodo para obtener el Atributo mediante un ID
@@ -534,7 +546,7 @@ public class ManagerCarga {
 			String ins_codigo) {
 			exc_inactivados=0;
 		try {
-			for (GenEstudianteInstitucion estudiante : findAllEstudiantesXInstitucion(ins_codigo)) {
+			for (GenEstudianteInstitucion estudiante : findAllEstudiantesXInstitucionActivos(ins_codigo)) {
 				inactivarEstadoEstudiante(estudiante, ins_codigo);
 				exc_inactivados = exc_inactivados + 1;
 			}
@@ -753,13 +765,15 @@ public class ManagerCarga {
 	 * @param errores
 	 * @throws Exception
 	 */
-	public void insertarExcel(String usuario, String nombre_archivo)
+	public String insertarExcel(String usuario, String nombre_archivo)
 			throws Exception {
 		try {
 			System.out.println(exc_inactivados);
 			System.out.println(exc_nuevos);
 			System.out.println(exc_actualizados);
+			if (exc_inactivados!=0){
 			exc_inactivados=exc_inactivados-exc_actualizados;
+			}
 			GenRegistroExcel excel = new GenRegistroExcel();
 			excel.setExcId(ingresarIDRegistroExcel());
 			excel.setExcUsuario(usuario);
@@ -772,9 +786,11 @@ public class ManagerCarga {
 			excel.setExcIp(Funciones.getIp());
 			mngDao.insertar(excel);
 			System.out.println("Bien_insertar_registro_excel");
+			return "Datos nuevos: "+exc_nuevos+"; Datos actualizados: "+exc_actualizados+"; Datos erroneos: "+exc_error+"; Datos inactivados: "+exc_inactivados+"";
 		} catch (Exception e) {
 			System.out.println("Error_insertar_registro_excel");
 			e.printStackTrace();
+			return null;
 		}
 	}// Cierre del metodo
 

@@ -47,6 +47,7 @@ public class EstudiantesBean {
 
 	// Atriutos de la clase persona detalle
 	private String insCodigo;
+	private String insCodigoBusqueda;
 
 	private int NUMERO_COLUMNAS_EXCEL_ESTUDIANTE = 14;
 
@@ -61,8 +62,8 @@ public class EstudiantesBean {
 
 	// content de el archivo base a ser descargado
 	private StreamedContent file;
-	
-	//atributos de Registro excel
+
+	// atributos de Registro excel
 	private String exc_nombre;
 	private String exc_usuario;
 
@@ -85,6 +86,21 @@ public class EstudiantesBean {
 	}
 
 	/**
+	 * @return the insCodigoBusqueda
+	 */
+	public String getInsCodigoBusqueda() {
+		return insCodigoBusqueda;
+	}
+
+	/**
+	 * @param insCodigoBusqueda
+	 *            the insCodigoBusqueda to set
+	 */
+	public void setInsCodigoBusqueda(String insCodigoBusqueda) {
+		this.insCodigoBusqueda = insCodigoBusqueda;
+	}
+
+	/**
 	 * @return the l_instituciones
 	 */
 	public List<SelectItem> getL_instituciones() {
@@ -92,7 +108,8 @@ public class EstudiantesBean {
 	}
 
 	/**
-	 * @param l_instituciones the l_instituciones to set
+	 * @param l_instituciones
+	 *            the l_instituciones to set
 	 */
 	public void setL_instituciones(List<SelectItem> l_instituciones) {
 		this.l_instituciones = l_instituciones;
@@ -121,7 +138,8 @@ public class EstudiantesBean {
 	}
 
 	/**
-	 * @param l_estudiantes_total the l_estudiantes_total to set
+	 * @param l_estudiantes_total
+	 *            the l_estudiantes_total to set
 	 */
 	public void setL_estudiantes_total(List<Estudiante> l_estudiantes_total) {
 		this.l_estudiantes_total = l_estudiantes_total;
@@ -190,42 +208,44 @@ public class EstudiantesBean {
 	private void ListEstudiantes() {
 		try {
 			l_estudiantes_total = new ArrayList<Estudiante>();
-			if (getInsCodigo()==null || getInsCodigo().equals("-1")){
+			if (getInsCodigoBusqueda() == null || getInsCodigoBusqueda().equals("-1")) {
 				Mensaje.crearMensajeWARN("No existe los estudiantes respectivos para la institución seleccionada");
-			}else{
-			for (GenEstudianteInstitucion est : manager.findAllEstudiantesXInstitucion(getInsCodigo())) {
-				GenPersona per = manager.PersonaByID(est.getGenPersona()
-						.getPerDni());
-				Estudiante estudiante = new Estudiante();
-				estudiante.setEstAreaEstudio(est.getEstAreaEstudio());
-				estudiante.setEstCarrera(est.getEstCarrera());
-				estudiante.setEstCorreo(est.getEstCorreo());
-				estudiante.setEstEstado(est.getEstEstado());
-				estudiante.setEstModalidad(est.getEstModalidad());
-				estudiante.setEstNivel(est.getEstModalidad());
-				estudiante.setIns_codigo(est.getGenInstitucione()
-						.getInsCodigo());
-				estudiante.setPerApellidos(per.getPerApellidos());
-				estudiante.setPerCelular(per.getPerCelular());
-				estudiante.setPerCorreo(per.getPerCorreo());
-				estudiante.setPerDni(per.getPerDni());
-				estudiante.setPerEstado(per.getPerEstado());
-				estudiante.setPerEstadoCivil(per.getPerEstadoCivil());
-				estudiante.setPerFechaNacimiento(per.getPerFechaNacimiento());
-				estudiante.setPerGenero(per.getPerGenero());
-				estudiante.setPerNombres(per.getPerNombres());
-				estudiante.setPerTelefono(per.getPerTelefono());
-				estudiante.setPerTipoDni(per.getPerTipoDni());
-				l_estudiantes_total.add(estudiante);
-			}
+			} else {
+				for (GenEstudianteInstitucion est : manager
+						.findAllEstudiantesXInstitucion(getInsCodigoBusqueda())) {
+					GenPersona per = manager.PersonaByID(est.getGenPersona()
+							.getPerDni());
+					Estudiante estudiante = new Estudiante();
+					estudiante.setEstAreaEstudio(est.getEstAreaEstudio());
+					estudiante.setEstCarrera(est.getEstCarrera());
+					estudiante.setEstCorreo(est.getEstCorreo());
+					estudiante.setEstEstado(est.getEstEstado());
+					estudiante.setEstModalidad(est.getEstModalidad());
+					estudiante.setEstNivel(est.getEstModalidad());
+					estudiante.setIns_codigo(est.getGenInstitucione()
+							.getInsCodigo());
+					estudiante.setPerApellidos(per.getPerApellidos());
+					estudiante.setPerCelular(per.getPerCelular());
+					estudiante.setPerCorreo(per.getPerCorreo());
+					estudiante.setPerDni(per.getPerDni());
+					estudiante.setPerEstado(per.getPerEstado());
+					estudiante.setPerEstadoCivil(per.getPerEstadoCivil());
+					estudiante.setPerFechaNacimiento(per
+							.getPerFechaNacimiento());
+					estudiante.setPerGenero(per.getPerGenero());
+					estudiante.setPerNombres(per.getPerNombres());
+					estudiante.setPerTelefono(per.getPerTelefono());
+					estudiante.setPerTipoDni(per.getPerTipoDni());
+					l_estudiantes_total.add(estudiante);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	//MÉTODOS_DE_EXCEL///////////////////////////////////////////////////////////////////////////////
+
+	// MÉTODOS_DE_EXCEL///////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Maneja el proceso de selección, carga e inserción de datos de
@@ -235,7 +255,7 @@ public class EstudiantesBean {
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		try {
-			
+
 			if (getInsCodigo() == null || getInsCodigo().isEmpty()
 					|| getInsCodigo().equals("-1")) {
 				Mensaje.crearMensajeWARN("Debe seleccionar una institución para ser añadida la información");
@@ -245,7 +265,7 @@ public class EstudiantesBean {
 				else {
 					exc_nombre = event.getFile().getFileName();
 					validarGuardarDatosExcel(event.getFile());
-					//this.ListEstudiantes();
+					// this.ListEstudiantes();
 				}
 			}
 		} catch (Exception e) {
@@ -261,6 +281,7 @@ public class EstudiantesBean {
 	 * @throws Exception
 	 */
 	public void validarGuardarDatosExcel(UploadedFile archivo) throws Exception {
+		String resultado = "";
 		l_estudiantes = new ArrayList<Estudiante>();
 		errores = new ArrayList<String>();
 		List<String> datosFila = new ArrayList<String>();
@@ -273,27 +294,31 @@ public class EstudiantesBean {
 		for (int i = 1; i < hoja.getRows(); i++) {
 			if (filaValida(hoja.getRow(i), i + 1)) {
 				datosFila.clear();
-//				Método para saber los datos de todo el excel
+				// Método para saber los datos de todo el excel
 				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL_ESTUDIANTE; j++) {
 					datosFila.add(hoja.getCell(j, i).getContents().trim());
-					System.out.println("fila:"+i+" ,columna:"+j+" dato:"+hoja.getCell(j, i).getContents());
+					System.out.println("fila:" + i + " ,columna:" + j
+							+ " dato:" + hoja.getCell(j, i).getContents());
 				}
 				l_estudiantes
 						.add(manager.crearEstudiante(datosFila, insCodigo));
 			}
 		}
 		// ingresar personas
-		manager.inactivarEstudiantes(l_estudiantes,getInsCodigo());
+		manager.inactivarEstudiantes(l_estudiantes, getInsCodigo());
 		manager.ingresarEstudiantePersona(l_estudiantes);
+
+		resultado = manager.insertarExcel(exc_usuario, exc_nombre);
 		// mostrar errores
 		if (errores.size() > 0) {
 			mostrarListaErrores();
 			Mensaje.crearMensajeWARN("Existió errores dentro del archivo, "
-					+ "pero los datos sin error fueron guardados.");
+					+ "pero los datos sin error fueron guardados. " + resultado);
 		} else
-			Mensaje.crearMensajeINFO("Datos ingresados correctamente");
-		//Método para cargar Registro de Excel
-		manager.insertarExcel(exc_usuario, exc_nombre);
+
+			// Método para cargar Registro de Excel
+			Mensaje.crearMensajeINFO("Datos ingresados correctamente. "
+					+ resultado);
 	}
 
 	/**
@@ -304,7 +329,7 @@ public class EstudiantesBean {
 		RequestContext.getCurrentInstance().execute("PF('dlgerr').show()");
 		for (String e : errores) {
 			error = error + e + "\n";
-			System.out.println(error);	
+			System.out.println(error);
 		}
 	}
 
@@ -335,17 +360,19 @@ public class EstudiantesBean {
 		}
 	}
 
-	/////////////////////////////////////////CIERRE_MÉTODOS//////////////////////////////////////////////
-	
+	// ///////////////////////////////////////CIERRE_MÉTODOS//////////////////////////////////////////////
+
 	/**
 	 * Método para cargar los selectItems de Institución
 	 * 
 	 * @return
 	 */
-	public List<SelectItem> selecInsti(){
+	public List<SelectItem> selecInsti() {
 		try {
-			for (GenInstitucione insti : manager.findAllInstitucionesEducativas()) {
-				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti.getInsNombre()));
+			for (GenInstitucione insti : manager
+					.findAllInstitucionesEducativas()) {
+				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti
+						.getInsNombre()));
 			}
 			return l_instituciones;
 		} catch (Exception e) {
@@ -354,27 +381,27 @@ public class EstudiantesBean {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Metodo para cargar los sitios
 	 */
 	public void cargarEstudiantes() {
 		this.ListEstudiantes();
 	}
-	
+
 	/**
 	 * Metodo para verificar la institución seleccionada
 	 */
-	public void mostrarInstitucion(){
+	public void mostrarInstitucion() {
 		l_estudiantes = new ArrayList<Estudiante>();
 		System.out.println(getInsCodigo());
 	}
-	
+
 	/**
 	 * Metodo para cargar todos los estudiantes
 	 */
-	public void cargarEstudiantesTotal(){
+	public void cargarEstudiantesTotal() {
 		this.ListEstudiantes();
 	}
-	
+
 }
