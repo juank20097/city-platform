@@ -1,98 +1,102 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 
+import javax.persistence.*;
+
+import java.util.Date;
 
 /**
  * The persistent class for the gen_persona_detalle database table.
  * 
  */
 @Entity
-@Table(name="gen_persona_detalle")
-@NamedQuery(name="GenPersonaDetalle.findAll", query="SELECT g FROM GenPersonaDetalle g")
+@Table(name = "gen_persona_detalle")
+@NamedQuery(name = "GenPersonaDetalle.findAll", query = "SELECT g FROM GenPersonaDetalle g")
 public class GenPersonaDetalle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="pde_dni")
+	@Column(name = "pde_dni")
 	private String pdeDni;
 
-	@Column(name="pde_ciudad_nacimiento")
+	@Column(name = "pde_ciudad_nacimiento")
 	private String pdeCiudadNacimiento;
 
-	@Column(name="pde_ciudad_residencia")
+	@Column(name = "pde_ciudad_residencia")
 	private String pdeCiudadResidencia;
 
-	@Column(name="pde_condicion_ciudadana")
+	@Column(name = "pde_condicion_ciudadana")
 	private String pdeCondicionCiudadana;
 
-	@Column(name="pde_conyuge")
+	@Column(name = "pde_conyuge")
 	private String pdeConyuge;
 
-	@Column(name="pde_direccion")
+	@Column(name = "pde_direccion")
 	private String pdeDireccion;
 
-	@Column(name="pde_emerg_contacto_id")
+	@Column(name = "pde_emerg_contacto_id")
 	private String pdeEmergContactoId;
 
-	@Column(name="pde_emerg_contacto_nombres")
+	@Column(name = "pde_emerg_contacto_nombres")
 	private String pdeEmergContactoNombres;
 
-	@Column(name="pde_emerg_contacto_telefono")
+	@Column(name = "pde_emerg_contacto_telefono")
 	private String pdeEmergContactoTelefono;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="pde_fecha_defuncion")
+	@Column(name = "pde_fecha_defuncion")
 	private Date pdeFechaDefuncion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="pde_fecha_matrimonio")
+	@Column(name = "pde_fecha_matrimonio")
 	private Date pdeFechaMatrimonio;
 
-	@Column(name="pde_foto")
+	@Column(name = "pde_foto")
 	private String pdeFoto;
 
-	@Column(name="pde_huella")
+	@Column(name = "pde_huella")
 	private byte[] pdeHuella;
 
-	@Column(name="pde_inscripcion_defuncion")
+	@Column(name = "pde_inscripcion_defuncion")
 	private String pdeInscripcionDefuncion;
 
-	@Column(name="pde_lugar_nacimiento")
+	@Column(name = "pde_lugar_nacimiento")
 	private String pdeLugarNacimiento;
 
-	@Column(name="pde_nacionalidad_madre")
+	@Column(name = "pde_nacionalidad_madre")
 	private String pdeNacionalidadMadre;
 
-	@Column(name="pde_nacionalidad_padre")
+	@Column(name = "pde_nacionalidad_padre")
 	private String pdeNacionalidadPadre;
 
-	@Column(name="pde_nombre_madre")
+	@Column(name = "pde_nombre_madre")
 	private String pdeNombreMadre;
 
-	@Column(name="pde_nombre_padre")
+	@Column(name = "pde_nombre_padre")
 	private String pdeNombrePadre;
 
-	@Column(name="pde_observacion")
+	@Column(name = "pde_num_hijos")
+	private Integer pdeNumHijos;
+
+	@Column(name = "pde_observacion")
 	private String pdeObservacion;
 
-	@Column(name="pde_pais_nacimiento")
+	@Column(name = "pde_pais_nacimiento")
 	private String pdePaisNacimiento;
 
-	@Column(name="pde_pais_residencia")
+	@Column(name = "pde_pais_residencia")
 	private String pdePaisResidencia;
 
-	@Column(name="pde_provincia_nacimiento")
+	@Column(name = "pde_provincia_nacimiento")
 	private String pdeProvinciaNacimiento;
 
-	@Column(name="pde_provincia_residencia")
+	@Column(name = "pde_provincia_residencia")
 	private String pdeProvinciaResidencia;
 
-	//bi-directional one-to-one association to GenPersona
+	// bi-directional one-to-one association to GenPersona
 	@OneToOne
-	@JoinColumn(name="pde_dni")
+	@JoinColumn(name = "pde_dni")
 	private GenPersona genPersona;
 
 	public GenPersonaDetalle() {
@@ -104,6 +108,14 @@ public class GenPersonaDetalle implements Serializable {
 
 	public void setPdeDni(String pdeDni) {
 		this.pdeDni = pdeDni;
+	}
+
+	public Integer getPdeNumHijos() {
+		return this.pdeNumHijos;
+	}
+
+	public void setPdeNumHijos(Integer pdeNumHijos) {
+		this.pdeNumHijos = pdeNumHijos;
 	}
 
 	public String getPdeCiudadNacimiento() {

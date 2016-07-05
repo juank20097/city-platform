@@ -4,75 +4,74 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-
 /**
  * The persistent class for the gen_salud database table.
  * 
  */
 @Entity
-@Table(name="gen_salud")
-@NamedQuery(name="GenSalud.findAll", query="SELECT g FROM GenSalud g")
+@Table(name = "gen_salud")
+@NamedQuery(name = "GenSalud.findAll", query = "SELECT g FROM GenSalud g")
 public class GenSalud implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="per_dni")
+	@Column(name = "per_dni")
 	private String perDni;
 
-	@Column(name="sld_alergias")
+	@Column(name = "sld_alergias")
 	private String sldAlergias;
 
-	@Column(name="sld_altura")
+	@Column(name = "sld_altura")
 	private BigDecimal sldAltura;
 
-	@Column(name="sld_asegurado")
+	@Column(name = "sld_asegurado")
 	private String sldAsegurado;
 
-	@Column(name="sld_carnet_conadies")
+	@Column(name = "sld_carnet_conadies")
 	private String sldCarnetConadies;
 
-	@Column(name="sld_consume_alcohol")
+	@Column(name = "sld_consume_alcohol")
 	private String sldConsumeAlcohol;
 
-	@Column(name="sld_consume_tabaco")
+	@Column(name = "sld_consume_tabaco")
 	private String sldConsumeTabaco;
 
-	@Column(name="sld_discapacidad_grado")
+	@Column(name = "sld_discapacidad_grado")
 	private String sldDiscapacidadGrado;
 
-	@Column(name="sld_discapacidad_tipo")
+	@Column(name = "sld_discapacidad_tipo")
 	private String sldDiscapacidadTipo;
 
-	@Column(name="sld_freciencia_consumo_medicame")
-	private String sldFrecienciaConsumoMedicame;
+	@Column(name = "sld_frecuencia_consumo_medicame")
+	private String sldFrecuenciaConsumoMedicame;
 
-	@Column(name="sld_grupo_sanguineo")
+	@Column(name = "sld_grupo_sanguineo")
 	private String sldGrupoSanguineo;
 
-	@Column(name="sld_medicamentos")
+	@Column(name = "sld_medicamentos")
 	private String sldMedicamentos;
 
-	@Column(name="sld_nivel_azucar")
+	@Column(name = "sld_nivel_azucar")
 	private String sldNivelAzucar;
 
-	@Column(name="sld_periodicidad_ejercicio")
+	@Column(name = "sld_periodicidad_ejercicio")
 	private String sldPeriodicidadEjercicio;
 
-	@Column(name="sld_peso")
+	@Column(name = "sld_peso")
 	private BigDecimal sldPeso;
 
-	@Column(name="sld_presion")
+	@Column(name = "sld_presion")
 	private String sldPresion;
 
-	@Column(name="sld_realiza_ejercicio")
+	@Column(name = "sld_realiza_ejercicio")
 	private Boolean sldRealizaEjercicio;
 
-	@Column(name="sld_vegetariano")
+	@Column(name = "sld_vegetariano")
 	private Boolean sldVegetariano;
 
-	//bi-directional one-to-one association to GenPersona
+	// bi-directional one-to-one association to GenPersona
 	@OneToOne
-	@JoinColumn(name="per_dni")
+	@JoinColumn(name = "per_dni")
 	private GenPersona genPersona;
 
 	public GenSalud() {
@@ -150,12 +149,13 @@ public class GenSalud implements Serializable {
 		this.sldDiscapacidadTipo = sldDiscapacidadTipo;
 	}
 
-	public String getSldFrecienciaConsumoMedicame() {
-		return this.sldFrecienciaConsumoMedicame;
+	public String getSldFrecuenciaConsumoMedicame() {
+		return sldFrecuenciaConsumoMedicame;
 	}
 
-	public void setSldFrecienciaConsumoMedicame(String sldFrecienciaConsumoMedicame) {
-		this.sldFrecienciaConsumoMedicame = sldFrecienciaConsumoMedicame;
+	public void setSldFrecuenciaConsumoMedicame(
+			String sldFrecuenciaConsumoMedicame) {
+		this.sldFrecuenciaConsumoMedicame = sldFrecuenciaConsumoMedicame;
 	}
 
 	public String getSldGrupoSanguineo() {

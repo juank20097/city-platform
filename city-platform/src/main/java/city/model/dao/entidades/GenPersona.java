@@ -53,7 +53,7 @@ public class GenPersona implements Serializable {
 	private String perTipoDni;
 
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
-	@OneToMany(mappedBy = "genPersona")
+	@OneToMany(mappedBy = "genPersona", fetch = FetchType.EAGER)
 	private List<GenFuncionariosInstitucion> genFuncionariosInstitucions;
 
 	// bi-directional one-to-one association to GenPersonaDetalle
@@ -65,7 +65,7 @@ public class GenPersona implements Serializable {
 	private GenSalud genSalud;
 
 	// bi-directional many-to-one association to GenEstudianteInstitucion
-	@OneToMany(mappedBy = "genPersona")
+	@OneToMany(mappedBy = "genPersona", fetch = FetchType.EAGER)
 	private List<GenEstudianteInstitucion> genEstudianteInstitucions;
 
 	// bi-directional one-to-one association to GenExterno
