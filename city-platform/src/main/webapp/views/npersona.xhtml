@@ -318,16 +318,25 @@
 							<b:column span="2">
 								<h:outputLabel value="Nombre Conyuge:" />
 							</b:column>
-							<b:column span="4">
+							<b:column span="10">
 								<b:inputText value="#{personaBean.pdeConyuge}">
 								</b:inputText>
 							</b:column>
+						</b:row>
+						<b:row>
 							<b:column span="2">
 								<h:outputLabel value="Fecha Matrimonio:" />
 							</b:column>
 							<b:column span="4">
 								<p:calendar value="#{personaBean.pdeFechaMatrimonio}"
 									pattern="dd-MM-yyyy" mask="true" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Número Hijos:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.pdeNumHijos}">
+								</b:inputText>
 							</b:column>
 						</b:row>
 						<br />
@@ -395,145 +404,145 @@
 						<b:iconAwesome name="heartbeat" />
 					</f:facet>
 					<b:panel>
-					<br />
-					<h4>Datos Generales</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Asegurado:" />
-						</b:column>
-						<b:column span="10">
-							<b:inputText value="#{personaBean.sldAsegurado}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Carnet:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldCarnetConadies}" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Grupo Sanguineo:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldGrupoSanguineo}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Discapacidad Tipo:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldDiscapacidadTipo}" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Discapacidad Grado:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldDiscapacidadGrado}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Peso:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldPeso}" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Presión:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldPresion}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Altura:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldAltura}" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Vegetariano:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldVegetariano}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Nivel Azúcar:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldNivelAzucar}" />
-						</b:column>
-					</b:row>
-					<br />
-					<h4>Hábitos</h4>
-					<p:separator />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Realiza Ejercicio:" />
-						</b:column>
-						<b:column span="4">
-							<b:switch value="#{personaBean.sldRealizaEjercicio}" onText="Si"
-								on-text="Si" offText="No" off-text="No" offColor="success"
-								onColor="primary" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Peridiocidad Ejercicio:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldPeriodicidadEjercicio}" />
-						</b:column>
-					</b:row>
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Consumo de Tabaco:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldConsumeTabaco}" />
-						</b:column>
-						<b:column span="2">
-							<h:outputLabel value="Consumo de Alcohol:" />
-						</b:column>
-						<b:column span="4">
-							<b:inputText value="#{personaBean.sldConsumeAlcohol}" />
-						</b:column>
-					</b:row>
-					<h4>Medicación</h4>
-					<p:separator />
-					<br />
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Consumo de Medicamentos:" />
-						</b:column>
-						<b:column span="10">
-							<b:inputTextarea
-								placeholder="Escribe los medicamentos que está consumiendo la persona....."
-								value="#{personaBean.sldMedicamentos}">
-							</b:inputTextarea>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column span="2">
-							<h:outputLabel value="Frecuencia de consumo de medicamentos:" />
-						</b:column>
-						<b:column span="10">
-							<b:inputTextarea
-								value="#{personaBean.sldFrecienciaConsumoMedicame}">
-							</b:inputTextarea>
-						</b:column>
-					</b:row>
-					<br />
+						<br />
+						<h4>Datos Generales</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Asegurado:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputText value="#{personaBean.sldAsegurado}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Carnet:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldCarnetConadies}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Grupo Sanguineo:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldGrupoSanguineo}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Discapacidad Tipo:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldDiscapacidadTipo}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Discapacidad Grado:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldDiscapacidadGrado}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Peso:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldPeso}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Presión:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldPresion}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Altura:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldAltura}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Vegetariano:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldVegetariano}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Nivel Azúcar:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldNivelAzucar}" />
+							</b:column>
+						</b:row>
+						<br />
+						<h4>Hábitos</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Realiza Ejercicio:" />
+							</b:column>
+							<b:column span="4">
+								<b:switch value="#{personaBean.sldRealizaEjercicio}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Peridiocidad Ejercicio:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldPeriodicidadEjercicio}" />
+							</b:column>
+						</b:row>
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Consumo de Tabaco:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldConsumeTabaco}" />
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Consumo de Alcohol:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputText value="#{personaBean.sldConsumeAlcohol}" />
+							</b:column>
+						</b:row>
+						<h4>Medicación</h4>
+						<p:separator />
+						<br />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Consumo de Medicamentos:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea
+									placeholder="Escribe los medicamentos que está consumiendo la persona....."
+									value="#{personaBean.sldMedicamentos}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Frecuencia de consumo de medicamentos:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea
+									value="#{personaBean.sldFrecienciaConsumoMedicame}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<br />
 					</b:panel>
 				</b:tab>
 			</b:tabView>

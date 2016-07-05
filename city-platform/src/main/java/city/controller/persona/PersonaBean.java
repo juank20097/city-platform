@@ -68,6 +68,7 @@ public class PersonaBean {
 	private String pdePaisResidencia;
 	private String pdeProvinciaNacimiento;
 	private String pdeProvinciaResidencia;
+	private Integer pdeNumHijos;
 
 	// Atributos de la clase salud
 	private String sldAlergias;
@@ -152,6 +153,21 @@ public class PersonaBean {
 	 */
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the pdeNumHijos
+	 */
+	public Integer getPdeNumHijos() {
+		return pdeNumHijos;
+	}
+
+	/**
+	 * @param pdeNumHijos
+	 *            the pdeNumHijos to set
+	 */
+	public void setPdeNumHijos(Integer pdeNumHijos) {
+		this.pdeNumHijos = pdeNumHijos;
 	}
 
 	/**
@@ -1217,7 +1233,7 @@ public class PersonaBean {
 							.trim(), getPerTelefono().trim(), getPerCelular()
 							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
 							.trim(), getPerEstado().trim());
-					//mngAud.insertarAuditoria(session.validarSesion());
+					// mngAud.insertarAuditoria(session.validarSesion());
 					this.comprobarEdicion();
 					// this.editarPersonaDetalle();
 					// this.editarSalud();
@@ -1485,7 +1501,7 @@ public class PersonaBean {
 					getPdeProvinciaResidencia().trim(),
 					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
 					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
-					getPdeFechaMatrimonio(), getPdeNombrePadre().trim(),
+					getPdeFechaMatrimonio(),getPdeNumHijos(), getPdeNombrePadre().trim(),
 					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
 							.trim(), getPdeNacionalidadMadre().trim(),
 					getPdeEmergContactoNombres().trim(),
@@ -1513,7 +1529,7 @@ public class PersonaBean {
 					getPdeProvinciaResidencia().trim(),
 					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
 					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
-					getPdeFechaMatrimonio(), getPdeNombrePadre().trim(),
+					getPdeFechaMatrimonio(),getPdeNumHijos(), getPdeNombrePadre().trim(),
 					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
 							.trim(), getPdeNacionalidadMadre().trim(),
 					getPdeEmergContactoNombres().trim(),
@@ -1757,7 +1773,7 @@ public class PersonaBean {
 			setSldDiscapacidadGrado(salud.getSldDiscapacidadGrado());
 			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
 			setSldFrecienciaConsumoMedicame(salud
-					.getSldFrecienciaConsumoMedicame());
+					.getSldFrecuenciaConsumoMedicame());
 			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
 			setSldMedicamentos(salud.getSldMedicamentos());
 			setSldNivelAzucar(salud.getSldNivelAzucar());

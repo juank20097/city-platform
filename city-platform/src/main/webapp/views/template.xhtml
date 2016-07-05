@@ -20,18 +20,20 @@ and open the template in the editor.
 	<h:outputStylesheet library="css" name="estilo.css" />
 	<link rel="shortcut icon" type="image/x-icon"
 		href="../resources/img/favicon.ico" />
-	
+
 	<ui:insert name="google"></ui:insert>
 </h:head>
-<h:body style="padding: 60px 0; background-image: url(&quot;../resources/img/f3.png&quot;);">
-	<b:navBar brand-img="../resources/img/favicon.ico" inverse="true" brandHref="index.xhtml" fixed="top" 
-		role="navigation">
+<h:body
+	style="padding: 60px 0; background-image: url(&quot;../resources/img/f3.png&quot;);">
+	<b:navBar brand-img="../resources/img/ycp1.png" inverse="true"
+		brandHref="index.xhtml" fixed="top" role="navigation">
 		<b:navbarLinks>
 			<b:navbarLinks>
 				<c:forEach var="t" items="#{sesionBean.menu}">
 					<b:dropMenu value="#{t.nombre}" iconAwesome="fa fa-folder">
 						<c:forEach var="i" items="#{t.lstLinks}">
-							<b:navLink value="#{i.nombre}" href="#{i.link}" iconAwesome="fa fa-location-arrow"/>
+							<b:navLink value="#{i.nombre}" href="#{i.link}"
+								iconAwesome="fa fa-location-arrow" />
 						</c:forEach>
 					</b:dropMenu>
 				</c:forEach>
@@ -62,7 +64,7 @@ and open the template in the editor.
 	</b:container>
 	<b:navBar fluid="true" fixed="bottom" inverse="true" role="navigation">
 		<center>
-			<p style="color: white; font-size:smaller;">
+			<p style="color: white; font-size: smaller;">
 				Sistema Desarrollado por: <a href="http://www.yachay.gob.ec/">Yachay
 					EP</a>; Amazonas N26-146 y la Niña Tel: (593 2 3949100).<br /> Este
 				sistema se debe ejecutar en los navegadores Google Chrome o Mozilla

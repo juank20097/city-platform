@@ -42,7 +42,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.1.2</version>
 		</dependency>
-			<!-- EXCEL -->
+		<!-- EXCEL -->
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
@@ -53,6 +53,13 @@
 			<artifactId>jxl</artifactId>
 			<version>2.6.12</version>
 		</dependency>
+		<!-- POI para descargar documento -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.14</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>city-platform</finalName>
