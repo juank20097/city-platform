@@ -46,17 +46,17 @@
 									fileUploadListener="#{estudiantesBean.handleFileUpload}"
 									mode="advanced" dragDropSupport="false" multiple="false"
 									sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
-									update="frm:dialog frm:mensaje tbb" cancelLabel="Cancelar" uploadLabel="Subir"
-									label="Seleccionar" onstart="PF('statusDialog').show()"
+									update="frm:dialog frm:mensaje tbb" cancelLabel="Cancelar"
+									uploadLabel="Subir" label="Seleccionar"
+									onstart="PF('statusDialog').show()"
 									oncomplete="PF('statusDialog').hide()"
 									invalidFileMessage="Solo se aceptan archivos excel con extensión XLS" />
 							</b:column>
 							<b:column offset="2" span="3">
-								<p:commandLink ajax="false">
-									<p:fileDownload value="#{estudiantesBean.file}" />
+								<p:commandLink ajax="false"
+									action="#{estudiantesBean.descargarArchivoEjemplo()}">
 									<h:outputLabel value="Plantilla Ejemplo" />
-									<p:graphicImage width="30%" height="30%"
-										value="#{facesContex}/resources/img/excel.png"
+									<p:graphicImage value="../resources/img/xls.png"
 										styleClass="img-responsive" />
 								</p:commandLink>
 							</b:column>
@@ -123,9 +123,9 @@
 						</b:dataTable>
 					</b:panel>
 
-					<p:dialog id="dialog" style="padding-top:50px;" header="Errores de contenido"
-						widgetVar="dlgerr" width="500" modal="true" resizable="false"
-						closable="true" position="top">
+					<p:dialog id="dialog" style="padding-top:50px;"
+						header="Errores de contenido" widgetVar="dlgerr" width="500"
+						modal="true" resizable="false" closable="true" position="top">
 						<p:column headerText="Error">
 							<h:outputText value="#{estudiantesBean.errores}" />
 						</p:column>
@@ -145,26 +145,27 @@
 						<b:iconAwesome name="fa-eye" />
 					</f:facet>
 					<b:row>
-					<center>
-						<h1>VISTA DE ESTUDIANTES</h1>
-						<br />
-						<b:column offset="4" span="1">
-							<p:outputLabel>Institución: </p:outputLabel>
-						</b:column>
-						<b:column span="4">
-							<h:selectOneMenu styleClass="form-control"
-								value="#{estudiantesBean.insCodigoBusqueda}">
-								<p:ajax listener="#{estudiantesBean.cargarEstudiantesTotal()}"
-									onstart="PF('statusDialog').show()"
-									oncomplete="PF('statusDialog').hide()" update="frm:tbb_total mensaje2"></p:ajax>
-								<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-								<f:selectItems value="#{estudiantesBean.l_instituciones}">
-								</f:selectItems>
-							</h:selectOneMenu>
-						</b:column>
-					</center>
+						<center>
+							<h1>VISTA DE ESTUDIANTES</h1>
+							<br />
+							<b:column offset="4" span="1">
+								<p:outputLabel>Institución: </p:outputLabel>
+							</b:column>
+							<b:column span="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{estudiantesBean.insCodigoBusqueda}">
+									<p:ajax listener="#{estudiantesBean.cargarEstudiantesTotal()}"
+										onstart="PF('statusDialog').show()"
+										oncomplete="PF('statusDialog').hide()"
+										update="frm:tbb_total mensaje2"></p:ajax>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{estudiantesBean.l_instituciones}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</center>
 					</b:row>
-					<br/>
+					<br />
 					<p:messages id="mensaje2" closable="true"></p:messages>
 					<b:panel title="Listado" look="primary" collapsible="false">
 						<b:dataTable id="tbb_total"
@@ -228,6 +229,14 @@
 								<h:outputText value="#{est.estEstado}"></h:outputText>
 							</h:column>
 						</b:dataTable>
+						<center>
+							<p:commandLink ajax="false" update="mensaje2"
+								action="#{estudiantesBean.descargarArchivo()}">
+								<p:graphicImage value="../resources/img/xls.png"
+									styleClass="img-responsive" />
+								<b:label text="Descargar Datos"></b:label>
+							</p:commandLink>
+						</center>
 					</b:panel>
 				</b:tab>
 			</b:tabView>

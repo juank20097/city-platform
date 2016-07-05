@@ -291,7 +291,7 @@ public class ManagerPersona {
 			String pais_nac, String provincia_nac, String ciudad_nac,
 			String lugar_nac, String pais_rec, String provincia_rec,
 			String ciudad_rec, String direccion_rec,
-			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,
+			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,Integer num_hijos,
 			String nombre_pad, String nacionalidad_pad, String nombre_madre,
 			String nacionalidad_madre, String nombre_emergencia,
 			String id_emergencia, String telefono_emergencia,
@@ -300,6 +300,7 @@ public class ManagerPersona {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
 			personad.setPdeDni(dni);
+			personad.setPdeNumHijos(num_hijos);
 			personad.setPdePaisNacimiento(pais_nac);
 			personad.setPdeProvinciaNacimiento(provincia_nac);
 			personad.setPdeCiudadNacimiento(ciudad_nac);
@@ -361,7 +362,7 @@ public class ManagerPersona {
 			String provincia_nac, String ciudad_nac, String lugar_nac,
 			String pais_rec, String provincia_rec, String ciudad_rec,
 			String direccion_rec, String condicion_ciudadana, String conyuge,
-			Date fecha_matrimonio, String nombre_pad, String nacionalidad_pad,
+			Date fecha_matrimonio,Integer num_hijos, String nombre_pad, String nacionalidad_pad,
 			String nombre_madre, String nacionalidad_madre,
 			String nombre_emergencia, String id_emergencia,
 			String telefono_emergencia, String inscripcion_defuncion,
@@ -369,6 +370,7 @@ public class ManagerPersona {
 		try {
 			GenPersonaDetalle personad = this.PersonaDetalleByID(dni);
 			personad.setPdePaisNacimiento(pais_nac);
+			personad.setPdeNumHijos(num_hijos);
 			personad.setPdeProvinciaNacimiento(provincia_nac);
 			personad.setPdeCiudadNacimiento(ciudad_nac);
 			personad.setPdeLugarNacimiento(lugar_nac);
@@ -466,7 +468,7 @@ public class ManagerPersona {
 			salud.setSldConsumeTabaco(con_tabaco);
 			salud.setSldDiscapacidadGrado(dis_grado);
 			salud.setSldDiscapacidadTipo(dis_tipo);
-			salud.setSldFrecienciaConsumoMedicame(con_medicina);
+			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
 			salud.setSldMedicamentos(medicamentos);
 			salud.setSldNivelAzucar(niv_azucar);
@@ -522,7 +524,7 @@ public class ManagerPersona {
 			salud.setSldConsumeTabaco(con_tabaco);
 			salud.setSldDiscapacidadGrado(dis_grado);
 			salud.setSldDiscapacidadTipo(dis_tipo);
-			salud.setSldFrecienciaConsumoMedicame(con_medicina);
+			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
 			salud.setSldMedicamentos(medicamentos);
 			salud.setSldNivelAzucar(niv_azucar);

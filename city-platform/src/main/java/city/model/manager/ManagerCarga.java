@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -786,7 +785,7 @@ public class ManagerCarga {
 			excel.setExcIp(Funciones.getIp());
 			mngDao.insertar(excel);
 			System.out.println("Bien_insertar_registro_excel");
-			return "Datos nuevos: "+exc_nuevos+"; Datos actualizados: "+exc_actualizados+"; Datos erroneos: "+exc_error+"; Datos inactivados: "+exc_inactivados+"";
+			return "\nDatos nuevos: "+exc_nuevos+";\n Datos actualizados: "+exc_actualizados+";\n Datos erroneos: "+exc_error+";\n Datos inactivados: "+exc_inactivados+"";
 		} catch (Exception e) {
 			System.out.println("Error_insertar_registro_excel");
 			e.printStackTrace();

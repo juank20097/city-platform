@@ -1,6 +1,12 @@
 package city.controller.persona;
 
-import java.io.InputStream;
+
+import java.io.File;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +23,13 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
@@ -28,6 +37,7 @@ import city.model.dao.entidades.GenEstudianteInstitucion;
 import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.extras.Estudiante;
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerCarga;
 
@@ -60,9 +70,6 @@ public class EstudiantesBean {
 	// string con todos los errores
 	private String error;
 
-	// content de el archivo base a ser descargado
-	private StreamedContent file;
-
 	// atributos de Registro excel
 	private String exc_nombre;
 	private String exc_usuario;
@@ -77,11 +84,6 @@ public class EstudiantesBean {
 		l_estudiantes = new ArrayList<Estudiante>();
 		l_estudiantes_total = new ArrayList<Estudiante>();
 		errores = new ArrayList<String>();
-		InputStream stream = ((ServletContext) FacesContext
-				.getCurrentInstance().getExternalContext().getContext())
-				.getResourceAsStream("/resources/doc/excelbase.xls");
-		file = new DefaultStreamedContent(stream, "texto/xls",
-				"archivo_Ejemplo_Estudiantes.xls");
 		selecInsti();
 	}
 
@@ -190,25 +192,11 @@ public class EstudiantesBean {
 		this.error = error;
 	}
 
-	/**
-	 * @return the file
-	 */
-	public StreamedContent getFile() {
-		return file;
-	}
-
-	/**
-	 * @param file
-	 *            the file to set
-	 */
-	public void setFile(StreamedContent file) {
-		this.file = file;
-	}
-
 	private void ListEstudiantes() {
 		try {
 			l_estudiantes_total = new ArrayList<Estudiante>();
-			if (getInsCodigoBusqueda() == null || getInsCodigoBusqueda().equals("-1")) {
+			if (getInsCodigoBusqueda() == null
+					|| getInsCodigoBusqueda().equals("-1")) {
 				Mensaje.crearMensajeWARN("No existe los estudiantes respectivos para la institución seleccionada");
 			} else {
 				for (GenEstudianteInstitucion est : manager
@@ -238,6 +226,7 @@ public class EstudiantesBean {
 					estudiante.setPerTipoDni(per.getPerTipoDni());
 					l_estudiantes_total.add(estudiante);
 				}
+				this.crearExcel(l_estudiantes_total);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -304,10 +293,11 @@ public class EstudiantesBean {
 						.add(manager.crearEstudiante(datosFila, insCodigo));
 			}
 		}
-		// ingresar personas
+		// inactivar estudiantes no encontrados y activos
 		manager.inactivarEstudiantes(l_estudiantes, getInsCodigo());
+		// ingreso de estudiantes
 		manager.ingresarEstudiantePersona(l_estudiantes);
-
+		// Inserciones a registros Excel
 		resultado = manager.insertarExcel(exc_usuario, exc_nombre);
 		// mostrar errores
 		if (errores.size() > 0) {
@@ -317,7 +307,7 @@ public class EstudiantesBean {
 		} else
 
 			// Método para cargar Registro de Excel
-			Mensaje.crearMensajeINFO("Datos ingresados correctamente. "
+			Mensaje.crearMensajeINFO("Datos ingresados correctamente. \n"
 					+ resultado);
 	}
 
@@ -404,4 +394,110 @@ public class EstudiantesBean {
 		this.ListEstudiantes();
 	}
 
+	// ////////////////////////////////////////(Método_creación_excel_imprimir)///////////////////////////////////////////////////////
+
+	/**
+	 * Método para crear un excel y guardarlo en una dirección específica
+	 * 
+	 * @param est
+	 */
+	public void crearExcel(List<Estudiante> est) {
+		try {
+			ServletContext servletContext = (ServletContext) FacesContext
+					.getCurrentInstance().getExternalContext().getContext();
+			String contextPath = servletContext.getRealPath(File.separator
+					+ "resources/doc/descarga/");
+			System.out.println(contextPath);
+
+			HSSFWorkbook libro = new HSSFWorkbook();
+
+			HSSFSheet hoja = libro.createSheet("Datos");
+			System.out.println(est.size());
+			for (int i = 0; i <= est.size() - 1; i++) {
+				HSSFRow row = hoja.createRow(i);
+				llenarFila(est.get(i), row);
+			}
+			OutputStream out = new FileOutputStream(contextPath
+					+ "DatosExcel.xls");
+			libro.write(out);
+			libro.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Método para llenar una fila de un archivo excel
+	 * 
+	 * @param est
+	 * @param row
+	 */
+	public void llenarFila(Estudiante est, HSSFRow row) {
+		if (row.getRowNum() == 0) {
+			HSSFCell celda0 = row.createCell(0);
+			celda0.setCellValue("CÉDULA");
+			HSSFCell celda1 = row.createCell(1);
+			celda1.setCellValue("NOMBRE COMPLETO");
+			HSSFCell celda2 = row.createCell(2);
+			celda2.setCellValue("CORREO INSTITUCIONAL");
+			HSSFCell celda3 = row.createCell(3);
+			celda3.setCellValue("CORREO PERSONAL");
+			HSSFCell celda4 = row.createCell(4);
+			celda4.setCellValue("FECHA DE NACIMIENTO");
+			HSSFCell celda5 = row.createCell(5);
+			celda5.setCellValue("CARRERA");
+			HSSFCell celda6 = row.createCell(6);
+			celda6.setCellValue("NIVEL");
+			HSSFCell celda7 = row.createCell(7);
+			celda7.setCellValue("GÉNERO");
+			HSSFCell celda8 = row.createCell(8);
+			celda8.setCellValue("ESTADO");
+		} else {
+			HSSFCell celda0 = row.createCell(0);
+			celda0.setCellValue(est.getPerDni());
+			HSSFCell celda1 = row.createCell(1);
+			celda1.setCellValue(est.getPerNombres() + " "
+					+ est.getPerApellidos());
+			HSSFCell celda2 = row.createCell(2);
+			celda2.setCellValue(est.getEstCorreo());
+			HSSFCell celda3 = row.createCell(3);
+			celda3.setCellValue(est.getPerCorreo());
+			HSSFCell celda4 = row.createCell(4);
+			celda4.setCellValue(Funciones.dateToString(est
+					.getPerFechaNacimiento()));
+			HSSFCell celda5 = row.createCell(5);
+			celda5.setCellValue(est.getEstCarrera());
+			HSSFCell celda6 = row.createCell(6);
+			celda6.setCellValue(est.getEstNivel());
+			HSSFCell celda7 = row.createCell(7);
+			celda7.setCellValue(est.getPerGenero());
+			HSSFCell celda8 = row.createCell(8);
+			celda8.setCellValue(est.getEstEstado());
+		}
+	}
+
+	/**
+	 * Método para descargar un archivo excel 
+	 */
+	public void descargarArchivo() {
+		if (getInsCodigoBusqueda()==null || getInsCodigoBusqueda().equals("-1")){
+			Mensaje.crearMensajeWARN("No se puede realizar la exportación del archivo porque la lista está vacía o nula.");
+		}else{
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String contextPath = servletContext.getRealPath(File.separator
+				+ "resources/doc/descargaDatosExcel.xls");
+		Funciones.descargarExcel(contextPath);
+		}
+	}
+	
+	public void descargarArchivoEjemplo(){
+		ServletContext servletContext = (ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext();
+		String contextPath = servletContext.getRealPath(File.separator
+				+ "resources/doc/Ejemplo_Base.xls");
+		Funciones.descargarExcel(contextPath);
+	}
 }
