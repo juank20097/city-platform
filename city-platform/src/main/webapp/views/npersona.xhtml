@@ -36,7 +36,7 @@
 							<b:column span="4">
 								<h:selectOneMenu disabled="#{personaBean.edicion}"
 									styleClass="form-control" value="#{personaBean.perTipoDni}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_tipo_dni}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -86,7 +86,7 @@
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
 									value="#{personaBean.perGenero}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_genero}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -129,7 +129,7 @@
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
 									value="#{personaBean.perEstadoCivil}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_estado_civil}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -142,7 +142,7 @@
 							<b:column span="10">
 								<b:selectOneMenu rendered="#{personaBean.edicion}"
 									styleClass="mar" value="#{personaBean.perEstado}">
-									<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+									<f:selectItem itemValue="S/N" itemLabel="--Seleccione--" />
 									<f:selectItems value="#{personaBean.l_estados}">
 									</f:selectItems>
 								</b:selectOneMenu>
@@ -174,7 +174,7 @@
 									value="#{personaBean.pdePaisNacimiento}">
 									<p:ajax listener="#{personaBean.habilitarCamposNac}"
 										update=":frm:p1 :frm:c1"></p:ajax>
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_pais}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -187,7 +187,7 @@
 									value="#{personaBean.pdePaisResidencia}">
 									<p:ajax listener="#{personaBean.habilitarCamposRer}"
 										update=":frm:p2 :frm:c2"></p:ajax>
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_pais}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -205,7 +205,7 @@
 									<p:ajax
 										listener="#{personaBean.mostrarCiudadNac(personaBean.pdeProvinciaNacimiento)}"
 										update=":frm:c1"></p:ajax>
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_provincia}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -220,7 +220,7 @@
 									<p:ajax
 										listener="#{personaBean.mostrarCiudadRes(personaBean.pdeProvinciaResidencia)}"
 										update=":frm:c2"></p:ajax>
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_provincia}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -235,7 +235,7 @@
 								<h:selectOneMenu id="c1" disabled="#{personaBean.select_n}"
 									styleClass="form-control"
 									value="#{personaBean.pdeCiudadNacimiento}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_ciudad_n}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -247,7 +247,7 @@
 								<h:selectOneMenu id="c2" disabled="#{personaBean.select_r}"
 									styleClass="form-control"
 									value="#{personaBean.pdeCiudadResidencia}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_ciudad_r}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -296,7 +296,7 @@
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
 									value="#{personaBean.pdeNacionalidadPadre}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_pais}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -307,7 +307,7 @@
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
 									value="#{personaBean.pdeNacionalidadMadre}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 									<f:selectItems value="#{personaBean.l_pais}">
 									</f:selectItems>
 								</h:selectOneMenu>
@@ -552,7 +552,7 @@
 					oncomplete="PF('statusDialog').hide()"
 					action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>
 				&nbsp;&nbsp;&nbsp;
-				<b:commandButton value="Cancelar" action="#{personaBean.cancelar}"
+				<b:commandButton value="Volver" action="#{personaBean.cancelar}"
 					onclick="PF('statusDialog').show()"
 					oncomplete="PF('statusDialog').hide()" immediate="true"
 					update="frm" look="info"></b:commandButton>

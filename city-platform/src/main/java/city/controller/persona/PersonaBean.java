@@ -1199,13 +1199,15 @@ public class PersonaBean {
 	 * @return vista
 	 */
 	public String nuevaPersona() {
-		edicion = false;
 		setSelect_n(true);
 		setSelect_r(true);
 		this.carga();
 		return "npersona?faces-redirect=true";
 	}
 
+	/**
+	 * Método para cargar todos los select
+	 */
 	public void carga() {
 		cargarEstadoCivil();
 		cargarGeneros();
@@ -1216,7 +1218,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * Permite la creacion o modificacion de una persona
+	 * Permite la creación o modificación de una persona
 	 * 
 	 * @return
 	 */
@@ -1226,29 +1228,28 @@ public class PersonaBean {
 			if (this.validarCampos()) {
 				Mensaje.crearMensajeERROR(getSms_validacion());
 			} else {
-				if (edicion) {
-					manager.editarPersona(getPerDni().trim(), getPerTipoDni()
-							.trim(), getPerNombres().trim(), getPerApellidos()
-							.trim(), getPerFechaNacimiento(), getPerGenero()
-							.trim(), getPerTelefono().trim(), getPerCelular()
-							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
-							.trim(), getPerEstado().trim());
-					// mngAud.insertarAuditoria(session.validarSesion());
-					this.comprobarEdicion();
-					// this.editarPersonaDetalle();
-					// this.editarSalud();
-					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
-				} else {
+				GenPersona p = manager.PersonaByID(getPerDni());
+				if (p == null) {
 					manager.insertarPersona(getPerDni().trim(), getPerTipoDni()
 							.trim(), getPerNombres().trim(), getPerApellidos()
 							.trim(), getPerFechaNacimiento(), getPerGenero()
 							.trim(), getPerTelefono().trim(), getPerCelular()
 							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
 							.trim());
-					this.crearPersonaDetalle();
-					this.crearSalud();
+					this.crearEditarPersonaDetalle();
+					this.crearEditarSalud();
 					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
-					setEdicion(true);
+					// setEdicion(true);
+				} else {
+					manager.editarPersona(getPerDni().trim(), getPerTipoDni()
+							.trim(), getPerNombres().trim(), getPerApellidos()
+							.trim(), getPerFechaNacimiento(), getPerGenero()
+							.trim(), getPerTelefono().trim(), getPerCelular()
+							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
+							.trim(), getPerEstado());
+					this.crearEditarPersonaDetalle();
+					this.crearEditarSalud();
+					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
 				}
 				r = "npersona?faces-redirect=true";
 				// this.cleanDatos();
@@ -1258,27 +1259,6 @@ public class PersonaBean {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
 		return r;
-	}
-
-	/**
-	 * Metodo para verificar la creación o edición de detalles
-	 */
-	public void comprobarEdicion() {
-		try {
-			if (manager.PersonaDetalleByID(getPerDni()) == null) {
-				this.crearPersonaDetalle();
-			} else {
-				this.editarPersonaDetalle();
-			}
-			if (manager.SaludByID(getPerDni()) == null) {
-				this.crearSalud();
-			} else {
-				this.editarSalud();
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -1491,52 +1471,38 @@ public class PersonaBean {
 	 * 
 	 * @return
 	 */
-	public void crearPersonaDetalle() {
+	public void crearEditarPersonaDetalle() {
 		try {
-			manager.insertarPersonaDetalle(getPerDni().trim(), getPdeFoto()
-					.trim(), getPdePaisNacimiento().trim(),
-					getPdeProvinciaNacimiento().trim(),
-					getPdeCiudadNacimiento().trim(), getPdeLugarNacimiento()
-							.trim(), getPdePaisResidencia().trim(),
-					getPdeProvinciaResidencia().trim(),
-					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
-					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
-					getPdeFechaMatrimonio(),getPdeNumHijos(), getPdeNombrePadre().trim(),
-					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
-							.trim(), getPdeNacionalidadMadre().trim(),
-					getPdeEmergContactoNombres().trim(),
-					getPdeEmergContactoId().trim(),
-					getPdeEmergContactoTelefono().trim(),
-					getPdeInscripcionDefuncion().trim(),
-					getPdeFechaDefuncion(), getPdeObservacion().trim());
-		} catch (Exception e) {
-			Mensaje.crearMensajeERROR(e.getMessage());
-		}
-	}
-
-	/**
-	 * Permite la edición de una persona detalle
-	 * 
-	 * @return
-	 */
-	public void editarPersonaDetalle() {
-		try {
-			manager.editarPersonaDetalle(getPerDni().trim(), getPdeFoto()
-					.trim(), getPdePaisNacimiento().trim(),
-					getPdeProvinciaNacimiento().trim(),
-					getPdeCiudadNacimiento().trim(), getPdeLugarNacimiento()
-							.trim(), getPdePaisResidencia().trim(),
-					getPdeProvinciaResidencia().trim(),
-					getPdeCiudadResidencia().trim(), getPdeDireccion().trim(),
-					getPdeCondicionCiudadana().trim(), getPdeConyuge().trim(),
-					getPdeFechaMatrimonio(),getPdeNumHijos(), getPdeNombrePadre().trim(),
-					getPdeNacionalidadPadre().trim(), getPdeNombreMadre()
-							.trim(), getPdeNacionalidadMadre().trim(),
-					getPdeEmergContactoNombres().trim(),
-					getPdeEmergContactoId().trim(),
-					getPdeEmergContactoTelefono().trim(),
-					getPdeInscripcionDefuncion().trim(),
-					getPdeFechaDefuncion(), getPdeObservacion().trim());
+			GenPersonaDetalle pd = manager.PersonaDetalleByID(getPerDni());
+			if (pd == null) {
+				manager.insertarPersonaDetalle(getPerDni(), getPdeFoto(),
+						getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
+						getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
+						getPdePaisResidencia(), getPdeProvinciaResidencia(),
+						getPdeCiudadResidencia(), getPdeDireccion(),
+						getPdeCondicionCiudadana(), getPdeConyuge(),
+						getPdeFechaMatrimonio(), getPdeNumHijos(),
+						getPdeNombrePadre(), getPdeNacionalidadPadre(),
+						getPdeNombreMadre(), getPdeNacionalidadMadre(),
+						getPdeEmergContactoNombres(), getPdeEmergContactoId(),
+						getPdeEmergContactoTelefono(),
+						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
+						getPdeObservacion());
+			} else {
+				manager.editarPersonaDetalle(getPerDni(), getPdeFoto(),
+						getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
+						getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
+						getPdePaisResidencia(), getPdeProvinciaResidencia(),
+						getPdeCiudadResidencia(), getPdeDireccion(),
+						getPdeCondicionCiudadana(), getPdeConyuge(),
+						getPdeFechaMatrimonio(), getPdeNumHijos(),
+						getPdeNombrePadre(), getPdeNacionalidadPadre(),
+						getPdeNombreMadre(), getPdeNacionalidadMadre(),
+						getPdeEmergContactoNombres(), getPdeEmergContactoId(),
+						getPdeEmergContactoTelefono(),
+						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
+						getPdeObservacion());
+			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -1636,10 +1602,10 @@ public class PersonaBean {
 				|| (getPerCorreo() == null || getPerCorreo().isEmpty())
 				|| (getPerDni() == null || getPerDni().isEmpty())
 				|| (getPerEstadoCivil() == null || getPerEstadoCivil().equals(
-						"-1")) || (getPerFechaNacimiento() == null)
-				|| (getPerGenero() == null || getPerGenero().equals("-1"))
+						"S/N")) || (getPerFechaNacimiento() == null)
+				|| (getPerGenero() == null || getPerGenero().equals("S/N"))
 				|| (getPerNombres() == null || getPerNombres().isEmpty())
-				|| (getPerTipoDni() == null || getPerTipoDni().equals("-1"))
+				|| (getPerTipoDni() == null || getPerTipoDni().equals("S/N"))
 				|| (getPerTelefono() == null || getPerTelefono().isEmpty())) {
 			setSms_validacion("Todos los datos generales son requeridos.");
 			return true;
@@ -1717,40 +1683,33 @@ public class PersonaBean {
 	 * 
 	 * @return
 	 */
-	public void crearSalud() {
+	public void crearEditarSalud() {
 		try {
-			manager.insertarSalud(getPerDni().trim(), getSldAlergias().trim(),
-					getSldAltura(), getSldAsegurado().trim(),
-					getSldCarnetConadies().trim(), getSldConsumeAlcohol()
-							.trim(), getSldConsumeTabaco().trim(),
-					getSldDiscapacidadTipo().trim(), getSldDiscapacidadGrado()
-							.trim(), getSldFrecienciaConsumoMedicame().trim(),
-					getSldGrupoSanguineo().trim(), getSldMedicamentos().trim(),
-					getSldNivelAzucar().trim(), getSldPeriodicidadEjercicio()
-							.trim(), getSldPeso(), getSldPresion().trim(),
-					getSldRealizaEjercicio(), getSldVegetariano());
-		} catch (Exception e) {
-			Mensaje.crearMensajeERROR(e.getMessage());
-		}
-	}
+			GenSalud sal = manager.SaludByID(getPerDni());
+			if (sal == null) {
+				manager.insertarSalud(getPerDni(), getSldAlergias(),
+						getSldAltura(), getSldAsegurado(),
+						getSldCarnetConadies(), getSldConsumeAlcohol(),
+						getSldConsumeTabaco(), getSldDiscapacidadTipo(),
+						getSldDiscapacidadGrado(),
+						getSldFrecienciaConsumoMedicame(),
+						getSldGrupoSanguineo(), getSldMedicamentos(),
+						getSldNivelAzucar(), getSldPeriodicidadEjercicio(),
+						getSldPeso(), getSldPresion(),
+						getSldRealizaEjercicio(), getSldVegetariano());
+			} else {
+				manager.editarSalud(getPerDni(), getSldAlergias(),
+						getSldAltura(), getSldAsegurado(),
+						getSldCarnetConadies(), getSldConsumeAlcohol(),
+						getSldConsumeTabaco(), getSldDiscapacidadTipo(),
+						getSldDiscapacidadGrado(),
+						getSldFrecienciaConsumoMedicame(),
+						getSldGrupoSanguineo(), getSldMedicamentos(),
+						getSldNivelAzucar(), getSldPeriodicidadEjercicio(),
+						getSldPeso(), getSldPresion(),
+						getSldRealizaEjercicio(), getSldVegetariano());
+			}
 
-	/**
-	 * Permite la edición de salud
-	 * 
-	 * @return
-	 */
-	public void editarSalud() {
-		try {
-			manager.editarSalud(getPerDni().trim(), getSldAlergias().trim(),
-					getSldAltura(), getSldAsegurado().trim(),
-					getSldCarnetConadies().trim(), getSldConsumeAlcohol()
-							.trim(), getSldConsumeTabaco().trim(),
-					getSldDiscapacidadTipo().trim(), getSldDiscapacidadGrado()
-							.trim(), getSldFrecienciaConsumoMedicame().trim(),
-					getSldGrupoSanguineo().trim(), getSldMedicamentos().trim(),
-					getSldNivelAzucar().trim(), getSldPeriodicidadEjercicio()
-							.trim(), getSldPeso(), getSldPresion().trim(),
-					getSldRealizaEjercicio(), getSldVegetariano());
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}

@@ -493,6 +493,9 @@ public class EstudiantesBean {
 		}
 	}
 	
+	/**
+	 * Método para descargar los archivos de ejemplo
+	 */
 	public void descargarArchivoEjemplo(){
 		ServletContext servletContext = (ServletContext) FacesContext
 				.getCurrentInstance().getExternalContext().getContext();

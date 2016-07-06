@@ -130,7 +130,10 @@ public class ManagerPersona {
 			persona.setPerCelular(celular);
 			persona.setPerCorreo(correo);
 			persona.setPerEstadoCivil(estado_civil);
+			if (estado!=null)
 			persona.setPerEstado(estado);
+			else
+			persona.setPerEstado("A");
 			mngDao.actualizar(persona);
 			System.out.println("Bien_mod_persona");
 		} catch (Exception e) {
