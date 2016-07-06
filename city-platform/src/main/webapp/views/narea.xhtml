@@ -26,18 +26,27 @@
 				<br />
 				<b:row>
 					<b:column span="2">
+						<h:outputLabel value="Código:*" />
+					</b:column>
+					<b:column span="2">
+						<b:inputText required="true"
+							requiredMessage="Campo Código requerido"
+							value="#{areaBean.areCodigo}">
+						</b:inputText>
+					</b:column>
+					<b:column span="1">
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
-					<b:column span="4">
+					<b:column span="3">
 						<b:inputText required="true"
 							requiredMessage="Campo Nombre requerido"
 							value="#{areaBean.areNombre}">
 						</b:inputText>
 					</b:column>
-					<b:column span="2">
+					<b:column span="1">
 						<h:outputLabel value="Sector:*" />
 					</b:column>
-					<b:column span="4">
+					<b:column span="3">
 						<h:selectOneMenu styleClass="form-control"
 							value="#{areaBean.sector}">
 							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
@@ -85,7 +94,6 @@
 					</b:column>
 				</b:row>
 				<b:row>
-
 					<b:column span="2">
 						<h:outputLabel value="Area Referencia:*" />
 					</b:column>
@@ -99,7 +107,7 @@
 					</b:column>
 					<b:column span="5">
 						<b:label
-							text="Recuerda que debes seleccionar esta opción solo si es una sub-area de otra area"
+							text="Recuerda que debes seleccionar esta opción solo si es una sub-area de otra área"
 							severity="success"></b:label>
 					</b:column>
 				</b:row>
@@ -127,7 +135,7 @@
 			</b:panel>
 		</h:form>
 
-		<p:dialog widgetVar="mapDialog" modal="true" draggable="false"
+		<p:dialog style="padding-top:3%;" widgetVar="mapDialog" modal="true" draggable="false"
 			closable="true" resizable="false" header="Seleccione el punto:"
 			showHeader="true">
 			<h:form>

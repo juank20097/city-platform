@@ -206,13 +206,14 @@ public class ManagerSitios {
 	 * @param padre
 	 * @throws Exception
 	 */
-	public void insertarArea(Integer sector, String nombre, String descripcion,
+	public void insertarArea(Integer sector,String codigo, String nombre, String descripcion,
 			String latitud, String longitud, String padre) throws Exception {
 		try {
 			GenArea area = new GenArea();
 			area.setAreId(this.areaId());
 			area.setGenSectore(this.SectoresByID(sector));
 			area.setAreNombre(nombre);
+			area.setAreCodigo(codigo);
 			area.setAreDescripcion(descripcion);
 			area.setAreLatitud(latitud);
 			area.setAreLongitud(longitud);
@@ -238,13 +239,14 @@ public class ManagerSitios {
 	 * @param padre
 	 * @throws Exception
 	 */
-	public void editarArea(Integer area, Integer sector, String nombre,
+	public void editarArea(Integer area, Integer sector,String codigo, String nombre,
 			String descripcion, String latitud, String longitud, String padre,
 			String estado) throws Exception {
 		try {
 			GenArea are = this.AreaByID(area);
 			are.setGenSectore(this.SectoresByID(sector));
 			are.setAreNombre(nombre);
+			are.setAreCodigo(codigo);
 			are.setAreDescripcion(descripcion);
 			are.setAreLatitud(latitud);
 			are.setAreLongitud(longitud);

@@ -1,49 +1,53 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
 
+import javax.persistence.*;
+
+import java.util.List;
 
 /**
  * The persistent class for the gen_areas database table.
  * 
  */
 @Entity
-@Table(name="gen_areas")
-@NamedQuery(name="GenArea.findAll", query="SELECT g FROM GenArea g")
+@Table(name = "gen_areas")
+@NamedQuery(name = "GenArea.findAll", query = "SELECT g FROM GenArea g")
 public class GenArea implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="are_id")
+	@Column(name = "are_id")
 	private Integer areId;
 
-	@Column(name="are_descripcion")
+	@Column(name = "are_codigo")
+	private String areCodigo;
+
+	@Column(name = "are_descripcion")
 	private String areDescripcion;
 
-	@Column(name="are_estado",columnDefinition="bpchar")
+	@Column(name = "are_estado", columnDefinition = "bpchar")
 	private String areEstado;
 
-	@Column(name="are_latitud")
+	@Column(name = "are_latitud")
 	private String areLatitud;
 
-	@Column(name="are_longitud")
+	@Column(name = "are_longitud")
 	private String areLongitud;
 
-	@Column(name="are_nombre")
+	@Column(name = "are_nombre")
 	private String areNombre;
 
-	@Column(name="are_padre")
+	@Column(name = "are_padre")
 	private String arePadre;
 
-	//bi-directional many-to-one association to GenSectore
+	// bi-directional many-to-one association to GenSectore
 	@ManyToOne
-	@JoinColumn(name="sec_id")
+	@JoinColumn(name = "sec_id")
 	private GenSectore genSectore;
 
-	//bi-directional many-to-one association to GenSitio
-	@OneToMany(mappedBy="genArea")
+	// bi-directional many-to-one association to GenSitio
+	@OneToMany(mappedBy = "genArea")
 	private List<GenSitio> genSitios;
 
 	public GenArea() {
@@ -55,6 +59,14 @@ public class GenArea implements Serializable {
 
 	public void setAreId(Integer areId) {
 		this.areId = areId;
+	}
+
+	public String getAreCodigo() {
+		return this.areCodigo;
+	}
+
+	public void setAreCodigo(String areCodigo) {
+		this.areCodigo = areCodigo;
 	}
 
 	public String getAreDescripcion() {

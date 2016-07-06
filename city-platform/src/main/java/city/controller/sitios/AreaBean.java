@@ -46,8 +46,9 @@ public class AreaBean {
 	@EJB
 	private ManagerSitios manager;
 
-	// Atriutos de la clase sector
+	// Atriutos de la clase area
 	private Integer areId;
+	private String areCodigo;
 	private String areDescripcion;
 	private String areEstado;
 	private String areLatitud;
@@ -104,6 +105,21 @@ public class AreaBean {
 	 */
 	public void setGeoModel(MapModel geoModel) {
 		this.geoModel = geoModel;
+	}
+
+	/**
+	 * @return the areCodigo
+	 */
+	public String getAreCodigo() {
+		return areCodigo;
+	}
+
+	/**
+	 * @param areCodigo
+	 *            the areCodigo to set
+	 */
+	public void setAreCodigo(String areCodigo) {
+		this.areCodigo = areCodigo;
 	}
 
 	/**
@@ -321,12 +337,12 @@ public class AreaBean {
 		try {
 			if (!validarCampos()) {
 				if (edicion) {
-					manager.editarArea(getAreId(), getSector(), getAreNombre(),
+					manager.editarArea(getAreId(), getSector(),getAreCodigo(), getAreNombre(),
 							getAreDescripcion(), getAreLatitud(),
 							getAreLongitud(), getArePadre(), getAreEstado());
 					Mensaje.crearMensajeINFO("Actualizado - Area Modificada");
 				} else {
-					manager.insertarArea(getSector(), getAreNombre(),
+					manager.insertarArea(getSector(),getAreCodigo(), getAreNombre(),
 							getAreDescripcion(), getAreLatitud(),
 							getAreLongitud(), getArePadre());
 					Mensaje.crearMensajeINFO("Registrado - Area Creada");
