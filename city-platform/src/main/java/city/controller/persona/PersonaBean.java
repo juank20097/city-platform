@@ -105,6 +105,8 @@ public class PersonaBean {
 	List<SelectItem> l_provincia;
 	List<SelectItem> l_ciudad_n;
 	List<SelectItem> l_ciudad_r;
+	List<SelectItem> l_sangre;
+	List<SelectItem> l_discapacidad;
 
 	// valor de edición e inserción
 	private boolean edicion;
@@ -135,6 +137,8 @@ public class PersonaBean {
 		l_pais = new ArrayList<SelectItem>();
 		l_provincia = new ArrayList<SelectItem>();
 		l_tipo_dni = new ArrayList<SelectItem>();
+		l_sangre = new ArrayList<SelectItem>();
+		l_discapacidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
 		cargarPersonas();
@@ -517,6 +521,21 @@ public class PersonaBean {
 	}
 
 	/**
+	 * @return the l_discapacidad
+	 */
+	public List<SelectItem> getL_discapacidad() {
+		return l_discapacidad;
+	}
+
+	/**
+	 * @param l_discapacidad
+	 *            the l_discapacidad to set
+	 */
+	public void setL_discapacidad(List<SelectItem> l_discapacidad) {
+		this.l_discapacidad = l_discapacidad;
+	}
+
+	/**
 	 * @return the l_ciudad_r
 	 */
 	public List<SelectItem> getL_ciudad_r() {
@@ -800,6 +819,21 @@ public class PersonaBean {
 	 */
 	public void setL_genero(List<SelectItem> l_genero) {
 		this.l_genero = l_genero;
+	}
+
+	/**
+	 * @return the l_sangre
+	 */
+	public List<SelectItem> getL_sangre() {
+		return l_sangre;
+	}
+
+	/**
+	 * @param l_sangre
+	 *            the l_sangre to set
+	 */
+	public void setL_sangre(List<SelectItem> l_sangre) {
+		this.l_sangre = l_sangre;
 	}
 
 	/**
@@ -1214,7 +1248,9 @@ public class PersonaBean {
 		cargarPaises();
 		cargarProvincias();
 		cargarTiposDni();
+		cargarTipoSangre();
 		cargarEstados();
+		cargarDiscapacidad();
 	}
 
 	/**
@@ -1348,6 +1384,31 @@ public class PersonaBean {
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_genero");
 		for (GenCatalogoItemsDet i : completo) {
 			getL_genero().add(
+					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de Tipos Sangre
+	 */
+	public void cargarTipoSangre() {
+		getL_sangre().clear();
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_sangre");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_sangre().add(
+					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de Tipos de Discapacidad
+	 */
+	public void cargarDiscapacidad() {
+		getL_discapacidad().clear();
+		List<GenCatalogoItemsDet> completo = manager
+				.AllofItems("cat_discapacidad");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_discapacidad().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}

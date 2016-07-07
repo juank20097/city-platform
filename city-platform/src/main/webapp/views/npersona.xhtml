@@ -335,8 +335,7 @@
 								<h:outputLabel value="Número Hijos:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeNumHijos}">
-								</b:inputText>
+								<p:spinner value="#{personaBean.pdeNumHijos}" />
 							</b:column>
 						</b:row>
 						<br />
@@ -427,7 +426,12 @@
 								<h:outputLabel value="Grupo Sanguineo:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldGrupoSanguineo}" />
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.sldGrupoSanguineo}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_sangre}">
+									</f:selectItems>
+								</h:selectOneMenu>
 							</b:column>
 						</b:row>
 						<br />
@@ -436,13 +440,22 @@
 								<h:outputLabel value="Discapacidad Tipo:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldDiscapacidadTipo}" />
+								<h:selectOneMenu styleClass="form-control"
+									value="#{personaBean.sldDiscapacidadTipo}">
+									<f:selectItem itemLabel="Ninguna" itemValue="Ninguna"></f:selectItem>
+									<f:selectItems value="#{personaBean.l_discapacidad}">
+									</f:selectItems>
+								</h:selectOneMenu>
 							</b:column>
 							<b:column span="2">
-								<h:outputLabel value="Discapacidad Grado:" />
+								<h:outputLabel value="Discapacidad Grado (%):" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldDiscapacidadGrado}" />
+								<h:panelGrid style="margin-bottom: 10px; width: 100%;">
+									<p:inputText style="width: 100%;" id="txt1" value="#{personaBean.sldDiscapacidadGrado}" />
+									<p:slider for="txt1" />
+								</h:panelGrid>
+								
 							</b:column>
 						</b:row>
 						<br />
@@ -472,7 +485,9 @@
 								<h:outputLabel value="Vegetariano:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldVegetariano}" />
+								<b:switch value="#{personaBean.sldVegetariano}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
 							</b:column>
 						</b:row>
 						<br />
@@ -509,13 +524,17 @@
 								<h:outputLabel value="Consumo de Tabaco:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldConsumeTabaco}" />
+								<b:switch value="#{personaBean.sldConsumeTabaco}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
 							</b:column>
 							<b:column span="2">
 								<h:outputLabel value="Consumo de Alcohol:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldConsumeAlcohol}" />
+								<b:switch value="#{personaBean.sldConsumeAlcohol}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
 							</b:column>
 						</b:row>
 						<h4>Medicación</h4>

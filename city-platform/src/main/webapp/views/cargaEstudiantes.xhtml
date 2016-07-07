@@ -14,7 +14,8 @@
 		<h:form id="frm">
 			<b:tabView pills="true"
 				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-				<b:tab disabled="false" title="Carga de Datos">
+				 <p:ajax event="click" update="frm:tbb frm:tbb_total" />
+				<b:tab disabled="false" title="Carga de Datos" update="tbb">
 					<f:facet name="anchor">
 						<b:iconAwesome name="fa-file-excel-o" />
 					</f:facet>
@@ -140,7 +141,7 @@
 					</p:dialog>
 
 				</b:tab>
-				<b:tab disabled="false" title="Ver Datos">
+				<b:tab disabled="false" title="Ver Datos" update="tbb_total">
 					<f:facet name="anchor">
 						<b:iconAwesome name="fa-eye" />
 					</f:facet>
@@ -152,7 +153,7 @@
 								<p:outputLabel>Institución: </p:outputLabel>
 							</b:column>
 							<b:column span="4">
-								<h:selectOneMenu styleClass="form-control"
+								<h:selectOneMenu id="select1" styleClass="form-control"
 									value="#{estudiantesBean.insCodigoBusqueda}">
 									<p:ajax listener="#{estudiantesBean.cargarEstudiantesTotal()}"
 										onstart="PF('statusDialog').show()"
