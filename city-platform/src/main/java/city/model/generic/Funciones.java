@@ -360,6 +360,7 @@ public class Funciones {
 	 * @param url
 	 */
 	public static void descargarExcel(String url) {
+		System.out.println(url);
 		File ficheroXLS = new File(url);
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		FileInputStream fis = null;

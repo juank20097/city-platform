@@ -1,11 +1,8 @@
 package city.controller.persona;
 
-
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +12,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
@@ -27,16 +23,14 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
-import city.model.dao.entidades.GenEstudianteInstitucion;
-import city.model.dao.entidades.GenInstitucione;
+import city.model.dao.entidades.GenExterno;
 import city.model.dao.entidades.GenPersona;
-import city.model.dao.entidades.extras.Estudiante;
+import city.model.dao.entidades.extras.Externo;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerCarga;
@@ -47,7 +41,7 @@ import city.model.manager.ManagerCarga;
  */
 @SessionScoped
 @ManagedBean
-public class EstudiantesBean {
+public class ExternosBean {
 
 	// Atributos de la Clase
 	@EJB
@@ -55,17 +49,12 @@ public class EstudiantesBean {
 	@Inject
 	private SesionBean session;
 
-	// Atriutos de la clase persona detalle
-	private String insCodigo;
-	private String insCodigoBusqueda;
-
-	private int NUMERO_COLUMNAS_EXCEL_ESTUDIANTE = 14;
+	private int NUMERO_COLUMNAS_EXCEL = 11;
 
 	// listas de registros
-	private List<Estudiante> l_estudiantes;
-	private List<Estudiante> l_estudiantes_total;
+	private List<Externo> l_externos;
+	private List<Externo> l_externos_total;
 	private List<String> errores;
-	private List<SelectItem> l_instituciones;
 
 	// string con todos los errores
 	private String error;
@@ -74,92 +63,45 @@ public class EstudiantesBean {
 	private String exc_nombre;
 	private String exc_usuario;
 
-	public EstudiantesBean() {
+	public ExternosBean() {
 	}
 
 	@PostConstruct
 	public void ini() {
-		exc_usuario = session.validarSesion();
-		l_instituciones = new ArrayList<SelectItem>();
-		l_estudiantes = new ArrayList<Estudiante>();
-		l_estudiantes_total = new ArrayList<Estudiante>();
+		//exc_usuario = session.validarSesion();
+		l_externos = new ArrayList<Externo>();
+		l_externos_total = new ArrayList<Externo>();
 		errores = new ArrayList<String>();
-		selecInsti();
 	}
 
 	/**
-	 * @return the insCodigoBusqueda
+	 * @return the l_externos
 	 */
-	public String getInsCodigoBusqueda() {
-		return insCodigoBusqueda;
+	public List<Externo> getL_externos() {
+		return l_externos;
 	}
 
 	/**
-	 * @param insCodigoBusqueda
-	 *            the insCodigoBusqueda to set
+	 * @param l_externos
+	 *            the l_externos to set
 	 */
-	public void setInsCodigoBusqueda(String insCodigoBusqueda) {
-		this.insCodigoBusqueda = insCodigoBusqueda;
+	public void setL_externos(List<Externo> l_externos) {
+		this.l_externos = l_externos;
 	}
 
 	/**
-	 * @return the l_instituciones
+	 * @return the l_externos_total
 	 */
-	public List<SelectItem> getL_instituciones() {
-		return l_instituciones;
+	public List<Externo> getL_externos_total() {
+		return l_externos_total;
 	}
 
 	/**
-	 * @param l_instituciones
-	 *            the l_instituciones to set
+	 * @param l_externos_total
+	 *            the l_externos_total to set
 	 */
-	public void setL_instituciones(List<SelectItem> l_instituciones) {
-		this.l_instituciones = l_instituciones;
-	}
-
-	/**
-	 * @return the insCodigo
-	 */
-	public String getInsCodigo() {
-		return insCodigo;
-	}
-
-	/**
-	 * @param insCodigo
-	 *            the insCodigo to set
-	 */
-	public void setInsCodigo(String insCodigo) {
-		this.insCodigo = insCodigo;
-	}
-
-	/**
-	 * @return the l_estudiantes_total
-	 */
-	public List<Estudiante> getL_estudiantes_total() {
-		return l_estudiantes_total;
-	}
-
-	/**
-	 * @param l_estudiantes_total
-	 *            the l_estudiantes_total to set
-	 */
-	public void setL_estudiantes_total(List<Estudiante> l_estudiantes_total) {
-		this.l_estudiantes_total = l_estudiantes_total;
-	}
-
-	/**
-	 * @return the l_estudiantes
-	 */
-	public List<Estudiante> getL_estudiantes() {
-		return l_estudiantes;
-	}
-
-	/**
-	 * @param l_estudiantes
-	 *            the l_estudiantes to set
-	 */
-	public void setL_estudiantes(List<Estudiante> l_estudiantes) {
-		this.l_estudiantes = l_estudiantes;
+	public void setL_externos_total(List<Externo> l_externos_total) {
+		this.l_externos_total = l_externos_total;
 	}
 
 	/**
@@ -192,42 +134,28 @@ public class EstudiantesBean {
 		this.error = error;
 	}
 
-	private void ListEstudiantes() {
+	private void ListExternos() {
 		try {
-			l_estudiantes_total = new ArrayList<Estudiante>();
-			if (getInsCodigoBusqueda() == null
-					|| getInsCodigoBusqueda().equals("-1")) {
-				Mensaje.crearMensajeWARN("No existe los estudiantes respectivos para la institución seleccionada");
-			} else {
-				for (GenEstudianteInstitucion est : manager
-						.findAllEstudiantesXInstitucion(getInsCodigoBusqueda())) {
-					GenPersona per = manager.PersonaByID(est.getGenPersona()
-							.getPerDni());
-					Estudiante estudiante = new Estudiante();
-					estudiante.setEstAreaEstudio(est.getEstAreaEstudio());
-					estudiante.setEstCarrera(est.getEstCarrera());
-					estudiante.setEstCorreo(est.getEstCorreo());
-					estudiante.setEstEstado(est.getEstEstado());
-					estudiante.setEstModalidad(est.getEstModalidad());
-					estudiante.setEstNivel(est.getEstModalidad());
-					estudiante.setIns_codigo(est.getGenInstitucione()
-							.getInsCodigo());
-					estudiante.setPerApellidos(per.getPerApellidos());
-					estudiante.setPerCelular(per.getPerCelular());
-					estudiante.setPerCorreo(per.getPerCorreo());
-					estudiante.setPerDni(per.getPerDni());
-					estudiante.setPerEstado(per.getPerEstado());
-					estudiante.setPerEstadoCivil(per.getPerEstadoCivil());
-					estudiante.setPerFechaNacimiento(per
-							.getPerFechaNacimiento());
-					estudiante.setPerGenero(per.getPerGenero());
-					estudiante.setPerNombres(per.getPerNombres());
-					estudiante.setPerTelefono(per.getPerTelefono());
-					estudiante.setPerTipoDni(per.getPerTipoDni());
-					l_estudiantes_total.add(estudiante);
-				}
-				this.crearExcel(l_estudiantes_total);
+			l_externos_total = new ArrayList<Externo>();
+			for (GenExterno ext : manager.findAllExterno()){
+				GenPersona per = manager.PersonaByID(ext.getPerDni());
+				Externo externo = new Externo();
+				externo.setExtReferencia(ext.getExtReferencia());
+				externo.setExtTipo(ext.getExtTipo());
+				externo.setPerApellidos(per.getPerApellidos());
+				externo.setPerCelular(per.getPerCelular());
+				externo.setPerCorreo(per.getPerCorreo());
+				externo.setPerDni(per.getPerDni());
+				externo.setPerEstado(per.getPerEstado());
+				externo.setPerEstadoCivil(per.getPerEstadoCivil());
+				externo.setPerFechaNacimiento(per.getPerFechaNacimiento());
+				externo.setPerGenero(per.getPerGenero());
+				externo.setPerNombres(per.getPerNombres());
+				externo.setPerTelefono(per.getPerTelefono());
+				externo.setPerTipoDni(per.getPerTipoDni());
+				l_externos_total.add(externo);
 			}
+			this.crearExcel(l_externos_total);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -244,11 +172,6 @@ public class EstudiantesBean {
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		try {
-
-			if (getInsCodigo() == null || getInsCodigo().isEmpty()
-					|| getInsCodigo().equals("-1")) {
-				Mensaje.crearMensajeWARN("Debe seleccionar una institución para ser añadida la información");
-			} else {
 				if (event.getFile() == null)
 					throw new Exception("No se ha seleccionado archivo");
 				else {
@@ -256,7 +179,6 @@ public class EstudiantesBean {
 					validarGuardarDatosExcel(event.getFile());
 					// this.ListEstudiantes();
 				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Mensaje.crearMensajeERROR(e.getMessage());
@@ -271,32 +193,30 @@ public class EstudiantesBean {
 	 */
 	public void validarGuardarDatosExcel(UploadedFile archivo) throws Exception {
 		String resultado = "";
-		l_estudiantes = new ArrayList<Estudiante>();
+		l_externos = new ArrayList<Externo>();
 		errores = new ArrayList<String>();
 		List<String> datosFila = new ArrayList<String>();
 		// Toma la primera hoja
 		Sheet hoja = Workbook.getWorkbook(archivo.getInputstream()).getSheet(0);
 		// Validar estructura de excel
-		if (!poseeEstructuraValidaEstudiante(hoja))
+		if (!poseeEstructuraValidaExternos(hoja))
 			throw new Exception("El archivo no posee la estructura correcta.");
 		// Recorre todas las filas y columnas
 		for (int i = 1; i < hoja.getRows(); i++) {
 			if (filaValida(hoja.getRow(i), i + 1)) {
 				datosFila.clear();
 				// Método para saber los datos de todo el excel
-				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL_ESTUDIANTE; j++) {
+				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL; j++) {
 					datosFila.add(hoja.getCell(j, i).getContents().trim());
 					System.out.println("fila:" + i + " ,columna:" + j
 							+ " dato:" + hoja.getCell(j, i).getContents());
 				}
-				l_estudiantes
-						.add(manager.crearEstudiante(datosFila, insCodigo));
+				l_externos
+						.add(manager.crearExterno(datosFila));
 			}
 		}
-		// inactivar estudiantes no encontrados y activos
-		manager.inactivarEstudiantes(l_estudiantes, getInsCodigo());
 		// ingreso de estudiantes
-		manager.ingresarEstudiantePersona(l_estudiantes);
+		manager.ingresarExterno(l_externos);
 		// Inserciones a registros Excel
 		resultado = manager.insertarExcel(exc_usuario, exc_nombre);
 		// mostrar errores
@@ -329,8 +249,8 @@ public class EstudiantesBean {
 	 * @param hoja
 	 * @return boolean
 	 */
-	private boolean poseeEstructuraValidaEstudiante(Sheet hoja) {
-		return manager.validarEncabezadosExcelEstudiante(hoja.getRow(0));
+	private boolean poseeEstructuraValidaExternos(Sheet hoja) {
+		return manager.validarEncabezadosExcelExterno(hoja.getRow(0));
 	}
 
 	/**
@@ -341,7 +261,7 @@ public class EstudiantesBean {
 	 * @return boolean
 	 */
 	private boolean filaValida(Cell[] column, int nroFila) {
-		String error = manager.validarFilaExcelEstudiante(column);
+		String error = manager.validarFilaExcelExterno(column);
 		if (error.isEmpty())
 			return true;
 		else {
@@ -353,45 +273,10 @@ public class EstudiantesBean {
 	// ///////////////////////////////////////CIERRE_MÉTODOS//////////////////////////////////////////////
 
 	/**
-	 * Método para cargar los selectItems de Institución
-	 * 
-	 * @return
-	 */
-	public List<SelectItem> selecInsti() {
-		try {
-			for (GenInstitucione insti : manager
-					.findAllInstitucionesEducativas()) {
-				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti
-						.getInsNombre()));
-			}
-			return l_instituciones;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
 	 * Metodo para cargar los sitios
 	 */
-	public void cargarEstudiantes() {
-		this.ListEstudiantes();
-	}
-
-	/**
-	 * Metodo para verificar la institución seleccionada
-	 */
-	public void mostrarInstitucion() {
-		l_estudiantes = new ArrayList<Estudiante>();
-		System.out.println(getInsCodigo());
-	}
-
-	/**
-	 * Metodo para cargar todos los estudiantes
-	 */
-	public void cargarEstudiantesTotal() {
-		this.ListEstudiantes();
+	public void cargarExternos() {
+		this.ListExternos();
 	}
 
 	// ////////////////////////////////////////(Método_creación_excel_imprimir)///////////////////////////////////////////////////////
@@ -401,24 +286,24 @@ public class EstudiantesBean {
 	 * 
 	 * @param est
 	 */
-	public void crearExcel(List<Estudiante> est) {
+	public void crearExcel(List<Externo> ext) {
 		try {
 			ServletContext servletContext = (ServletContext) FacesContext
 					.getCurrentInstance().getExternalContext().getContext();
 			String contextPath = servletContext.getRealPath(File.separator
-					+ "resources/doc/descarga");
+					+ "resources/doc/descarga/");
 			System.out.println(contextPath);
 
 			HSSFWorkbook libro = new HSSFWorkbook();
 
 			HSSFSheet hoja = libro.createSheet("Datos");
-			System.out.println(est.size());
-			for (int i = 0; i <= est.size() - 1; i++) {
+			System.out.println(ext.size());
+			for (int i = 0; i <= ext.size() - 1; i++) {
 				HSSFRow row = hoja.createRow(i);
-				llenarFila(est.get(i), row);
+				llenarFila(ext.get(i), row);
 			}
 			OutputStream out = new FileOutputStream(contextPath
-					+ "DatosExcel_Estudiante.xls");
+					+ "DatosExcel_Externos.xls");
 			libro.write(out);
 			libro.close();
 
@@ -434,73 +319,81 @@ public class EstudiantesBean {
 	 * @param est
 	 * @param row
 	 */
-	public void llenarFila(Estudiante est, HSSFRow row) {
+	public void llenarFila(Externo ext, HSSFRow row) {
 		if (row.getRowNum() == 0) {
 			HSSFCell celda0 = row.createCell(0);
 			celda0.setCellValue("CÉDULA");
 			HSSFCell celda1 = row.createCell(1);
 			celda1.setCellValue("NOMBRE COMPLETO");
 			HSSFCell celda2 = row.createCell(2);
-			celda2.setCellValue("CORREO INSTITUCIONAL");
+			celda2.setCellValue("CORREO PERSONAL");
 			HSSFCell celda3 = row.createCell(3);
-			celda3.setCellValue("CORREO PERSONAL");
+			celda3.setCellValue("CELULAR");
 			HSSFCell celda4 = row.createCell(4);
-			celda4.setCellValue("FECHA DE NACIMIENTO");
+			celda4.setCellValue("TELÉFONO");
 			HSSFCell celda5 = row.createCell(5);
-			celda5.setCellValue("CARRERA");
+			celda5.setCellValue("FECHA DE NACIMIENTO");
 			HSSFCell celda6 = row.createCell(6);
-			celda6.setCellValue("NIVEL");
+			celda6.setCellValue("ESTADO CIVIL");
 			HSSFCell celda7 = row.createCell(7);
 			celda7.setCellValue("GÉNERO");
 			HSSFCell celda8 = row.createCell(8);
-			celda8.setCellValue("ESTADO");
+			celda8.setCellValue("REFERENCIA");
+			HSSFCell celda9 = row.createCell(9);
+			celda9.setCellValue("TIPO");
+			HSSFCell celda10 = row.createCell(10);
+			celda10.setCellValue("ESTADO");
 		} else {
 			HSSFCell celda0 = row.createCell(0);
-			celda0.setCellValue(est.getPerDni());
+			celda0.setCellValue(ext.getPerDni());
 			HSSFCell celda1 = row.createCell(1);
-			celda1.setCellValue(est.getPerNombres() + " "
-					+ est.getPerApellidos());
+			celda1.setCellValue(ext.getPerNombres() + " "
+					+ ext.getPerApellidos());
 			HSSFCell celda2 = row.createCell(2);
-			celda2.setCellValue(est.getEstCorreo());
+			celda2.setCellValue(ext.getPerCorreo());
 			HSSFCell celda3 = row.createCell(3);
-			celda3.setCellValue(est.getPerCorreo());
+			celda3.setCellValue(ext.getPerCelular());
 			HSSFCell celda4 = row.createCell(4);
-			celda4.setCellValue(Funciones.dateToString(est
-					.getPerFechaNacimiento()));
+			celda4.setCellValue(ext.getPerTelefono());
 			HSSFCell celda5 = row.createCell(5);
-			celda5.setCellValue(est.getEstCarrera());
+			celda5.setCellValue(Funciones.dateToString(ext
+					.getPerFechaNacimiento()));
 			HSSFCell celda6 = row.createCell(6);
-			celda6.setCellValue(est.getEstNivel());
+			celda6.setCellValue(ext.getPerEstadoCivil());
 			HSSFCell celda7 = row.createCell(7);
-			celda7.setCellValue(est.getPerGenero());
+			celda7.setCellValue(ext.getPerGenero());
 			HSSFCell celda8 = row.createCell(8);
-			celda8.setCellValue(est.getEstEstado());
+			celda8.setCellValue(ext.getExtReferencia());
+			HSSFCell celda9 = row.createCell(9);
+			celda9.setCellValue(ext.getExtTipo());
+			HSSFCell celda10 = row.createCell(10);
+			celda10.setCellValue(ext.getPerEstado());
 		}
 	}
 
 	/**
-	 * Método para descargar un archivo excel 
+	 * Método para descargar un archivo excel
 	 */
 	public void descargarArchivo() {
-		if (getInsCodigoBusqueda()==null || getInsCodigoBusqueda().equals("-1")){
-			Mensaje.crearMensajeWARN("No se puede realizar la exportación del archivo porque la lista está vacía o nula.");
-		}else{
-		ServletContext servletContext = (ServletContext) FacesContext
-				.getCurrentInstance().getExternalContext().getContext();
-		String contextPath = servletContext.getRealPath(File.separator
-				+ "resources/doc/descargaDatosExcel_Estudiante.xls");
-		Funciones.descargarExcel(contextPath);
-		}
+			if (l_externos_total==null || l_externos_total.size()==0){
+				Mensaje.crearMensajeWARN("La tabla está vacía como para generar un reporte.");
+			}else{
+			ServletContext servletContext = (ServletContext) FacesContext
+					.getCurrentInstance().getExternalContext().getContext();
+			String contextPath = servletContext.getRealPath(File.separator
+					+ "resources/doc/descargaDatosExcel_Externos.xls");
+			Funciones.descargarExcel(contextPath);
+			}
 	}
-	
+
 	/**
 	 * Método para descargar los archivos de ejemplo
 	 */
-	public void descargarArchivoEjemplo(){
+	public void descargarArchivoEjemplo() {
 		ServletContext servletContext = (ServletContext) FacesContext
 				.getCurrentInstance().getExternalContext().getContext();
 		String contextPath = servletContext.getRealPath(File.separator
-				+ "resources/doc/Ejemplo_Base_Estudiantes.xls");
+				+ "resources/doc/Ejemplo_Base_Externos.xls");
 		Funciones.descargarExcel(contextPath);
 	}
 }

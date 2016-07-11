@@ -17,6 +17,7 @@ import city.model.dao.entidades.GenInstitucione;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenRegistroExcel;
 import city.model.dao.entidades.extras.Estudiante;
+import city.model.dao.entidades.extras.Externo;
 import city.model.generic.Funciones;
 
 /**
@@ -39,7 +40,7 @@ public class ManagerCarga {
 	private static Integer exc_inactivados;
 	private static Integer exc_error;
 
-	// POSICIONES DEL ARRAY DE DATOS DE Estudiantes
+	// POSICIONES DEL ARRAY DE DATOS DE Personas
 	private int POSICION_CEDULA = 0;
 	private int POSICION_NOMBRES = 1;
 	private int POSICION_APELLIDOS = 2;
@@ -49,16 +50,27 @@ public class ManagerCarga {
 	private int POSICION_ESTADO_CIV = 6;
 	private int POSICION_GENERO = 7;
 	private int POSICION_CORREO_PRO = 8;
+	
+	//POSICIONES DEL ARRAY DE DATOS DE Estudiantes
 	private int POSICION_CORREO_INS = 9;
 	private int POSICION_NIVEL = 10;
 	private int POSICION_CARRERA = 11;
 	private int POSICION_MODALIDAD = 12;
 	private int POSICION_AREA = 13;
 
-	private String[] encabezados = { "CÉDULA", "NOMBRES", "APELLIDOS",
+	// POSICIONES DEL ARRAY DE DATOS DE Externo
+	private int POSICION_REFERENCIA = 9;
+	private int POSICION_TIPO = 10;
+
+	private String[] encabezados_estudiante = { "CÉDULA", "NOMBRES",
+			"APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO", "CELULAR",
+			"ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL",
+			"CORREO_INSTITUCIONAL", "NIVEL", "CARRERA", "MODALIDAD",
+			"AREA_ESTUDIO" };
+
+	private String[] encabezados_externo = { "CÉDULA", "NOMBRES", "APELLIDOS",
 			"FECHA_NACIMIENTO", "TELÉFONO", "CELULAR", "ESTADO_CIVIL",
-			"GÉNERO", "CORREO_PERSONAL", "CORREO_INSTITUCIONAL", "NIVEL",
-			"CARRERA", "MODALIDAD", "AREA_ESTUDIO" };
+			"GÉNERO", "CORREO_PERSONAL", "REFERENCIA", "TIPO" };
 
 	/**
 	 * Metodo de inicialización de contructor
@@ -105,7 +117,7 @@ public class ManagerCarga {
 		return mngDao.findWhere(GenEstudianteInstitucion.class,
 				"o.id.insCodigo='" + ins_codigo + "'", null);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
@@ -114,8 +126,9 @@ public class ManagerCarga {
 	@SuppressWarnings("unchecked")
 	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucionActivos(
 			String ins_codigo) throws Exception {
-		return mngDao.findWhere(GenEstudianteInstitucion.class,
-				"o.id.insCodigo='" + ins_codigo + "' and o.estEstado='A'", null);
+		return mngDao
+				.findWhere(GenEstudianteInstitucion.class, "o.id.insCodigo='"
+						+ ins_codigo + "' and o.estEstado='A'", null);
 	}// Cierre del metodo
 
 	/**
@@ -159,7 +172,6 @@ public class ManagerCarga {
 		} else {
 			return l_est.get(0);
 		}
-
 	}// Cierre del metodo
 
 	/**
@@ -261,33 +273,33 @@ public class ManagerCarga {
 	 */
 	public boolean validarEncabezadosExcelEstudiante(Cell[] row) {
 		if (row[POSICION_CEDULA].getContents().equals(
-				encabezados[POSICION_CEDULA])
+				encabezados_estudiante[POSICION_CEDULA])
 				&& row[POSICION_CARRERA].getContents().equals(
-						encabezados[POSICION_CARRERA])
+						encabezados_estudiante[POSICION_CARRERA])
 				&& row[POSICION_CORREO_INS].getContents().equals(
-						encabezados[POSICION_CORREO_INS])
+						encabezados_estudiante[POSICION_CORREO_INS])
 				&& row[POSICION_CORREO_PRO].getContents().equals(
-						encabezados[POSICION_CORREO_PRO])
+						encabezados_estudiante[POSICION_CORREO_PRO])
 				&& row[POSICION_FECHA].getContents().equals(
-						encabezados[POSICION_FECHA])
+						encabezados_estudiante[POSICION_FECHA])
 				&& row[POSICION_GENERO].getContents().equals(
-						encabezados[POSICION_GENERO])
+						encabezados_estudiante[POSICION_GENERO])
 				&& row[POSICION_NIVEL].getContents().equals(
-						encabezados[POSICION_NIVEL])
+						encabezados_estudiante[POSICION_NIVEL])
 				&& row[POSICION_NOMBRES].getContents().equals(
-						encabezados[POSICION_NOMBRES])
+						encabezados_estudiante[POSICION_NOMBRES])
 				&& row[POSICION_APELLIDOS].getContents().equals(
-						encabezados[POSICION_APELLIDOS])
+						encabezados_estudiante[POSICION_APELLIDOS])
 				&& row[POSICION_AREA].getContents().equals(
-						encabezados[POSICION_AREA])
+						encabezados_estudiante[POSICION_AREA])
 				&& row[POSICION_CELULAR].getContents().equals(
-						encabezados[POSICION_CELULAR])
+						encabezados_estudiante[POSICION_CELULAR])
 				&& row[POSICION_ESTADO_CIV].getContents().equals(
-						encabezados[POSICION_ESTADO_CIV])
+						encabezados_estudiante[POSICION_ESTADO_CIV])
 				&& row[POSICION_MODALIDAD].getContents().equals(
-						encabezados[POSICION_MODALIDAD])
+						encabezados_estudiante[POSICION_MODALIDAD])
 				&& row[POSICION_TELEFONO].getContents().equals(
-						encabezados[POSICION_TELEFONO])) {
+						encabezados_estudiante[POSICION_TELEFONO])) {
 			return true;
 		} else {
 			return false;
@@ -543,7 +555,7 @@ public class ManagerCarga {
 	 */
 	public void inactivarEstudiantes(List<Estudiante> estudiantes_excel,
 			String ins_codigo) {
-			exc_inactivados=0;
+		exc_inactivados = 0;
 		try {
 			for (GenEstudianteInstitucion estudiante : findAllEstudiantesXInstitucionActivos(ins_codigo)) {
 				inactivarEstadoEstudiante(estudiante, ins_codigo);
@@ -734,10 +746,8 @@ public class ManagerCarga {
 			throws Exception {
 		try {
 			GenExterno externo = this.ExternoByID(per_dni);
-			externo.setPerDni(per_dni);
 			externo.setExtReferencia(referencia);
 			externo.setExtTipo(tipo);
-			externo.setGenPersona(this.PersonaByID(per_dni));
 			mngDao.actualizar(externo);
 			System.out.println("Bien_mod_externo");
 		} catch (Exception e) {
@@ -745,6 +755,231 @@ public class ManagerCarga {
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
+
+	// ////////////////////////////////////////////PROCESOS_DE_EXCEL_(EXTERNO)//////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Valida la estructura de encabezados de excel
+	 * 
+	 * @param row
+	 * @return
+	 */
+	public boolean validarEncabezadosExcelExterno(Cell[] row) {
+		if (row[POSICION_CEDULA].getContents().equals(
+				encabezados_externo[POSICION_CEDULA])
+				&& row[POSICION_CORREO_PRO].getContents().equals(
+						encabezados_externo[POSICION_CORREO_PRO])
+				&& row[POSICION_FECHA].getContents().equals(
+						encabezados_externo[POSICION_FECHA])
+				&& row[POSICION_GENERO].getContents().equals(
+						encabezados_externo[POSICION_GENERO])
+				&& row[POSICION_REFERENCIA].getContents().equals(
+						encabezados_externo[POSICION_REFERENCIA])
+				&& row[POSICION_TIPO].getContents().equals(
+						encabezados_externo[POSICION_TIPO])
+				&& row[POSICION_NOMBRES].getContents().equals(
+						encabezados_externo[POSICION_NOMBRES])
+				&& row[POSICION_APELLIDOS].getContents().equals(
+						encabezados_externo[POSICION_APELLIDOS])
+				&& row[POSICION_CELULAR].getContents().equals(
+						encabezados_externo[POSICION_CELULAR])
+				&& row[POSICION_ESTADO_CIV].getContents().equals(
+						encabezados_externo[POSICION_ESTADO_CIV])
+				&& row[POSICION_TELEFONO].getContents().equals(
+						encabezados_externo[POSICION_TELEFONO])) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Valida que los datos no sean vacio o null
+	 * 
+	 * @param column
+	 * @return String
+	 */
+	public String validarFilaExcelExterno(Cell[] column) {
+		// seteo de variable de conteo
+		exc_error = 0;
+		String errores = "";
+		// validar cedula
+		if (column[POSICION_CEDULA].getContents() == null
+				|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
+			errores += " CÉDULA EXTERNO vacío, ";
+			exc_error += 1;
+		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
+				.getContents().trim()) != true) {
+			errores += " CÉDULA EXTERNO inválido, ";
+			exc_error = +1;
+		}
+		// validar nombre
+		if (column[POSICION_NOMBRES].getContents() == null
+				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
+			errores += " NOMBRE ESTUDIANTE vacío, ";
+			exc_error += 1;
+		}
+		// validar apellidos
+		if (column[POSICION_APELLIDOS].getContents() == null
+				|| column[POSICION_APELLIDOS].getContents().trim().isEmpty()) {
+			errores += " APELLIDOS ESTUDIANTE vacío, ";
+			exc_error += 1;
+		}
+		// validar fecha nacimiento
+		if (column[POSICION_FECHA].getContents() == null
+				|| column[POSICION_FECHA].getContents().trim().isEmpty()) {
+			errores += " FECHA NACIMIENTO vacío, ";
+			exc_error += 1;
+		}
+		// validar TIPO
+		if (column[POSICION_TIPO].getContents() == null
+				|| column[POSICION_TIPO].getContents().trim().isEmpty()) {
+			errores += " TIPO vacío, ";
+			exc_error += 1;
+		}
+		// validar carrera
+		if (column[POSICION_REFERENCIA].getContents() == null
+				|| column[POSICION_REFERENCIA].getContents().trim().isEmpty()) {
+			errores += " REFERENCIA vacío, ";
+			exc_error += 1;
+		}
+		// validar correo
+		if (column[POSICION_CORREO_PRO].getContents() == null
+				|| column[POSICION_CORREO_PRO].getContents().trim().isEmpty()) {
+			errores += " CORREO PROPIO vacío, ";
+			exc_error += 1;
+		} else {
+			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
+					.getContents().trim()) != true) {
+				errores += " CORREO PROPIO inválido, ";
+				exc_error += 1;
+			}
+		}
+		// validar genero
+		if (column[POSICION_GENERO].getContents() == null
+				|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
+			errores += " GENERO vacío, ";
+			exc_error += 1;
+		}
+		// validar celular
+		if (column[POSICION_CELULAR].getContents() == null
+				|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
+			errores += " CELULAR ESTUDIO vacío, ";
+			exc_error += 1;
+		}
+		// validar telefono
+		if (column[POSICION_TELEFONO].getContents() == null
+				|| column[POSICION_TELEFONO].getContents().trim().isEmpty()) {
+			errores += " TELÉFONO vacío, ";
+			exc_error += 1;
+		}
+		// validar estado_civil
+		if (column[POSICION_ESTADO_CIV].getContents() == null
+				|| column[POSICION_ESTADO_CIV].getContents().trim().isEmpty()) {
+			errores += " ESTADO CIVIL vacío, ";
+			exc_error += 1;
+		}
+		// retornar errores
+		return errores;
+	}
+
+	/**
+	 * Crea una instancia de Externo mediante una Lista de String
+	 * 
+	 * @param datosPersona
+	 * @return SinfPersonal
+	 * @throws Exception
+	 */
+	public Externo crearExterno(List<String> datosExterno) throws Exception {
+		Externo ext = new Externo();
+		ext.setPerDni(datosExterno.get(POSICION_CEDULA));
+		ext.setPerApellidos(datosExterno.get(POSICION_APELLIDOS));
+		ext.setPerCelular(datosExterno.get(POSICION_CEDULA));
+		ext.setPerCorreo(datosExterno.get(POSICION_CORREO_PRO));
+		ext.setPerEstado("A");
+		ext.setPerEstadoCivil(datosExterno.get(POSICION_ESTADO_CIV));
+		ext.setPerFechaNacimiento(Funciones.stringToDate(datosExterno
+				.get(POSICION_FECHA)));
+		ext.setPerGenero(datosExterno.get(POSICION_GENERO));
+		ext.setPerNombres(datosExterno.get(POSICION_NOMBRES));
+		ext.setPerTelefono(datosExterno.get(POSICION_TELEFONO));
+		ext.setPerTipoDni("Cédula");
+		ext.setExtReferencia(datosExterno.get(POSICION_REFERENCIA));
+		ext.setExtTipo(datosExterno.get(POSICION_TIPO));
+		return ext;
+	}
+
+	/**
+	 * Permite el ingreso y actualización de datos de externo
+	 * 
+	 * @param listadoExterno
+	 *            Externos dentro de un periodo determinado
+	 * @throws Exception
+	 */
+	public void ingresarExterno(List<Externo> listadoExterno) throws Exception {
+		// seteo de valores iniciales de conteo
+		exc_actualizados = 0;
+		exc_nuevos = 0;
+
+		for (Externo e : listadoExterno) {
+			if (validarExistenciaPersona(e.getPerDni())) {
+				GenPersona p = PersonaByID(e.getPerDni());
+				p.setPerApellidos(e.getPerApellidos());
+				p.setPerCelular(e.getPerCelular());
+				p.setPerCorreo(e.getPerCorreo());
+				p.setPerEstado(e.getPerEstado());
+				p.setPerEstadoCivil(e.getPerEstadoCivil());
+				p.setPerFechaNacimiento(e.getPerFechaNacimiento());
+				p.setPerGenero(e.getPerGenero());
+				p.setPerNombres(e.getPerNombres());
+				p.setPerTelefono(e.getPerTelefono());
+				p.setPerTipoDni("Cédula");
+				mngDao.actualizar(p);
+				System.out.println("Bien_actualizado_persona");
+			} else {
+				GenPersona p = new GenPersona();
+				p.setPerDni(e.getPerDni());
+				p.setPerApellidos(e.getPerApellidos());
+				p.setPerCelular(e.getPerCelular());
+				p.setPerCorreo(e.getPerCorreo());
+				p.setPerEstado(e.getPerEstado());
+				p.setPerEstadoCivil(e.getPerEstadoCivil());
+				p.setPerFechaNacimiento(e.getPerFechaNacimiento());
+				p.setPerGenero(e.getPerGenero());
+				p.setPerNombres(e.getPerNombres());
+				p.setPerTelefono(e.getPerTelefono());
+				p.setPerTipoDni("Cédula");
+				mngDao.insertar(p);
+				System.out.println("Bien_insertado_persona");
+			}
+			if (validarExistenciaExterno(e.getPerDni())) {
+				editarExterno(e.getPerDni(), e.getExtTipo(),
+						e.getExtReferencia());
+				exc_actualizados = exc_actualizados + 1;
+			} else {
+				insertarExterno(e.getPerDni(), e.getExtTipo(),
+						e.getExtReferencia());
+				exc_nuevos = exc_nuevos + 1;
+			}
+		}
+	}
+
+	/**
+	 * Método para comprobar si el externo esta creado
+	 * 
+	 * @param dni
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean validarExistenciaExterno(String dni) {
+		List<GenExterno> l_e = mngDao.findWhere(GenExterno.class, "o.perDni='"
+				+ dni + "'", null);
+		if (l_e == null || l_e.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	// //////////////////////////////////////////////////////////(REGISTRO-EXCEL)/////////////////////////////////////////////////////////////////////
 	/**
@@ -770,8 +1005,8 @@ public class ManagerCarga {
 			System.out.println(exc_inactivados);
 			System.out.println(exc_nuevos);
 			System.out.println(exc_actualizados);
-			if (exc_inactivados!=0){
-			exc_inactivados=exc_inactivados-exc_actualizados;
+			if (exc_inactivados == null) {
+				exc_inactivados = 0;
 			}
 			GenRegistroExcel excel = new GenRegistroExcel();
 			excel.setExcId(ingresarIDRegistroExcel());
@@ -785,7 +1020,9 @@ public class ManagerCarga {
 			excel.setExcIp(Funciones.getIp());
 			mngDao.insertar(excel);
 			System.out.println("Bien_insertar_registro_excel");
-			return "\nDatos nuevos: "+exc_nuevos+";\n Datos actualizados: "+exc_actualizados+";\n Datos erroneos: "+exc_error+";\n Datos inactivados: "+exc_inactivados+"";
+			return "\nDatos nuevos: " + exc_nuevos + ";\n Datos actualizados: "
+					+ exc_actualizados + ";\n Datos erroneos: " + exc_error
+					+ ";\n Datos inactivados: " + exc_inactivados + "";
 		} catch (Exception e) {
 			System.out.println("Error_insertar_registro_excel");
 			e.printStackTrace();
