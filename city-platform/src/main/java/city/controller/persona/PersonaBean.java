@@ -110,6 +110,7 @@ public class PersonaBean {
 
 	// valor de edición e inserción
 	private boolean edicion;
+	private String datoBuscar;
 
 	// mensaje de validación de campos
 	private String sms_validacion;
@@ -141,7 +142,22 @@ public class PersonaBean {
 		l_discapacidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
-		cargarPersonas();
+		// cargarPersonas();
+	}
+
+	/**
+	 * @return the datoBuscar
+	 */
+	public String getDatoBuscar() {
+		return datoBuscar;
+	}
+
+	/**
+	 * @param datoBuscar
+	 *            the datoBuscar to set
+	 */
+	public void setDatoBuscar(String datoBuscar) {
+		this.datoBuscar = datoBuscar;
 	}
 
 	/**
@@ -1347,7 +1363,8 @@ public class PersonaBean {
 	 */
 	public String cancelar() {
 		this.cleanDatos();
-		this.cargarPersonas();
+		// this.cargarPersonas();
+		getL_persona().clear();
 		return "persona?faces-redirect=true";
 	}
 
@@ -1523,6 +1540,15 @@ public class PersonaBean {
 			color = "red";
 
 		return color;
+	}
+	
+	public void buscarPersona(){
+		l_persona.clear();
+		if (datoBuscar==null || datoBuscar.isEmpty()){
+			Mensaje.crearMensajeWARN("No existe el dato para realizar la búsqueda.");
+		}else{
+			l_persona=manager.buscarPersona(datoBuscar);
+		}
 	}
 
 	// ////////////////////////////////////////////////////////PERSONA-DETALLE/////////////////////////////////////////////////////////

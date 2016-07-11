@@ -1,6 +1,7 @@
 package city.model.manager;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -234,6 +235,43 @@ public class ManagerPersona {
 			return li;
 		}
 	}// Cierre del metodo
+	
+	
+	/**
+	 * Método para buscar una persona por variable
+	 * 
+	 * @param dato
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenPersona> buscarPersona(String dato){
+		List<GenPersona> l_p= new ArrayList<GenPersona>();
+		if (dato.length()>2){
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perDni like '%"+dato+"%'", null));
+			l_p.addAll(verificarMayusculas(dato));
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perCelular like '%"+dato+"%'", null));
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perEstadoCivil like '%"+dato+"%'", null));
+			//l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perNombres like '%"+dato+"%'", null));
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perTelefono like '%"+dato+"%'", null));
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perTipoDni like '%"+dato+"%'", null));
+		}else {
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perEstado like '%"+dato+"%'", null));
+			//l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perFechaNacimiento like '%"+dato+"%'", null));
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perGenero like '%"+dato+"%'", null));
+		}
+		return l_p;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GenPersona> verificarMayusculas(String dato){
+		List<GenPersona> l = new ArrayList<GenPersona>();
+		l = (List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato+"%' or o.perCorreo like '%"+dato+"%'", null);
+		if (l==null || l.size()==0)
+		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato.toLowerCase()+"%' or o.perCorreo like '%"+dato.toLowerCase()+"%'", null));
+		if (l==null || l.size()==0)
+		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato.toUpperCase()+"%'", null));
+		return l;
+	}
 
 	// //////////////////////////////////////////////////////////(PERSONAS-DETALLES)/////////////////////////////////////////////////////////////////////
 	/**
