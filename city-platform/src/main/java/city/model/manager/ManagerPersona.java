@@ -131,10 +131,10 @@ public class ManagerPersona {
 			persona.setPerCelular(celular);
 			persona.setPerCorreo(correo);
 			persona.setPerEstadoCivil(estado_civil);
-			if (estado!=null)
-			persona.setPerEstado(estado);
+			if (estado != null)
+				persona.setPerEstado(estado);
 			else
-			persona.setPerEstado("A");
+				persona.setPerEstado("A");
 			mngDao.actualizar(persona);
 			System.out.println("Bien_mod_persona");
 		} catch (Exception e) {
@@ -170,7 +170,6 @@ public class ManagerPersona {
 	public GenCatalogoCab CatalogoByID(String codigo) throws Exception {
 		return (GenCatalogoCab) mngDao.findById(GenCatalogoCab.class, codigo);
 	}// Cierre del metodo
-
 
 	// ////////////////////////////////////////////////////////////(ITEM)///////////////////////////////////////////////////////////////////////
 
@@ -235,8 +234,7 @@ public class ManagerPersona {
 			return li;
 		}
 	}// Cierre del metodo
-	
-	
+
 	/**
 	 * Método para buscar una persona por variable
 	 * 
@@ -244,32 +242,43 @@ public class ManagerPersona {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenPersona> buscarPersona(String dato){
-		List<GenPersona> l_p= new ArrayList<GenPersona>();
-		if (dato.length()>2){
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perDni like '%"+dato+"%'", null));
+	public List<GenPersona> buscarPersona(String dato) {
+		List<GenPersona> l_p = new ArrayList<GenPersona>();
+		if (dato.length() > 2) {
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
+					"o.perDni like '%" + dato + "%' or o.perCelular like '%"
+							+ dato + "%' or o.perEstadoCivil like '%" + dato
+							+ "%' or o.perTelefono like '%" + dato
+							+ "%' or o.perTipoDni like '%" + dato + "%'", null));
 			l_p.addAll(verificarMayusculas(dato));
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perCelular like '%"+dato+"%'", null));
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perEstadoCivil like '%"+dato+"%'", null));
-			//l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perNombres like '%"+dato+"%'", null));
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perTelefono like '%"+dato+"%'", null));
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perTipoDni like '%"+dato+"%'", null));
-		}else {
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perEstado like '%"+dato+"%'", null));
-			//l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perFechaNacimiento like '%"+dato+"%'", null));
-			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perGenero like '%"+dato+"%'", null));
+		} else {
+			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
+					"o.perEstado like '%" + dato + "%' or o.perGenero like '%"
+							+ dato + "%'", null));
 		}
 		return l_p;
 	}
-	
+
+	/**
+	 * Método para verificar el uso de mayúsculas en el filtrado por nombre
+	 * 
+	 * @param dato
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
-	public List<GenPersona> verificarMayusculas(String dato){
+	public List<GenPersona> verificarMayusculas(String dato) {
 		List<GenPersona> l = new ArrayList<GenPersona>();
-		l = (List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato+"%' or o.perCorreo like '%"+dato+"%'", null);
+		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
+				"o.perApellidos like '%" + dato.toLowerCase()
+						+ "%' or o.perCorreo like '%" + dato.toLowerCase()
+						+ "%' or o.perApellidos like '%" + dato.toUpperCase()
+						+ "%' or o.perApellidos like '%" + dato + "%'", null));
 		if (l==null || l.size()==0)
-		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato.toLowerCase()+"%' or o.perCorreo like '%"+dato.toLowerCase()+"%'", null));
-		if (l==null || l.size()==0)
-		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class, "o.perApellidos like '%"+dato.toUpperCase()+"%'", null));
+			l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
+				"o.perNombres like '%" + dato.toLowerCase()
+						+ "%' or o.perCorreo like '%" + dato.toLowerCase()
+						+ "%' or o.perNombres like '%" + dato.toUpperCase()
+						+ "%' or o.perNombres like '%" + dato + "%'", null));
 		return l;
 	}
 
@@ -332,12 +341,12 @@ public class ManagerPersona {
 			String pais_nac, String provincia_nac, String ciudad_nac,
 			String lugar_nac, String pais_rec, String provincia_rec,
 			String ciudad_rec, String direccion_rec,
-			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,Integer num_hijos,
-			String nombre_pad, String nacionalidad_pad, String nombre_madre,
-			String nacionalidad_madre, String nombre_emergencia,
-			String id_emergencia, String telefono_emergencia,
-			String inscripcion_defuncion, Date fecha_defuncion,
-			String observacion) throws Exception {
+			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,
+			Integer num_hijos, String nombre_pad, String nacionalidad_pad,
+			String nombre_madre, String nacionalidad_madre,
+			String nombre_emergencia, String id_emergencia,
+			String telefono_emergencia, String inscripcion_defuncion,
+			Date fecha_defuncion, String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
 			personad.setPdeDni(dni);
@@ -403,11 +412,12 @@ public class ManagerPersona {
 			String provincia_nac, String ciudad_nac, String lugar_nac,
 			String pais_rec, String provincia_rec, String ciudad_rec,
 			String direccion_rec, String condicion_ciudadana, String conyuge,
-			Date fecha_matrimonio,Integer num_hijos, String nombre_pad, String nacionalidad_pad,
-			String nombre_madre, String nacionalidad_madre,
-			String nombre_emergencia, String id_emergencia,
-			String telefono_emergencia, String inscripcion_defuncion,
-			Date fecha_defuncion, String observacion) throws Exception {
+			Date fecha_matrimonio, Integer num_hijos, String nombre_pad,
+			String nacionalidad_pad, String nombre_madre,
+			String nacionalidad_madre, String nombre_emergencia,
+			String id_emergencia, String telefono_emergencia,
+			String inscripcion_defuncion, Date fecha_defuncion,
+			String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = this.PersonaDetalleByID(dni);
 			personad.setPdePaisNacimiento(pais_nac);
@@ -554,7 +564,8 @@ public class ManagerPersona {
 			String con_tabaco, String dis_tipo, String dis_grado,
 			String con_medicina, String gru_sanguineo, String medicamentos,
 			String niv_azucar, String ejercicios, BigDecimal peso,
-			String presion, Boolean rea_ejercicio, Boolean vegetariano) throws Exception {
+			String presion, Boolean rea_ejercicio, Boolean vegetariano)
+			throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
 			salud.setSldAlergias(alergias);

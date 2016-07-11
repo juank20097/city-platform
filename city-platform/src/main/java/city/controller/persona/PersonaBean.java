@@ -1542,6 +1542,9 @@ public class PersonaBean {
 		return color;
 	}
 	
+	/**
+	 * Método para buscar una persona
+	 */
 	public void buscarPersona(){
 		l_persona.clear();
 		if (datoBuscar==null || datoBuscar.isEmpty()){
