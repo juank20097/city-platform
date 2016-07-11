@@ -14,7 +14,7 @@
 		<h:form id="frm">
 			<b:tabView pills="true"
 				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-				 <p:ajax event="click" update="frm:tbb frm:tbb_total" />
+				<p:ajax event="click" update="frm:tbb frm:tbb_total" />
 				<b:tab disabled="false" title="Carga de Datos" update="tbb">
 					<f:facet name="anchor">
 						<b:iconAwesome name="fa-file-excel-o" />
@@ -52,8 +52,7 @@
 					<br />
 					<p:messages id="mensaje" closable="true"></p:messages>
 					<b:panel title="Listado" look="primary" collapsible="false">
-						<b:dataTable id="tbb" value="#{externosBean.l_externos}"
-							var="est"
+						<b:dataTable id="tbb" value="#{externosBean.l_externos}" var="est"
 							styleClass="table table-striped table-bordered dt-responsive nowrap"
 							fixedHeader="true" responsive="true" lang="es" style="width:100%">
 							<h:column>
@@ -127,10 +126,12 @@
 					<b:row>
 						<center>
 							<h1>VISTA DE EXTERNOS</h1>
-							<br/>
-							<b:commandButton value="Listar Todos" onclick="PF('statusDialog').show()"
-					oncomplete="PF('statusDialog').hide()"
-					action="#{externosBean.cargarExternos()}" update="frm:tbb_total" look="info"></b:commandButton>
+							<br />
+							<b:commandButton value="Listar Todos"
+								onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()"
+								action="#{externosBean.cargarExternos()}" update="frm"
+								look="info"></b:commandButton>
 						</center>
 					</b:row>
 					<br />

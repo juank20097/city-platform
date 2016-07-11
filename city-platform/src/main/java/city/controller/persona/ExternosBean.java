@@ -68,7 +68,7 @@ public class ExternosBean {
 
 	@PostConstruct
 	public void ini() {
-		//exc_usuario = session.validarSesion();
+		exc_usuario = session.validarSesion();
 		l_externos = new ArrayList<Externo>();
 		l_externos_total = new ArrayList<Externo>();
 		errores = new ArrayList<String>();
