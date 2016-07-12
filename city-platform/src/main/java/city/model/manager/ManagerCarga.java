@@ -606,11 +606,23 @@ public class ManagerCarga {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
+	public List<GenFuncionariosInstitucion> findAllFuncionarioXInstitucion(
+			String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenFuncionariosInstitucion.class,
+				"o.id.insCodigo='" + ins_codigo + "'", null);
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
 	public List<GenFuncionariosInstitucion> findAllFuncionariosXInstitucionActivos(
 			String ins_codigo) throws Exception {
 		return mngDao
 				.findWhere(GenFuncionariosInstitucion.class, "o.id.insCodigo='"
-						+ ins_codigo + "' and o.estEstado='A'", null);
+						+ ins_codigo + "' and o.funEstado='A'", null);
 	}// Cierre del metodo
 
 	/**
@@ -620,12 +632,26 @@ public class ManagerCarga {
 	 * @return Objeto
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public GenFuncionariosInstitucion FuncionarioByID(String ins_codigo,
 			String per_dni) throws Exception {
-		return (GenFuncionariosInstitucion) mngDao.findWhere(
+		List<GenFuncionariosInstitucion> l = mngDao.findWhere(
 				GenFuncionariosInstitucion.class, "o.id.insCodigo = '"
 						+ ins_codigo + "' and o.id.perDni = '" + per_dni + "'",
 				null);
+		return l.get(0);
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenInstitucione> findAllInstitucionesServicios()
+			throws Exception {
+		return mngDao.findWhere(GenInstitucione.class,
+				"o.insCategoria='Servicios'", null);
 	}// Cierre del metodo
 
 	/**
@@ -939,7 +965,6 @@ public class ManagerCarga {
 		// seteo de valores iniciales de conteo
 		exc_actualizados = 0;
 		exc_nuevos = 0;
-
 		for (Funcionario e : listadoFuncionarios) {
 			if (validarExistenciaPersona(e.getPerDni())) {
 				GenPersona p = PersonaByID(e.getPerDni());
