@@ -56,7 +56,7 @@
 								<h:outputLabel value="Nombres:*" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText validatorMessage="Ingrese solo letras en el nombre"
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" validatorMessage="Ingrese solo letras en el nombre"
 									value="#{personaBean.perNombres}">
 									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
 								</b:inputText>
@@ -65,7 +65,7 @@
 								<h:outputLabel value="Apellidos:*" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 									validatorMessage="Ingrese solo letras en el apellido"
 									value="#{personaBean.perApellidos}">
 									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
@@ -120,7 +120,7 @@
 								<h:outputLabel value="Correo:*" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.perCorreo}">
+								<b:inputText onkeyup="this.value=this.value.toLowerCase();" value="#{personaBean.perCorreo}">
 								</b:inputText>
 							</b:column>
 							<b:column span="2">
@@ -259,14 +259,14 @@
 								<h:outputLabel value="Lugar:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeLugarNacimiento}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeLugarNacimiento}">
 								</b:inputText>
 							</b:column>
 							<b:column offset="1" span="1">
 								<h:outputLabel value="Dirección:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeDireccion}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeDireccion}">
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -278,14 +278,14 @@
 								<h:outputLabel value="Nombre Padre:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeNombrePadre}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeNombrePadre}">
 								</b:inputText>
 							</b:column>
 							<b:column span="2">
 								<h:outputLabel value="Nombre Madre:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeNombreMadre}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeNombreMadre}">
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -319,7 +319,7 @@
 								<h:outputLabel value="Nombre Conyuge:" />
 							</b:column>
 							<b:column span="10">
-								<b:inputText value="#{personaBean.pdeConyuge}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeConyuge}">
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -346,7 +346,7 @@
 								<h:outputLabel value="Nombre Contacto Emergencia:" />
 							</b:column>
 							<b:column span="10">
-								<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeEmergContactoNombres}">
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -374,7 +374,7 @@
 								<h:outputLabel value="Inscripción Defunción:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.pdeInscripcionDefuncion}">
 								</b:inputText>
 							</b:column>
 							<b:column span="2">
@@ -390,7 +390,7 @@
 						<p:separator />
 						<b:row>
 							<b:column span="12">
-								<b:inputTextarea
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
 									placeholder="Escribe observaciones de la persona en caso de tenerla....."
 									value="#{personaBean.pdeObservacion}">
 								</b:inputTextarea>
@@ -411,7 +411,7 @@
 								<h:outputLabel value="Asegurado:" />
 							</b:column>
 							<b:column span="10">
-								<b:inputText value="#{personaBean.sldAsegurado}" />
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.sldAsegurado}" />
 							</b:column>
 						</b:row>
 						<br />
@@ -496,7 +496,7 @@
 								<h:outputLabel value="Nivel Azúcar:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldNivelAzucar}" />
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.sldNivelAzucar}" />
 							</b:column>
 						</b:row>
 						<br />
@@ -515,7 +515,7 @@
 								<h:outputLabel value="Peridiocidad Ejercicio:" />
 							</b:column>
 							<b:column span="4">
-								<b:inputText value="#{personaBean.sldPeriodicidadEjercicio}" />
+								<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{personaBean.sldPeriodicidadEjercicio}" />
 							</b:column>
 						</b:row>
 						<br />
@@ -545,7 +545,7 @@
 								<h:outputLabel value="Consumo de Medicamentos:" />
 							</b:column>
 							<b:column span="10">
-								<b:inputTextarea
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
 									placeholder="Escribe los medicamentos que está consumiendo la persona....."
 									value="#{personaBean.sldMedicamentos}">
 								</b:inputTextarea>
@@ -556,7 +556,7 @@
 								<h:outputLabel value="Frecuencia de consumo de medicamentos:" />
 							</b:column>
 							<b:column span="10">
-								<b:inputTextarea
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
 									value="#{personaBean.sldFrecienciaConsumoMedicame}">
 								</b:inputTextarea>
 							</b:column>

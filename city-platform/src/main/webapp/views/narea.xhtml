@@ -38,7 +38,7 @@
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
 					<b:column span="3">
-						<b:inputText required="true"
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
 							requiredMessage="Campo Nombre requerido"
 							value="#{areaBean.areNombre}">
 						</b:inputText>
@@ -87,7 +87,7 @@
 						<h:outputLabel value="Descripción:*" />
 					</b:column>
 					<b:column span="10">
-						<b:inputTextarea required="true"
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();" required="true"
 							requiredMessage="Campo Descripción requerido"
 							value="#{areaBean.areDescripcion}">
 						</b:inputTextarea>

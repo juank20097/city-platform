@@ -26,7 +26,7 @@
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
 					<b:column span="10">
-						<b:inputText required="true"
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
 							requiredMessage="Campo Nombre requerido"
 							value="#{tipoSitioBean.tsiNombre}">
 						</b:inputText>
@@ -37,7 +37,7 @@
 						<h:outputLabel value="Descripción:*" />
 					</b:column>
 					<b:column span="10">
-						<b:inputTextarea required="true"
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();" required="true"
 							requiredMessage="Campo Descripción requerido"
 							value="#{tipoSitioBean.tsiDescripcion}">
 						</b:inputTextarea>

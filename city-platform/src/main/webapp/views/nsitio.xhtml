@@ -26,7 +26,7 @@
 						<h:outputLabel value="Sitio Identificación:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText placeholder="Ej: BLQ-A-DEP-01-001"
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" placeholder="Ej: BLQ-A-DEP-01-001"
 							value="#{sitioBean.sitId}">
 						</b:inputText>
 					</b:column>
@@ -34,7 +34,7 @@
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText value="#{sitioBean.sitNombre}">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitNombre}">
 						</b:inputText>
 					</b:column>
 				</b:row>
@@ -89,7 +89,7 @@
 						<h:outputLabel value="Piso:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText value="#{sitioBean.sitPiso}">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitPiso}">
 						</b:inputText>
 					</b:column>
 				</b:row>
@@ -98,14 +98,14 @@
 						<h:outputLabel value="Calle Principal:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText value="#{sitioBean.sitCallePrincipal}">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitCallePrincipal}">
 						</b:inputText>
 					</b:column>
 					<b:column span="2">
 						<h:outputLabel value="Calle Secundaria:*" />
 					</b:column>
 					<b:column span="4">
-						<b:inputText value="#{sitioBean.sitCalleSecundaria}">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitCalleSecundaria}">
 						</b:inputText>
 					</b:column>
 				</b:row>
@@ -139,7 +139,7 @@
 						<h:outputLabel value="Observación:*" />
 					</b:column>
 					<b:column span="10">
-						<b:inputTextarea
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
 							placeholder="Escribe observaciones del sitio en caso de tenerla....."
 							value="#{sitioBean.sitDescripcion}">
 						</b:inputTextarea>
