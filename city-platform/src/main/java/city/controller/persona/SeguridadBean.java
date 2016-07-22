@@ -80,6 +80,7 @@ public class SeguridadBean {
 		geoModel.addOverlay(new Marker(coordenada, "Yachay Ciudad del Conocimiento"));
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
+		cargarIncidentes();
 	}
 
 	/**
@@ -329,6 +330,7 @@ public class SeguridadBean {
 	 */
 	public String nuevoIncidente() {
 		this.carga();
+		setEdicion(true);
 		return "nseguridad?faces-redirect=true";
 	}
 
@@ -350,19 +352,18 @@ public class SeguridadBean {
 			if (this.validarCampos()) {
 				Mensaje.crearMensajeERROR(getSms_validacion());
 			} else {
-				Integer id=manager.seguridadId();
-				SegRegistroEmergencia p = manager.SeguridadByID(id);
-				if (p == null) {
+				if (edicion) {
+					Integer id=manager.seguridadId();
 					manager.insertarSeguridad(id,getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
-					setEdicion(true);
+					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
-				r = "nseguridad?faces-redirect=true";
+				r = "seguridad?faces-redirect=true";
 				this.cleanDatos();
 				this.cargarIncidentes();
 			}
@@ -423,7 +424,7 @@ public class SeguridadBean {
 			setSegFecha(incidente.getSegFecha());
 			setSegTipoEmergencia(incidente.getSegTipoEmergencia());
 			setSegUbicacion(incidente.getSegUbicacion());
-			setEdicion(true);
+			setEdicion(false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
