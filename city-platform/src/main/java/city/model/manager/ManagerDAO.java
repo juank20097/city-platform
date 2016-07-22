@@ -117,6 +117,16 @@ public class ManagerDAO {
 		//em.getTransaction().commit();
 		return listado;
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public List Countclase(Class clase){
+		mostrarLog("count", clase.getSimpleName());
+		Query q;
+		List listado;
+		q= em.createQuery("SELECT COUNT(*) FROM " + clase.getSimpleName() + " o");
+		listado= q.getResultList();
+		return listado;
+	}
 
 	/**
 	 * Finder generico que permite aplicar clausulas where y order by.

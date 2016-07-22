@@ -27,12 +27,13 @@
 						action="index?faces-redirect=true" />
 				</b:column>
 			</b:row>
-			<br/>
+			<br />
 			<b:row>
 				<b:column span="3">
-					<b:inputText placeholder="Buscar..." value="#{personaBean.datoBuscar}"></b:inputText>
+					<b:inputText placeholder="Buscar..."
+						value="#{personaBean.datoBuscar}"></b:inputText>
 				</b:column>
-				<b:column span="1" >
+				<b:column span="1">
 					<b:commandButton value="Buscar" onclick="PF('statusDialog').show()"
 						oncomplete="PF('statusDialog').hide()"
 						action="#{personaBean.buscarPersona}" />
@@ -45,7 +46,7 @@
 				</b:column>
 			</b:row>
 			<b:row>
-				
+
 			</b:row>
 			<br />
 			<b:growl delay="4000" placementFrom="top" show-detail="false"
@@ -53,71 +54,29 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-				<b:dataTable id="dt_per" value="#{personaBean.l_persona}" var="per"
-					styleClass="table table-striped table-bordered dt-responsive nowrap"
-					fixedHeader="true" responsive="true" lang="es" style="width:100%">
-					<h:column width="100">
-						<f:facet name="header">
-							<h:outputText value="OPCIONES" />
-						</f:facet>
-						&nbsp;&nbsp;&nbsp;
+				<p:dataTable id="dt_per" var="per" value="#{personaBean.l_persona}" reflow="true"
+					rows="10" paginator="true">
+					<p:column headerText="OPCIONES">
 						<b:commandButton iconAwesome="fa fa-pencil-square-o"
 							style="padding: 0; border: none; background: none;color: #000"
 							onclick="PF('statusDialog').show()"
 							oncomplete="PF('statusDialog').hide()"
 							action="#{personaBean.cargarPersona(per)}">
 						</b:commandButton>
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="DNI" />
-						</f:facet>
+					</p:column>
+
+					<p:column headerText="DNI">
 						<h:outputText value="#{per.perDni}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="TIPO DNI" />
-						</f:facet>
+					</p:column>
+
+					<p:column headerText="TIPO DNI">
 						<h:outputText value="#{per.perTipoDni}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="NOMBRES" />
-						</f:facet>
+					</p:column>
+
+					<p:column headerText="NOMBRES">
 						<h:outputText value="#{per.perNombres} #{per.perApellidos}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="FECHA NACIMIENTO" />
-						</f:facet>
-						<h:outputText value="#{per.perFechaNacimiento}"
-							pattern="yyyy-MM-dd" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="TELÉFONO" />
-						</f:facet>
-						<h:outputText value="#{per.perTelefono}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="ESTADO" />
-						</f:facet>
-						<h:outputText value="#{per.perEstado}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="CORREO" />
-						</f:facet>
-						<h:outputText value="#{per.perCorreo}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="CELULAR" />
-						</f:facet>
-						<h:outputText value="#{per.perCelular}" />
-					</h:column>
-				</b:dataTable>
+					</p:column>
+				</p:dataTable>
 			</b:panel>
 		</h:form>
 

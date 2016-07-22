@@ -4,12 +4,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;
@@ -122,11 +126,27 @@ public class PersonaBean {
 	// valor de ususario
 	private String usuario;
 
+	private LazyDataModel<GenPersona> personas;
+
 	public PersonaBean() {
 	}
 
 	@PostConstruct
 	public void init() {
+		// proceso de filtrado de tabla
+//		this.personas = new LazyDataModel<GenPersona>() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public List<GenPersona> load(int first, int pageSize, String sortField, SortOrder sortOrder,
+//					Map<String, String> filters) {
+//				List<GenPersona> result = inventoryManagerEJB.getResultList(first, pageSize, sortField, sortOrder,
+//						filters);
+//				model.setRowCount(inventoryManagerEJB.count(sortField, sortOrder, filters));
+//				return result;
+//			}
+//		};
+
 		edicion = false;
 		select_n = true;
 		select_r = true;
@@ -336,8 +356,7 @@ public class PersonaBean {
 	 * @param sldFrecienciaConsumoMedicame
 	 *            the sldFrecienciaConsumoMedicame to set
 	 */
-	public void setSldFrecienciaConsumoMedicame(
-			String sldFrecienciaConsumoMedicame) {
+	public void setSldFrecienciaConsumoMedicame(String sldFrecienciaConsumoMedicame) {
 		this.sldFrecienciaConsumoMedicame = sldFrecienciaConsumoMedicame;
 	}
 
@@ -1282,23 +1301,19 @@ public class PersonaBean {
 			} else {
 				GenPersona p = manager.PersonaByID(getPerDni());
 				if (p == null) {
-					manager.insertarPersona(getPerDni().trim(), getPerTipoDni()
-							.trim(), getPerNombres().trim(), getPerApellidos()
-							.trim(), getPerFechaNacimiento(), getPerGenero()
-							.trim(), getPerTelefono().trim(), getPerCelular()
-							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
-							.trim());
+					manager.insertarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
+							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
+							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
+							getPerEstadoCivil().trim());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
 					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
 					// setEdicion(true);
 				} else {
-					manager.editarPersona(getPerDni().trim(), getPerTipoDni()
-							.trim(), getPerNombres().trim(), getPerApellidos()
-							.trim(), getPerFechaNacimiento(), getPerGenero()
-							.trim(), getPerTelefono().trim(), getPerCelular()
-							.trim(), getPerCorreo().trim(), getPerEstadoCivil()
-							.trim(), getPerEstado());
+					manager.editarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
+							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
+							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
+							getPerEstadoCivil().trim(), getPerEstado());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
 					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
@@ -1338,8 +1353,7 @@ public class PersonaBean {
 			setPerEstado(persona.getPerEstado());
 
 			// carga de persona detalle si existe
-			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona
-					.getPerDni());
+			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona.getPerDni());
 			if (pd != null)
 				this.cargarPersonaDetalle(pd);
 
@@ -1388,8 +1402,7 @@ public class PersonaBean {
 		getL_tipo_dni().clear();
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_tipo_dni");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_tipo_dni().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_tipo_dni().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1400,8 +1413,7 @@ public class PersonaBean {
 		getL_genero().clear();
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_genero");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_genero().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_genero().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1412,8 +1424,7 @@ public class PersonaBean {
 		getL_sangre().clear();
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_sangre");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_sangre().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_sangre().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1422,11 +1433,9 @@ public class PersonaBean {
 	 */
 	public void cargarDiscapacidad() {
 		getL_discapacidad().clear();
-		List<GenCatalogoItemsDet> completo = manager
-				.AllofItems("cat_discapacidad");
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_discapacidad");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_discapacidad().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_discapacidad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1435,11 +1444,9 @@ public class PersonaBean {
 	 */
 	public void cargarEstadoCivil() {
 		getL_estado_civil().clear();
-		List<GenCatalogoItemsDet> completo = manager
-				.AllofItems("cat_estado_civil");
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estado_civil");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_estado_civil().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_estado_civil().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1459,8 +1466,7 @@ public class PersonaBean {
 	public void cargarProvincias() {
 		getL_provincia().clear();
 		for (GenCatalogoItemsDet i : manager.AllofItems("cat_provincias")) {
-			getL_provincia().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_provincia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1470,10 +1476,8 @@ public class PersonaBean {
 	public void cargarCiudadesNac(String provincia) {
 		getL_ciudad_n().clear();
 		if (manager.AllofItems("cat_ciudades", provincia) != null) {
-			for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades",
-					provincia)) {
-				getL_ciudad_n().add(
-						new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades", provincia)) {
+				getL_ciudad_n().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 			}
 		}
 	}
@@ -1484,10 +1488,8 @@ public class PersonaBean {
 	public void cargarCiudadesRes(String provincia) {
 		getL_ciudad_r().clear();
 		if (manager.AllofItems("cat_ciudades", provincia) != null) {
-			for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades",
-					provincia)) {
-				getL_ciudad_r().add(
-						new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			for (GenCatalogoItemsDet i : manager.AllofItems("cat_ciudades", provincia)) {
+				getL_ciudad_r().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 			}
 		}
 	}
@@ -1499,8 +1501,7 @@ public class PersonaBean {
 		getL_estados().clear();
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estados");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_estados().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_estados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -1541,16 +1542,16 @@ public class PersonaBean {
 
 		return color;
 	}
-	
+
 	/**
 	 * Método para buscar una persona
 	 */
-	public void buscarPersona(){
+	public void buscarPersona() {
 		l_persona.clear();
-		if (datoBuscar==null || datoBuscar.isEmpty()){
+		if (datoBuscar == null || datoBuscar.isEmpty()) {
 			Mensaje.crearMensajeWARN("No existe el dato para realizar la búsqueda.");
-		}else{
-			l_persona=manager.buscarPersona(datoBuscar);
+		} else {
+			l_persona = manager.buscarPersona(datoBuscar);
 		}
 	}
 
@@ -1565,32 +1566,22 @@ public class PersonaBean {
 		try {
 			GenPersonaDetalle pd = manager.PersonaDetalleByID(getPerDni());
 			if (pd == null) {
-				manager.insertarPersonaDetalle(getPerDni(), getPdeFoto(),
-						getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
-						getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
-						getPdePaisResidencia(), getPdeProvinciaResidencia(),
-						getPdeCiudadResidencia(), getPdeDireccion(),
-						getPdeCondicionCiudadana(), getPdeConyuge(),
-						getPdeFechaMatrimonio(), getPdeNumHijos(),
-						getPdeNombrePadre(), getPdeNacionalidadPadre(),
-						getPdeNombreMadre(), getPdeNacionalidadMadre(),
-						getPdeEmergContactoNombres(), getPdeEmergContactoId(),
-						getPdeEmergContactoTelefono(),
-						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
+				manager.insertarPersonaDetalle(getPerDni(), getPdeFoto(), getPdePaisNacimiento(),
+						getPdeProvinciaNacimiento(), getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
+						getPdePaisResidencia(), getPdeProvinciaResidencia(), getPdeCiudadResidencia(),
+						getPdeDireccion(), getPdeCondicionCiudadana(), getPdeConyuge(), getPdeFechaMatrimonio(),
+						getPdeNumHijos(), getPdeNombrePadre(), getPdeNacionalidadPadre(), getPdeNombreMadre(),
+						getPdeNacionalidadMadre(), getPdeEmergContactoNombres(), getPdeEmergContactoId(),
+						getPdeEmergContactoTelefono(), getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
 						getPdeObservacion());
 			} else {
-				manager.editarPersonaDetalle(getPerDni(), getPdeFoto(),
-						getPdePaisNacimiento(), getPdeProvinciaNacimiento(),
-						getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
-						getPdePaisResidencia(), getPdeProvinciaResidencia(),
-						getPdeCiudadResidencia(), getPdeDireccion(),
-						getPdeCondicionCiudadana(), getPdeConyuge(),
-						getPdeFechaMatrimonio(), getPdeNumHijos(),
-						getPdeNombrePadre(), getPdeNacionalidadPadre(),
-						getPdeNombreMadre(), getPdeNacionalidadMadre(),
-						getPdeEmergContactoNombres(), getPdeEmergContactoId(),
-						getPdeEmergContactoTelefono(),
-						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
+				manager.editarPersonaDetalle(getPerDni(), getPdeFoto(), getPdePaisNacimiento(),
+						getPdeProvinciaNacimiento(), getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
+						getPdePaisResidencia(), getPdeProvinciaResidencia(), getPdeCiudadResidencia(),
+						getPdeDireccion(), getPdeCondicionCiudadana(), getPdeConyuge(), getPdeFechaMatrimonio(),
+						getPdeNumHijos(), getPdeNombrePadre(), getPdeNacionalidadPadre(), getPdeNombreMadre(),
+						getPdeNacionalidadMadre(), getPdeEmergContactoNombres(), getPdeEmergContactoId(),
+						getPdeEmergContactoTelefono(), getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
 						getPdeObservacion());
 			}
 		} catch (Exception e) {
@@ -1691,9 +1682,8 @@ public class PersonaBean {
 				|| (getPerCelular() == null || getPerCelular().isEmpty())
 				|| (getPerCorreo() == null || getPerCorreo().isEmpty())
 				|| (getPerDni() == null || getPerDni().isEmpty())
-				|| (getPerEstadoCivil() == null || getPerEstadoCivil().equals(
-						"S/N")) || (getPerFechaNacimiento() == null)
-				|| (getPerGenero() == null || getPerGenero().equals("S/N"))
+				|| (getPerEstadoCivil() == null || getPerEstadoCivil().equals("S/N"))
+				|| (getPerFechaNacimiento() == null) || (getPerGenero() == null || getPerGenero().equals("S/N"))
 				|| (getPerNombres() == null || getPerNombres().isEmpty())
 				|| (getPerTipoDni() == null || getPerTipoDni().equals("S/N"))
 				|| (getPerTelefono() == null || getPerTelefono().isEmpty())) {
@@ -1777,27 +1767,17 @@ public class PersonaBean {
 		try {
 			GenSalud sal = manager.SaludByID(getPerDni());
 			if (sal == null) {
-				manager.insertarSalud(getPerDni(), getSldAlergias(),
-						getSldAltura(), getSldAsegurado(),
-						getSldCarnetConadies(), getSldConsumeAlcohol(),
-						getSldConsumeTabaco(), getSldDiscapacidadTipo(),
-						getSldDiscapacidadGrado(),
-						getSldFrecienciaConsumoMedicame(),
-						getSldGrupoSanguineo(), getSldMedicamentos(),
-						getSldNivelAzucar(), getSldPeriodicidadEjercicio(),
-						getSldPeso(), getSldPresion(),
-						getSldRealizaEjercicio(), getSldVegetariano());
+				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
+						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
+						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
+						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
+						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano());
 			} else {
-				manager.editarSalud(getPerDni(), getSldAlergias(),
-						getSldAltura(), getSldAsegurado(),
-						getSldCarnetConadies(), getSldConsumeAlcohol(),
-						getSldConsumeTabaco(), getSldDiscapacidadTipo(),
-						getSldDiscapacidadGrado(),
-						getSldFrecienciaConsumoMedicame(),
-						getSldGrupoSanguineo(), getSldMedicamentos(),
-						getSldNivelAzucar(), getSldPeriodicidadEjercicio(),
-						getSldPeso(), getSldPresion(),
-						getSldRealizaEjercicio(), getSldVegetariano());
+				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
+						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
+						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
+						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
+						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano());
 			}
 
 		} catch (Exception e) {
@@ -1821,8 +1801,7 @@ public class PersonaBean {
 			setSldConsumeTabaco(salud.getSldConsumeTabaco());
 			setSldDiscapacidadGrado(salud.getSldDiscapacidadGrado());
 			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
-			setSldFrecienciaConsumoMedicame(salud
-					.getSldFrecuenciaConsumoMedicame());
+			setSldFrecienciaConsumoMedicame(salud.getSldFrecuenciaConsumoMedicame());
 			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
 			setSldMedicamentos(salud.getSldMedicamentos());
 			setSldNivelAzucar(salud.getSldNivelAzucar());

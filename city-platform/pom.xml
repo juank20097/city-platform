@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>6.0</version>
+			<version>5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
@@ -43,11 +43,7 @@
 			<version>1.1.2</version>
 		</dependency>
 		<!-- EXCEL -->
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
+
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
@@ -59,7 +55,11 @@
 			<artifactId>poi</artifactId>
 			<version>3.14</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>4.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>city-platform</finalName>

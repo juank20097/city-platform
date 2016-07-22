@@ -38,8 +38,8 @@
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
 					<b:column span="3">
-						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
-							requiredMessage="Campo Nombre requerido"
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+							required="true" requiredMessage="Campo Nombre requerido"
 							value="#{areaBean.areNombre}">
 						</b:inputText>
 					</b:column>
@@ -87,8 +87,8 @@
 						<h:outputLabel value="Descripción:*" />
 					</b:column>
 					<b:column span="10">
-						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();" required="true"
-							requiredMessage="Campo Descripción requerido"
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+							required="true" requiredMessage="Campo Descripción requerido"
 							value="#{areaBean.areDescripcion}">
 						</b:inputTextarea>
 					</b:column>
@@ -134,10 +134,10 @@
 					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 			</b:panel>
 		</h:form>
-
-		<p:dialog style="padding-top:3%;" widgetVar="mapDialog" modal="true" draggable="false"
-			closable="true" resizable="false" header="Seleccione el punto:"
-			showHeader="true">
+		
+		<p:dialog style="padding-top:3%;" widgetVar="mapDialog" modal="true"
+			draggable="false" closable="true" resizable="false"
+			header="Seleccione el punto:" showHeader="true">
 			<h:form>
 				<p:gmap id="geoGmap" widgetVar="geoMap"
 					center="0.4078066,-78.18406390000001" zoom="15" type="hybrid"

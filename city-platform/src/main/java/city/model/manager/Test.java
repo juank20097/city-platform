@@ -1,10 +1,23 @@
 package city.model.manager;
 
 
-
 public class Test {
 
 	public static void main(String[] args) {
+		
+//		SingletonJDBC s = SingletonJDBC.getInstance();
+//		
+//		try {
+//			ResultSet r=s.consultaSQL("select * from EstadisticasSeguridad");
+//			if (r==null){
+//				System.out.println("datos vacio");
+//			}else{
+//				System.out.println("si hay datos");
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 //		ManagerInfo i = new ManagerInfo();
 //		
 //		System.out.println(i.datoEliminar("c001"));

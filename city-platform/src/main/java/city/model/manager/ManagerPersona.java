@@ -49,6 +49,16 @@ public class ManagerPersona {
 	public List<GenPersona> findAllPersonas() throws Exception {
 		return mngDao.findAll(GenPersona.class);
 	}// Cierre del metodo
+	
+	@SuppressWarnings("unchecked")
+	public Integer contador(){
+		List<Integer> l=mngDao.Countclase(GenPersona.class);
+		if (l!=null){
+			return l.get(0);
+		}else{
+			return null;
+		}
+	}
 
 	/**
 	 * Metodo para obtener el Atributo mediante un ID
@@ -250,6 +260,7 @@ public class ManagerPersona {
 							+ dato + "%' or o.perEstadoCivil like '%" + dato
 							+ "%' or o.perTelefono like '%" + dato
 							+ "%' or o.perTipoDni like '%" + dato + "%'", null));
+			if (l_p==null || l_p.isEmpty())
 			l_p.addAll(verificarMayusculas(dato));
 		} else {
 			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,

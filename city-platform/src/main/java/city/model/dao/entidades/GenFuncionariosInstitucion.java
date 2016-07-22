@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the gen_funcionarios_institucion database table.
@@ -53,6 +54,10 @@ public class GenFuncionariosInstitucion implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "per_dni", insertable = false, updatable = false)
 	private GenPersona genPersona;
+
+	// bi-directional many-to-one association to SegRegistroEmergencia
+	@OneToMany(mappedBy = "genFuncionariosInstitucion")
+	private List<SegRegistroEmergencia> segRegistroEmergencias;
 
 	public GenFuncionariosInstitucion() {
 	}
@@ -143,6 +148,28 @@ public class GenFuncionariosInstitucion implements Serializable {
 
 	public void setGenPersona(GenPersona genPersona) {
 		this.genPersona = genPersona;
+	}
+
+	public List<SegRegistroEmergencia> getSegRegistroEmergencias() {
+		return this.segRegistroEmergencias;
+	}
+
+	public void setSegRegistroEmergencias(List<SegRegistroEmergencia> segRegistroEmergencias) {
+		this.segRegistroEmergencias = segRegistroEmergencias;
+	}
+
+	public SegRegistroEmergencia addSegRegistroEmergencia(SegRegistroEmergencia segRegistroEmergencia) {
+		getSegRegistroEmergencias().add(segRegistroEmergencia);
+		segRegistroEmergencia.setGenFuncionariosInstitucion(this);
+
+		return segRegistroEmergencia;
+	}
+
+	public SegRegistroEmergencia removeSegRegistroEmergencia(SegRegistroEmergencia segRegistroEmergencia) {
+		getSegRegistroEmergencias().remove(segRegistroEmergencia);
+		segRegistroEmergencia.setGenFuncionariosInstitucion(null);
+
+		return segRegistroEmergencia;
 	}
 
 }
