@@ -19,55 +19,13 @@
 		<br />
 		<h:form id="frm">
 			<center>
-				<h1>SEGURIDAD</h1>
+				<h1>REGISTRO DE INCIDENTE</h1>
 			</center>
 			<b:growl id="growl" delay="4000" placementFrom="top" show-detail="false"
 				global-only="false" show-summary="true" allow-dismiss="true"
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
-			<b:panel id="pn_res" title="Ingreso del Responsable" look="primary"
-				collapsible="false">
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="DNI:*" />
-					</b:column>
-					<b:column span="3">
-						<b:inputText value="#{seguridadBean.perDni}">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<b:commandButton value="Buscar"
-							onclick="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							action="#{seguridadBean.BuscarPersona()}" update="frm"></b:commandButton>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Nombre:" />
-					</b:column>
-					<b:column span="10">
-						<h:outputLabel value="#{seguridadBean.perNombre}" />
-					</b:column>
-				</b:row>
-				<br />
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="Empresa:" />
-					</b:column>
-					<b:column span="4">
-						<h:outputLabel value="#{seguridadBean.perEmpresa}" />
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Cargo:" />
-					</b:column>
-					<b:column span="4">
-						<h:outputLabel value="#{seguridadBean.perCargo}" />
-					</b:column>
-				</b:row>
-				<br />
-			</b:panel>
+			
 			<b:panel id="pn_reg" title="Registro" look="primary"
 				collapsible="false">
 				<b:row>
@@ -120,6 +78,49 @@
 						<b:inputTextarea value="#{seguridadBean.segAccion}" />
 					</b:column>
 				</b:row>
+			</b:panel>
+			<b:panel id="pn_res" title="Ingreso del Responsable" look="primary"
+				collapsible="false">
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="DNI:*" />
+					</b:column>
+					<b:column span="3">
+						<b:inputText value="#{seguridadBean.perDni}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<b:commandButton value="Buscar"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()"
+							action="#{seguridadBean.BuscarPersona()}" update="frm"></b:commandButton>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Nombre:" />
+					</b:column>
+					<b:column span="10">
+						<h:outputLabel value="#{seguridadBean.perNombre}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Empresa:" />
+					</b:column>
+					<b:column span="4">
+						<h:outputLabel value="#{seguridadBean.perEmpresa}" />
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Cargo:" />
+					</b:column>
+					<b:column span="4">
+						<h:outputLabel value="#{seguridadBean.perCargo}" />
+					</b:column>
+				</b:row>
+				<br />
 			</b:panel>
 			<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
 				oncomplete="PF('statusDialog').hide()"

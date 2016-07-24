@@ -414,6 +414,7 @@ public class SeguridadBean {
 	public String cargarIncidente(SegRegistroEmergencia incidente) {
 		try {
 			this.carga();
+			setSegId(incidente.getSegId());
 			setPerCargo(incidente.getGenFuncionariosInstitucion().getFunCargo());
 			setPerDni(incidente.getGenFuncionariosInstitucion().getGenPersona().getPerDni());
 			setPerEmpresa(incidente.getGenFuncionariosInstitucion().getGenInstitucione().getInsNombre());
