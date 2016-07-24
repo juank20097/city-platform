@@ -73,6 +73,18 @@ public class ManagerSeguridad {
 			return l.get(0);
 		}
 	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SegRegistroEmergencia> findSeguridadxTipo(String tipo) throws Exception {
+		List<SegRegistroEmergencia> l = mngDao.findWhere(SegRegistroEmergencia.class,
+				"o.segTipoEmergencia='" + tipo + "'", null);
+		return l;
+	}// Cierre del metodo
 
 	/**
 	 * Metodo para generar el id
@@ -112,7 +124,7 @@ public class ManagerSeguridad {
 			seg.setGenFuncionariosInstitucion(this.findFuncionarioXDni(per_dni));
 			seg.setSegAccion(accion);
 			seg.setSegEmergencia(emergencia);
-			seg.setSegFecha(new Timestamp(fecha.getTime()));
+			seg.setSegFecha(new Timestamp(new Date().getTime()));
 			seg.setSegTipoEmergencia(tipo);
 			seg.setSegUbicacion(ubicacion);
 			mngDao.insertar(seg);

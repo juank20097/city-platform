@@ -4,17 +4,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -22,7 +23,6 @@ import org.primefaces.model.map.Marker;
 
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
-
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
 import city.model.generic.Mensaje;
@@ -67,20 +67,145 @@ public class SeguridadBean {
 	private Marker marker;
 	private MapModel geoModel;
 
+	// estadistica
+	private int totalSAL;
+	private int totalSOC;
+	private int totalSEG;
+	private int totalSER;
+	private int total;
+
+	private PieChartModel pieModel;
+	private MapModel geoModel1;
+
 	public SeguridadBean() {
 	}
 
 	@PostConstruct
 	public void ini() {
+		totalSAL = 0;
+		totalSEG = 0;
+		totalSER = 0;
+		totalSOC = 0;
+		total = 0;
+		pieModel = new PieChartModel();
 		l_seguridad = new ArrayList<SegRegistroEmergencia>();
 		l_tipos_emergencia = new ArrayList<SelectItem>();
 		geoModel = new DefaultMapModel();
+		geoModel1 = new DefaultMapModel();
 		// definicion de marcador principal
 		LatLng coordenada = new LatLng(0.4044186, -78.17527749999999);
-		geoModel.addOverlay(new Marker(coordenada, "Yachay Ciudad del Conocimiento"));
+		geoModel.addOverlay(new Marker(coordenada,
+				"Yachay Ciudad del Conocimiento"));
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
 		cargarIncidentes();
+		cargarIncidencias();
+		marcarMapa();
+	}
+
+	/**
+	 * @return the geoModel1
+	 */
+	public MapModel getGeoModel1() {
+		return geoModel1;
+	}
+
+	/**
+	 * @param geoModel1
+	 *            the geoModel1 to set
+	 */
+	public void setGeoModel1(MapModel geoModel1) {
+		this.geoModel1 = geoModel1;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public int getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total
+	 *            the total to set
+	 */
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	/**
+	 * @return the pieModel
+	 */
+	public PieChartModel getPieModel() {
+		return pieModel;
+	}
+
+	/**
+	 * @param pieModel
+	 *            the pieModel to set
+	 */
+	public void setPieModel(PieChartModel pieModel) {
+		this.pieModel = pieModel;
+	}
+
+	/**
+	 * @return the totalSAL
+	 */
+	public int getTotalSAL() {
+		return totalSAL;
+	}
+
+	/**
+	 * @param totalSAL
+	 *            the totalSAL to set
+	 */
+	public void setTotalSAL(int totalSAL) {
+		this.totalSAL = totalSAL;
+	}
+
+	/**
+	 * @return the totalSOC
+	 */
+	public int getTotalSOC() {
+		return totalSOC;
+	}
+
+	/**
+	 * @param totalSOC
+	 *            the totalSOC to set
+	 */
+	public void setTotalSOC(int totalSOC) {
+		this.totalSOC = totalSOC;
+	}
+
+	/**
+	 * @return the totalSEG
+	 */
+	public int getTotalSEG() {
+		return totalSEG;
+	}
+
+	/**
+	 * @param totalSEG
+	 *            the totalSEG to set
+	 */
+	public void setTotalSEG(int totalSEG) {
+		this.totalSEG = totalSEG;
+	}
+
+	/**
+	 * @return the totalSER
+	 */
+	public int getTotalSER() {
+		return totalSER;
+	}
+
+	/**
+	 * @param totalSER
+	 *            the totalSER to set
+	 */
+	public void setTotalSER(int totalSER) {
+		this.totalSER = totalSER;
 	}
 
 	/**
@@ -353,13 +478,15 @@ public class SeguridadBean {
 				Mensaje.crearMensajeERROR(getSms_validacion());
 			} else {
 				if (edicion) {
-					Integer id=manager.seguridadId();
-					manager.insertarSeguridad(id,getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
+					Integer id = manager.seguridadId();
+					manager.insertarSeguridad(id, getPerDni(), getSegAccion(),
+							getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
-					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
+					manager.editarSeguridad(getSegId(), getSegAccion(),
+							getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
@@ -380,9 +507,11 @@ public class SeguridadBean {
 	 */
 	public boolean validarCampos() {
 		if ((getSegAccion() == null || getSegAccion().isEmpty())
-				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty()) || (getSegFecha() == null)
-				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia().equals("S/N"))
-//				|| (getSegUbicacion() == null || getSegUbicacion().isEmpty())
+				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty())
+				// || (getSegFecha() == null)
+				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia()
+						.equals("S/N"))
+				|| (getSegUbicacion() == null || getSegUbicacion().isEmpty())
 				|| (getPerDni() == null || getPerDni().isEmpty())
 				|| (getPerNombre() == null || getPerNombre().isEmpty())) {
 			setSms_validacion("Todos los datos de seguridad son requeridos.");
@@ -399,7 +528,7 @@ public class SeguridadBean {
 		setPerNombre("");
 		setSegAccion("");
 		setSegEmergencia("");
-		setSegFecha(new Timestamp(new Date().getTime()));
+		setSegFecha(null);
 		setSegTipoEmergencia("S/N");
 		setSegUbicacion("");
 		setEdicion(false);
@@ -416,10 +545,15 @@ public class SeguridadBean {
 			this.carga();
 			setSegId(incidente.getSegId());
 			setPerCargo(incidente.getGenFuncionariosInstitucion().getFunCargo());
-			setPerDni(incidente.getGenFuncionariosInstitucion().getGenPersona().getPerDni());
-			setPerEmpresa(incidente.getGenFuncionariosInstitucion().getGenInstitucione().getInsNombre());
-			setPerNombre(incidente.getGenFuncionariosInstitucion().getGenPersona().getPerNombres() + " "
-					+ incidente.getGenFuncionariosInstitucion().getGenPersona().getPerApellidos());
+			setPerDni(incidente.getGenFuncionariosInstitucion().getGenPersona()
+					.getPerDni());
+			setPerEmpresa(incidente.getGenFuncionariosInstitucion()
+					.getGenInstitucione().getInsNombre());
+			setPerNombre(incidente.getGenFuncionariosInstitucion()
+					.getGenPersona().getPerNombres()
+					+ " "
+					+ incidente.getGenFuncionariosInstitucion().getGenPersona()
+							.getPerApellidos());
 			setSegAccion(incidente.getSegAccion());
 			setSegEmergencia(incidente.getSegEmergencia());
 			setSegFecha(incidente.getSegFecha());
@@ -462,9 +596,11 @@ public class SeguridadBean {
 	 */
 	public void cargarGeneros() {
 		getL_tipos_emergencia().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_emergencia");
+		List<GenCatalogoItemsDet> completo = manager
+				.AllofItems("cat_emergencia");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_tipos_emergencia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_tipos_emergencia().add(
+					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -479,7 +615,8 @@ public class SeguridadBean {
 			setPerNombre("");
 		} else {
 			try {
-				GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getPerDni());
+				GenFuncionariosInstitucion f = manager
+						.findFuncionarioXDni(getPerDni());
 				if (f == null) {
 					Mensaje.crearMensajeWARN("La cédula no pudo ser encontrada");
 					setPerCargo("");
@@ -488,7 +625,8 @@ public class SeguridadBean {
 				} else {
 					setPerCargo(f.getFunCargo());
 					setPerEmpresa(f.getGenInstitucione().getInsNombre());
-					setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
+					setPerNombre(f.getGenPersona().getPerNombres() + " "
+							+ f.getGenPersona().getPerApellidos());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -512,8 +650,172 @@ public class SeguridadBean {
 	 */
 	public void TomarMarca(MarkerDragEvent event) {
 		marker = event.getMarker();
-		setSegUbicacion(marker.getLatlng() + "");
-		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegUbicacion() + ";");
+		setSegUbicacion(marker.getLatlng().getLat() + ";"
+				+ marker.getLatlng().getLng());
+		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegUbicacion()
+				+ ";");
 	}
 
+	// ////////////////////////////////////////////ESTADISTICAS///////////////////////////////////////////
+
+	public void cargarIncidencias() {
+		try {
+			for (SegRegistroEmergencia seg : getL_seguridad()) {
+				if (seg.getSegTipoEmergencia().equals("Médica"))
+					setTotalSAL(getTotalSAL() + 1);
+				if (seg.getSegTipoEmergencia().equals("Protección Civil"))
+					setTotalSOC(getTotalSOC() + 1);
+				if (seg.getSegTipoEmergencia().equals("Seguridad"))
+					setTotalSEG(getTotalSEG() + 1);
+				if (seg.getSegTipoEmergencia().equals("Servicio Público"))
+					setTotalSER(getTotalSER() + 1);
+				setTotal(getL_seguridad().size());
+				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(),
+						getTotalSER());
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void pie(Integer a, Integer b, Integer c, Integer d) {
+		pieModel.set("Médica", a);
+		pieModel.set("Protección Civil", b);
+		pieModel.set("Seguridad", c);
+		pieModel.set("Servicio Público", d);
+
+		pieModel.setLegendPosition("e");
+		pieModel.setFill(false);
+		pieModel.setShowDataLabels(true);
+		pieModel.setDiameter(150);
+	}
+
+	public void marcarMapa() {
+		for (SegRegistroEmergencia seg : getL_seguridad()) {
+			Integer pos = posicion(seg.getSegUbicacion());
+			Integer pos2 = pos + 1;
+			Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0,
+					pos));
+			Double lon = Double.parseDouble(seg.getSegUbicacion().substring(
+					pos2));
+			LatLng coord = new LatLng(lat, lon);
+			geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+		}
+	}
+
+	public Integer posicion(String a) {
+		Integer b = 0;
+		for (int i = 0; i <= a.length() - 1; i++) {
+			if (a.charAt(i) == ';') {
+				b = i;
+			}
+		}
+		return b;
+	}
+
+	public void marcaPersonal(String v){
+		geoModel1 = new DefaultMapModel();
+		if (v.equals("1")){
+			try {
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Médica");
+				if (l==null || l.size()==0){
+					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
+				}else{
+					for (SegRegistroEmergencia seg : l) {
+					Integer pos=posicion(seg.getSegUbicacion());
+					Integer pos2=pos+1;
+					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
+					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+					LatLng coord = new LatLng(lat, lon);
+					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+		if (v.equals("2")){
+			try {
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Protección Civil");
+				if (l==null || l.size()==0){
+					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
+				}else{
+					for (SegRegistroEmergencia seg : l) {
+					Integer pos=posicion(seg.getSegUbicacion());
+					Integer pos2=pos+1;
+					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
+					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+					LatLng coord = new LatLng(lat, lon);
+					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+		if (v.equals("3")){
+			try {
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Seguridad");
+				if (l==null || l.size()==0){
+					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
+				}else{
+					for (SegRegistroEmergencia seg : l) {
+					Integer pos=posicion(seg.getSegUbicacion());
+					Integer pos2=pos+1;
+					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
+					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+					LatLng coord = new LatLng(lat, lon);
+					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+		if (v.equals("4")){
+			try {
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Servicio Público");
+				if (l==null || l.size()==0){
+					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
+				}else{
+					for (SegRegistroEmergencia seg : l) {
+					Integer pos=posicion(seg.getSegUbicacion());
+					Integer pos2=pos+1;
+					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
+					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+					LatLng coord = new LatLng(lat, lon);
+					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+		if (v.equals("5")){
+			try {
+				List<SegRegistroEmergencia> l = manager.findAllseguridad();
+				if (l==null || l.size()==0){
+					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
+				}else{
+					for (SegRegistroEmergencia seg : l) {
+					Integer pos=posicion(seg.getSegUbicacion());
+					Integer pos2=pos+1;
+					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
+					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+					LatLng coord = new LatLng(lat, lon);
+					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
+				}
+			}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	}
+	}
 }

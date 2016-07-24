@@ -1,9 +1,18 @@
 package city.model.manager;
 
+import city.controller.persona.SeguridadBean;
+
 
 public class Test {
 
 	public static void main(String[] args) {
+		
+		SeguridadBean s = new SeguridadBean();
+		String a="1,2314245234;2,354556345";
+		
+		System.out.println(s.posicion(a));
+		System.out.println(a.substring(s.posicion(a)+1));
+		System.out.println(a.substring(0, s.posicion(a)));
 		
 //		SingletonJDBC s = SingletonJDBC.getInstance();
 //		
