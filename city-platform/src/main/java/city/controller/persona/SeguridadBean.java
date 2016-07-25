@@ -1,5 +1,7 @@
 package city.controller.persona;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,7 @@ import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
 
@@ -46,8 +49,10 @@ public class SeguridadBean {
 	private String segEmergencia;
 	private Date segFecha;
 	private String segTipoEmergencia;
-	private String segUbicacion;
+	private double segLatitud;
+	private double segLongitud;
 
+	private String DatoBusqueda;
 	private String perDni;
 	private String perNombre;
 	private String perEmpresa;
@@ -84,6 +89,8 @@ public class SeguridadBean {
 
 	@PostConstruct
 	public void ini() {
+		segLatitud = 0;
+		segLongitud = 0;
 		totalSAL = 0;
 		totalSEG = 0;
 		totalSER = 0;
@@ -100,8 +107,51 @@ public class SeguridadBean {
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
 		cargarIncidentes();
-		cargarIncidencias();
-		marcarMapa();
+	}
+
+	/**
+	 * @return the datoBusqueda
+	 */
+	public String getDatoBusqueda() {
+		return DatoBusqueda;
+	}
+
+	/**
+	 * @param datoBusqueda
+	 *            the datoBusqueda to set
+	 */
+	public void setDatoBusqueda(String datoBusqueda) {
+		DatoBusqueda = datoBusqueda;
+	}
+
+	/**
+	 * @return the segLatitud
+	 */
+	public double getSegLatitud() {
+		return segLatitud;
+	}
+
+	/**
+	 * @param segLatitud
+	 *            the segLatitud to set
+	 */
+	public void setSegLatitud(double segLatitud) {
+		this.segLatitud = segLatitud;
+	}
+
+	/**
+	 * @return the segLongitud
+	 */
+	public double getSegLongitud() {
+		return segLongitud;
+	}
+
+	/**
+	 * @param segLongitud
+	 *            the segLongitud to set
+	 */
+	public void setSegLongitud(double segLongitud) {
+		this.segLongitud = segLongitud;
 	}
 
 	/**
@@ -405,21 +455,6 @@ public class SeguridadBean {
 	}
 
 	/**
-	 * @return the segUbicacion
-	 */
-	public String getSegUbicacion() {
-		return segUbicacion;
-	}
-
-	/**
-	 * @param segUbicacion
-	 *            the segUbicacion to set
-	 */
-	public void setSegUbicacion(String segUbicacion) {
-		this.segUbicacion = segUbicacion;
-	}
-
-	/**
 	 * @return the perDni
 	 */
 	public String getPerDni() {
@@ -482,12 +517,12 @@ public class SeguridadBean {
 				if (edicion) {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegUbicacion());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegUbicacion());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
@@ -509,8 +544,7 @@ public class SeguridadBean {
 		if ((getSegAccion() == null || getSegAccion().isEmpty())
 				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty()) || (getSegFecha() == null)
 				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia().equals("S/N"))
-				|| (getSegUbicacion() == null || getSegUbicacion().isEmpty())
-				|| (getPerDni() == null || getPerDni().isEmpty())
+				|| (getSegLatitud() == 0 || getSegLongitud() == 0) || (getPerDni() == null || getPerDni().isEmpty())
 				|| (getPerNombre() == null || getPerNombre().isEmpty())) {
 			setSms_validacion("Todos los datos de seguridad son requeridos.");
 			return true;
@@ -528,7 +562,8 @@ public class SeguridadBean {
 		setSegEmergencia("");
 		setSegFecha(null);
 		setSegTipoEmergencia("S/N");
-		setSegUbicacion("");
+		setSegLatitud(0);
+		setSegLongitud(0);
 		setEdicion(false);
 	}
 
@@ -551,7 +586,8 @@ public class SeguridadBean {
 			setSegEmergencia(incidente.getSegEmergencia());
 			setSegFecha(incidente.getSegFecha());
 			setSegTipoEmergencia(incidente.getSegTipoEmergencia());
-			setSegUbicacion(incidente.getSegUbicacion());
+			setSegLatitud(incidente.getSegLatitud());
+			setSegLongitud(incidente.getSegLongitud());
 			setEdicion(false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -599,23 +635,49 @@ public class SeguridadBean {
 	 * Método para buscar un funcionario
 	 */
 	public void BuscarPersona() {
-		if (getPerDni() == null || getPerDni().isEmpty()) {
-			Mensaje.crearMensajeWARN("Debe ingresar la cédula para realizar la búsqueda.");
+		if (getDatoBusqueda() == null || getDatoBusqueda().isEmpty()) {
+			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
+			setPerDni("");
 			setPerCargo("");
 			setPerEmpresa("");
 			setPerNombre("");
 		} else {
 			try {
-				GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getPerDni());
-				if (f == null) {
-					Mensaje.crearMensajeWARN("La cédula no pudo ser encontrada");
-					setPerCargo("");
-					setPerEmpresa("");
-					setPerNombre("");
-				} else {
-					setPerCargo(f.getFunCargo());
-					setPerEmpresa(f.getGenInstitucione().getInsNombre());
-					setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
+				if (Funciones.isNumeric(getDatoBusqueda())){
+					GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getDatoBusqueda());
+					if (f == null) {
+						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
+						setPerDni("");
+						setPerCargo("");
+						setPerEmpresa("");
+						setPerNombre("");
+					} else {
+						setPerDni(f.getGenPersona().getPerDni());
+						setPerCargo(f.getFunCargo());
+						setPerEmpresa(f.getGenInstitucione().getInsNombre());
+						setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
+					}
+				} else{
+					List<GenFuncionariosInstitucion> f =manager.findFuncionarioXNombre(getDatoBusqueda());
+					if (f==null || f.size()==0){
+						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
+						setPerDni("");
+						setPerCargo("");
+						setPerEmpresa("");
+						setPerNombre("");
+					}else if (f.size()>1){
+						Mensaje.crearMensajeWARN("el dato encontró varias coincidencias, busque mejor por cédula");
+						setPerDni("");
+						setPerCargo("");
+						setPerEmpresa("");
+						setPerNombre("");
+					}else{
+						GenFuncionariosInstitucion g=f.get(0);
+						setPerDni(g.getGenPersona().getPerDni());
+						setPerCargo(g.getFunCargo());
+						setPerEmpresa(g.getGenInstitucione().getInsNombre());
+						setPerNombre(g.getGenPersona().getPerNombres() + " " + g.getGenPersona().getPerApellidos());
+					}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -639,8 +701,9 @@ public class SeguridadBean {
 	 */
 	public void TomarMarca(MarkerDragEvent event) {
 		marker = event.getMarker();
-		setSegUbicacion(marker.getLatlng().getLat() + ";" + marker.getLatlng().getLng());
-		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegUbicacion() + ";");
+		setSegLatitud(marker.getLatlng().getLat());
+		setSegLongitud(marker.getLatlng().getLng());
+		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegLatitud() + " " + getSegLongitud());
 	}
 
 	// ////////////////////////////////////////////ESTADISTICAS///////////////////////////////////////////
@@ -648,7 +711,12 @@ public class SeguridadBean {
 	/**
 	 * Método para cargar todas las incidencias
 	 */
-	public void cargarIncidencias() {
+	public String cargarIncidencias() {
+		setTotalSAL(0);
+		setTotalSEG(0);
+		setTotalSER(0);
+		setTotalSOC(0);
+		setTotal(0);
 		try {
 			for (SegRegistroEmergencia seg : getL_seguridad()) {
 				if (seg.getSegTipoEmergencia().equals(Cod_sal))
@@ -661,11 +729,13 @@ public class SeguridadBean {
 					setTotalSER(getTotalSER() + 1);
 				setTotal(getL_seguridad().size());
 				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(), getTotalSER());
+				this.marcarMapa();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return "est_seguridad?faces-redirect=true";
 	}
 
 	/**
@@ -693,29 +763,9 @@ public class SeguridadBean {
 	 */
 	public void marcarMapa() {
 		for (SegRegistroEmergencia seg : getL_seguridad()) {
-			Integer pos = posicion(seg.getSegUbicacion());
-			Integer pos2 = pos + 1;
-			Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-			Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-			LatLng coord = new LatLng(lat, lon);
+			LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 			geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 		}
-	}
-
-	/**
-	 * Método para sacar la posición del separador de ubicación
-	 * 
-	 * @param a
-	 * @return
-	 */
-	public Integer posicion(String a) {
-		Integer b = 0;
-		for (int i = 0; i <= a.length() - 1; i++) {
-			if (a.charAt(i) == ';') {
-				b = i;
-			}
-		}
-		return b;
 	}
 
 	/**
@@ -729,11 +779,7 @@ public class SeguridadBean {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_sal);
 				for (SegRegistroEmergencia seg : l) {
-					Integer pos = posicion(seg.getSegUbicacion());
-					Integer pos2 = pos + 1;
-					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-					LatLng coord = new LatLng(lat, lon);
+					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
 			} catch (Exception e) {
@@ -745,11 +791,7 @@ public class SeguridadBean {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_soc);
 				for (SegRegistroEmergencia seg : l) {
-					Integer pos = posicion(seg.getSegUbicacion());
-					Integer pos2 = pos + 1;
-					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-					LatLng coord = new LatLng(lat, lon);
+					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
 			} catch (Exception e) {
@@ -761,11 +803,7 @@ public class SeguridadBean {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_seg);
 				for (SegRegistroEmergencia seg : l) {
-					Integer pos = posicion(seg.getSegUbicacion());
-					Integer pos2 = pos + 1;
-					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-					LatLng coord = new LatLng(lat, lon);
+					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
 			} catch (Exception e) {
@@ -777,11 +815,7 @@ public class SeguridadBean {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_ser);
 				for (SegRegistroEmergencia seg : l) {
-					Integer pos = posicion(seg.getSegUbicacion());
-					Integer pos2 = pos + 1;
-					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-					LatLng coord = new LatLng(lat, lon);
+					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
 			} catch (Exception e) {
@@ -792,11 +826,7 @@ public class SeguridadBean {
 		if (v.equals("5")) {
 			try {
 				for (SegRegistroEmergencia seg : getL_seguridad()) {
-					Integer pos = posicion(seg.getSegUbicacion());
-					Integer pos2 = pos + 1;
-					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
-					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
-					LatLng coord = new LatLng(lat, lon);
+					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
 			} catch (Exception e) {
@@ -804,5 +834,9 @@ public class SeguridadBean {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public String volverSeg() {
+		return "seguridad?faces-redirect=true";
 	}
 }

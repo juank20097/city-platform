@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
+import city.model.generic.Mensaje;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -80,6 +81,22 @@ public class ManagerSeguridad {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
+	public List<GenFuncionariosInstitucion> findFuncionarioXNombre(String dato) throws Exception {
+		List<GenFuncionariosInstitucion> l = mngDao.findWhere(GenFuncionariosInstitucion.class,
+				"o.genPersona.perApellidos like '%" + dato.toUpperCase() + "%' or o.genPersona.perNombres like '%" + dato.toUpperCase() + "%'", null);
+		if (l==null || l.size()==0){
+			return null;
+		}else{
+			return l;
+		}
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findSeguridadxTipo(String tipo) throws Exception {
 		List<SegRegistroEmergencia> l = mngDao.findWhere(SegRegistroEmergencia.class,
 				"o.segTipoEmergencia='" + tipo + "'", null);
@@ -117,7 +134,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void insertarSeguridad(Integer id,String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			String ubicacion) throws Exception {
+			double latitud,double longitud) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
@@ -126,7 +143,8 @@ public class ManagerSeguridad {
 			seg.setSegEmergencia(emergencia);
 			seg.setSegFecha(new Timestamp(new Date().getTime()));
 			seg.setSegTipoEmergencia(tipo);
-			seg.setSegUbicacion(ubicacion);
+			seg.setSegLatitud(latitud);
+			seg.setSegLongitud(longitud);
 			mngDao.insertar(seg);
 			System.out.println("Bien_insertar_seguridad");
 		} catch (Exception e) {
@@ -146,14 +164,15 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo,
-			String ubicacion) throws Exception {
+			double latitud,double longitud) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
 			seg.setSegEmergencia(emergencia);
 			seg.setSegFecha(new Timestamp(fecha.getTime()));
 			seg.setSegTipoEmergencia(tipo);
-			seg.setSegUbicacion(ubicacion);
+			seg.setSegLatitud(latitud);
+			seg.setSegLongitud(longitud);
 			mngDao.actualizar(seg);
 			System.out.println("Bien_mod_seguridad");
 		} catch (Exception e) {

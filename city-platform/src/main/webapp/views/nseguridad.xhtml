@@ -31,10 +31,10 @@
 				<br />
 				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="DNI:*" />
+						<h:outputLabel value="DNI/NOMBRE:*" />
 					</b:column>
 					<b:column span="3">
-						<b:inputText value="#{seguridadBean.perDni}">
+						<b:inputText value="#{seguridadBean.datoBusqueda}">
 						</b:inputText>
 					</b:column>
 					<b:column span="2">
@@ -89,8 +89,9 @@
 					<b:column span="4">
 						<p:inplace id="fecha" editor="true">
 							<p:inputText value="#{seguridadBean.segFecha}" required="true"
-								label="text" >
-								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Guayaquil" />
+								label="text">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+									timeZone="America/Guayaquil" />
 							</p:inputText>
 						</p:inplace>
 					</b:column>
@@ -108,15 +109,22 @@
 					<b:column span="2">
 						<h:outputLabel value="Ubicación:*" />
 					</b:column>
-					<b:column span="5">
-						<b:inputText id="ubi" value="#{seguridadBean.segUbicacion}">
-						</b:inputText>
-					</b:column>
 					<b:column span="2">
 						<b:commandButton value="Ver Mapa" immediate="true" look="info"
 							action="#{seguridadBean.abrirDialog}"></b:commandButton>
 					</b:column>
-
+					<b:column span="2">
+						<h:outputLabel value="Latitud:*" />
+					</b:column>
+					<b:column span="2">
+						<b:inputText id="lat" value="#{seguridadBean.segLatitud}" />
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Longitud:*" />
+					</b:column>
+					<b:column span="2">
+						<b:inputText id="lon" value="#{seguridadBean.segLongitud}" />
+					</b:column>
 				</b:row>
 				<b:row>
 					<b:column span="2">
@@ -124,6 +132,22 @@
 					</b:column>
 					<b:column span="10">
 						<b:inputTextarea value="#{seguridadBean.segAccion}" />
+					</b:column>
+				</b:row>
+				<b:row>
+				<b:column span="2">
+						<h:outputLabel value="Archivo:" />
+					</b:column>
+					<b:column span="6">
+						<p:fileUpload
+							fileUploadListener="#{funcionarioBean.handleFileUpload}"
+							mode="advanced" dragDropSupport="false" multiple="false"
+							sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
+							update="" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Seleccionar"
+							onstart="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()"
+							invalidFileMessage="Solo se aceptan archivos PDF" />
 					</b:column>
 				</b:row>
 			</b:panel>
@@ -145,7 +169,7 @@
 					center="0.4078066,-78.18406390000001" zoom="15" type="hybrid"
 					model="#{seguridadBean.geoModel}" style="width:900px;height:400px">
 					<p:ajax event="markerDrag" listener="#{seguridadBean.TomarMarca}"
-						update="frm:growl :frm:ubi " />
+						update="frm:growl :frm:lon :frm:lat " />
 				</p:gmap>
 				<br />
 				<b:label

@@ -25,7 +25,15 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:row>
-				<b:column offset="2" span="4">
+				<b:column>
+					<b:commandButton value="Volver" iconAwesome="file-o"
+						action="#{seguridadBean.volverSeg}"
+						onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()" />
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column  span="6">
 					<center>
 						<br /> <br />
 						<b:panel title="Tipos de Incidencias" look="primary"
@@ -75,8 +83,10 @@
 			<b:row>
 				<b:column span="12">
 					<center>
-						<p:gmap id="gmap" center="0.4078066,-78.18406390000001" zoom="15"
-							type="HYBRID" style="width:100%;height:400px"  model="#{seguridadBean.geoModel1}"/>
+						<p:gmap id="gmap" disableDoubleClickZoom="true"
+							disableDefaultUI="true" center="0.4078066,-78.18406390000001"
+							zoom="15" type="HYBRID" style="width:100%;height:400px"
+							model="#{seguridadBean.geoModel1}" />
 					</center>
 				</b:column>
 			</b:row>

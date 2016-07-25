@@ -22,9 +22,9 @@
 						onclick="PF('statusDialog').show()"
 						oncomplete="PF('statusDialog').hide()" />
 				</b:column>
-				<b:column span="1">
+				<b:column span="2">
 					<b:commandButton value="Estadísticas" iconAwesome="file-o"
-						action="#{seguridadBean.nuevoIncidente()}"
+						action="#{seguridadBean.cargarIncidencias()}"
 						onclick="PF('statusDialog').show()"
 						oncomplete="PF('statusDialog').hide()" />
 				</b:column>
@@ -93,7 +93,7 @@
 						<f:facet name="header">
 							<h:outputText value="LUGAR" />
 						</f:facet>
-						<h:outputText value="#{seg.segUbicacion}" />
+						<h:outputText value="#{seg.segLatitud} , #{seg.segLongitud}" />
 					</h:column>
 				</b:dataTable>
 			</b:panel>
