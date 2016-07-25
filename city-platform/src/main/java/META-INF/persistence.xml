@@ -25,12 +25,14 @@
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
+		<class>city.model.dao.entidades.AudActividadAplicacion</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="false" />
+			<property name="hibernate.ejb.interceptor"
+				value="city.model.manager.ActivityTrackerInterceptor" />
 		</properties>
 	</persistence-unit>
-
 </persistence>
