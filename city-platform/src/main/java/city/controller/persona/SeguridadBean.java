@@ -1,10 +1,8 @@
 package city.controller.persona;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -68,6 +66,10 @@ public class SeguridadBean {
 	private MapModel geoModel;
 
 	// estadistica
+	private static String Cod_sal="Médica";
+	private static String Cod_soc="Protección Civil";
+	private static String Cod_seg="Seguridad";
+	private static String Cod_ser="Servicio Público";
 	private int totalSAL;
 	private int totalSOC;
 	private int totalSEG;
@@ -455,6 +457,7 @@ public class SeguridadBean {
 	 */
 	public String nuevoIncidente() {
 		this.carga();
+		setSegFecha(new Date());
 		setEdicion(true);
 		return "nseguridad?faces-redirect=true";
 	}
@@ -508,7 +511,7 @@ public class SeguridadBean {
 	public boolean validarCampos() {
 		if ((getSegAccion() == null || getSegAccion().isEmpty())
 				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty())
-				// || (getSegFecha() == null)
+				|| (getSegFecha() == null)
 				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia()
 						.equals("S/N"))
 				|| (getSegUbicacion() == null || getSegUbicacion().isEmpty())
@@ -661,13 +664,13 @@ public class SeguridadBean {
 	public void cargarIncidencias() {
 		try {
 			for (SegRegistroEmergencia seg : getL_seguridad()) {
-				if (seg.getSegTipoEmergencia().equals("Médica"))
+				if (seg.getSegTipoEmergencia().equals(Cod_sal))
 					setTotalSAL(getTotalSAL() + 1);
-				if (seg.getSegTipoEmergencia().equals("Protección Civil"))
+				if (seg.getSegTipoEmergencia().equals(Cod_soc))
 					setTotalSOC(getTotalSOC() + 1);
-				if (seg.getSegTipoEmergencia().equals("Seguridad"))
+				if (seg.getSegTipoEmergencia().equals(Cod_seg))
 					setTotalSEG(getTotalSEG() + 1);
-				if (seg.getSegTipoEmergencia().equals("Servicio Público"))
+				if (seg.getSegTipoEmergencia().equals(Cod_ser))
 					setTotalSER(getTotalSER() + 1);
 				setTotal(getL_seguridad().size());
 				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(),
@@ -680,10 +683,10 @@ public class SeguridadBean {
 	}
 
 	public void pie(Integer a, Integer b, Integer c, Integer d) {
-		pieModel.set("Médica", a);
-		pieModel.set("Protección Civil", b);
-		pieModel.set("Seguridad", c);
-		pieModel.set("Servicio Público", d);
+		pieModel.set(Cod_sal, a);
+		pieModel.set(Cod_soc, b);
+		pieModel.set(Cod_seg, c);
+		pieModel.set(Cod_ser, d);
 
 		pieModel.setLegendPosition("e");
 		pieModel.setFill(false);
@@ -718,7 +721,7 @@ public class SeguridadBean {
 		geoModel1 = new DefaultMapModel();
 		if (v.equals("1")){
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Médica");
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_sal);
 				if (l==null || l.size()==0){
 					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
 				}else{
@@ -738,7 +741,7 @@ public class SeguridadBean {
 	}
 		if (v.equals("2")){
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Protección Civil");
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_soc);
 				if (l==null || l.size()==0){
 					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
 				}else{
@@ -758,7 +761,7 @@ public class SeguridadBean {
 	}
 		if (v.equals("3")){
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Seguridad");
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_seg);
 				if (l==null || l.size()==0){
 					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
 				}else{
@@ -778,7 +781,7 @@ public class SeguridadBean {
 	}
 		if (v.equals("4")){
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo("Servicio Público");
+				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_ser);
 				if (l==null || l.size()==0){
 					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
 				}else{

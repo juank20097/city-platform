@@ -87,7 +87,12 @@
 						<h:outputLabel value="Fecha del Incidente:" />
 					</b:column>
 					<b:column span="4">
-						
+						<p:inplace id="fecha" editor="true">
+							<p:inputText value="#{seguridadBean.segFecha}" required="true"
+								label="text" >
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Guayaquil" />
+							</p:inputText>
+						</p:inplace>
 					</b:column>
 				</b:row>
 				<br />
