@@ -66,10 +66,10 @@ public class SeguridadBean {
 	private MapModel geoModel;
 
 	// estadistica
-	private static String Cod_sal="Médica";
-	private static String Cod_soc="Protección Civil";
-	private static String Cod_seg="Seguridad";
-	private static String Cod_ser="Servicio Público";
+	private static String Cod_sal = "Médica";
+	private static String Cod_soc = "Protección Civil";
+	private static String Cod_seg = "Seguridad";
+	private static String Cod_ser = "Servicio Público";
 	private int totalSAL;
 	private int totalSOC;
 	private int totalSEG;
@@ -96,8 +96,7 @@ public class SeguridadBean {
 		geoModel1 = new DefaultMapModel();
 		// definicion de marcador principal
 		LatLng coordenada = new LatLng(0.4044186, -78.17527749999999);
-		geoModel.addOverlay(new Marker(coordenada,
-				"Yachay Ciudad del Conocimiento"));
+		geoModel.addOverlay(new Marker(coordenada, "Yachay Ciudad del Conocimiento"));
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
 		cargarIncidentes();
@@ -482,14 +481,12 @@ public class SeguridadBean {
 			} else {
 				if (edicion) {
 					Integer id = manager.seguridadId();
-					manager.insertarSeguridad(id, getPerDni(), getSegAccion(),
-							getSegEmergencia(), getSegFecha(),
+					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
-					manager.editarSeguridad(getSegId(), getSegAccion(),
-							getSegEmergencia(), getSegFecha(),
+					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegUbicacion());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
@@ -510,10 +507,8 @@ public class SeguridadBean {
 	 */
 	public boolean validarCampos() {
 		if ((getSegAccion() == null || getSegAccion().isEmpty())
-				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty())
-				|| (getSegFecha() == null)
-				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia()
-						.equals("S/N"))
+				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty()) || (getSegFecha() == null)
+				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia().equals("S/N"))
 				|| (getSegUbicacion() == null || getSegUbicacion().isEmpty())
 				|| (getPerDni() == null || getPerDni().isEmpty())
 				|| (getPerNombre() == null || getPerNombre().isEmpty())) {
@@ -548,15 +543,10 @@ public class SeguridadBean {
 			this.carga();
 			setSegId(incidente.getSegId());
 			setPerCargo(incidente.getGenFuncionariosInstitucion().getFunCargo());
-			setPerDni(incidente.getGenFuncionariosInstitucion().getGenPersona()
-					.getPerDni());
-			setPerEmpresa(incidente.getGenFuncionariosInstitucion()
-					.getGenInstitucione().getInsNombre());
-			setPerNombre(incidente.getGenFuncionariosInstitucion()
-					.getGenPersona().getPerNombres()
-					+ " "
-					+ incidente.getGenFuncionariosInstitucion().getGenPersona()
-							.getPerApellidos());
+			setPerDni(incidente.getGenFuncionariosInstitucion().getGenPersona().getPerDni());
+			setPerEmpresa(incidente.getGenFuncionariosInstitucion().getGenInstitucione().getInsNombre());
+			setPerNombre(incidente.getGenFuncionariosInstitucion().getGenPersona().getPerNombres() + " "
+					+ incidente.getGenFuncionariosInstitucion().getGenPersona().getPerApellidos());
 			setSegAccion(incidente.getSegAccion());
 			setSegEmergencia(incidente.getSegEmergencia());
 			setSegFecha(incidente.getSegFecha());
@@ -599,11 +589,9 @@ public class SeguridadBean {
 	 */
 	public void cargarGeneros() {
 		getL_tipos_emergencia().clear();
-		List<GenCatalogoItemsDet> completo = manager
-				.AllofItems("cat_emergencia");
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_emergencia");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_tipos_emergencia().add(
-					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			getL_tipos_emergencia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -618,8 +606,7 @@ public class SeguridadBean {
 			setPerNombre("");
 		} else {
 			try {
-				GenFuncionariosInstitucion f = manager
-						.findFuncionarioXDni(getPerDni());
+				GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getPerDni());
 				if (f == null) {
 					Mensaje.crearMensajeWARN("La cédula no pudo ser encontrada");
 					setPerCargo("");
@@ -628,8 +615,7 @@ public class SeguridadBean {
 				} else {
 					setPerCargo(f.getFunCargo());
 					setPerEmpresa(f.getGenInstitucione().getInsNombre());
-					setPerNombre(f.getGenPersona().getPerNombres() + " "
-							+ f.getGenPersona().getPerApellidos());
+					setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -653,14 +639,15 @@ public class SeguridadBean {
 	 */
 	public void TomarMarca(MarkerDragEvent event) {
 		marker = event.getMarker();
-		setSegUbicacion(marker.getLatlng().getLat() + ";"
-				+ marker.getLatlng().getLng());
-		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegUbicacion()
-				+ ";");
+		setSegUbicacion(marker.getLatlng().getLat() + ";" + marker.getLatlng().getLng());
+		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegUbicacion() + ";");
 	}
 
 	// ////////////////////////////////////////////ESTADISTICAS///////////////////////////////////////////
 
+	/**
+	 * Método para cargar todas las incidencias
+	 */
 	public void cargarIncidencias() {
 		try {
 			for (SegRegistroEmergencia seg : getL_seguridad()) {
@@ -673,8 +660,7 @@ public class SeguridadBean {
 				if (seg.getSegTipoEmergencia().equals(Cod_ser))
 					setTotalSER(getTotalSER() + 1);
 				setTotal(getL_seguridad().size());
-				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(),
-						getTotalSER());
+				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(), getTotalSER());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -682,6 +668,14 @@ public class SeguridadBean {
 		}
 	}
 
+	/**
+	 * Método de diagramado del pie
+	 * 
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @param d
+	 */
 	public void pie(Integer a, Integer b, Integer c, Integer d) {
 		pieModel.set(Cod_sal, a);
 		pieModel.set(Cod_soc, b);
@@ -694,19 +688,26 @@ public class SeguridadBean {
 		pieModel.setDiameter(150);
 	}
 
+	/**
+	 * Método para dibujar el mapa
+	 */
 	public void marcarMapa() {
 		for (SegRegistroEmergencia seg : getL_seguridad()) {
 			Integer pos = posicion(seg.getSegUbicacion());
 			Integer pos2 = pos + 1;
-			Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0,
-					pos));
-			Double lon = Double.parseDouble(seg.getSegUbicacion().substring(
-					pos2));
+			Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+			Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 			LatLng coord = new LatLng(lat, lon);
 			geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 		}
 	}
 
+	/**
+	 * Método para sacar la posición del separador de ubicación
+	 * 
+	 * @param a
+	 * @return
+	 */
 	public Integer posicion(String a) {
 		Integer b = 0;
 		for (int i = 0; i <= a.length() - 1; i++) {
@@ -717,108 +718,91 @@ public class SeguridadBean {
 		return b;
 	}
 
-	public void marcaPersonal(String v){
+	/**
+	 * Método para marcar el mapa segun la selección
+	 * 
+	 * @param v
+	 */
+	public void marcaPersonal(String v) {
 		geoModel1 = new DefaultMapModel();
-		if (v.equals("1")){
+		if (v.equals("1")) {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_sal);
-				if (l==null || l.size()==0){
-					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
-				}else{
-					for (SegRegistroEmergencia seg : l) {
-					Integer pos=posicion(seg.getSegUbicacion());
-					Integer pos2=pos+1;
-					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
-					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+				for (SegRegistroEmergencia seg : l) {
+					Integer pos = posicion(seg.getSegUbicacion());
+					Integer pos2 = pos + 1;
+					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 					LatLng coord = new LatLng(lat, lon);
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
-			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	}
-		if (v.equals("2")){
+		}
+		if (v.equals("2")) {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_soc);
-				if (l==null || l.size()==0){
-					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
-				}else{
-					for (SegRegistroEmergencia seg : l) {
-					Integer pos=posicion(seg.getSegUbicacion());
-					Integer pos2=pos+1;
-					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
-					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+				for (SegRegistroEmergencia seg : l) {
+					Integer pos = posicion(seg.getSegUbicacion());
+					Integer pos2 = pos + 1;
+					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 					LatLng coord = new LatLng(lat, lon);
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
-			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	}
-		if (v.equals("3")){
+		}
+		if (v.equals("3")) {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_seg);
-				if (l==null || l.size()==0){
-					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
-				}else{
-					for (SegRegistroEmergencia seg : l) {
-					Integer pos=posicion(seg.getSegUbicacion());
-					Integer pos2=pos+1;
-					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
-					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+				for (SegRegistroEmergencia seg : l) {
+					Integer pos = posicion(seg.getSegUbicacion());
+					Integer pos2 = pos + 1;
+					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 					LatLng coord = new LatLng(lat, lon);
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
-			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	}
-		if (v.equals("4")){
+		}
+		if (v.equals("4")) {
 			try {
 				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_ser);
-				if (l==null || l.size()==0){
-					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
-				}else{
-					for (SegRegistroEmergencia seg : l) {
-					Integer pos=posicion(seg.getSegUbicacion());
-					Integer pos2=pos+1;
-					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
-					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+				for (SegRegistroEmergencia seg : l) {
+					Integer pos = posicion(seg.getSegUbicacion());
+					Integer pos2 = pos + 1;
+					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 					LatLng coord = new LatLng(lat, lon);
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
-			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	}
-		if (v.equals("5")){
+		}
+		if (v.equals("5")) {
 			try {
-				List<SegRegistroEmergencia> l = manager.findAllseguridad();
-				if (l==null || l.size()==0){
-					Mensaje.crearMensajeWARN("El Dato seleccionado no contiene ninguna información");
-				}else{
-					for (SegRegistroEmergencia seg : l) {
-					Integer pos=posicion(seg.getSegUbicacion());
-					Integer pos2=pos+1;
-					Double lat= Double.parseDouble(seg.getSegUbicacion().substring(0, pos)); 
-					Double lon= Double.parseDouble(seg.getSegUbicacion().substring(pos2));
+				for (SegRegistroEmergencia seg : getL_seguridad()) {
+					Integer pos = posicion(seg.getSegUbicacion());
+					Integer pos2 = pos + 1;
+					Double lat = Double.parseDouble(seg.getSegUbicacion().substring(0, pos));
+					Double lon = Double.parseDouble(seg.getSegUbicacion().substring(pos2));
 					LatLng coord = new LatLng(lat, lon);
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
-			}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-	}
+		}
 	}
 }

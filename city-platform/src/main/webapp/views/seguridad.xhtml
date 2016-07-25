@@ -23,6 +23,12 @@
 						oncomplete="PF('statusDialog').hide()" />
 				</b:column>
 				<b:column span="1">
+					<b:commandButton value="Estadísticas" iconAwesome="file-o"
+						action="#{seguridadBean.nuevoIncidente()}"
+						onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()" />
+				</b:column>
+				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
 						action="index?faces-redirect=true" />
 				</b:column>
