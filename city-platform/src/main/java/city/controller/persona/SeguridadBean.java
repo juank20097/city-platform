@@ -13,6 +13,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.model.chart.PieChartModel;
@@ -49,6 +50,8 @@ public class SeguridadBean {
 	private String segEmergencia;
 	private Date segFecha;
 	private String segTipoEmergencia;
+	private String segSubHijo;
+	private String segSubTipo;
 	private double segLatitud;
 	private double segLongitud;
 
@@ -65,6 +68,8 @@ public class SeguridadBean {
 	// listas de registros
 	private List<SegRegistroEmergencia> l_seguridad;
 	private List<SelectItem> l_tipos_emergencia;
+	private List<SelectItem> l_tipos_emergencia_1;
+	private List<String> l_tipos_emergencia_2;
 
 	// mapa
 	private Marker marker;
@@ -99,6 +104,8 @@ public class SeguridadBean {
 		pieModel = new PieChartModel();
 		l_seguridad = new ArrayList<SegRegistroEmergencia>();
 		l_tipos_emergencia = new ArrayList<SelectItem>();
+		l_tipos_emergencia_1 = new ArrayList<SelectItem>();
+		l_tipos_emergencia_2 = new ArrayList<String>();
 		geoModel = new DefaultMapModel();
 		geoModel1 = new DefaultMapModel();
 		// definicion de marcador principal
@@ -107,6 +114,66 @@ public class SeguridadBean {
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
 		cargarIncidentes();
+	}
+
+	/**
+	 * @return the segSubHijo
+	 */
+	public String getSegSubHijo() {
+		return segSubHijo;
+	}
+
+	/**
+	 * @param segSubHijo
+	 *            the segSubHijo to set
+	 */
+	public void setSegSubHijo(String segSubHijo) {
+		this.segSubHijo = segSubHijo;
+	}
+
+	/**
+	 * @return the segSubTipo
+	 */
+	public String getSegSubTipo() {
+		return segSubTipo;
+	}
+
+	/**
+	 * @param segSubTipo
+	 *            the segSubTipo to set
+	 */
+	public void setSegSubTipo(String segSubTipo) {
+		this.segSubTipo = segSubTipo;
+	}
+
+	/**
+	 * @return the l_tipos_emergencia_1
+	 */
+	public List<SelectItem> getL_tipos_emergencia_1() {
+		return l_tipos_emergencia_1;
+	}
+
+	/**
+	 * @param l_tipos_emergencia_1
+	 *            the l_tipos_emergencia_1 to set
+	 */
+	public void setL_tipos_emergencia_1(List<SelectItem> l_tipos_emergencia_1) {
+		this.l_tipos_emergencia_1 = l_tipos_emergencia_1;
+	}
+
+	/**
+	 * @return the l_tipos_emergencia_2
+	 */
+	public List<String> getL_tipos_emergencia_2() {
+		return l_tipos_emergencia_2;
+	}
+
+	/**
+	 * @param l_tipos_emergencia_2
+	 *            the l_tipos_emergencia_2 to set
+	 */
+	public void setL_tipos_emergencia_2(List<String> l_tipos_emergencia_2) {
+		this.l_tipos_emergencia_2 = l_tipos_emergencia_2;
 	}
 
 	/**
@@ -517,12 +584,14 @@ public class SeguridadBean {
 				if (edicion) {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(),
+							getSegSubHijo());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(),
+							getSegSubHijo());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
@@ -545,7 +614,9 @@ public class SeguridadBean {
 				|| (getSegEmergencia() == null || getSegEmergencia().isEmpty()) || (getSegFecha() == null)
 				|| (getSegTipoEmergencia() == null || getSegTipoEmergencia().equals("S/N"))
 				|| (getSegLatitud() == 0 || getSegLongitud() == 0) || (getPerDni() == null || getPerDni().isEmpty())
-				|| (getPerNombre() == null || getPerNombre().isEmpty())) {
+				|| (getPerNombre() == null || getPerNombre().isEmpty())
+				|| (getSegSubTipo() == null || getSegSubTipo().isEmpty())
+				|| (getSegSubHijo() == null || getSegSubHijo().isEmpty())) {
 			setSms_validacion("Todos los datos de seguridad son requeridos.");
 			return true;
 		} else {
@@ -562,6 +633,8 @@ public class SeguridadBean {
 		setSegEmergencia("");
 		setSegFecha(null);
 		setSegTipoEmergencia("S/N");
+		setSegSubTipo("S/N");
+		setSegSubHijo("S/N");
 		setSegLatitud(0);
 		setSegLongitud(0);
 		setEdicion(false);
@@ -588,6 +661,8 @@ public class SeguridadBean {
 			setSegTipoEmergencia(incidente.getSegTipoEmergencia());
 			setSegLatitud(incidente.getSegLatitud());
 			setSegLongitud(incidente.getSegLongitud());
+			setSegSubTipo(incidente.getSegSubTipo());
+			setSegSubHijo(incidente.getSegSubHijo());
 			setEdicion(false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -621,17 +696,6 @@ public class SeguridadBean {
 	}
 
 	/**
-	 * Lista de Generos
-	 */
-	public void cargarGeneros() {
-		getL_tipos_emergencia().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_emergencia");
-		for (GenCatalogoItemsDet i : completo) {
-			getL_tipos_emergencia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
-		}
-	}
-
-	/**
 	 * Método para buscar un funcionario
 	 */
 	public void BuscarPersona() {
@@ -643,7 +707,7 @@ public class SeguridadBean {
 			setPerNombre("");
 		} else {
 			try {
-				if (Funciones.isNumeric(getDatoBusqueda())){
+				if (Funciones.isNumeric(getDatoBusqueda())) {
 					GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getDatoBusqueda());
 					if (f == null) {
 						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
@@ -657,22 +721,22 @@ public class SeguridadBean {
 						setPerEmpresa(f.getGenInstitucione().getInsNombre());
 						setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
 					}
-				} else{
-					List<GenFuncionariosInstitucion> f =manager.findFuncionarioXNombre(getDatoBusqueda());
-					if (f==null || f.size()==0){
+				} else {
+					List<GenFuncionariosInstitucion> f = manager.findFuncionarioXNombre(getDatoBusqueda());
+					if (f == null || f.size() == 0) {
 						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
 						setPerDni("");
 						setPerCargo("");
 						setPerEmpresa("");
 						setPerNombre("");
-					}else if (f.size()>1){
+					} else if (f.size() > 1) {
 						Mensaje.crearMensajeWARN("el dato encontró varias coincidencias, busque mejor por cédula");
 						setPerDni("");
 						setPerCargo("");
 						setPerEmpresa("");
 						setPerNombre("");
-					}else{
-						GenFuncionariosInstitucion g=f.get(0);
+					} else {
+						GenFuncionariosInstitucion g = f.get(0);
 						setPerDni(g.getGenPersona().getPerDni());
 						setPerCargo(g.getFunCargo());
 						setPerEmpresa(g.getGenInstitucione().getInsNombre());
@@ -839,4 +903,57 @@ public class SeguridadBean {
 	public String volverSeg() {
 		return "seguridad?faces-redirect=true";
 	}
+
+	///////////////////////////////////////// (TIPOS_DE_EMERGENCIAS)/////////////////////////////////
+	/**
+	 * Lista de Tipos
+	 */
+	public void cargarGeneros() {
+		getL_tipos_emergencia().clear();
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_emergencia");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_tipos_emergencia().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de sub_tipos
+	 */
+	public void cargarSubtipo() {
+		getL_tipos_emergencia_1().clear();
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_tipos_emergencia", getSegTipoEmergencia())) {
+			getL_tipos_emergencia_1().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de sub_hijos
+	 */
+	public void cargarHijos() {
+		getL_tipos_emergencia_2().clear();
+		if (manager.AllofItems("cat_subtipos_emergencia", getSegSubTipo()) != null) {
+			for (GenCatalogoItemsDet i : manager.AllofItems("cat_subtipos_emergencia", getSegSubTipo())) {
+				getL_tipos_emergencia_2().add(i.getIteNombre());
+			}
+		}
+	}
+	
+	/**
+	 * Metod para mostrar la ciudad dependiendo de la provincia
+	 */
+	public void mostrarSubTipo() {
+		cargarSubtipo();
+	}
+	
+	/**
+	 * Metod para mostrar la ciudad dependiendo de la provincia
+	 */
+	public List<String> mostrarHijos() {
+		cargarHijos();
+		List<String> l = new ArrayList<String>();
+		l.addAll(getL_tipos_emergencia_2());
+		return l;
+	}
+	
+	
 }

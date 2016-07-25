@@ -3,6 +3,7 @@ package city.model.manager;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -10,7 +11,6 @@ import javax.ejb.Stateless;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
-import city.model.generic.Mensaje;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -134,7 +134,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void insertarSeguridad(Integer id,String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			double latitud,double longitud) throws Exception {
+			double latitud,double longitud,String sub_tipo,String sub_hijo) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
@@ -145,6 +145,8 @@ public class ManagerSeguridad {
 			seg.setSegTipoEmergencia(tipo);
 			seg.setSegLatitud(latitud);
 			seg.setSegLongitud(longitud);
+			seg.setSegSubTipo(sub_tipo);
+			seg.setSegSubHijo(sub_hijo);
 			mngDao.insertar(seg);
 			System.out.println("Bien_insertar_seguridad");
 		} catch (Exception e) {
@@ -164,7 +166,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo,
-			double latitud,double longitud) throws Exception {
+			double latitud,double longitud,String sub_tipo,String sub_hijo) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
@@ -173,6 +175,8 @@ public class ManagerSeguridad {
 			seg.setSegTipoEmergencia(tipo);
 			seg.setSegLatitud(latitud);
 			seg.setSegLongitud(longitud);
+			seg.setSegSubTipo(sub_tipo);
+			seg.setSegSubHijo(sub_hijo);
 			mngDao.actualizar(seg);
 			System.out.println("Bien_mod_seguridad");
 		} catch (Exception e) {
@@ -190,6 +194,24 @@ public class ManagerSeguridad {
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
 		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
 				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
+		if (li == null || li.isEmpty()) {
+			return null;
+		} else {
+			return li;
+		}
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para listar
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
+		List<GenCatalogoItemsDet> li = mngDao
+				.findWhere(GenCatalogoItemsDet.class,
+						"o.genCatalogoCab.catCodigo='" + cat_nombre
+								+ "' and o.itePadre='" + padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {

@@ -36,6 +36,12 @@ public class SegRegistroEmergencia implements Serializable {
 
 	@Column(name = "seg_longitud")
 	private double segLongitud;
+	
+	@Column(name="seg_sub_hijo")
+	private String segSubHijo;
+
+	@Column(name="seg_sub_tipo")
+	private String segSubTipo;
 
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
 	@ManyToOne
@@ -108,6 +114,22 @@ public class SegRegistroEmergencia implements Serializable {
 
 	public void setSegLongitud(double segLongitud) {
 		this.segLongitud = segLongitud;
+	}
+	
+	public String getSegSubHijo() {
+		return this.segSubHijo;
+	}
+
+	public void setSegSubHijo(String segSubHijo) {
+		this.segSubHijo = segSubHijo;
+	}
+
+	public String getSegSubTipo() {
+		return this.segSubTipo;
+	}
+
+	public void setSegSubTipo(String segSubTipo) {
+		this.segSubTipo = segSubTipo;
 	}
 
 }

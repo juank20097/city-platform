@@ -73,17 +73,6 @@
 				collapsible="false">
 				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="Tipo de Emergencia:*" />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{seguridadBean.segTipoEmergencia}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
-							<f:selectItems value="#{seguridadBean.l_tipos_emergencia}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-					<b:column span="2">
 						<h:outputLabel value="Fecha del Incidente:" />
 					</b:column>
 					<b:column span="4">
@@ -94,6 +83,45 @@
 									timeZone="America/Guayaquil" />
 							</p:inputText>
 						</p:inplace>
+					</b:column>
+						<b:column span="2">
+						<h:outputLabel value="Tipo de Emergencia:*" />
+					</b:column>
+					<b:column span="4">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{seguridadBean.segTipoEmergencia}">
+							<p:ajax
+								listener="#{seguridadBean.mostrarSubTipo()}"
+								update=":frm:c1"></p:ajax>
+							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+							<f:selectItems value="#{seguridadBean.l_tipos_emergencia}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<br/>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Sub-Tipo de Emergencia:*" />
+					</b:column>
+					<b:column span="4">
+						<h:selectOneMenu id="c1" styleClass="form-control"
+							value="#{seguridadBean.segSubTipo}">
+							<p:ajax
+								listener="#{seguridadBean.mostrarHijos()}"
+								update=":frm:dd"></p:ajax>
+							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+							<f:selectItems value="#{seguridadBean.l_tipos_emergencia_1}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Definición de Emergencia:*" />
+					</b:column>
+					<b:column span="4">
+						<p:autoComplete id="dd"
+							value="#{seguridadBean.segSubHijo}"
+							completeMethod="#{seguridadBean.mostrarHijos()}" />
 					</b:column>
 				</b:row>
 				<br />
@@ -135,16 +163,15 @@
 					</b:column>
 				</b:row>
 				<b:row>
-				<b:column span="2">
+					<b:column span="2">
 						<h:outputLabel value="Archivo:" />
 					</b:column>
 					<b:column span="6">
 						<p:fileUpload
 							fileUploadListener="#{funcionarioBean.handleFileUpload}"
 							mode="advanced" dragDropSupport="false" multiple="false"
-							sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
-							update="" cancelLabel="Cancelar"
-							uploadLabel="Subir" label="Seleccionar"
+							sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/" update=""
+							cancelLabel="Cancelar" uploadLabel="Subir" label="Seleccionar"
 							onstart="PF('statusDialog').show()"
 							oncomplete="PF('statusDialog').hide()"
 							invalidFileMessage="Solo se aceptan archivos PDF" />
