@@ -1,6 +1,6 @@
 package city.controller.persona;
 
-import java.io.File;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,10 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
+
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -70,6 +69,9 @@ public class FuncionarioBean {
 	private String exc_nombre;
 	private String exc_usuario;
 
+	// atributo de direccion de url
+	private String url_doc;
+
 	public FuncionarioBean() {
 	}
 
@@ -80,6 +82,12 @@ public class FuncionarioBean {
 		l_funcionarios = new ArrayList<Funcionario>();
 		l_funcionarios_total = new ArrayList<Funcionario>();
 		errores = new ArrayList<String>();
+		try {
+			url_doc = manager.ParametroByID("direccion_doc");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		selecInsti();
 	}
 
@@ -191,14 +199,11 @@ public class FuncionarioBean {
 	private void ListFuncionarios() {
 		try {
 			l_funcionarios_total = new ArrayList<Funcionario>();
-			if (getInsCodigoBusqueda() == null
-					|| getInsCodigoBusqueda().equals("-1")) {
+			if (getInsCodigoBusqueda() == null || getInsCodigoBusqueda().equals("-1")) {
 				Mensaje.crearMensajeWARN("No existe los funcionarios respectivos para la institución seleccionada");
 			} else {
-				for (GenFuncionariosInstitucion f : manager
-						.findAllFuncionarioXInstitucion(getInsCodigoBusqueda())) {
-					GenPersona per = manager.PersonaByID(f.getGenPersona()
-							.getPerDni());
+				for (GenFuncionariosInstitucion f : manager.findAllFuncionarioXInstitucion(getInsCodigoBusqueda())) {
+					GenPersona per = manager.PersonaByID(f.getGenPersona().getPerDni());
 					Funcionario fun = new Funcionario();
 					fun.setFunCargo(f.getFunCargo());
 					fun.setFunDireccion(f.getFunDireccion());
@@ -214,8 +219,7 @@ public class FuncionarioBean {
 					fun.setPerDni(per.getPerDni());
 					fun.setPerEstado(per.getPerEstado());
 					fun.setPerEstadoCivil(per.getPerEstadoCivil());
-					fun.setPerFechaNacimiento(per
-							.getPerFechaNacimiento());
+					fun.setPerFechaNacimiento(per.getPerFechaNacimiento());
 					fun.setPerGenero(per.getPerGenero());
 					fun.setPerNombres(per.getPerNombres());
 					fun.setPerTelefono(per.getPerTelefono());
@@ -241,8 +245,7 @@ public class FuncionarioBean {
 	public void handleFileUpload(FileUploadEvent event) {
 		try {
 
-			if (getInsCodigo() == null || getInsCodigo().isEmpty()
-					|| getInsCodigo().equals("-1")) {
+			if (getInsCodigo() == null || getInsCodigo().isEmpty() || getInsCodigo().equals("-1")) {
 				Mensaje.crearMensajeWARN("Debe seleccionar una institución para ser añadida la información");
 			} else {
 				if (event.getFile() == null)
@@ -282,11 +285,9 @@ public class FuncionarioBean {
 				// Método para saber los datos de todo el excel
 				for (int j = 0; j < NUMERO_COLUMNAS_EXCEL_ESTUDIANTE; j++) {
 					datosFila.add(hoja.getCell(j, i).getContents().trim());
-					System.out.println("fila:" + i + " ,columna:" + j
-							+ " dato:" + hoja.getCell(j, i).getContents());
+					System.out.println("fila:" + i + " ,columna:" + j + " dato:" + hoja.getCell(j, i).getContents());
 				}
-				l_funcionarios
-						.add(manager.crearFuncionario(datosFila, insCodigo));
+				l_funcionarios.add(manager.crearFuncionario(datosFila, insCodigo));
 			}
 		}
 		// inactivar estudiantes no encontrados y activos
@@ -298,13 +299,12 @@ public class FuncionarioBean {
 		// mostrar errores
 		if (errores.size() > 0) {
 			mostrarListaErrores();
-			Mensaje.crearMensajeWARN("Existió errores dentro del archivo, "
-					+ "pero los datos sin error fueron guardados. " + resultado);
+			Mensaje.crearMensajeWARN(
+					"Existió errores dentro del archivo, " + "pero los datos sin error fueron guardados. " + resultado);
 		} else
 
 			// Método para cargar Registro de Excel
-			Mensaje.crearMensajeINFO("Datos ingresados correctamente. \n"
-					+ resultado);
+			Mensaje.crearMensajeINFO("Datos ingresados correctamente. \n" + resultado);
 	}
 
 	/**
@@ -355,10 +355,8 @@ public class FuncionarioBean {
 	 */
 	public List<SelectItem> selecInsti() {
 		try {
-			for (GenInstitucione insti : manager
-					.findAllInstitucionesServicios()) {
-				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti
-						.getInsNombre()));
+			for (GenInstitucione insti : manager.findAllInstitucionesServicios()) {
+				l_instituciones.add(new SelectItem(insti.getInsCodigo(), insti.getInsNombre()));
 			}
 			return l_instituciones;
 		} catch (Exception e) {
@@ -398,12 +396,12 @@ public class FuncionarioBean {
 	 * @param est
 	 */
 	public void crearExcel(List<Funcionario> fun) {
+		String url=url_doc+"/descarga";
 		try {
-			ServletContext servletContext = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-			String contextPath = servletContext.getRealPath(File.separator
-					+ "resources/doc/descarga");
-			System.out.println(contextPath);
+//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//					.getContext();
+//			String contextPath = servletContext.getRealPath(File.separator + "resources/doc/descarga");
+			System.out.println(url);
 
 			HSSFWorkbook libro = new HSSFWorkbook();
 
@@ -413,8 +411,7 @@ public class FuncionarioBean {
 				HSSFRow row = hoja.createRow(i);
 				llenarFila(fun.get(i), row);
 			}
-			OutputStream out = new FileOutputStream(contextPath
-					+ "DatosExcel_Funcionarios.xls");
+			OutputStream out = new FileOutputStream(url + "DatosExcel_Funcionarios.xls");
 			libro.write(out);
 			libro.close();
 
@@ -456,19 +453,17 @@ public class FuncionarioBean {
 			celda10.setCellValue("JEFE INMEDIATO");
 			HSSFCell celda11 = row.createCell(11);
 			celda11.setCellValue("TIPO");
-			HSSFCell celda12= row.createCell(12);
+			HSSFCell celda12 = row.createCell(12);
 			celda12.setCellValue("TIPO EVALUACIÓN");
 		} else {
 			HSSFCell celda0 = row.createCell(0);
 			celda0.setCellValue(est.getPerDni());
 			HSSFCell celda1 = row.createCell(1);
-			celda1.setCellValue(est.getPerNombres() + " "
-					+ est.getPerApellidos());
+			celda1.setCellValue(est.getPerNombres() + " " + est.getPerApellidos());
 			HSSFCell celda2 = row.createCell(2);
 			celda2.setCellValue(est.getPerCorreo());
 			HSSFCell celda3 = row.createCell(3);
-			celda3.setCellValue(Funciones.dateToString(est
-					.getPerFechaNacimiento()));
+			celda3.setCellValue(Funciones.dateToString(est.getPerFechaNacimiento()));
 			HSSFCell celda4 = row.createCell(4);
 			celda4.setCellValue(est.getPerTelefono());
 			HSSFCell celda5 = row.createCell(5);
@@ -494,15 +489,15 @@ public class FuncionarioBean {
 	 * Método para descargar un archivo excel
 	 */
 	public void descargarArchivo() {
-		if (getInsCodigoBusqueda() == null
-				|| getInsCodigoBusqueda().equals("-1")) {
-			Mensaje.crearMensajeWARN("No se puede realizar la exportación del archivo porque la lista está vacía o nula.");
+		if (getInsCodigoBusqueda() == null || getInsCodigoBusqueda().equals("-1")) {
+			Mensaje.crearMensajeWARN(
+					"No se puede realizar la exportación del archivo porque la lista está vacía o nula.");
 		} else {
-			ServletContext servletContext = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-			String contextPath = servletContext.getRealPath(File.separator
-					+ "resources/doc/descargaDatosExcel_Funcionarios.xls");
-			Funciones.descargarExcel(contextPath);
+//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//					.getContext();
+//			String contextPath = servletContext
+//					.getRealPath(File.separator + "resources/doc/descargaDatosExcel_Funcionarios.xls");
+			Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Funcionarios.xls");
 		}
 	}
 
@@ -510,10 +505,9 @@ public class FuncionarioBean {
 	 * Método para descargar los archivos de ejemplo
 	 */
 	public void descargarArchivoEjemplo() {
-		ServletContext servletContext = (ServletContext) FacesContext
-				.getCurrentInstance().getExternalContext().getContext();
-		String contextPath = servletContext.getRealPath(File.separator
-				+ "resources/doc/Ejemplo_Base_Funcionario.xls");
-		Funciones.descargarExcel(contextPath);
+//		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//				.getContext();
+//		String contextPath = servletContext.getRealPath(File.separator + "resources/doc/Ejemplo_Base_Funcionario.xls");
+		Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Funcionario.xls");
 	}
 }

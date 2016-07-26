@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,7 +13,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;

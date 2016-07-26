@@ -14,6 +14,7 @@ import city.model.dao.entidades.GenExterno;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenFuncionariosInstitucionPK;
 import city.model.dao.entidades.GenInstitucione;
+import city.model.dao.entidades.GenParametro;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenRegistroExcel;
 import city.model.dao.entidades.extras.Estudiante;
@@ -72,21 +73,16 @@ public class ManagerCarga {
 	private int POSICION_JEFE = 14;
 	private int POSICION_EVALUACION = 15;
 
-	private String[] encabezados_estudiante = { "CÉDULA", "NOMBRES",
-			"APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO", "CELULAR",
-			"ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL",
-			"CORREO_INSTITUCIONAL", "NIVEL", "CARRERA", "MODALIDAD",
-			"AREA_ESTUDIO" };
+	private String[] encabezados_estudiante = { "CÉDULA", "NOMBRES", "APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO",
+			"CELULAR", "ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL", "CORREO_INSTITUCIONAL", "NIVEL", "CARRERA",
+			"MODALIDAD", "AREA_ESTUDIO" };
 
-	private String[] encabezados_externo = { "CÉDULA", "NOMBRES", "APELLIDOS",
-			"FECHA_NACIMIENTO", "TELÉFONO", "CELULAR", "ESTADO_CIVIL",
-			"GÉNERO", "CORREO_PERSONAL", "REFERENCIA", "TIPO" };
+	private String[] encabezados_externo = { "CÉDULA", "NOMBRES", "APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO",
+			"CELULAR", "ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL", "REFERENCIA", "TIPO" };
 
-	private String[] encabezados_funcionario = { "CÉDULA", "NOMBRES",
-			"APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO", "CELULAR",
-			"ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL", "CARGO", "DIRECCIÓN",
-			"FECHA_INGRESO", "GERENCIA", "TIPO", "JEFE_INMEDIATO",
-			"TIPO_EVALUACIÓN" };
+	private String[] encabezados_funcionario = { "CÉDULA", "NOMBRES", "APELLIDOS", "FECHA_NACIMIENTO", "TELÉFONO",
+			"CELULAR", "ESTADO_CIVIL", "GÉNERO", "CORREO_PERSONAL", "CARGO", "DIRECCIÓN", "FECHA_INGRESO", "GERENCIA",
+			"TIPO", "JEFE_INMEDIATO", "TIPO_EVALUACIÓN" };
 
 	/**
 	 * Metodo de inicialización de contructor
@@ -116,10 +112,8 @@ public class ManagerCarga {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenInstitucione> findAllInstitucionesEducativas()
-			throws Exception {
-		return mngDao.findWhere(GenInstitucione.class,
-				"o.insCategoria='Educación'", null);
+	public List<GenInstitucione> findAllInstitucionesEducativas() throws Exception {
+		return mngDao.findWhere(GenInstitucione.class, "o.insCategoria='Educación'", null);
 	}// Cierre del metodo
 
 	/**
@@ -128,23 +122,19 @@ public class ManagerCarga {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucion(
-			String ins_codigo) throws Exception {
+	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucion(String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenEstudianteInstitucion.class, "o.id.insCodigo='" + ins_codigo + "'", null);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucionActivos(String ins_codigo) throws Exception {
 		return mngDao.findWhere(GenEstudianteInstitucion.class,
-				"o.id.insCodigo='" + ins_codigo + "'", null);
-	}// Cierre del metodo
-
-	/**
-	 * Metodo para listar todas los datos existentes
-	 * 
-	 * @return La lista de todas los datos encontradas
-	 */
-	@SuppressWarnings("unchecked")
-	public List<GenEstudianteInstitucion> findAllEstudiantesXInstitucionActivos(
-			String ins_codigo) throws Exception {
-		return mngDao
-				.findWhere(GenEstudianteInstitucion.class, "o.id.insCodigo='"
-						+ ins_codigo + "' and o.estEstado='A'", null);
+				"o.id.insCodigo='" + ins_codigo + "' and o.estEstado='A'", null);
 	}// Cierre del metodo
 
 	/**
@@ -156,6 +146,18 @@ public class ManagerCarga {
 	 */
 	public GenPersona PersonaByID(String dni) throws Exception {
 		return (GenPersona) mngDao.findById(GenPersona.class, dni);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public String ParametroByID(String dni) throws Exception {
+		GenParametro p = (GenParametro) mngDao.findById(GenParametro.class, dni);
+		return p.getParValor();
 	}// Cierre del metodo
 
 	/**
@@ -177,12 +179,9 @@ public class ManagerCarga {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public GenEstudianteInstitucion EstudianteByID(String ins_codigo,
-			String per_dni) throws Exception {
-		List<GenEstudianteInstitucion> l_est = mngDao.findWhere(
-				GenEstudianteInstitucion.class, "o.id.insCodigo = '"
-						+ ins_codigo + "' and o.id.perDni = '" + per_dni + "'",
-				null);
+	public GenEstudianteInstitucion EstudianteByID(String ins_codigo, String per_dni) throws Exception {
+		List<GenEstudianteInstitucion> l_est = mngDao.findWhere(GenEstudianteInstitucion.class,
+				"o.id.insCodigo = '" + ins_codigo + "' and o.id.perDni = '" + per_dni + "'", null);
 		if (l_est == null || l_est.size() == 0) {
 			return null;
 		} else {
@@ -202,9 +201,8 @@ public class ManagerCarga {
 	 * @param area_estudio
 	 * @throws Exception
 	 */
-	public void insertarEstudiante(String ins_codigo, String per_dni,
-			String correo, String nivel, String carrera, String modalidad,
-			String area_estudio) throws Exception {
+	public void insertarEstudiante(String ins_codigo, String per_dni, String correo, String nivel, String carrera,
+			String modalidad, String area_estudio) throws Exception {
 		try {
 			GenEstudianteInstitucionPK pk_estudiante = new GenEstudianteInstitucionPK();
 			pk_estudiante.setInsCodigo(ins_codigo);
@@ -240,12 +238,10 @@ public class ManagerCarga {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarEstudiante(String ins_codigo, String per_dni,
-			String correo, String nivel, String carrera, String modalidad,
-			String area_estudio, String estado) throws Exception {
+	public void editarEstudiante(String ins_codigo, String per_dni, String correo, String nivel, String carrera,
+			String modalidad, String area_estudio, String estado) throws Exception {
 		try {
-			GenEstudianteInstitucion estudiante = this.EstudianteByID(
-					ins_codigo, per_dni);
+			GenEstudianteInstitucion estudiante = this.EstudianteByID(ins_codigo, per_dni);
 			estudiante.setEstAreaEstudio(area_estudio);
 			estudiante.setEstCarrera(carrera);
 			estudiante.setEstCorreo(correo);
@@ -265,8 +261,7 @@ public class ManagerCarga {
 	 * 
 	 * @param e
 	 */
-	public void inactivarEstadoEstudiante(GenEstudianteInstitucion e,
-			String ins_codigo) {
+	public void inactivarEstadoEstudiante(GenEstudianteInstitucion e, String ins_codigo) {
 		try {
 			if (e.getId().getInsCodigo().equals(ins_codigo)) {
 				e.setEstEstado("I");
@@ -288,34 +283,20 @@ public class ManagerCarga {
 	 * @return
 	 */
 	public boolean validarEncabezadosExcelEstudiante(Cell[] row) {
-		if (row[POSICION_CEDULA].getContents().equals(
-				encabezados_estudiante[POSICION_CEDULA])
-				&& row[POSICION_CARRERA].getContents().equals(
-						encabezados_estudiante[POSICION_CARRERA])
-				&& row[POSICION_CORREO_INS].getContents().equals(
-						encabezados_estudiante[POSICION_CORREO_INS])
-				&& row[POSICION_CORREO_PRO].getContents().equals(
-						encabezados_estudiante[POSICION_CORREO_PRO])
-				&& row[POSICION_FECHA].getContents().equals(
-						encabezados_estudiante[POSICION_FECHA])
-				&& row[POSICION_GENERO].getContents().equals(
-						encabezados_estudiante[POSICION_GENERO])
-				&& row[POSICION_NIVEL].getContents().equals(
-						encabezados_estudiante[POSICION_NIVEL])
-				&& row[POSICION_NOMBRES].getContents().equals(
-						encabezados_estudiante[POSICION_NOMBRES])
-				&& row[POSICION_APELLIDOS].getContents().equals(
-						encabezados_estudiante[POSICION_APELLIDOS])
-				&& row[POSICION_AREA].getContents().equals(
-						encabezados_estudiante[POSICION_AREA])
-				&& row[POSICION_CELULAR].getContents().equals(
-						encabezados_estudiante[POSICION_CELULAR])
-				&& row[POSICION_ESTADO_CIV].getContents().equals(
-						encabezados_estudiante[POSICION_ESTADO_CIV])
-				&& row[POSICION_MODALIDAD].getContents().equals(
-						encabezados_estudiante[POSICION_MODALIDAD])
-				&& row[POSICION_TELEFONO].getContents().equals(
-						encabezados_estudiante[POSICION_TELEFONO])) {
+		if (row[POSICION_CEDULA].getContents().equals(encabezados_estudiante[POSICION_CEDULA])
+				&& row[POSICION_CARRERA].getContents().equals(encabezados_estudiante[POSICION_CARRERA])
+				&& row[POSICION_CORREO_INS].getContents().equals(encabezados_estudiante[POSICION_CORREO_INS])
+				&& row[POSICION_CORREO_PRO].getContents().equals(encabezados_estudiante[POSICION_CORREO_PRO])
+				&& row[POSICION_FECHA].getContents().equals(encabezados_estudiante[POSICION_FECHA])
+				&& row[POSICION_GENERO].getContents().equals(encabezados_estudiante[POSICION_GENERO])
+				&& row[POSICION_NIVEL].getContents().equals(encabezados_estudiante[POSICION_NIVEL])
+				&& row[POSICION_NOMBRES].getContents().equals(encabezados_estudiante[POSICION_NOMBRES])
+				&& row[POSICION_APELLIDOS].getContents().equals(encabezados_estudiante[POSICION_APELLIDOS])
+				&& row[POSICION_AREA].getContents().equals(encabezados_estudiante[POSICION_AREA])
+				&& row[POSICION_CELULAR].getContents().equals(encabezados_estudiante[POSICION_CELULAR])
+				&& row[POSICION_ESTADO_CIV].getContents().equals(encabezados_estudiante[POSICION_ESTADO_CIV])
+				&& row[POSICION_MODALIDAD].getContents().equals(encabezados_estudiante[POSICION_MODALIDAD])
+				&& row[POSICION_TELEFONO].getContents().equals(encabezados_estudiante[POSICION_TELEFONO])) {
 			return true;
 		} else {
 			return false;
@@ -333,18 +314,15 @@ public class ManagerCarga {
 		exc_error = 0;
 		String errores = "";
 		// validar cedula
-		if (column[POSICION_CEDULA].getContents() == null
-				|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
+		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA ESTUDIANTE vacío, ";
 			exc_error += 1;
-		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
-				.getContents().trim()) != true) {
+		} else if (Funciones.validacionCedula(column[POSICION_CEDULA].getContents().trim()) != true) {
 			errores += " CÉDULA ESTUDIANTE inválido, ";
 			exc_error = +1;
 		}
 		// validar nombre
-		if (column[POSICION_NOMBRES].getContents() == null
-				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
+		if (column[POSICION_NOMBRES].getContents() == null || column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
 			errores += " NOMBRE ESTUDIANTE vacío, ";
 			exc_error += 1;
 		}
@@ -355,20 +333,17 @@ public class ManagerCarga {
 			exc_error += 1;
 		}
 		// validar fecha nacimiento
-		if (column[POSICION_FECHA].getContents() == null
-				|| column[POSICION_FECHA].getContents().trim().isEmpty()) {
+		if (column[POSICION_FECHA].getContents() == null || column[POSICION_FECHA].getContents().trim().isEmpty()) {
 			errores += " FECHA NACIMIENTO vacío, ";
 			exc_error += 1;
 		}
 		// validar nivel
-		if (column[POSICION_NIVEL].getContents() == null
-				|| column[POSICION_NIVEL].getContents().trim().isEmpty()) {
+		if (column[POSICION_NIVEL].getContents() == null || column[POSICION_NIVEL].getContents().trim().isEmpty()) {
 			errores += " NIVEL vacío, ";
 			exc_error += 1;
 		}
 		// validar carrera
-		if (column[POSICION_CARRERA].getContents() == null
-				|| column[POSICION_CARRERA].getContents().trim().isEmpty()) {
+		if (column[POSICION_CARRERA].getContents() == null || column[POSICION_CARRERA].getContents().trim().isEmpty()) {
 			errores += " CARRERA vacío, ";
 			exc_error += 1;
 		}
@@ -378,8 +353,7 @@ public class ManagerCarga {
 			errores += " CORREO INSTITUCIONAL vacío, ";
 			exc_error += 1;
 		} else {
-			if (Funciones.validarEmail(column[POSICION_CORREO_INS]
-					.getContents().trim()) != true) {
+			if (Funciones.validarEmail(column[POSICION_CORREO_INS].getContents().trim()) != true) {
 				errores += " CORREO INSTITUCIONAL inválido, ";
 				exc_error += 1;
 			}
@@ -390,27 +364,23 @@ public class ManagerCarga {
 			errores += " CORREO PROPIO vacío, ";
 			exc_error += 1;
 		} else {
-			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
-					.getContents().trim()) != true) {
+			if (Funciones.validarEmail(column[POSICION_CORREO_PRO].getContents().trim()) != true) {
 				errores += " CORREO PROPIO inválido, ";
 				exc_error += 1;
 			}
 		}
 		// validar genero
-		if (column[POSICION_GENERO].getContents() == null
-				|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
+		if (column[POSICION_GENERO].getContents() == null || column[POSICION_GENERO].getContents().trim().isEmpty()) {
 			errores += " GENERO vacío, ";
 			exc_error += 1;
 		}
 		// validar area_estudio
-		if (column[POSICION_AREA].getContents() == null
-				|| column[POSICION_AREA].getContents().trim().isEmpty()) {
+		if (column[POSICION_AREA].getContents() == null || column[POSICION_AREA].getContents().trim().isEmpty()) {
 			errores += " AREA ESTUDIO vacío, ";
 			exc_error += 1;
 		}
 		// validar celular
-		if (column[POSICION_CELULAR].getContents() == null
-				|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
+		if (column[POSICION_CELULAR].getContents() == null || column[POSICION_CELULAR].getContents().trim().isEmpty()) {
 			errores += " CELULAR ESTUDIO vacío, ";
 			exc_error += 1;
 		}
@@ -443,8 +413,7 @@ public class ManagerCarga {
 	 * @return SinfPersonal
 	 * @throws Exception
 	 */
-	public Estudiante crearEstudiante(List<String> datosEstudiante,
-			String ins_codigo) throws Exception {
+	public Estudiante crearEstudiante(List<String> datosEstudiante, String ins_codigo) throws Exception {
 		Estudiante est = new Estudiante();
 		est.setIns_codigo(ins_codigo);
 		est.setPerDni(datosEstudiante.get(this.POSICION_CEDULA));
@@ -460,8 +429,7 @@ public class ManagerCarga {
 		est.setPerDni(datosEstudiante.get(POSICION_CEDULA));
 		est.setPerEstado("A");
 		est.setPerEstadoCivil(datosEstudiante.get(POSICION_ESTADO_CIV));
-		est.setPerFechaNacimiento(Funciones.stringToDate(datosEstudiante
-				.get(POSICION_FECHA)));
+		est.setPerFechaNacimiento(Funciones.stringToDate(datosEstudiante.get(POSICION_FECHA)));
 		est.setPerGenero(datosEstudiante.get(POSICION_GENERO));
 		est.setPerNombres(datosEstudiante.get(POSICION_NOMBRES));
 		est.setPerTelefono(datosEstudiante.get(POSICION_TELEFONO));
@@ -476,8 +444,7 @@ public class ManagerCarga {
 	 *            Personas dentro de un periodo determinado
 	 * @throws Exception
 	 */
-	public void ingresarEstudiantePersona(List<Estudiante> listadoEstudiantes)
-			throws Exception {
+	public void ingresarEstudiantePersona(List<Estudiante> listadoEstudiantes) throws Exception {
 		// seteo de valores iniciales de conteo
 		exc_actualizados = 0;
 		exc_nuevos = 0;
@@ -514,15 +481,12 @@ public class ManagerCarga {
 				System.out.println("Bien_insertado_persona");
 			}
 			if (validarExistenciaEstudiante(e.getPerDni(), e.getIns_codigo())) {
-				editarEstudiante(e.getIns_codigo(), e.getPerDni(),
-						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
-						e.getEstModalidad(), e.getEstAreaEstudio(),
-						e.getEstEstado());
+				editarEstudiante(e.getIns_codigo(), e.getPerDni(), e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
+						e.getEstModalidad(), e.getEstAreaEstudio(), e.getEstEstado());
 				exc_actualizados = exc_actualizados + 1;
 			} else {
-				insertarEstudiante(e.getIns_codigo(), e.getPerDni(),
-						e.getEstCorreo(), e.getEstNivel(), e.getEstCarrera(),
-						e.getEstModalidad(), e.getEstAreaEstudio());
+				insertarEstudiante(e.getIns_codigo(), e.getPerDni(), e.getEstCorreo(), e.getEstNivel(),
+						e.getEstCarrera(), e.getEstModalidad(), e.getEstAreaEstudio());
 				exc_nuevos = exc_nuevos + 1;
 			}
 		}
@@ -536,8 +500,7 @@ public class ManagerCarga {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaPersona(String dni) {
-		List<GenPersona> l_p = mngDao.findWhere(GenPersona.class, "o.perDni='"
-				+ dni + "'", null);
+		List<GenPersona> l_p = mngDao.findWhere(GenPersona.class, "o.perDni='" + dni + "'", null);
 		if (l_p == null || l_p.size() == 0) {
 			return false;
 		} else {
@@ -554,9 +517,8 @@ public class ManagerCarga {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaEstudiante(String dni, String codigo_ins) {
-		List<GenEstudianteInstitucion> l_f = mngDao.findWhere(
-				GenEstudianteInstitucion.class, "o.id.perDni='" + dni
-						+ "' and o.id.insCodigo='" + codigo_ins + "'", null);
+		List<GenEstudianteInstitucion> l_f = mngDao.findWhere(GenEstudianteInstitucion.class,
+				"o.id.perDni='" + dni + "' and o.id.insCodigo='" + codigo_ins + "'", null);
 		if (l_f == null || l_f.size() == 0) {
 			return false;
 		} else {
@@ -569,8 +531,7 @@ public class ManagerCarga {
 	 * 
 	 * @param estudiantes_excel
 	 */
-	public void inactivarEstudiantes(List<Estudiante> estudiantes_excel,
-			String ins_codigo) {
+	public void inactivarEstudiantes(List<Estudiante> estudiantes_excel, String ins_codigo) {
 		exc_inactivados = 0;
 		try {
 			for (GenEstudianteInstitucion estudiante : findAllEstudiantesXInstitucionActivos(ins_codigo)) {
@@ -595,34 +556,29 @@ public class ManagerCarga {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenFuncionariosInstitucion> findAllFuncionarios()
-			throws Exception {
+	public List<GenFuncionariosInstitucion> findAllFuncionarios() throws Exception {
 		return mngDao.findAll(GenFuncionariosInstitucion.class);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenFuncionariosInstitucion> findAllFuncionarioXInstitucion(
-			String ins_codigo) throws Exception {
-		return mngDao.findWhere(GenFuncionariosInstitucion.class,
-				"o.id.insCodigo='" + ins_codigo + "'", null);
+	public List<GenFuncionariosInstitucion> findAllFuncionarioXInstitucion(String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenFuncionariosInstitucion.class, "o.id.insCodigo='" + ins_codigo + "'", null);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenFuncionariosInstitucion> findAllFuncionariosXInstitucionActivos(
-			String ins_codigo) throws Exception {
-		return mngDao
-				.findWhere(GenFuncionariosInstitucion.class, "o.id.insCodigo='"
-						+ ins_codigo + "' and o.funEstado='A'", null);
+	public List<GenFuncionariosInstitucion> findAllFuncionariosXInstitucionActivos(String ins_codigo) throws Exception {
+		return mngDao.findWhere(GenFuncionariosInstitucion.class,
+				"o.id.insCodigo='" + ins_codigo + "' and o.funEstado='A'", null);
 	}// Cierre del metodo
 
 	/**
@@ -633,25 +589,20 @@ public class ManagerCarga {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public GenFuncionariosInstitucion FuncionarioByID(String ins_codigo,
-			String per_dni) throws Exception {
-		List<GenFuncionariosInstitucion> l = mngDao.findWhere(
-				GenFuncionariosInstitucion.class, "o.id.insCodigo = '"
-						+ ins_codigo + "' and o.id.perDni = '" + per_dni + "'",
-				null);
+	public GenFuncionariosInstitucion FuncionarioByID(String ins_codigo, String per_dni) throws Exception {
+		List<GenFuncionariosInstitucion> l = mngDao.findWhere(GenFuncionariosInstitucion.class,
+				"o.id.insCodigo = '" + ins_codigo + "' and o.id.perDni = '" + per_dni + "'", null);
 		return l.get(0);
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenInstitucione> findAllInstitucionesServicios()
-			throws Exception {
-		return mngDao.findWhere(GenInstitucione.class,
-				"o.insCategoria='Servicios'", null);
+	public List<GenInstitucione> findAllInstitucionesServicios() throws Exception {
+		return mngDao.findWhere(GenInstitucione.class, "o.insCategoria='Servicios'", null);
 	}// Cierre del metodo
 
 	/**
@@ -668,10 +619,9 @@ public class ManagerCarga {
 	 * @param tipo_evaluacion
 	 * @throws Exception
 	 */
-	public void insertarFuncionarios(String ins_codigo, String per_dni,
-			String cargo, String direccion, Date fecha_ingreso,
-			String gerencia, String jefe_inmediato, String tipo,
-			String tipo_evaluacion) throws Exception {
+	public void insertarFuncionarios(String ins_codigo, String per_dni, String cargo, String direccion,
+			Date fecha_ingreso, String gerencia, String jefe_inmediato, String tipo, String tipo_evaluacion)
+			throws Exception {
 		try {
 			GenFuncionariosInstitucionPK pk_funcionario = new GenFuncionariosInstitucionPK();
 			pk_funcionario.setInsCodigo(ins_codigo);
@@ -709,13 +659,11 @@ public class ManagerCarga {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarFuncionario(String ins_codigo, String per_dni,
-			String cargo, String direccion, Date fecha_ingreso,
-			String gerencia, String jefe_inmediato, String tipo,
-			String tipo_evaluacion, String estado) throws Exception {
+	public void editarFuncionario(String ins_codigo, String per_dni, String cargo, String direccion, Date fecha_ingreso,
+			String gerencia, String jefe_inmediato, String tipo, String tipo_evaluacion, String estado)
+			throws Exception {
 		try {
-			GenFuncionariosInstitucion funcionario = this.FuncionarioByID(
-					ins_codigo, per_dni);
+			GenFuncionariosInstitucion funcionario = this.FuncionarioByID(ins_codigo, per_dni);
 			funcionario.setFunCargo(cargo);
 			funcionario.setFunDireccion(direccion);
 			funcionario.setFunEstado(estado);
@@ -731,14 +679,13 @@ public class ManagerCarga {
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
-	
+
 	/**
 	 * Método para inactivar un estudiante
 	 * 
 	 * @param e
 	 */
-	public void inactivarEstadoFuncionario(GenFuncionariosInstitucion e,
-			String ins_codigo) {
+	public void inactivarEstadoFuncionario(GenFuncionariosInstitucion e, String ins_codigo) {
 		try {
 			if (e.getId().getInsCodigo().equals(ins_codigo)) {
 				e.setFunEstado("I");
@@ -760,38 +707,22 @@ public class ManagerCarga {
 	 * @return
 	 */
 	public boolean validarEncabezadosExcelFuncionario(Cell[] row) {
-		if (row[POSICION_CEDULA].getContents().equals(
-				encabezados_funcionario[POSICION_CEDULA])
-				&& row[POSICION_CORREO_PRO].getContents().equals(
-						encabezados_funcionario[POSICION_CORREO_PRO])
-				&& row[POSICION_FECHA].getContents().equals(
-						encabezados_funcionario[POSICION_FECHA])
-				&& row[POSICION_GENERO].getContents().equals(
-						encabezados_funcionario[POSICION_GENERO])
-				&& row[POSICION_NOMBRES].getContents().equals(
-						encabezados_funcionario[POSICION_NOMBRES])
-				&& row[POSICION_APELLIDOS].getContents().equals(
-						encabezados_funcionario[POSICION_APELLIDOS])
-				&& row[POSICION_CELULAR].getContents().equals(
-						encabezados_funcionario[POSICION_CELULAR])
-				&& row[POSICION_CARGO].getContents().equals(
-						encabezados_funcionario[POSICION_CARGO])
-				&& row[POSICION_DIRECCION].getContents().equals(
-						encabezados_funcionario[POSICION_DIRECCION])
-				&& row[POSICION_FECHAINGRESO].getContents().equals(
-						encabezados_funcionario[POSICION_FECHAINGRESO])
-				&& row[POSICION_GERENCIA].getContents().equals(
-						encabezados_funcionario[POSICION_GERENCIA])
-				&& row[POSICION_TIPOF].getContents().equals(
-						encabezados_funcionario[POSICION_TIPOF])
-				&& row[POSICION_JEFE].getContents().equals(
-						encabezados_funcionario[POSICION_JEFE])
-				&& row[POSICION_EVALUACION].getContents().equals(
-						encabezados_funcionario[POSICION_EVALUACION])
-				&& row[POSICION_ESTADO_CIV].getContents().equals(
-						encabezados_funcionario[POSICION_ESTADO_CIV])
-				&& row[POSICION_TELEFONO].getContents().equals(
-						encabezados_funcionario[POSICION_TELEFONO])) {
+		if (row[POSICION_CEDULA].getContents().equals(encabezados_funcionario[POSICION_CEDULA])
+				&& row[POSICION_CORREO_PRO].getContents().equals(encabezados_funcionario[POSICION_CORREO_PRO])
+				&& row[POSICION_FECHA].getContents().equals(encabezados_funcionario[POSICION_FECHA])
+				&& row[POSICION_GENERO].getContents().equals(encabezados_funcionario[POSICION_GENERO])
+				&& row[POSICION_NOMBRES].getContents().equals(encabezados_funcionario[POSICION_NOMBRES])
+				&& row[POSICION_APELLIDOS].getContents().equals(encabezados_funcionario[POSICION_APELLIDOS])
+				&& row[POSICION_CELULAR].getContents().equals(encabezados_funcionario[POSICION_CELULAR])
+				&& row[POSICION_CARGO].getContents().equals(encabezados_funcionario[POSICION_CARGO])
+				&& row[POSICION_DIRECCION].getContents().equals(encabezados_funcionario[POSICION_DIRECCION])
+				&& row[POSICION_FECHAINGRESO].getContents().equals(encabezados_funcionario[POSICION_FECHAINGRESO])
+				&& row[POSICION_GERENCIA].getContents().equals(encabezados_funcionario[POSICION_GERENCIA])
+				&& row[POSICION_TIPOF].getContents().equals(encabezados_funcionario[POSICION_TIPOF])
+				&& row[POSICION_JEFE].getContents().equals(encabezados_funcionario[POSICION_JEFE])
+				&& row[POSICION_EVALUACION].getContents().equals(encabezados_funcionario[POSICION_EVALUACION])
+				&& row[POSICION_ESTADO_CIV].getContents().equals(encabezados_funcionario[POSICION_ESTADO_CIV])
+				&& row[POSICION_TELEFONO].getContents().equals(encabezados_funcionario[POSICION_TELEFONO])) {
 			return true;
 		} else {
 			return false;
@@ -809,18 +740,15 @@ public class ManagerCarga {
 		exc_error = 0;
 		String errores = "";
 		// validar cedula
-		if (column[POSICION_CEDULA].getContents() == null
-				|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
+		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA ESTUDIANTE vacío, ";
 			exc_error += 1;
-		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
-				.getContents().trim()) != true) {
+		} else if (Funciones.validacionCedula(column[POSICION_CEDULA].getContents().trim()) != true) {
 			errores += " CÉDULA ESTUDIANTE inválido, ";
 			exc_error = +1;
 		}
 		// validar nombre
-		if (column[POSICION_NOMBRES].getContents() == null
-				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
+		if (column[POSICION_NOMBRES].getContents() == null || column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
 			errores += " NOMBRE ESTUDIANTE vacío, ";
 			exc_error += 1;
 		}
@@ -831,8 +759,7 @@ public class ManagerCarga {
 			exc_error += 1;
 		}
 		// validar fecha nacimiento
-		if (column[POSICION_FECHA].getContents() == null
-				|| column[POSICION_FECHA].getContents().trim().isEmpty()) {
+		if (column[POSICION_FECHA].getContents() == null || column[POSICION_FECHA].getContents().trim().isEmpty()) {
 			errores += " FECHA NACIMIENTO vacío, ";
 			exc_error += 1;
 		}
@@ -842,21 +769,18 @@ public class ManagerCarga {
 			errores += " CORREO PROPIO vacío, ";
 			exc_error += 1;
 		} else {
-			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
-					.getContents().trim()) != true) {
+			if (Funciones.validarEmail(column[POSICION_CORREO_PRO].getContents().trim()) != true) {
 				errores += " CORREO PROPIO inválido, ";
 				exc_error += 1;
 			}
 		}
 		// validar genero
-		if (column[POSICION_GENERO].getContents() == null
-				|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
+		if (column[POSICION_GENERO].getContents() == null || column[POSICION_GENERO].getContents().trim().isEmpty()) {
 			errores += " GENERO vacío, ";
 			exc_error += 1;
 		}
 		// validar celular
-		if (column[POSICION_CELULAR].getContents() == null
-				|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
+		if (column[POSICION_CELULAR].getContents() == null || column[POSICION_CELULAR].getContents().trim().isEmpty()) {
 			errores += " CELULAR ESTUDIO vacío, ";
 			exc_error += 1;
 		}
@@ -873,8 +797,7 @@ public class ManagerCarga {
 			exc_error += 1;
 		}
 		// validar cargo
-		if (column[POSICION_CARGO].getContents() == null
-				|| column[POSICION_CARGO].getContents().trim().isEmpty()) {
+		if (column[POSICION_CARGO].getContents() == null || column[POSICION_CARGO].getContents().trim().isEmpty()) {
 			errores += " CARGO vacío, ";
 			exc_error += 1;
 		}
@@ -897,14 +820,12 @@ public class ManagerCarga {
 			exc_error += 1;
 		}
 		// validar tipo
-		if (column[POSICION_TIPOF].getContents() == null
-				|| column[POSICION_TIPOF].getContents().trim().isEmpty()) {
+		if (column[POSICION_TIPOF].getContents() == null || column[POSICION_TIPOF].getContents().trim().isEmpty()) {
 			errores += " TIPO vacío, ";
 			exc_error += 1;
 		}
 		// validar JEFE inmediato
-		if (column[POSICION_JEFE].getContents() == null
-				|| column[POSICION_JEFE].getContents().trim().isEmpty()) {
+		if (column[POSICION_JEFE].getContents() == null || column[POSICION_JEFE].getContents().trim().isEmpty()) {
 			errores += " JEFE INMEDIATO vacío, ";
 			exc_error += 1;
 		}
@@ -925,8 +846,7 @@ public class ManagerCarga {
 	 * @return SinfPersonal
 	 * @throws Exception
 	 */
-	public Funcionario crearFuncionario(List<String> datosFuncionarios,
-			String ins_codigo) throws Exception {
+	public Funcionario crearFuncionario(List<String> datosFuncionarios, String ins_codigo) throws Exception {
 		Funcionario fun = new Funcionario();
 		fun.setIns_codigo(ins_codigo);
 		fun.setPerDni(datosFuncionarios.get(POSICION_CEDULA));
@@ -935,8 +855,7 @@ public class ManagerCarga {
 		fun.setPerCorreo(datosFuncionarios.get(POSICION_CORREO_PRO));
 		fun.setPerEstado("A");
 		fun.setPerEstadoCivil(datosFuncionarios.get(POSICION_ESTADO_CIV));
-		fun.setPerFechaNacimiento(Funciones.stringToDate(datosFuncionarios
-				.get(POSICION_FECHA)));
+		fun.setPerFechaNacimiento(Funciones.stringToDate(datosFuncionarios.get(POSICION_FECHA)));
 		fun.setPerGenero(datosFuncionarios.get(POSICION_GENERO));
 		fun.setPerNombres(datosFuncionarios.get(POSICION_NOMBRES));
 		fun.setPerTelefono(datosFuncionarios.get(POSICION_TELEFONO));
@@ -946,8 +865,7 @@ public class ManagerCarga {
 		fun.setFunTipoEvaluacion(datosFuncionarios.get(POSICION_EVALUACION));
 		fun.setFunDireccion(datosFuncionarios.get(POSICION_DIRECCION));
 		fun.setFunEstado("A");
-		fun.setFunFechaIngreso(Funciones.stringToDate(datosFuncionarios
-				.get(POSICION_FECHAINGRESO)));
+		fun.setFunFechaIngreso(Funciones.stringToDate(datosFuncionarios.get(POSICION_FECHAINGRESO)));
 		fun.setFunGerencia(datosFuncionarios.get(POSICION_GERENCIA));
 		fun.setFunTipo(datosFuncionarios.get(POSICION_TIPOF));
 		return fun;
@@ -960,8 +878,7 @@ public class ManagerCarga {
 	 *            Personas dentro de un periodo determinado
 	 * @throws Exception
 	 */
-	public void ingresarFuncionario(List<Funcionario> listadoFuncionarios)
-			throws Exception {
+	public void ingresarFuncionario(List<Funcionario> listadoFuncionarios) throws Exception {
 		// seteo de valores iniciales de conteo
 		exc_actualizados = 0;
 		exc_nuevos = 0;
@@ -997,17 +914,13 @@ public class ManagerCarga {
 				System.out.println("Bien_insertado_persona");
 			}
 			if (validarExistenciaFuncionario(e.getPerDni(), e.getIns_codigo())) {
-				editarFuncionario(e.getIns_codigo(), e.getPerDni(),
-						e.getFunCargo(), e.getFunDireccion(),
-						e.getFunFechaIngreso(), e.getFunGerencia(),
-						e.getFunJefeInmediato(), e.getFunTipo(),
+				editarFuncionario(e.getIns_codigo(), e.getPerDni(), e.getFunCargo(), e.getFunDireccion(),
+						e.getFunFechaIngreso(), e.getFunGerencia(), e.getFunJefeInmediato(), e.getFunTipo(),
 						e.getFunTipoEvaluacion(), e.getFunEstado());
 				exc_actualizados = exc_actualizados + 1;
 			} else {
-				insertarFuncionarios(e.getIns_codigo(), e.getPerDni(),
-						e.getFunCargo(), e.getFunDireccion(),
-						e.getFunFechaIngreso(), e.getFunGerencia(),
-						e.getFunJefeInmediato(), e.getFunTipo(),
+				insertarFuncionarios(e.getIns_codigo(), e.getPerDni(), e.getFunCargo(), e.getFunDireccion(),
+						e.getFunFechaIngreso(), e.getFunGerencia(), e.getFunJefeInmediato(), e.getFunTipo(),
 						e.getFunTipoEvaluacion());
 				exc_nuevos = exc_nuevos + 1;
 			}
@@ -1023,9 +936,8 @@ public class ManagerCarga {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaFuncionario(String dni, String codigo_ins) {
-		List<GenFuncionariosInstitucion> l_f = mngDao.findWhere(
-				GenFuncionariosInstitucion.class, "o.id.perDni='" + dni
-						+ "' and o.id.insCodigo='" + codigo_ins + "'", null);
+		List<GenFuncionariosInstitucion> l_f = mngDao.findWhere(GenFuncionariosInstitucion.class,
+				"o.id.perDni='" + dni + "' and o.id.insCodigo='" + codigo_ins + "'", null);
 		if (l_f == null || l_f.size() == 0) {
 			return false;
 		} else {
@@ -1038,8 +950,7 @@ public class ManagerCarga {
 	 * 
 	 * @param estudiantes_excel
 	 */
-	public void inactivarFuncionario(List<Funcionario> funcionarios_excel,
-			String ins_codigo) {
+	public void inactivarFuncionario(List<Funcionario> funcionarios_excel, String ins_codigo) {
 		exc_inactivados = 0;
 		try {
 			for (GenFuncionariosInstitucion fun : findAllFuncionariosXInstitucionActivos(ins_codigo)) {
@@ -1088,8 +999,7 @@ public class ManagerCarga {
 	 * @param referencia
 	 * @throws Exception
 	 */
-	public void insertarExterno(String per_dni, String tipo, String referencia)
-			throws Exception {
+	public void insertarExterno(String per_dni, String tipo, String referencia) throws Exception {
 		try {
 			GenExterno externo = new GenExterno();
 			externo.setPerDni(per_dni);
@@ -1117,8 +1027,7 @@ public class ManagerCarga {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarExterno(String per_dni, String tipo, String referencia)
-			throws Exception {
+	public void editarExterno(String per_dni, String tipo, String referencia) throws Exception {
 		try {
 			GenExterno externo = this.ExternoByID(per_dni);
 			externo.setExtReferencia(referencia);
@@ -1140,28 +1049,17 @@ public class ManagerCarga {
 	 * @return
 	 */
 	public boolean validarEncabezadosExcelExterno(Cell[] row) {
-		if (row[POSICION_CEDULA].getContents().equals(
-				encabezados_externo[POSICION_CEDULA])
-				&& row[POSICION_CORREO_PRO].getContents().equals(
-						encabezados_externo[POSICION_CORREO_PRO])
-				&& row[POSICION_FECHA].getContents().equals(
-						encabezados_externo[POSICION_FECHA])
-				&& row[POSICION_GENERO].getContents().equals(
-						encabezados_externo[POSICION_GENERO])
-				&& row[POSICION_REFERENCIA].getContents().equals(
-						encabezados_externo[POSICION_REFERENCIA])
-				&& row[POSICION_TIPO].getContents().equals(
-						encabezados_externo[POSICION_TIPO])
-				&& row[POSICION_NOMBRES].getContents().equals(
-						encabezados_externo[POSICION_NOMBRES])
-				&& row[POSICION_APELLIDOS].getContents().equals(
-						encabezados_externo[POSICION_APELLIDOS])
-				&& row[POSICION_CELULAR].getContents().equals(
-						encabezados_externo[POSICION_CELULAR])
-				&& row[POSICION_ESTADO_CIV].getContents().equals(
-						encabezados_externo[POSICION_ESTADO_CIV])
-				&& row[POSICION_TELEFONO].getContents().equals(
-						encabezados_externo[POSICION_TELEFONO])) {
+		if (row[POSICION_CEDULA].getContents().equals(encabezados_externo[POSICION_CEDULA])
+				&& row[POSICION_CORREO_PRO].getContents().equals(encabezados_externo[POSICION_CORREO_PRO])
+				&& row[POSICION_FECHA].getContents().equals(encabezados_externo[POSICION_FECHA])
+				&& row[POSICION_GENERO].getContents().equals(encabezados_externo[POSICION_GENERO])
+				&& row[POSICION_REFERENCIA].getContents().equals(encabezados_externo[POSICION_REFERENCIA])
+				&& row[POSICION_TIPO].getContents().equals(encabezados_externo[POSICION_TIPO])
+				&& row[POSICION_NOMBRES].getContents().equals(encabezados_externo[POSICION_NOMBRES])
+				&& row[POSICION_APELLIDOS].getContents().equals(encabezados_externo[POSICION_APELLIDOS])
+				&& row[POSICION_CELULAR].getContents().equals(encabezados_externo[POSICION_CELULAR])
+				&& row[POSICION_ESTADO_CIV].getContents().equals(encabezados_externo[POSICION_ESTADO_CIV])
+				&& row[POSICION_TELEFONO].getContents().equals(encabezados_externo[POSICION_TELEFONO])) {
 			return true;
 		} else {
 			return false;
@@ -1179,18 +1077,15 @@ public class ManagerCarga {
 		exc_error = 0;
 		String errores = "";
 		// validar cedula
-		if (column[POSICION_CEDULA].getContents() == null
-				|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
+		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA EXTERNO vacío, ";
 			exc_error += 1;
-		} else if (Funciones.validacionCedula(column[POSICION_CEDULA]
-				.getContents().trim()) != true) {
+		} else if (Funciones.validacionCedula(column[POSICION_CEDULA].getContents().trim()) != true) {
 			errores += " CÉDULA EXTERNO inválido, ";
 			exc_error = +1;
 		}
 		// validar nombre
-		if (column[POSICION_NOMBRES].getContents() == null
-				|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
+		if (column[POSICION_NOMBRES].getContents() == null || column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
 			errores += " NOMBRE ESTUDIANTE vacío, ";
 			exc_error += 1;
 		}
@@ -1201,14 +1096,12 @@ public class ManagerCarga {
 			exc_error += 1;
 		}
 		// validar fecha nacimiento
-		if (column[POSICION_FECHA].getContents() == null
-				|| column[POSICION_FECHA].getContents().trim().isEmpty()) {
+		if (column[POSICION_FECHA].getContents() == null || column[POSICION_FECHA].getContents().trim().isEmpty()) {
 			errores += " FECHA NACIMIENTO vacío, ";
 			exc_error += 1;
 		}
 		// validar TIPO
-		if (column[POSICION_TIPO].getContents() == null
-				|| column[POSICION_TIPO].getContents().trim().isEmpty()) {
+		if (column[POSICION_TIPO].getContents() == null || column[POSICION_TIPO].getContents().trim().isEmpty()) {
 			errores += " TIPO vacío, ";
 			exc_error += 1;
 		}
@@ -1224,21 +1117,18 @@ public class ManagerCarga {
 			errores += " CORREO PROPIO vacío, ";
 			exc_error += 1;
 		} else {
-			if (Funciones.validarEmail(column[POSICION_CORREO_PRO]
-					.getContents().trim()) != true) {
+			if (Funciones.validarEmail(column[POSICION_CORREO_PRO].getContents().trim()) != true) {
 				errores += " CORREO PROPIO inválido, ";
 				exc_error += 1;
 			}
 		}
 		// validar genero
-		if (column[POSICION_GENERO].getContents() == null
-				|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
+		if (column[POSICION_GENERO].getContents() == null || column[POSICION_GENERO].getContents().trim().isEmpty()) {
 			errores += " GENERO vacío, ";
 			exc_error += 1;
 		}
 		// validar celular
-		if (column[POSICION_CELULAR].getContents() == null
-				|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
+		if (column[POSICION_CELULAR].getContents() == null || column[POSICION_CELULAR].getContents().trim().isEmpty()) {
 			errores += " CELULAR ESTUDIO vacío, ";
 			exc_error += 1;
 		}
@@ -1273,8 +1163,7 @@ public class ManagerCarga {
 		ext.setPerCorreo(datosExterno.get(POSICION_CORREO_PRO));
 		ext.setPerEstado("A");
 		ext.setPerEstadoCivil(datosExterno.get(POSICION_ESTADO_CIV));
-		ext.setPerFechaNacimiento(Funciones.stringToDate(datosExterno
-				.get(POSICION_FECHA)));
+		ext.setPerFechaNacimiento(Funciones.stringToDate(datosExterno.get(POSICION_FECHA)));
 		ext.setPerGenero(datosExterno.get(POSICION_GENERO));
 		ext.setPerNombres(datosExterno.get(POSICION_NOMBRES));
 		ext.setPerTelefono(datosExterno.get(POSICION_TELEFONO));
@@ -1328,12 +1217,10 @@ public class ManagerCarga {
 				System.out.println("Bien_insertado_persona");
 			}
 			if (validarExistenciaExterno(e.getPerDni())) {
-				editarExterno(e.getPerDni(), e.getExtTipo(),
-						e.getExtReferencia());
+				editarExterno(e.getPerDni(), e.getExtTipo(), e.getExtReferencia());
 				exc_actualizados = exc_actualizados + 1;
 			} else {
-				insertarExterno(e.getPerDni(), e.getExtTipo(),
-						e.getExtReferencia());
+				insertarExterno(e.getPerDni(), e.getExtTipo(), e.getExtReferencia());
 				exc_nuevos = exc_nuevos + 1;
 			}
 		}
@@ -1347,8 +1234,7 @@ public class ManagerCarga {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarExistenciaExterno(String dni) {
-		List<GenExterno> l_e = mngDao.findWhere(GenExterno.class, "o.perDni='"
-				+ dni + "'", null);
+		List<GenExterno> l_e = mngDao.findWhere(GenExterno.class, "o.perDni='" + dni + "'", null);
 		if (l_e == null || l_e.size() == 0) {
 			return false;
 		} else {
@@ -1374,8 +1260,7 @@ public class ManagerCarga {
 	 * @param errores
 	 * @throws Exception
 	 */
-	public String insertarExcel(String usuario, String nombre_archivo)
-			throws Exception {
+	public String insertarExcel(String usuario, String nombre_archivo) throws Exception {
 		try {
 			System.out.println(exc_inactivados);
 			System.out.println(exc_nuevos);
@@ -1397,9 +1282,8 @@ public class ManagerCarga {
 			excel.setExcIp(Funciones.getIp());
 			mngDao.insertar(excel);
 			System.out.println("Bien_insertar_registro_excel");
-			return "\nDatos nuevos: " + exc_nuevos + ";\n Datos actualizados: "
-					+ exc_actualizados + ";\n Datos erroneos: " + exc_error
-					+ ";\n Datos inactivados: " + exc_inactivados + "";
+			return "\nDatos nuevos: " + exc_nuevos + ";\n Datos actualizados: " + exc_actualizados
+					+ ";\n Datos erroneos: " + exc_error + ";\n Datos inactivados: " + exc_inactivados + "";
 		} catch (Exception e) {
 			System.out.println("Error_insertar_registro_excel");
 			e.printStackTrace();
