@@ -26,30 +26,38 @@
 				show-detail="false" global-only="false" show-summary="true"
 				allow-dismiss="true" animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
-			<b:panel id="pn_res" title="Ingreso del Responsable" look="primary"
+			<b:panel id="pn_res" title="Registro de Incidente" look="primary"
 				collapsible="false">
 				<br />
 				<b:row>
 					<b:column span="2">
 						<h:outputLabel value="DNI/NOMBRE:*" />
 					</b:column>
-					<b:column span="3">
-						<b:inputText value="#{seguridadBean.datoBusqueda}">
-						</b:inputText>
-					</b:column>
-					<b:column span="2">
-						<b:commandButton value="Buscar"
-							onclick="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							action="#{seguridadBean.BuscarPersona()}" update="frm"></b:commandButton>
+					<b:column span="5">
+						<p:selectOneMenu filter="true"  styleClass="form-control"
+							value="#{seguridadBean.datoBusqueda}">
+							<p:ajax
+								listener="#{seguridadBean.BuscarPersona()}"
+								update="frm:nombre frm:empresa frm:cargo frm" />
+							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+							<f:selectItems value="#{seguridadBean.l_busqueda}">
+							</f:selectItems>
+						</p:selectOneMenu>
 					</b:column>
 				</b:row>
+				<br/>
 				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="DNI:" />
+					</b:column>
+					<b:column span="4">
+						<h:outputLabel id="dni" value="#{seguridadBean.perDni}" />
+					</b:column>
 					<b:column span="2">
 						<h:outputLabel value="Nombre:" />
 					</b:column>
-					<b:column span="10">
-						<h:outputLabel value="#{seguridadBean.perNombre}" />
+					<b:column span="4">
+						<h:outputLabel id="nombre" value="#{seguridadBean.perNombre}" />
 					</b:column>
 				</b:row>
 				<br />
@@ -58,13 +66,13 @@
 						<h:outputLabel value="Empresa:" />
 					</b:column>
 					<b:column span="4">
-						<h:outputLabel value="#{seguridadBean.perEmpresa}" />
+						<h:outputLabel id="empresa" value="#{seguridadBean.perEmpresa}" />
 					</b:column>
 					<b:column span="2">
 						<h:outputLabel value="Cargo:" />
 					</b:column>
 					<b:column span="4">
-						<h:outputLabel value="#{seguridadBean.perCargo}" />
+						<h:outputLabel id="cargo" value="#{seguridadBean.perCargo}" />
 					</b:column>
 				</b:row>
 				<br />
@@ -84,47 +92,47 @@
 							</p:inputText>
 						</p:inplace>
 					</b:column>
-						<b:column span="2">
+				</b:row>
+				<br />
+				<b:row>
+					<b:column span="2">
 						<h:outputLabel value="Tipo de Emergencia:*" />
 					</b:column>
 					<b:column span="4">
 						<h:selectOneMenu styleClass="form-control"
 							value="#{seguridadBean.segTipoEmergencia}">
-							<p:ajax
-								listener="#{seguridadBean.mostrarSubTipo()}"
+							<p:ajax listener="#{seguridadBean.mostrarSubTipo()}"
 								update=":frm:c1"></p:ajax>
 							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 							<f:selectItems value="#{seguridadBean.l_tipos_emergencia}">
 							</f:selectItems>
 						</h:selectOneMenu>
 					</b:column>
-				</b:row>
-				<br/>
-				<b:row>
 					<b:column span="2">
 						<h:outputLabel value="Sub-Tipo de Emergencia:*" />
 					</b:column>
 					<b:column span="4">
 						<h:selectOneMenu id="c1" styleClass="form-control"
 							value="#{seguridadBean.segSubTipo}">
-							<p:ajax
-								listener="#{seguridadBean.mostrarHijos()}"
+							<p:ajax listener="#{seguridadBean.mostrarHijos()}"
 								update=":frm:dd"></p:ajax>
 							<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 							<f:selectItems value="#{seguridadBean.l_tipos_emergencia_1}">
 							</f:selectItems>
 						</h:selectOneMenu>
 					</b:column>
+				</b:row>
+				<br />
+				<b:row>
 					<b:column span="2">
 						<h:outputLabel value="Definición de Emergencia:*" />
 					</b:column>
 					<b:column span="4">
-						<p:autoComplete id="dd"
+						<p:autoComplete size="100" inputStyle="padding: 10px;" id="dd"
 							value="#{seguridadBean.segSubHijo}"
 							completeMethod="#{seguridadBean.mostrarHijos()}" />
 					</b:column>
 				</b:row>
-				<br />
 				<b:row>
 					<b:column span="2">
 						<h:outputLabel value="Emergencia:*" />
@@ -167,14 +175,15 @@
 						<h:outputLabel value="Archivo:" />
 					</b:column>
 					<b:column span="6">
-						<p:fileUpload
-							fileUploadListener="#{funcionarioBean.handleFileUpload}"
-							mode="advanced" dragDropSupport="false" multiple="false"
-							sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/" update=""
-							cancelLabel="Cancelar" uploadLabel="Subir" label="Seleccionar"
-							onstart="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							invalidFileMessage="Solo se aceptan archivos PDF" />
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
+							sizeLimit="1000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 10 MB "
+							invalidFileMessage="Tipo invalido, solo .pdf"
+							fileLimitMessage="Solo una un archivo"
+							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+							fileUploadListener="#{seguridadBean.cargaArchivo}">
+						</p:fileUpload>
 					</b:column>
 				</b:row>
 			</b:panel>

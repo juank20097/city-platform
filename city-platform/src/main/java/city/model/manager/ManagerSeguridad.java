@@ -3,13 +3,13 @@ package city.model.manager;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
+import city.model.dao.entidades.GenParametro;
 import city.model.dao.entidades.SegRegistroEmergencia;
 
 /**
@@ -49,6 +49,28 @@ public class ManagerSeguridad {
 	}// Cierre del metodo
 
 	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenFuncionariosInstitucion> findAllfuncionarios() throws Exception {
+		return mngDao.findAll(GenFuncionariosInstitucion.class);
+	}// Cierre del metodo
+
+	/**
+	 * Metodo para obtener el Atributo mediante un ID
+	 * 
+	 * @param dni
+	 * @return Objeto
+	 * @throws Exception
+	 */
+	public String ParametroByID(String dni) throws Exception {
+		GenParametro p = (GenParametro) mngDao.findById(GenParametro.class, dni);
+		return p.getParValor();
+	}// Cierre del metodo
+
+	/**
 	 * Metodo para obtener el Atributo mediante un ID
 	 * 
 	 * @param dni
@@ -68,13 +90,13 @@ public class ManagerSeguridad {
 	public GenFuncionariosInstitucion findFuncionarioXDni(String per_dni) throws Exception {
 		List<GenFuncionariosInstitucion> l = mngDao.findWhere(GenFuncionariosInstitucion.class,
 				"o.id.perDni='" + per_dni + "'", null);
-		if ( l==null || l.size()==0){
-		return null;
-		} else{
+		if (l == null || l.size() == 0) {
+			return null;
+		} else {
 			return l.get(0);
 		}
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
@@ -83,14 +105,16 @@ public class ManagerSeguridad {
 	@SuppressWarnings("unchecked")
 	public List<GenFuncionariosInstitucion> findFuncionarioXNombre(String dato) throws Exception {
 		List<GenFuncionariosInstitucion> l = mngDao.findWhere(GenFuncionariosInstitucion.class,
-				"o.genPersona.perApellidos like '%" + dato.toUpperCase() + "%' or o.genPersona.perNombres like '%" + dato.toUpperCase() + "%'", null);
-		if (l==null || l.size()==0){
+				"o.genPersona.perApellidos like '%" + dato.toUpperCase() + "%' or o.genPersona.perNombres like '%"
+						+ dato.toUpperCase() + "%'",
+				null);
+		if (l == null || l.size() == 0) {
 			return null;
-		}else{
+		} else {
 			return l;
 		}
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar todas los datos existentes
 	 * 
@@ -133,8 +157,8 @@ public class ManagerSeguridad {
 	 * @param descripcion
 	 * @throws Exception
 	 */
-	public void insertarSeguridad(Integer id,String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			double latitud,double longitud,String sub_tipo,String sub_hijo) throws Exception {
+	public void insertarSeguridad(Integer id, String per_dni, String accion, String emergencia, Date fecha, String tipo,
+			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
@@ -147,6 +171,7 @@ public class ManagerSeguridad {
 			seg.setSegLongitud(longitud);
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
+			seg.setSegArchivo(archivo);
 			mngDao.insertar(seg);
 			System.out.println("Bien_insertar_seguridad");
 		} catch (Exception e) {
@@ -165,8 +190,8 @@ public class ManagerSeguridad {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo,
-			double latitud,double longitud,String sub_tipo,String sub_hijo) throws Exception {
+	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo, double latitud,
+			double longitud, String sub_tipo, String sub_hijo, String archivo) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
@@ -177,6 +202,7 @@ public class ManagerSeguridad {
 			seg.setSegLongitud(longitud);
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
+			seg.setSegArchivo(archivo);
 			mngDao.actualizar(seg);
 			System.out.println("Bien_mod_seguridad");
 		} catch (Exception e) {
@@ -208,10 +234,8 @@ public class ManagerSeguridad {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
-		List<GenCatalogoItemsDet> li = mngDao
-				.findWhere(GenCatalogoItemsDet.class,
-						"o.genCatalogoCab.catCodigo='" + cat_nombre
-								+ "' and o.itePadre='" + padre + "'", null);
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='" + padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {

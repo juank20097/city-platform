@@ -1,6 +1,5 @@
 package city.controller.persona;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,9 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -62,6 +59,9 @@ public class ExternosBean {
 	// atributos de Registro excel
 	private String exc_nombre;
 	private String exc_usuario;
+	
+	//atributo de direccion de url
+		private String url_doc;
 
 	public ExternosBean() {
 	}
@@ -72,6 +72,12 @@ public class ExternosBean {
 		l_externos = new ArrayList<Externo>();
 		l_externos_total = new ArrayList<Externo>();
 		errores = new ArrayList<String>();
+		try {
+			url_doc = manager.ParametroByID("direccion_doc");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -287,12 +293,13 @@ public class ExternosBean {
 	 * @param est
 	 */
 	public void crearExcel(List<Externo> ext) {
+		String url=url_doc+"/descarga/";
 		try {
-			ServletContext servletContext = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-			String contextPath = servletContext.getRealPath(File.separator
-					+ "resources/doc/descarga/");
-			System.out.println(contextPath);
+//			ServletContext servletContext = (ServletContext) FacesContext
+//					.getCurrentInstance().getExternalContext().getContext();
+//			String contextPath = servletContext.getRealPath(File.separator
+//					+ "resources/doc/descarga/");
+			System.out.println(url);
 
 			HSSFWorkbook libro = new HSSFWorkbook();
 
@@ -302,7 +309,7 @@ public class ExternosBean {
 				HSSFRow row = hoja.createRow(i);
 				llenarFila(ext.get(i), row);
 			}
-			OutputStream out = new FileOutputStream(contextPath
+			OutputStream out = new FileOutputStream(url
 					+ "DatosExcel_Externos.xls");
 			libro.write(out);
 			libro.close();
@@ -378,11 +385,11 @@ public class ExternosBean {
 			if (l_externos_total==null || l_externos_total.size()==0){
 				Mensaje.crearMensajeWARN("La tabla está vacía como para generar un reporte.");
 			}else{
-			ServletContext servletContext = (ServletContext) FacesContext
-					.getCurrentInstance().getExternalContext().getContext();
-			String contextPath = servletContext.getRealPath(File.separator
-					+ "resources/doc/descargaDatosExcel_Externos.xls");
-			Funciones.descargarExcel(contextPath);
+//			ServletContext servletContext = (ServletContext) FacesContext
+//					.getCurrentInstance().getExternalContext().getContext();
+//			String contextPath = servletContext.getRealPath(File.separator
+//					+ "resources/doc/descargaDatosExcel_Externos.xls");
+			Funciones.descargarExcel(url_doc+"/descarga/DatosExcel_Externos.xls");
 			}
 	}
 
@@ -390,10 +397,10 @@ public class ExternosBean {
 	 * Método para descargar los archivos de ejemplo
 	 */
 	public void descargarArchivoEjemplo() {
-		ServletContext servletContext = (ServletContext) FacesContext
-				.getCurrentInstance().getExternalContext().getContext();
-		String contextPath = servletContext.getRealPath(File.separator
-				+ "resources/doc/Ejemplo_Base_Externos.xls");
-		Funciones.descargarExcel(contextPath);
+//		ServletContext servletContext = (ServletContext) FacesContext
+//				.getCurrentInstance().getExternalContext().getContext();
+//		String contextPath = servletContext.getRealPath(File.separator
+//				+ "resources/doc/Ejemplo_Base_Externos.xls");
+		Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Externos.xls");
 	}
 }

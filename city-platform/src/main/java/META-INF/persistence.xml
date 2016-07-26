@@ -5,6 +5,7 @@
 	<persistence-unit name="city-platformPU">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/city-platformDatasource</jta-data-source>
+		<class>city.model.dao.entidades.AudActividadAplicacion</class>
 		<class>city.model.dao.entidades.AudActividadInterna</class>
 		<class>city.model.dao.entidades.GenArea</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
@@ -25,7 +26,6 @@
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
-		<class>city.model.dao.entidades.AudActividadAplicacion</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

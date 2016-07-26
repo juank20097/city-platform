@@ -1,7 +1,12 @@
 package city.controller.persona;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +18,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
-
+import org.primefaces.model.UploadedFile;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.model.map.DefaultMapModel;
@@ -26,7 +32,7 @@ import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
-import city.model.generic.Funciones;
+
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
 
@@ -54,6 +60,7 @@ public class SeguridadBean {
 	private String segSubTipo;
 	private double segLatitud;
 	private double segLongitud;
+	private String segArchivo;
 
 	private String DatoBusqueda;
 	private String perDni;
@@ -70,16 +77,23 @@ public class SeguridadBean {
 	private List<SelectItem> l_tipos_emergencia;
 	private List<SelectItem> l_tipos_emergencia_1;
 	private List<String> l_tipos_emergencia_2;
+	private List<SelectItem> l_busqueda;
 
 	// mapa
 	private Marker marker;
 	private MapModel geoModel;
 
+	// guardar archivo
+	private UploadedFile file;
+
+	// atributo de direccion de url
+	private String url_doc;
+
 	// estadistica
-	private static String Cod_sal = "Médica";
-	private static String Cod_soc = "Protección Civil";
-	private static String Cod_seg = "Seguridad";
-	private static String Cod_ser = "Servicio Público";
+	private static String Cod_sal = "1. MÉDICA";
+	private static String Cod_soc = "2. PROTECCIÓN CIVIL";
+	private static String Cod_seg = "3. SEGURIDAD";
+	private static String Cod_ser = "4. SERVICIOS PÚBLICOS";
 	private int totalSAL;
 	private int totalSOC;
 	private int totalSEG;
@@ -106,6 +120,7 @@ public class SeguridadBean {
 		l_tipos_emergencia = new ArrayList<SelectItem>();
 		l_tipos_emergencia_1 = new ArrayList<SelectItem>();
 		l_tipos_emergencia_2 = new ArrayList<String>();
+		l_busqueda = new ArrayList<SelectItem>();
 		geoModel = new DefaultMapModel();
 		geoModel1 = new DefaultMapModel();
 		// definicion de marcador principal
@@ -113,7 +128,28 @@ public class SeguridadBean {
 		geoModel.addOverlay(new Marker(coordenada, "Yachay Ciudad del Conocimiento"));
 		marker = geoModel.getMarkers().get(0);
 		marker.setDraggable(true);
+		try {
+			url_doc = manager.ParametroByID("direccion_doc");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cargarIncidentes();
+	}
+
+	/**
+	 * @return the segArchivo
+	 */
+	public String getSegArchivo() {
+		return segArchivo;
+	}
+
+	/**
+	 * @param segArchivo
+	 *            the segArchivo to set
+	 */
+	public void setSegArchivo(String segArchivo) {
+		this.segArchivo = segArchivo;
 	}
 
 	/**
@@ -394,6 +430,21 @@ public class SeguridadBean {
 	}
 
 	/**
+	 * @return the l_busqueda
+	 */
+	public List<SelectItem> getL_busqueda() {
+		return l_busqueda;
+	}
+
+	/**
+	 * @param l_busqueda
+	 *            the l_busqueda to set
+	 */
+	public void setL_busqueda(List<SelectItem> l_busqueda) {
+		this.l_busqueda = l_busqueda;
+	}
+
+	/**
 	 * @param perNombre
 	 *            the perNombre to set
 	 */
@@ -568,6 +619,7 @@ public class SeguridadBean {
 	 */
 	public void carga() {
 		cargarGeneros();
+		cargarBusqueda();
 	}
 
 	/**
@@ -584,14 +636,14 @@ public class SeguridadBean {
 				if (edicion) {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(),
-							getSegSubHijo());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
+							getSegArchivo());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
-							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(),
-							getSegSubHijo());
+							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
+							getSegArchivo());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
@@ -634,9 +686,10 @@ public class SeguridadBean {
 		setSegFecha(null);
 		setSegTipoEmergencia("S/N");
 		setSegSubTipo("S/N");
-		setSegSubHijo("S/N");
+		setSegSubHijo("");
 		setSegLatitud(0);
 		setSegLongitud(0);
+		setDatoBusqueda("");
 		setEdicion(false);
 	}
 
@@ -701,47 +754,27 @@ public class SeguridadBean {
 	public void BuscarPersona() {
 		if (getDatoBusqueda() == null || getDatoBusqueda().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
+			setDatoBusqueda("");
 			setPerDni("");
 			setPerCargo("");
 			setPerEmpresa("");
 			setPerNombre("");
 		} else {
 			try {
-				if (Funciones.isNumeric(getDatoBusqueda())) {
-					GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getDatoBusqueda());
-					if (f == null) {
-						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
-						setPerDni("");
-						setPerCargo("");
-						setPerEmpresa("");
-						setPerNombre("");
-					} else {
-						setPerDni(f.getGenPersona().getPerDni());
-						setPerCargo(f.getFunCargo());
-						setPerEmpresa(f.getGenInstitucione().getInsNombre());
-						setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
-					}
+				GenFuncionariosInstitucion f = manager.findFuncionarioXDni(getDatoBusqueda());
+				if (f == null) {
+					Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
+					setDatoBusqueda("");
+					setPerDni("");
+					setPerCargo("");
+					setPerEmpresa("");
+					setPerNombre("");
 				} else {
-					List<GenFuncionariosInstitucion> f = manager.findFuncionarioXNombre(getDatoBusqueda());
-					if (f == null || f.size() == 0) {
-						Mensaje.crearMensajeWARN("el dato no pudo ser encontrada");
-						setPerDni("");
-						setPerCargo("");
-						setPerEmpresa("");
-						setPerNombre("");
-					} else if (f.size() > 1) {
-						Mensaje.crearMensajeWARN("el dato encontró varias coincidencias, busque mejor por cédula");
-						setPerDni("");
-						setPerCargo("");
-						setPerEmpresa("");
-						setPerNombre("");
-					} else {
-						GenFuncionariosInstitucion g = f.get(0);
-						setPerDni(g.getGenPersona().getPerDni());
-						setPerCargo(g.getFunCargo());
-						setPerEmpresa(g.getGenInstitucione().getInsNombre());
-						setPerNombre(g.getGenPersona().getPerNombres() + " " + g.getGenPersona().getPerApellidos());
-					}
+					setDatoBusqueda("");
+					setPerDni(f.getGenPersona().getPerDni());
+					setPerCargo(f.getFunCargo());
+					setPerEmpresa(f.getGenInstitucione().getInsNombre());
+					setPerNombre(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -937,14 +970,30 @@ public class SeguridadBean {
 			}
 		}
 	}
-	
+
+	/**
+	 * Lista de Busqueda
+	 */
+	public void cargarBusqueda() {
+		getL_busqueda().clear();
+		try {
+			for (GenFuncionariosInstitucion i : manager.findAllfuncionarios()) {
+				getL_busqueda().add(new SelectItem(i.getGenPersona().getPerDni(), i.getGenPersona().getPerDni() + " | "
+						+ i.getGenPersona().getPerNombres() + " " + i.getGenPersona().getPerApellidos()));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Metod para mostrar la ciudad dependiendo de la provincia
 	 */
 	public void mostrarSubTipo() {
 		cargarSubtipo();
 	}
-	
+
 	/**
 	 * Metod para mostrar la ciudad dependiendo de la provincia
 	 */
@@ -954,6 +1003,55 @@ public class SeguridadBean {
 		l.addAll(getL_tipos_emergencia_2());
 		return l;
 	}
-	
-	
+
+	//////////////////////////// (PROCESO_DE_GUARDAR_IMAGEN)////////////////////////////////////////////////
+
+	// metodo para guardar la imagen en el servidor
+	public void cargaArchivo(FileUploadEvent event) throws IOException {
+		file = event.getFile();
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+
+		if (file != null) {
+			try {
+				// Tomar PAD REAL
+//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//						.getContext();
+//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/");
+				 String carpeta =url_doc+"/";
+				if (getPerDni() == null || getPerDni().isEmpty()) {
+					Mensaje.crearMensajeWARN(
+							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
+				} else {
+					DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmm");
+					setSegArchivo("Informe_" + manager.seguridadId() + dateFormat.format(getSegFecha()) + ".pdf");
+					System.out.println("PAD------> " + carpeta);
+					System.out.println("name------> " + getSegArchivo());
+					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getSegArchivo()));
+					inputStream = file.getInputstream();
+
+					int read = 0;
+					byte[] bytes = new byte[1024];
+
+					while ((read = inputStream.read(bytes)) != -1) {
+						outputStream.write(bytes, 0, read);
+					}
+					Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+				}
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+		} else {
+			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+		}
+	}
+
 }
