@@ -283,6 +283,19 @@ public class ManagerDAO {
 	}
 	
 	/**
+	 * Ejecuta una sentencia sql nativa UPDATE DELETE ALTER_SEQUENCE
+	 * @param nativeSQL
+	 */
+	public Object ejectNativeSQL2(String nativeSQL){
+		mostrarLog("ejectNativeSQL", nativeSQL);
+		Query q;
+		q = em.createNativeQuery(nativeSQL);
+		Object o = (Object) q.getSingleResult();
+		return o;
+
+	}
+	
+	/**
 	 * Finder generico para buscar un objeto especifico.
 	 * 
 	 * @param clase
