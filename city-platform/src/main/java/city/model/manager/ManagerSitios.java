@@ -68,11 +68,11 @@ public class ManagerSitios {
 	public Integer sectorId() {
 		Integer id = 0;
 		try {
-			List<GenSectore> ls = this.findAllsectores();
-			if (ls == null || ls.size() == 0) {
+			id = (Integer) mngDao.ejectNativeSQL2("select max(sec_id) from gen_sectores limit 1;");
+			if (id == null || id == 0) {
 				id = 1;
 			} else {
-				id = ls.size() + 1;
+				id = id + 1;
 			}
 			return id;
 		} catch (Exception e) {
@@ -90,8 +90,7 @@ public class ManagerSitios {
 	 * @param descripcion
 	 * @throws Exception
 	 */
-	public void insertarSector(String nombre, String direccion,
-			String descripcion) throws Exception {
+	public void insertarSector(String nombre, String direccion, String descripcion) throws Exception {
 		try {
 			GenSectore sector = new GenSectore();
 			sector.setSecId(this.sectorId());
@@ -117,8 +116,8 @@ public class ManagerSitios {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarSector(Integer id, String nombre, String direccion,
-			String descripcion, String estado) throws Exception {
+	public void editarSector(Integer id, String nombre, String direccion, String descripcion, String estado)
+			throws Exception {
 		try {
 			GenSectore sector = this.SectoresByID(id);
 			sector.setSecNombre(nombre);
@@ -141,8 +140,7 @@ public class ManagerSitios {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenSectore> AllSectoresActivos() {
-		List<GenSectore> l = mngDao.findWhere(GenSectore.class,
-				"o.secEstado='A'", null);
+		List<GenSectore> l = mngDao.findWhere(GenSectore.class, "o.secEstado='A'", null);
 		return l;
 	}// Cierre del metodo
 
@@ -181,11 +179,11 @@ public class ManagerSitios {
 	public Integer areaId() {
 		Integer id = 0;
 		try {
-			List<GenArea> l = this.findAllAreas();
-			if (l == null || l.size() == 0) {
+			id = (Integer) mngDao.ejectNativeSQL2("select max(are_id) from gen_areas limit 1;");
+			if (id == null || id==0) {
 				id = 1;
 			} else {
-				id = l.size() + 1;
+				id = id + 1;
 			}
 			return id;
 		} catch (Exception e) {
@@ -206,8 +204,8 @@ public class ManagerSitios {
 	 * @param padre
 	 * @throws Exception
 	 */
-	public void insertarArea(Integer sector,String codigo, String nombre, String descripcion,
-			String latitud, String longitud, String padre) throws Exception {
+	public void insertarArea(Integer sector, String codigo, String nombre, String descripcion, String latitud,
+			String longitud, String padre) throws Exception {
 		try {
 			GenArea area = new GenArea();
 			area.setAreId(this.areaId());
@@ -239,9 +237,8 @@ public class ManagerSitios {
 	 * @param padre
 	 * @throws Exception
 	 */
-	public void editarArea(Integer area, Integer sector,String codigo, String nombre,
-			String descripcion, String latitud, String longitud, String padre,
-			String estado) throws Exception {
+	public void editarArea(Integer area, Integer sector, String codigo, String nombre, String descripcion,
+			String latitud, String longitud, String padre, String estado) throws Exception {
 		try {
 			GenArea are = this.AreaByID(area);
 			are.setGenSectore(this.SectoresByID(sector));
@@ -295,11 +292,11 @@ public class ManagerSitios {
 	public Integer tsitioId() {
 		Integer id = 0;
 		try {
-			List<GenTipoSitio> l = this.findAllTipoSitios();
-			if (l == null || l.size() == 0) {
+			id = (Integer) mngDao.ejectNativeSQL2("select max(tsi_id) from gen_tipo_sitios limit 1;");
+			if (id == null || id == 0) {
 				id = 1;
 			} else {
-				id = l.size() + 1;
+				id = id + 1;
 			}
 			return id;
 		} catch (Exception e) {
@@ -316,8 +313,7 @@ public class ManagerSitios {
 	 * @param descripcion
 	 * @throws Exception
 	 */
-	public void insertarTipoSitio(String nombre, String descripcion)
-			throws Exception {
+	public void insertarTipoSitio(String nombre, String descripcion) throws Exception {
 		try {
 			GenTipoSitio tsitio = new GenTipoSitio();
 			tsitio.setTsiId(this.tsitioId());
@@ -341,8 +337,7 @@ public class ManagerSitios {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarTipoSitio(Integer tsitio, String nombre,
-			String descripcion, String estado) throws Exception {
+	public void editarTipoSitio(Integer tsitio, String nombre, String descripcion, String estado) throws Exception {
 		try {
 			GenTipoSitio ts = this.TipoSitioByID(tsitio);
 			ts.setTsiNombre(nombre);
@@ -394,8 +389,7 @@ public class ManagerSitios {
 	 * @param categoria
 	 * @throws Exception
 	 */
-	public void insertarInstitucion(String codigo, String nombre,
-			String descripcion, String ruc, String razon_social,
+	public void insertarInstitucion(String codigo, String nombre, String descripcion, String ruc, String razon_social,
 			String categoria) throws Exception {
 		try {
 			GenInstitucione insti = new GenInstitucione();
@@ -423,8 +417,7 @@ public class ManagerSitios {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarInstitucion(String codigo, String nombre,
-			String descripcion, String ruc, String razon_social,
+	public void editarInstitucion(String codigo, String nombre, String descripcion, String ruc, String razon_social,
 			String categoria, String estado) throws Exception {
 		try {
 			GenInstitucione insti = this.InstitucionByID(codigo);
@@ -477,10 +470,9 @@ public class ManagerSitios {
 	 * @param descripcion
 	 * @throws Exception
 	 */
-	public void insertarSitio(String sit_id,Integer tsitio,Integer area,String institucion, String nombre, String numero,
-			String descripcion, String calleP, String calleS,
-			Integer capacidad, BigDecimal costo, Integer piso, Boolean acceso)
-			throws Exception {
+	public void insertarSitio(String sit_id, Integer tsitio, Integer area, String institucion, String nombre,
+			String numero, String descripcion, String calleP, String calleS, Integer capacidad, BigDecimal costo,
+			Integer piso, Boolean acceso) throws Exception {
 		try {
 			GenSitio sitio = new GenSitio();
 			sitio.setGenArea(this.AreaByID(area));
@@ -515,9 +507,9 @@ public class ManagerSitios {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarSitio(String sit_id,Integer tsitio,Integer area,String institucion, String nombre, String numero,
-			String descripcion, String calleP, String calleS,
-			Integer capacidad, BigDecimal costo, Integer piso, Boolean acceso,String estado) throws Exception {
+	public void editarSitio(String sit_id, Integer tsitio, Integer area, String institucion, String nombre,
+			String numero, String descripcion, String calleP, String calleS, Integer capacidad, BigDecimal costo,
+			Integer piso, Boolean acceso, String estado) throws Exception {
 		try {
 			GenSitio sitio = this.SitioByID(sit_id);
 			sitio.setGenArea(this.AreaByID(area));
@@ -549,11 +541,10 @@ public class ManagerSitios {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenArea> AllAreasActivas() {
-		List<GenArea> l = mngDao.findWhere(GenArea.class,
-				"o.areEstado='A'", null);
+		List<GenArea> l = mngDao.findWhere(GenArea.class, "o.areEstado='A'", null);
 		return l;
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar
 	 * 
@@ -561,11 +552,10 @@ public class ManagerSitios {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenTipoSitio> AllTipoSitioActivos() {
-		List<GenTipoSitio> l = mngDao.findWhere(GenTipoSitio.class,
-				"o.tsiEstado='A'", null);
+		List<GenTipoSitio> l = mngDao.findWhere(GenTipoSitio.class, "o.tsiEstado='A'", null);
 		return l;
 	}// Cierre del metodo
-	
+
 	/**
 	 * Metodo para listar
 	 * 
@@ -573,8 +563,7 @@ public class ManagerSitios {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenInstitucione> AllInstitucionesActivas() {
-		List<GenInstitucione> l = mngDao.findWhere(GenInstitucione.class,
-				"o.insEstado='A'", null);
+		List<GenInstitucione> l = mngDao.findWhere(GenInstitucione.class, "o.insEstado='A'", null);
 		return l;
 	}// Cierre del metodo
 
