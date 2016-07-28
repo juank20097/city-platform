@@ -35,12 +35,16 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 	private Set updates = new HashSet();
 	private Set deletes = new HashSet();
 	boolean isMainEntity = false;
+	private HttpSession session;
+	private HttpServletRequest httpServletRequest;
+	private Session sessionn;
+	private SessionFactory sessionFactory;
 
 	// called when record deleted.
 	public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
 		deletes.add(entity);
 		isMainEntity = true;
-		
+
 	}
 
 	// called when record updated
@@ -67,7 +71,7 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 	public void onPostUpdate(PostUpdateEvent postUpdateEvent) {
 
 		if (!(postUpdateEvent.getEntity() instanceof AudActividadAplicacion)) {
-			
+
 			isMainEntity = true;
 
 		}
@@ -81,7 +85,7 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 
 			inserts.add(entity);
 			isMainEntity = true;
-			
+
 			return true;
 		}
 
@@ -91,48 +95,53 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 
 	// called before commit into database
 	public void preFlush(Iterator iterator) {
+
+	}
+	
+	private void openConnections() {
+		this.session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		this.httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+				.getRequest();
+		Configuration config = new Configuration();
+		config.configure();
+		Configuration configuration = new Configuration();
+		configuration.configure("hibernate.cfg.xml");
+		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder()
+				.applySettings(configuration.getProperties());
+		this.sessionFactory = configuration.buildSessionFactory(ssrb.build());
+		this.sessionn = sessionFactory.openSession();
 		
 	}
 
 	// called after committed into database
 	public void postFlush(Iterator iterator) {
+		if (!inserts.isEmpty() || !updates.isEmpty() || !deletes.isEmpty())
+			try {
+				this.openConnections();
+				SesionBean user = (SesionBean) session.getAttribute("sesionBean");
+				String userName = user.getUsuario();
+				String IP = httpServletRequest.getRemoteAddr();
+				String appName = Data.APP_NAME.getName();
+				String client = httpServletRequest.getHeader("User-Agent");
+				Timestamp fecha = new Timestamp(new java.util.Date().getTime());
 
-		try {
-			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
-					.getSession(false);
-			SesionBean user = (SesionBean) session.getAttribute("sesionBean");
+				generateAudit(inserts, userName, client, IP, appName, Data.OPERATION_INSERT.getName(), fecha,
+						this.sessionn);
+				generateAudit(updates, userName, client, IP, appName, Data.OPERATION_UPDATE.getName(), fecha,
+						this.sessionn);
+				generateAudit(deletes, userName, client, IP, appName, Data.OPERATION_DELETE.getName(), fecha,
+						this.sessionn);
+				this.sessionn.close();
+				this.sessionFactory.close();
+			} catch (Exception e) {
 
-			String userName = user.getUsuario();
+				e.printStackTrace();
+			} finally {
+				inserts.clear();
+				updates.clear();
+				deletes.clear();
 
-			HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance()
-					.getExternalContext().getRequest();
-			Configuration config = new Configuration();
-			config.configure();
-			Configuration configuration = new Configuration();
-			configuration.configure("hibernate.cfg.xml");
-			StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder()
-					.applySettings(configuration.getProperties());
-			SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
-			Session sessionn = sessionFactory.openSession();
-
-			String IP = httpServletRequest.getRemoteAddr();
-			String appName = "YCP";
-			String client = httpServletRequest.getHeader("User-Agent");
-			Timestamp fecha = new Timestamp(new java.util.Date().getTime());
-			generateAudit(inserts, userName, client, IP, appName, "INSERT", fecha, sessionn);
-			generateAudit(updates, userName, client, IP, appName, "UPDATE", fecha, sessionn);
-			generateAudit(deletes, userName, client, IP, appName, "DELETE", fecha, sessionn);
-
-			sessionFactory.close();
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		} finally {
-			inserts.clear();
-			updates.clear();
-			deletes.clear();
-
-		}
+			}
 
 	}
 
@@ -173,6 +182,22 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 			session.getTransaction().commit();
 
 		}
+	}
+
+	public enum Data {
+		OPERATION_INSERT("INSERT"), OPERATION_UPDATE("UPDATE"), OPERATION_DELETE("DELETE"), APP_NAME(
+				"Yachay City Platform");
+
+		private String name;
+
+		private Data(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
 	}
 
 }
