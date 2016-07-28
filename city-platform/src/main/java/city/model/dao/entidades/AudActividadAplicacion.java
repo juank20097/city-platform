@@ -17,7 +17,7 @@ public class AudActividadAplicacion implements Serializable {
 
 	@Id
 	@Column(name="apl_id")
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer aplId;
 
 	@Column(name="apl_aplicacion")

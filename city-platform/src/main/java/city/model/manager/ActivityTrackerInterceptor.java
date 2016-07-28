@@ -177,9 +177,9 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 			audit.setAplSentencia(jsonObject.toString());
 			audit.setAplTipoOperacion(action);
 			audit.setAplTabla(tableName);
-			session.getTransaction().begin();
-			session.save(audit);
-			session.getTransaction().commit();
+			
+			session.persist(audit);
+			session.flush();
 
 		}
 	}
