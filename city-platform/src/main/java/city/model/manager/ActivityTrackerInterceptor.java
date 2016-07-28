@@ -97,7 +97,7 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 	public void preFlush(Iterator iterator) {
 
 	}
-	
+
 	private void openConnections() {
 		this.session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		this.httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
@@ -110,7 +110,7 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 				.applySettings(configuration.getProperties());
 		this.sessionFactory = configuration.buildSessionFactory(ssrb.build());
 		this.sessionn = sessionFactory.openSession();
-		
+
 	}
 
 	// called after committed into database
