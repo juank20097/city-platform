@@ -115,21 +115,21 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 
 	// called after committed into database
 	public void postFlush(Iterator iterator) {
-		if (!inserts.isEmpty() || !updates.isEmpty() || !deletes.isEmpty())
+		if (!this.inserts.isEmpty() || !this.updates.isEmpty() || !this.deletes.isEmpty())
 			try {
 				this.openConnections();
 				SesionBean user = (SesionBean) session.getAttribute("sesionBean");
 				String userName = user.getUsuario();
-				String IP = httpServletRequest.getRemoteAddr();
+				String IP = this.httpServletRequest.getRemoteAddr();
 				String appName = Data.APP_NAME.getName();
-				String client = httpServletRequest.getHeader("User-Agent");
+				String client = this.httpServletRequest.getHeader("User-Agent");
 				Timestamp fecha = new Timestamp(new java.util.Date().getTime());
 
-				generateAudit(inserts, userName, client, IP, appName, Data.OPERATION_INSERT.getName(), fecha,
+				generateAudit(this.inserts, userName, client, IP, appName, Data.OPERATION_INSERT.getName(), fecha,
 						this.sessionn);
-				generateAudit(updates, userName, client, IP, appName, Data.OPERATION_UPDATE.getName(), fecha,
+				generateAudit(this.updates, userName, client, IP, appName, Data.OPERATION_UPDATE.getName(), fecha,
 						this.sessionn);
-				generateAudit(deletes, userName, client, IP, appName, Data.OPERATION_DELETE.getName(), fecha,
+				generateAudit(this.deletes, userName, client, IP, appName, Data.OPERATION_DELETE.getName(), fecha,
 						this.sessionn);
 				this.sessionn.close();
 				this.sessionFactory.close();
@@ -137,9 +137,9 @@ public class ActivityTrackerInterceptor extends EmptyInterceptor {
 
 				e.printStackTrace();
 			} finally {
-				inserts.clear();
-				updates.clear();
-				deletes.clear();
+				this.inserts.clear();
+				this.updates.clear();
+				this.deletes.clear();
 
 			}
 
