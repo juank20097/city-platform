@@ -19,21 +19,39 @@
 		<h:form id="frm">
 			<center>
 				<h1>ESTADÍSTICAS DE INCIDENTES</h1>
+				<p:separator />
 			</center>
 			<b:growl delay="4000" placementFrom="top" show-detail="false"
 				global-only="false" show-summary="true" allow-dismiss="true"
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:row>
-				<b:column>
+				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="file-o"
 						action="#{seguridadBean.volverSeg}"
 						onclick="PF('statusDialog').show()"
 						oncomplete="PF('statusDialog').hide()" />
 				</b:column>
+				<b:column offset="3" span="1">
+					<p:outputLabel value="Desde:" />
+				</b:column>
+				<b:column span="1">
+					<p:calendar value="#{seguridadBean.f_desde}" />
+				</b:column>
+				<b:column offset="1" span="1">
+					<p:outputLabel value="Hasta:" />
+				</b:column>
+				<b:column span="1">
+					<p:calendar value="#{seguridadBean.f_hasta}" />
+				</b:column>
+				<b:column offset="1" span="2">
+					<b:navCommandLink value="Filtrar"
+						actionListener="#{seguridadBean.filtrarFechas()}" update="frm" />
+				</b:column>
 			</b:row>
+			<p:separator />
 			<b:row>
-				<b:column  span="6">
+				<b:column span="6">
 					<center>
 						<br /> <br />
 						<b:panel title="Tipos de Incidencias" look="primary"
@@ -80,16 +98,38 @@
 					</center>
 				</b:column>
 			</b:row>
-			<b:row>
-				<b:column span="12">
-					<center>
-						<p:gmap id="gmap" disableDoubleClickZoom="true"
-							disableDefaultUI="true" center="0.4078066,-78.18406390000001"
-							zoom="15" type="HYBRID" style="width:100%;height:400px"
-							model="#{seguridadBean.geoModel1}" />
-					</center>
-				</b:column>
-			</b:row>
+			<p:separator />
+			<b:tabView pills="true"
+				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+				<p:ajax event="click" update="frm:histo frm:gmap"></p:ajax>
+				<b:tab title="Mapa Referencial">
+					<b:row>
+						<b:column span="12">
+							<p:panelGrid columns="1" layout="grid">
+								<center>
+									<p:gmap id="gmap" disableDoubleClickZoom="true"
+										disableDefaultUI="true" center="0.4078066,-78.18406390000001"
+										zoom="15" type="HYBRID" style="width:100%;height:400px"
+										model="#{seguridadBean.geoModel1}" />
+								</center>
+							</p:panelGrid>
+						</b:column>
+					</b:row>
+				</b:tab>
+				<b:tab title="Histograma">
+						<b:row>
+							<b:column span="12">
+								<p:panelGrid columns="1" layout="grid">
+									<center>
+										<p:chart id="histo" type="line"
+											model="#{seguridadBean.dateModel}" style="height:400px;" />
+									</center>
+								</p:panelGrid>
+							</b:column>
+						</b:row>
+					</b:tab>
+			</b:tabView>
+			
 		</h:form>
 
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"

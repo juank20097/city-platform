@@ -22,6 +22,10 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.DateAxis;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -32,7 +36,7 @@ import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
-
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
 
@@ -100,14 +104,24 @@ public class SeguridadBean {
 	private int totalSER;
 	private int total;
 
+	// graficos
 	private PieChartModel pieModel;
 	private MapModel geoModel1;
+	private LineChartModel dateModel;
+
+	// fechas de filtrado
+	private Date f_desde;
+	private Date f_hasta;
+
+	private List<SegRegistroEmergencia> l_estadistica;
 
 	public SeguridadBean() {
 	}
 
 	@PostConstruct
 	public void ini() {
+		f_desde = null;
+		f_hasta = null;
 		segLatitud = 0;
 		segLongitud = 0;
 		totalSAL = 0;
@@ -115,14 +129,13 @@ public class SeguridadBean {
 		totalSER = 0;
 		totalSOC = 0;
 		total = 0;
-		pieModel = new PieChartModel();
 		l_seguridad = new ArrayList<SegRegistroEmergencia>();
+		l_estadistica = new ArrayList<SegRegistroEmergencia>();
 		l_tipos_emergencia = new ArrayList<SelectItem>();
 		l_tipos_emergencia_1 = new ArrayList<SelectItem>();
 		l_tipos_emergencia_2 = new ArrayList<String>();
 		l_busqueda = new ArrayList<SelectItem>();
 		geoModel = new DefaultMapModel();
-		geoModel1 = new DefaultMapModel();
 		// definicion de marcador principal
 		LatLng coordenada = new LatLng(0.4044186, -78.17527749999999);
 		geoModel.addOverlay(new Marker(coordenada, "Yachay Ciudad del Conocimiento"));
@@ -135,6 +148,66 @@ public class SeguridadBean {
 			e.printStackTrace();
 		}
 		cargarIncidentes();
+	}
+
+	/**
+	 * @return the dateModel
+	 */
+	public LineChartModel getDateModel() {
+		return dateModel;
+	}
+
+	/**
+	 * @param dateModel
+	 *            the dateModel to set
+	 */
+	public void setDateModel(LineChartModel dateModel) {
+		this.dateModel = dateModel;
+	}
+
+	/**
+	 * @return the f_desde
+	 */
+	public Date getF_desde() {
+		return f_desde;
+	}
+
+	/**
+	 * @param f_desde
+	 *            the f_desde to set
+	 */
+	public void setF_desde(Date f_desde) {
+		this.f_desde = f_desde;
+	}
+
+	/**
+	 * @return the f_hasta
+	 */
+	public Date getF_hasta() {
+		return f_hasta;
+	}
+
+	/**
+	 * @param f_hasta
+	 *            the f_hasta to set
+	 */
+	public void setF_hasta(Date f_hasta) {
+		this.f_hasta = f_hasta;
+	}
+
+	/**
+	 * @return the l_estadistica
+	 */
+	public List<SegRegistroEmergencia> getL_estadistica() {
+		return l_estadistica;
+	}
+
+	/**
+	 * @param l_estadistica
+	 *            the l_estadistica to set
+	 */
+	public void setL_estadistica(List<SegRegistroEmergencia> l_estadistica) {
+		this.l_estadistica = l_estadistica;
 	}
 
 	/**
@@ -806,16 +879,51 @@ public class SeguridadBean {
 	// ////////////////////////////////////////////ESTADISTICAS///////////////////////////////////////////
 
 	/**
+	 * Método para ir a estadísticas y cargar funcionalidades
+	 * 
+	 * @return
+	 */
+	public String irEstadistica() {
+		this.llenarLista();
+		this.cargarIncidencias();
+		return "est_seguridad?faces-redirect=true";
+	}
+
+	public void llenarLista() {
+		getL_estadistica().clear();
+		for (SegRegistroEmergencia re : getL_seguridad()) {
+			getL_estadistica().add(re);
+		}
+	}
+
+	public void filtrarFechas() {
+		getL_estadistica().clear();
+		for (SegRegistroEmergencia re : getL_seguridad()) {
+			if (getF_desde() == null || getF_hasta() == null) {
+				Mensaje.crearMensajeWARN("No existe fechas para poder realizar el filtrado.");
+				break;
+			}
+			if (getF_desde().after(getF_hasta())) {
+				Mensaje.crearMensajeWARN("La fecha final es menor que la fecha inicio.");
+				break;
+			} else if (re.getSegFecha().after(f_desde) && re.getSegFecha().before(f_hasta)) {
+				getL_estadistica().add(re);
+			}
+		}
+		this.cargarIncidencias();
+	}
+
+	/**
 	 * Método para cargar todas las incidencias
 	 */
-	public String cargarIncidencias() {
+	public void cargarIncidencias() {
 		setTotalSAL(0);
 		setTotalSEG(0);
 		setTotalSER(0);
 		setTotalSOC(0);
 		setTotal(0);
 		try {
-			for (SegRegistroEmergencia seg : getL_seguridad()) {
+			for (SegRegistroEmergencia seg : getL_estadistica()) {
 				if (seg.getSegTipoEmergencia().equals(Cod_sal))
 					setTotalSAL(getTotalSAL() + 1);
 				if (seg.getSegTipoEmergencia().equals(Cod_soc))
@@ -824,15 +932,16 @@ public class SeguridadBean {
 					setTotalSEG(getTotalSEG() + 1);
 				if (seg.getSegTipoEmergencia().equals(Cod_ser))
 					setTotalSER(getTotalSER() + 1);
-				setTotal(getL_seguridad().size());
-				this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(), getTotalSER());
-				this.marcarMapa();
+				setTotal(getL_estadistica().size());
 			}
+			this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(), getTotalSER());
+			this.marcarMapa();
+			this.crearHistograma();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "est_seguridad?faces-redirect=true";
+
 	}
 
 	/**
@@ -844,6 +953,7 @@ public class SeguridadBean {
 	 * @param d
 	 */
 	public void pie(Integer a, Integer b, Integer c, Integer d) {
+		pieModel = new PieChartModel();
 		pieModel.set(Cod_sal, a);
 		pieModel.set(Cod_soc, b);
 		pieModel.set(Cod_seg, c);
@@ -859,7 +969,8 @@ public class SeguridadBean {
 	 * Método para dibujar el mapa
 	 */
 	public void marcarMapa() {
-		for (SegRegistroEmergencia seg : getL_seguridad()) {
+		geoModel1 = new DefaultMapModel();
+		for (SegRegistroEmergencia seg : getL_estadistica()) {
 			LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 			geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 		}
@@ -874,7 +985,7 @@ public class SeguridadBean {
 		geoModel1 = new DefaultMapModel();
 		if (v.equals("1")) {
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_sal);
+				List<SegRegistroEmergencia> l = filtrarIncidencias(Cod_sal);
 				for (SegRegistroEmergencia seg : l) {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
@@ -886,7 +997,7 @@ public class SeguridadBean {
 		}
 		if (v.equals("2")) {
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_soc);
+				List<SegRegistroEmergencia> l = filtrarIncidencias(Cod_soc);
 				for (SegRegistroEmergencia seg : l) {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
@@ -898,7 +1009,7 @@ public class SeguridadBean {
 		}
 		if (v.equals("3")) {
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_seg);
+				List<SegRegistroEmergencia> l = filtrarIncidencias(Cod_seg);
 				for (SegRegistroEmergencia seg : l) {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
@@ -910,7 +1021,7 @@ public class SeguridadBean {
 		}
 		if (v.equals("4")) {
 			try {
-				List<SegRegistroEmergencia> l = manager.findSeguridadxTipo(Cod_ser);
+				List<SegRegistroEmergencia> l = filtrarIncidencias(Cod_ser);
 				for (SegRegistroEmergencia seg : l) {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
@@ -922,7 +1033,7 @@ public class SeguridadBean {
 		}
 		if (v.equals("5")) {
 			try {
-				for (SegRegistroEmergencia seg : getL_seguridad()) {
+				for (SegRegistroEmergencia seg : getL_estadistica()) {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
@@ -933,8 +1044,101 @@ public class SeguridadBean {
 		}
 	}
 
+	/**
+	 * Método para filtrar una lista
+	 * 
+	 * @param codigo
+	 * @return
+	 */
+	public List<SegRegistroEmergencia> filtrarIncidencias(String codigo) {
+		List<SegRegistroEmergencia> l = new ArrayList<SegRegistroEmergencia>();
+		for (SegRegistroEmergencia si : getL_estadistica()) {
+			if (si.getSegTipoEmergencia().equals(codigo)) {
+				l.add(si);
+			}
+		}
+		return l;
+	}
+
+	/**
+	 * 
+	 * Método para regresar de vista
+	 * 
+	 * @return
+	 */
 	public String volverSeg() {
 		return "seguridad?faces-redirect=true";
+	}
+
+	public void crearHistograma() {
+		dateModel = new LineChartModel();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+
+		List<SegRegistroEmergencia> l2=obtenerLista(Cod_soc);
+		if (l2!=null || l2.size()>0){
+		LineChartSeries series2 = new LineChartSeries();
+		series2.setLabel(Cod_soc);
+		for (SegRegistroEmergencia re : l2) {
+			series2.set(dateFormat.format(re.getSegFecha()), getTotalSOC());
+		}
+		dateModel.addSeries(series2);
+		}
+
+		List<SegRegistroEmergencia> l3=obtenerLista(Cod_seg);
+		if (l3!=null || l3.size()>0){
+		LineChartSeries series3 = new LineChartSeries();
+		series3.setLabel(Cod_seg);
+		for (SegRegistroEmergencia re : l3) {
+			series3.set(dateFormat.format(re.getSegFecha()), getTotalSEG());
+		}
+		dateModel.addSeries(series3);
+		}
+		
+		List<SegRegistroEmergencia> l4=obtenerLista(Cod_ser);
+		if (l4!=null || l4.size()>0){
+		LineChartSeries series4 = new LineChartSeries();
+		series4.setLabel(Cod_ser);
+		for (SegRegistroEmergencia re : l4) {
+			series4.set(dateFormat.format(re.getSegFecha()), getTotalSER());
+		}
+		dateModel.addSeries(series4);
+		}
+		
+		List<SegRegistroEmergencia> l1=obtenerLista(Cod_sal);
+		if (l1!=null || l1.size()>0){
+		LineChartSeries series1 = new LineChartSeries();
+		series1.setLabel(Cod_sal);
+		for (SegRegistroEmergencia re : l1) {
+			series1.set(dateFormat.format(re.getSegFecha()), getTotalSAL());
+		}
+		dateModel.addSeries(series1);
+		}
+
+		dateModel.setZoom(true);
+		dateModel.getAxis(AxisType.Y).setLabel("Número de Incidencias");
+		DateAxis axis = new DateAxis("Fechas");
+		axis.setTickAngle(-50);
+		// axis.setMax("2014-02-01");
+		axis.setTickFormat("%b %#d, %y");
+		dateModel.getAxes().put(AxisType.X, axis);
+	}
+
+	/**
+	 * Método para obtener una lista por código
+	 * 
+	 * @param codigo
+	 * @return
+	 */
+	public List<SegRegistroEmergencia> obtenerLista(String codigo) {
+		List<SegRegistroEmergencia> l = new ArrayList<SegRegistroEmergencia>();
+		for (SegRegistroEmergencia re : getL_estadistica()) {
+			if (re.getSegTipoEmergencia().equals(codigo)) {
+				l.add(re);
+			}
+		}
+		return l;
 	}
 
 	///////////////////////////////////////// (TIPOS_DE_EMERGENCIAS)/////////////////////////////////
@@ -1015,10 +1219,12 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-//						.getContext();
-//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/");
-				 String carpeta =url_doc+"/";
+				// ServletContext servletContext = (ServletContext)
+				// FacesContext.getCurrentInstance().getExternalContext()
+				// .getContext();
+				// String carpeta = servletContext.getRealPath(File.separator +
+				// "resources/doc/");
+				String carpeta = url_doc + "/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
