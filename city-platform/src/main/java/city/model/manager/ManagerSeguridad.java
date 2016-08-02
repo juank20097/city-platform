@@ -45,7 +45,7 @@ public class ManagerSeguridad {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findAllseguridad() throws Exception {
-		return mngDao.findAll(SegRegistroEmergencia.class);
+		return mngDao.findAll(SegRegistroEmergencia.class,"o.segFecha asc");
 	}// Cierre del metodo
 
 	/**

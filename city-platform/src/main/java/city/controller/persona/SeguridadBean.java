@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +24,11 @@ import org.primefaces.model.UploadedFile;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.BarChartSeries;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -107,7 +113,8 @@ public class SeguridadBean {
 	// graficos
 	private PieChartModel pieModel;
 	private MapModel geoModel1;
-	private LineChartModel dateModel;
+	private BarChartModel dateModel;
+	// private LineChartModel dateModel;
 
 	// fechas de filtrado
 	private Date f_desde;
@@ -153,7 +160,7 @@ public class SeguridadBean {
 	/**
 	 * @return the dateModel
 	 */
-	public LineChartModel getDateModel() {
+	public BarChartModel getDateModel() {
 		return dateModel;
 	}
 
@@ -161,9 +168,23 @@ public class SeguridadBean {
 	 * @param dateModel
 	 *            the dateModel to set
 	 */
-	public void setDateModel(LineChartModel dateModel) {
+	public void setDateModel(BarChartModel dateModel) {
 		this.dateModel = dateModel;
 	}
+
+	// /**
+	// * @return the dateModel
+	// */
+	// public LineChartModel getDateModel() {
+	// return dateModel;
+	// }
+	//
+	// /**
+	// * @param dateModel the dateModel to set
+	// */
+	// public void setDateModel(LineChartModel dateModel) {
+	// this.dateModel = dateModel;
+	// }
 
 	/**
 	 * @return the f_desde
@@ -936,7 +957,8 @@ public class SeguridadBean {
 			}
 			this.pie(getTotalSAL(), getTotalSOC(), getTotalSEG(), getTotalSER());
 			this.marcarMapa();
-			this.crearHistograma();
+			List<SegRegistroEmergencia> l = manager.findAllseguridad();
+			this.crearHistograma(l);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1070,59 +1092,122 @@ public class SeguridadBean {
 		return "seguridad?faces-redirect=true";
 	}
 
-	public void crearHistograma() {
-		dateModel = new LineChartModel();
-		
+	public void crearHistograma(List<SegRegistroEmergencia> lista) {
+		// dateModel = new LineChartModel();
+		dateModel = new BarChartModel();
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
 
-		List<SegRegistroEmergencia> l2=obtenerLista(Cod_soc);
-		if (l2!=null || l2.size()>0){
-		LineChartSeries series2 = new LineChartSeries();
-		series2.setLabel(Cod_soc);
-		for (SegRegistroEmergencia re : l2) {
-			series2.set(dateFormat.format(re.getSegFecha()), getTotalSOC());
-		}
-		dateModel.addSeries(series2);
-		}
+		// ChartSeries series = new ChartSeries();
+		//
+		// System.out.println(lista.size());
+		// for (SegRegistroEmergencia re : lista) {
+		// series.set(dateFormat.format(re.getSegFecha()), 0);
+		// }
+		// series.setLabel("");
+		// dateModel.addSeries(series);
 
-		List<SegRegistroEmergencia> l3=obtenerLista(Cod_seg);
-		if (l3!=null || l3.size()>0){
-		LineChartSeries series3 = new LineChartSeries();
-		series3.setLabel(Cod_seg);
-		for (SegRegistroEmergencia re : l3) {
-			series3.set(dateFormat.format(re.getSegFecha()), getTotalSEG());
-		}
-		dateModel.addSeries(series3);
-		}
-		
-		List<SegRegistroEmergencia> l4=obtenerLista(Cod_ser);
-		if (l4!=null || l4.size()>0){
-		LineChartSeries series4 = new LineChartSeries();
-		series4.setLabel(Cod_ser);
-		for (SegRegistroEmergencia re : l4) {
-			series4.set(dateFormat.format(re.getSegFecha()), getTotalSER());
-		}
-		dateModel.addSeries(series4);
-		}
-		
-		List<SegRegistroEmergencia> l1=obtenerLista(Cod_sal);
-		if (l1!=null || l1.size()>0){
-		LineChartSeries series1 = new LineChartSeries();
-		series1.setLabel(Cod_sal);
-		for (SegRegistroEmergencia re : l1) {
-			series1.set(dateFormat.format(re.getSegFecha()), getTotalSAL());
-		}
-		dateModel.addSeries(series1);
+		List<SegRegistroEmergencia> l2 = obtenerLista(Cod_soc);
+		if (l2 != null || l2.size() > 0) {
+			ChartSeries series2 = new ChartSeries();
+			series2.setLabel(Cod_soc);
+			for (SegRegistroEmergencia r : lista) {
+				for (SegRegistroEmergencia re : l2) {
+					String f1 = dateFormat.format(r.getSegFecha());
+					String f2 = dateFormat.format(re.getSegFecha());
+					if (f1.equals(f2)) {
+						series2.set(f2, incidenciasFechas(re, l2));
+						break;
+					} else {
+						series2.set(f1, 0);
+					}
+				}
+			}
+			dateModel.addSeries(series2);
 		}
 
-		dateModel.setZoom(true);
-		dateModel.getAxis(AxisType.Y).setLabel("Número de Incidencias");
-		DateAxis axis = new DateAxis("Fechas");
-		axis.setTickAngle(-50);
-		// axis.setMax("2014-02-01");
-		axis.setTickFormat("%b %#d, %y");
-		dateModel.getAxes().put(AxisType.X, axis);
+		List<SegRegistroEmergencia> l3 = obtenerLista(Cod_seg);
+		if (l3 != null || l3.size() > 0) {
+			ChartSeries series3 = new ChartSeries();
+			series3.setLabel(Cod_seg);
+			for (SegRegistroEmergencia r : lista) {
+				for (SegRegistroEmergencia re : l3) {
+					String f1 = dateFormat.format(r.getSegFecha());
+					String f2 = dateFormat.format(re.getSegFecha());
+					if (f1.equals(f2)) {
+						series3.set(f2, incidenciasFechas(re, l3));
+						break;
+					} else {
+						series3.set(f1, 0);
+					}
+				}
+			}
+			dateModel.addSeries(series3);
+		}
+
+		List<SegRegistroEmergencia> l4 = obtenerLista(Cod_ser);
+		if (l4 != null || l4.size() > 0) {
+			ChartSeries series4 = new ChartSeries();
+			series4.setLabel(Cod_ser);
+			for (SegRegistroEmergencia r : lista) {
+				for (SegRegistroEmergencia re : l4) {
+					String f1 = dateFormat.format(r.getSegFecha());
+					String f2 = dateFormat.format(re.getSegFecha());
+					if (f1.equals(f2)) {
+						series4.set(f2, incidenciasFechas(re, l4));
+						break;
+					} else {
+						series4.set(f1, 0);
+					}
+				}
+			}
+			dateModel.addSeries(series4);
+		}
+
+		List<SegRegistroEmergencia> l1 = obtenerLista(Cod_sal);
+		if (l1 != null || l1.size() > 0) {
+			ChartSeries series1 = new ChartSeries();
+			series1.setLabel(Cod_sal);
+			for (SegRegistroEmergencia r : lista) {
+				for (SegRegistroEmergencia re : l1) {
+					String f1 = dateFormat.format(r.getSegFecha());
+					String f2 = dateFormat.format(re.getSegFecha());
+					if (f1.equals(f2)) {
+						series1.set(f2, incidenciasFechas(re, l1));
+					} else {
+						series1.set(f1, 0);
+					}
+				}
+			}
+			dateModel.addSeries(series1);
+		}
+
+		Axis xAxis = dateModel.getAxis(AxisType.X);
+		xAxis.setTickAngle(-50);
+		xAxis.setLabel("Fechas");
+
+		Axis yAxis = dateModel.getAxis(AxisType.Y);
+		yAxis.setLabel("Número de Incidencias");
+
+		dateModel.setAnimate(true);
+		dateModel.setLegendPosition("e");
+	}
+
+	/**
+	 * Método para verificar fechas repetidas
+	 * 
+	 * @param r
+	 * @param lista
+	 * @return
+	 */
+	public Integer incidenciasFechas(SegRegistroEmergencia r, List<SegRegistroEmergencia> lista) {
+		Integer v = 0;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		for (SegRegistroEmergencia re : lista) {
+			if (dateFormat.format(r.getSegFecha()).equals(dateFormat.format(re.getSegFecha())))
+				v = v + 1;
+		}
+		return v;
 	}
 
 	/**

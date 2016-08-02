@@ -3,7 +3,11 @@ package city.controller.persona;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+
+import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartSeries;
@@ -11,31 +15,31 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean
 public class ChartView implements Serializable {
 
-	private LineChartModel dateModel;
+	private BarChartModel dateModel;
 
 	@PostConstruct
 	public void init() {
-		//createDateModel();
-		crearHistograma();
+		createDateModel();
+		//crearHistograma();
 	}
 
-	public LineChartModel getDateModel() {
+	public BarChartModel getDateModel() {
 		return dateModel;
 	}
 
 	private void createDateModel() {
-		dateModel = new LineChartModel();
-		LineChartSeries series1 = new LineChartSeries();
+		dateModel = new BarChartModel();
+		ChartSeries series1 = new ChartSeries();
 		series1.setLabel("Series 1");
 
 		series1.set("2014-01-01", 51);
 		series1.set("2014-01-06", 22);
+		series1.set("2014-01-30", 51);
 		series1.set("2014-01-12", 65);
 		series1.set("2014-01-18", 74);
 		series1.set("2014-01-24", 24);
-		series1.set("2014-01-30", 51);
 
-		LineChartSeries series2 = new LineChartSeries();
+		ChartSeries series2 = new ChartSeries();
 		series2.setLabel("Series 2");
 
 		series2.set("2014-01-01", 32);
@@ -60,7 +64,7 @@ public class ChartView implements Serializable {
 	}
 	
 	public void crearHistograma() {
-		dateModel = new LineChartModel();
+		dateModel = new BarChartModel();
 		LineChartSeries series1 = new LineChartSeries();
 		LineChartSeries series2 = new LineChartSeries();
 		LineChartSeries series3 = new LineChartSeries();
@@ -78,12 +82,14 @@ public class ChartView implements Serializable {
 		dateModel.addSeries(series3);
 		dateModel.addSeries(series4);
 		
-		dateModel.setZoom(false);
-		dateModel.getAxis(AxisType.Y).setLabel("Número de Incidencias");
-		DateAxis axis = new DateAxis("Fechas");
-		axis.setTickAngle(-50);
-//		axis.setMax("2014-02-01");
-		axis.setTickFormat("%b %#d, %y");
-		dateModel.getAxes().put(AxisType.X, axis);
+		Axis xAxis = dateModel.getAxis(AxisType.X);
+		xAxis.setTickAngle(-50);
+		xAxis.setLabel("Fechas");
+
+		Axis yAxis = dateModel.getAxis(AxisType.Y);
+		yAxis.setLabel("Número de Incidencias");
+
+		dateModel.setAnimate(true);
+		dateModel.setLegendPosition("e");
 	}
 }
