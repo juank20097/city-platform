@@ -59,31 +59,31 @@
 							<b:listLinks>
 								<b:navCommandLink value="Médicos"
 									actionListener="#{seguridadBean.marcaPersonal('1')}"
-									update="frm:gmap">
+									update="frm:gmap frm:histo">
 									<b:badge style="margin-left:5px"
 										value="#{seguridadBean.totalSAL}" />
 								</b:navCommandLink>
 								<b:navCommandLink value="Protecciones Civiles"
 									actionListener="#{seguridadBean.marcaPersonal('2')}"
-									update="frm:gmap">
+									update="frm:gmap frm:histo">
 									<b:badge style="margin-left:5px"
 										value="#{seguridadBean.totalSOC}" />
 								</b:navCommandLink>
 								<b:navCommandLink value="Seguridad"
 									actionListener="#{seguridadBean.marcaPersonal('3')}"
-									update="frm:gmap">
+									update="frm:gmap frm:histo">
 									<b:badge style="margin-left:5px"
 										value="#{seguridadBean.totalSEG}" />
 								</b:navCommandLink>
 								<b:navCommandLink value="Servicios Públicos"
 									actionListener="#{seguridadBean.marcaPersonal('4')}"
-									update="frm:gmap">
+									update="frm:gmap frm:histo" >
 									<b:badge style="margin-left:5px"
 										value="#{seguridadBean.totalSER}" />
 								</b:navCommandLink>
 								<b:navCommandLink value="TOTAL"
 									actionListener="#{seguridadBean.marcaPersonal('5')}"
-									update="frm:gmap">
+									update="frm:gmap frm:histo">
 									<b:badge style="margin-left:5px" value="#{seguridadBean.total}" />
 								</b:navCommandLink>
 							</b:listLinks>

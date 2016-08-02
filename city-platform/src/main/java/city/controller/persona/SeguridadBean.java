@@ -931,7 +931,12 @@ public class SeguridadBean {
 				getL_estadistica().add(re);
 			}
 		}
-		this.cargarIncidencias();
+		if (getL_estadistica().size()>0){
+			this.cargarIncidencias();
+		}else{
+			Mensaje.crearMensajeWARN("El filtrado no presenta ninguna Incidencia.");
+		}
+		
 	}
 
 	/**
@@ -1012,6 +1017,7 @@ public class SeguridadBean {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
+				this.crearHistograma(l);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1024,6 +1030,7 @@ public class SeguridadBean {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
+				this.crearHistograma(l);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1036,6 +1043,7 @@ public class SeguridadBean {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
+				this.crearHistograma(l);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1048,6 +1056,7 @@ public class SeguridadBean {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
+				this.crearHistograma(l);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1059,6 +1068,7 @@ public class SeguridadBean {
 					LatLng coord = new LatLng(seg.getSegLatitud(), seg.getSegLongitud());
 					geoModel1.addOverlay(new Marker(coord, seg.getSegEmergencia()));
 				}
+				this.crearHistograma(getL_estadistica());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
