@@ -1,4 +1,4 @@
 <jboss-web>
-    <virtual-host>city-platform.yachay.gob.ec</virtual-host>
+    <virtual-host>cityplatform.yachay.gob.ec</virtual-host>
     <context-root>/</context-root>
 </jboss-web>
