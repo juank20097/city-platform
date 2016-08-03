@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,11 +25,7 @@ import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.DateAxis;
-import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -42,7 +36,6 @@ import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegRegistroEmergencia;
-import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
 

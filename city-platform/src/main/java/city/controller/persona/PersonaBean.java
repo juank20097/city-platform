@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
-
-import org.primefaces.model.LazyDataModel;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;
@@ -78,8 +75,8 @@ public class PersonaBean {
 	private BigDecimal sldAltura;
 	private String sldAsegurado;
 	private String sldCarnetConadies;
-	private String sldConsumeAlcohol;
-	private String sldConsumeTabaco;
+	private Boolean sldConsumeAlcohol;
+	private Boolean sldConsumeTabaco;
 	private String sldDiscapacidadGrado;
 	private String sldDiscapacidadTipo;
 	private String sldFrecienciaConsumoMedicame;
@@ -91,6 +88,21 @@ public class PersonaBean {
 	private String sldPresion;
 	private Boolean sldRealizaEjercicio;
 	private Boolean sldVegetariano;
+	private String sldAlergiasCronicas2;
+	private Boolean sldEmbriagar;
+	private String sldMadreCausaMuerte;
+	private Integer sldMadreEdad;
+	private String sldMadreEnfermedadesActuales;
+	private Boolean sldMadreViva;
+	private String sldNombreLugarCentroMedico;
+	private String sldObservaciones;
+	private String sldPadreCausaMuerte;
+	private Integer sldPadreEdad;
+	private String sldPadreEnfermedadesActuales;
+	private Boolean sldPadreVivo;
+	private String sldPeriodicidadAlcohol;
+	private String sldPeriodicidadEmbriagar;
+	private String sldPeriodicidadTabaco;
 
 	// atributos de la clase persona - institucion
 	private String peiEstado;
@@ -125,26 +137,27 @@ public class PersonaBean {
 	// valor de ususario
 	private String usuario;
 
-	private LazyDataModel<GenPersona> personas;
-
 	public PersonaBean() {
 	}
 
 	@PostConstruct
 	public void init() {
 		// proceso de filtrado de tabla
-//		this.personas = new LazyDataModel<GenPersona>() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public List<GenPersona> load(int first, int pageSize, String sortField, SortOrder sortOrder,
-//					Map<String, String> filters) {
-//				List<GenPersona> result = inventoryManagerEJB.getResultList(first, pageSize, sortField, sortOrder,
-//						filters);
-//				model.setRowCount(inventoryManagerEJB.count(sortField, sortOrder, filters));
-//				return result;
-//			}
-//		};
+		// this.personas = new LazyDataModel<GenPersona>() {
+		// private static final long serialVersionUID = 1L;
+		//
+		// @Override
+		// public List<GenPersona> load(int first, int pageSize, String
+		// sortField, SortOrder sortOrder,
+		// Map<String, String> filters) {
+		// List<GenPersona> result = inventoryManagerEJB.getResultList(first,
+		// pageSize, sortField, sortOrder,
+		// filters);
+		// model.setRowCount(inventoryManagerEJB.count(sortField, sortOrder,
+		// filters));
+		// return result;
+		// }
+		// };
 
 		edicion = false;
 		select_n = true;
@@ -162,6 +175,231 @@ public class PersonaBean {
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
 		// cargarPersonas();
+	}
+
+	/**
+	 * @return the sldAlergiasCronicas2
+	 */
+	public String getSldAlergiasCronicas2() {
+		return sldAlergiasCronicas2;
+	}
+
+	/**
+	 * @param sldAlergiasCronicas2
+	 *            the sldAlergiasCronicas2 to set
+	 */
+	public void setSldAlergiasCronicas2(String sldAlergiasCronicas2) {
+		this.sldAlergiasCronicas2 = sldAlergiasCronicas2;
+	}
+
+	/**
+	 * @return the sldEmbriagar
+	 */
+	public Boolean getSldEmbriagar() {
+		return sldEmbriagar;
+	}
+
+	/**
+	 * @param sldEmbriagar
+	 *            the sldEmbriagar to set
+	 */
+	public void setSldEmbriagar(Boolean sldEmbriagar) {
+		this.sldEmbriagar = sldEmbriagar;
+	}
+
+	/**
+	 * @return the sldMadreCausaMuerte
+	 */
+	public String getSldMadreCausaMuerte() {
+		return sldMadreCausaMuerte;
+	}
+
+	/**
+	 * @param sldMadreCausaMuerte
+	 *            the sldMadreCausaMuerte to set
+	 */
+	public void setSldMadreCausaMuerte(String sldMadreCausaMuerte) {
+		this.sldMadreCausaMuerte = sldMadreCausaMuerte;
+	}
+
+	/**
+	 * @return the sldMadreEdad
+	 */
+	public Integer getSldMadreEdad() {
+		return sldMadreEdad;
+	}
+
+	/**
+	 * @param sldMadreEdad
+	 *            the sldMadreEdad to set
+	 */
+	public void setSldMadreEdad(Integer sldMadreEdad) {
+		this.sldMadreEdad = sldMadreEdad;
+	}
+
+	/**
+	 * @return the sldMadreEnfermedadesActuales
+	 */
+	public String getSldMadreEnfermedadesActuales() {
+		return sldMadreEnfermedadesActuales;
+	}
+
+	/**
+	 * @param sldMadreEnfermedadesActuales
+	 *            the sldMadreEnfermedadesActuales to set
+	 */
+	public void setSldMadreEnfermedadesActuales(String sldMadreEnfermedadesActuales) {
+		this.sldMadreEnfermedadesActuales = sldMadreEnfermedadesActuales;
+	}
+
+	/**
+	 * @return the sldMadreViva
+	 */
+	public Boolean getSldMadreViva() {
+		return sldMadreViva;
+	}
+
+	/**
+	 * @param sldMadreViva
+	 *            the sldMadreViva to set
+	 */
+	public void setSldMadreViva(Boolean sldMadreViva) {
+		this.sldMadreViva = sldMadreViva;
+	}
+
+	/**
+	 * @return the sldNombreLugarCentroMedico
+	 */
+	public String getSldNombreLugarCentroMedico() {
+		return sldNombreLugarCentroMedico;
+	}
+
+	/**
+	 * @param sldNombreLugarCentroMedico
+	 *            the sldNombreLugarCentroMedico to set
+	 */
+	public void setSldNombreLugarCentroMedico(String sldNombreLugarCentroMedico) {
+		this.sldNombreLugarCentroMedico = sldNombreLugarCentroMedico;
+	}
+
+	/**
+	 * @return the sldObservaciones
+	 */
+	public String getSldObservaciones() {
+		return sldObservaciones;
+	}
+
+	/**
+	 * @param sldObservaciones
+	 *            the sldObservaciones to set
+	 */
+	public void setSldObservaciones(String sldObservaciones) {
+		this.sldObservaciones = sldObservaciones;
+	}
+
+	/**
+	 * @return the sldPadreCausaMuerte
+	 */
+	public String getSldPadreCausaMuerte() {
+		return sldPadreCausaMuerte;
+	}
+
+	/**
+	 * @param sldPadreCausaMuerte
+	 *            the sldPadreCausaMuerte to set
+	 */
+	public void setSldPadreCausaMuerte(String sldPadreCausaMuerte) {
+		this.sldPadreCausaMuerte = sldPadreCausaMuerte;
+	}
+
+	/**
+	 * @return the sldPadreEdad
+	 */
+	public Integer getSldPadreEdad() {
+		return sldPadreEdad;
+	}
+
+	/**
+	 * @param sldPadreEdad
+	 *            the sldPadreEdad to set
+	 */
+	public void setSldPadreEdad(Integer sldPadreEdad) {
+		this.sldPadreEdad = sldPadreEdad;
+	}
+
+	/**
+	 * @return the sldPadreEnfermedadesActuales
+	 */
+	public String getSldPadreEnfermedadesActuales() {
+		return sldPadreEnfermedadesActuales;
+	}
+
+	/**
+	 * @param sldPadreEnfermedadesActuales
+	 *            the sldPadreEnfermedadesActuales to set
+	 */
+	public void setSldPadreEnfermedadesActuales(String sldPadreEnfermedadesActuales) {
+		this.sldPadreEnfermedadesActuales = sldPadreEnfermedadesActuales;
+	}
+
+	/**
+	 * @return the sldPadreVivo
+	 */
+	public Boolean getSldPadreVivo() {
+		return sldPadreVivo;
+	}
+
+	/**
+	 * @param sldPadreVivo
+	 *            the sldPadreVivo to set
+	 */
+	public void setSldPadreVivo(Boolean sldPadreVivo) {
+		this.sldPadreVivo = sldPadreVivo;
+	}
+
+	/**
+	 * @return the sldPeriodicidadAlcohol
+	 */
+	public String getSldPeriodicidadAlcohol() {
+		return sldPeriodicidadAlcohol;
+	}
+
+	/**
+	 * @param sldPeriodicidadAlcohol
+	 *            the sldPeriodicidadAlcohol to set
+	 */
+	public void setSldPeriodicidadAlcohol(String sldPeriodicidadAlcohol) {
+		this.sldPeriodicidadAlcohol = sldPeriodicidadAlcohol;
+	}
+
+	/**
+	 * @return the sldPeriodicidadEmbriagar
+	 */
+	public String getSldPeriodicidadEmbriagar() {
+		return sldPeriodicidadEmbriagar;
+	}
+
+	/**
+	 * @param sldPeriodicidadEmbriagar
+	 *            the sldPeriodicidadEmbriagar to set
+	 */
+	public void setSldPeriodicidadEmbriagar(String sldPeriodicidadEmbriagar) {
+		this.sldPeriodicidadEmbriagar = sldPeriodicidadEmbriagar;
+	}
+
+	/**
+	 * @return the sldPeriodicidadTabaco
+	 */
+	public String getSldPeriodicidadTabaco() {
+		return sldPeriodicidadTabaco;
+	}
+
+	/**
+	 * @param sldPeriodicidadTabaco
+	 *            the sldPeriodicidadTabaco to set
+	 */
+	public void setSldPeriodicidadTabaco(String sldPeriodicidadTabaco) {
+		this.sldPeriodicidadTabaco = sldPeriodicidadTabaco;
 	}
 
 	/**
@@ -287,7 +525,7 @@ public class PersonaBean {
 	/**
 	 * @return the sldConsumeAlcohol
 	 */
-	public String getSldConsumeAlcohol() {
+	public Boolean getSldConsumeAlcohol() {
 		return sldConsumeAlcohol;
 	}
 
@@ -295,14 +533,14 @@ public class PersonaBean {
 	 * @param sldConsumeAlcohol
 	 *            the sldConsumeAlcohol to set
 	 */
-	public void setSldConsumeAlcohol(String sldConsumeAlcohol) {
+	public void setSldConsumeAlcohol(Boolean sldConsumeAlcohol) {
 		this.sldConsumeAlcohol = sldConsumeAlcohol;
 	}
 
 	/**
 	 * @return the sldConsumeTabaco
 	 */
-	public String getSldConsumeTabaco() {
+	public Boolean getSldConsumeTabaco() {
 		return sldConsumeTabaco;
 	}
 
@@ -310,7 +548,7 @@ public class PersonaBean {
 	 * @param sldConsumeTabaco
 	 *            the sldConsumeTabaco to set
 	 */
-	public void setSldConsumeTabaco(String sldConsumeTabaco) {
+	public void setSldConsumeTabaco(Boolean sldConsumeTabaco) {
 		this.sldConsumeTabaco = sldConsumeTabaco;
 	}
 
@@ -1739,8 +1977,8 @@ public class PersonaBean {
 		setSldAltura(null);
 		setSldAsegurado("");
 		setSldCarnetConadies("");
-		setSldConsumeAlcohol("");
-		setSldConsumeTabaco("");
+		setSldConsumeAlcohol(false);
+		setSldConsumeTabaco(false);
 		setSldDiscapacidadGrado("");
 		setSldDiscapacidadTipo("");
 		setSldFrecienciaConsumoMedicame("");
@@ -1770,13 +2008,23 @@ public class PersonaBean {
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
 						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
-						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano());
+						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
+						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
+						getSldMadreEnfermedadesActuales(), getSldMadreViva(), getSldNombreLugarCentroMedico(),
+						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
+						getSldPadreEnfermedadesActuales(), getSldPadreVivo(), getSldPeriodicidadAlcohol(),
+						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			} else {
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
 						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
-						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano());
+						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
+						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
+						getSldMadreEnfermedadesActuales(), getSldMadreViva(), getSldNombreLugarCentroMedico(),
+						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
+						getSldPadreEnfermedadesActuales(), getSldPadreVivo(), getSldPeriodicidadAlcohol(),
+						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			}
 
 		} catch (Exception e) {

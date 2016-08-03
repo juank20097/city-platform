@@ -49,13 +49,13 @@ public class ManagerPersona {
 	public List<GenPersona> findAllPersonas() throws Exception {
 		return mngDao.findAll(GenPersona.class);
 	}// Cierre del metodo
-	
+
 	@SuppressWarnings("unchecked")
-	public Integer contador(){
-		List<Integer> l=mngDao.Countclase(GenPersona.class);
-		if (l!=null){
+	public Integer contador() {
+		List<Integer> l = mngDao.Countclase(GenPersona.class);
+		if (l != null) {
 			return l.get(0);
-		}else{
+		} else {
 			return null;
 		}
 	}
@@ -86,10 +86,8 @@ public class ManagerPersona {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void insertarPersona(String dni, String tipo_dni, String nombres,
-			String apellidos, Date fecha_nacimiento, String genero,
-			String telefono, String celular, String correo, String estado_civil)
-			throws Exception {
+	public void insertarPersona(String dni, String tipo_dni, String nombres, String apellidos, Date fecha_nacimiento,
+			String genero, String telefono, String celular, String correo, String estado_civil) throws Exception {
 		try {
 			GenPersona persona = new GenPersona();
 			persona.setPerDni(dni);
@@ -126,10 +124,9 @@ public class ManagerPersona {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarPersona(String dni, String tipo_dni, String nombres,
-			String apellidos, Date fecha_nacimiento, String genero,
-			String telefono, String celular, String correo,
-			String estado_civil, String estado) throws Exception {
+	public void editarPersona(String dni, String tipo_dni, String nombres, String apellidos, Date fecha_nacimiento,
+			String genero, String telefono, String celular, String correo, String estado_civil, String estado)
+			throws Exception {
 		try {
 			GenPersona persona = this.PersonaByID(dni);
 			persona.setPerTipoDni(tipo_dni);
@@ -206,8 +203,7 @@ public class ManagerPersona {
 	 * @throws Exception
 	 */
 	public GenCatalogoItemsDet ItemByID(String dni) throws Exception {
-		return (GenCatalogoItemsDet) mngDao.findById(GenCatalogoItemsDet.class,
-				dni);
+		return (GenCatalogoItemsDet) mngDao.findById(GenCatalogoItemsDet.class, dni);
 	}// Cierre del metodo
 
 	/**
@@ -217,9 +213,8 @@ public class ManagerPersona {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
-		List<GenCatalogoItemsDet> li = mngDao.findWhere(
-				GenCatalogoItemsDet.class, "o.genCatalogoCab.catCodigo='"
-						+ cat_nombre + "'", null);
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -234,10 +229,8 @@ public class ManagerPersona {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre, String padre) {
-		List<GenCatalogoItemsDet> li = mngDao
-				.findWhere(GenCatalogoItemsDet.class,
-						"o.genCatalogoCab.catCodigo='" + cat_nombre
-								+ "' and o.itePadre='" + padre + "'", null);
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "' and o.itePadre='" + padre + "'", null);
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -256,16 +249,14 @@ public class ManagerPersona {
 		List<GenPersona> l_p = new ArrayList<GenPersona>();
 		if (dato.length() > 2) {
 			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
-					"o.perDni like '%" + dato + "%' or o.perCelular like '%"
-							+ dato + "%' or o.perEstadoCivil like '%" + dato
-							+ "%' or o.perTelefono like '%" + dato
-							+ "%' or o.perTipoDni like '%" + dato + "%'", null));
-			if (l_p==null || l_p.isEmpty())
-			l_p.addAll(verificarMayusculas(dato));
+					"o.perDni like '%" + dato + "%' or o.perCelular like '%" + dato + "%' or o.perEstadoCivil like '%"
+							+ dato + "%' or o.perTelefono like '%" + dato + "%' or o.perTipoDni like '%" + dato + "%'",
+					null));
+			if (l_p == null || l_p.isEmpty())
+				l_p.addAll(verificarMayusculas(dato));
 		} else {
 			l_p.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
-					"o.perEstado like '%" + dato + "%' or o.perGenero like '%"
-							+ dato + "%'", null));
+					"o.perEstado like '%" + dato + "%' or o.perGenero like '%" + dato + "%'", null));
 		}
 		return l_p;
 	}
@@ -280,16 +271,16 @@ public class ManagerPersona {
 	public List<GenPersona> verificarMayusculas(String dato) {
 		List<GenPersona> l = new ArrayList<GenPersona>();
 		l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
-				"o.perApellidos like '%" + dato.toLowerCase()
-						+ "%' or o.perCorreo like '%" + dato.toLowerCase()
-						+ "%' or o.perApellidos like '%" + dato.toUpperCase()
-						+ "%' or o.perApellidos like '%" + dato + "%'", null));
-		if (l==null || l.size()==0)
+				"o.perApellidos like '%" + dato.toLowerCase() + "%' or o.perCorreo like '%" + dato.toLowerCase()
+						+ "%' or o.perApellidos like '%" + dato.toUpperCase() + "%' or o.perApellidos like '%" + dato
+						+ "%'",
+				null));
+		if (l == null || l.size() == 0)
 			l.addAll((List<GenPersona>) mngDao.findWhere(GenPersona.class,
-				"o.perNombres like '%" + dato.toLowerCase()
-						+ "%' or o.perCorreo like '%" + dato.toLowerCase()
-						+ "%' or o.perNombres like '%" + dato.toUpperCase()
-						+ "%' or o.perNombres like '%" + dato + "%'", null));
+					"o.perNombres like '%" + dato.toLowerCase() + "%' or o.perCorreo like '%" + dato.toLowerCase()
+							+ "%' or o.perNombres like '%" + dato.toUpperCase() + "%' or o.perNombres like '%" + dato
+							+ "%'",
+					null));
 		return l;
 	}
 
@@ -317,8 +308,7 @@ public class ManagerPersona {
 	 * @throws Exception
 	 */
 	public GenPersonaDetalle PersonaDetalleByID(String dni) throws Exception {
-		return (GenPersonaDetalle) mngDao
-				.findById(GenPersonaDetalle.class, dni);
+		return (GenPersonaDetalle) mngDao.findById(GenPersonaDetalle.class, dni);
 	}// Cierre del metodo
 
 	/**
@@ -348,15 +338,11 @@ public class ManagerPersona {
 	 * @param observacion
 	 * @throws Exception
 	 */
-	public void insertarPersonaDetalle(String dni, String foto,
-			String pais_nac, String provincia_nac, String ciudad_nac,
-			String lugar_nac, String pais_rec, String provincia_rec,
-			String ciudad_rec, String direccion_rec,
-			String condicion_ciudadana, String conyuge, Date fecha_matrimonio,
-			Integer num_hijos, String nombre_pad, String nacionalidad_pad,
-			String nombre_madre, String nacionalidad_madre,
-			String nombre_emergencia, String id_emergencia,
-			String telefono_emergencia, String inscripcion_defuncion,
+	public void insertarPersonaDetalle(String dni, String foto, String pais_nac, String provincia_nac,
+			String ciudad_nac, String lugar_nac, String pais_rec, String provincia_rec, String ciudad_rec,
+			String direccion_rec, String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos,
+			String nombre_pad, String nacionalidad_pad, String nombre_madre, String nacionalidad_madre,
+			String nombre_emergencia, String id_emergencia, String telefono_emergencia, String inscripcion_defuncion,
 			Date fecha_defuncion, String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
@@ -419,15 +405,11 @@ public class ManagerPersona {
 	 * @param observacion
 	 * @throws Exception
 	 */
-	public void editarPersonaDetalle(String dni, String foto, String pais_nac,
-			String provincia_nac, String ciudad_nac, String lugar_nac,
-			String pais_rec, String provincia_rec, String ciudad_rec,
-			String direccion_rec, String condicion_ciudadana, String conyuge,
-			Date fecha_matrimonio, Integer num_hijos, String nombre_pad,
-			String nacionalidad_pad, String nombre_madre,
-			String nacionalidad_madre, String nombre_emergencia,
-			String id_emergencia, String telefono_emergencia,
-			String inscripcion_defuncion, Date fecha_defuncion,
+	public void editarPersonaDetalle(String dni, String foto, String pais_nac, String provincia_nac, String ciudad_nac,
+			String lugar_nac, String pais_rec, String provincia_rec, String ciudad_rec, String direccion_rec,
+			String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos, String nombre_pad,
+			String nacionalidad_pad, String nombre_madre, String nacionalidad_madre, String nombre_emergencia,
+			String id_emergencia, String telefono_emergencia, String inscripcion_defuncion, Date fecha_defuncion,
 			String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = this.PersonaDetalleByID(dni);
@@ -512,13 +494,13 @@ public class ManagerPersona {
 	 * @param vegetariano
 	 * @throws Exception
 	 */
-	public void insertarSalud(String dni, String alergias, BigDecimal altura,
-			String asegurado, String carnet, String con_alcohol,
-			String con_tabaco, String dis_tipo, String dis_grado,
-			String con_medicina, String gru_sanguineo, String medicamentos,
-			String niv_azucar, String ejercicios, BigDecimal peso,
-			String presion, Boolean rea_ejercicio, Boolean vegetariano)
-			throws Exception {
+	public void insertarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
+			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
+			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
+			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
+			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_viva, String medico, String observacion,
+			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_vivo, String periodicidad_alcohol,
+			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
 		try {
 			GenSalud salud = new GenSalud();
 			salud.setPerDni(dni);
@@ -539,6 +521,21 @@ public class ManagerPersona {
 			salud.setSldPresion(presion);
 			salud.setSldRealizaEjercicio(rea_ejercicio);
 			salud.setSldVegetariano(vegetariano);
+			salud.setSldAlergiasCronicas2(alergias2);
+			salud.setSldEmbriagar(embriagar);
+			salud.setSldMadreCausaMuerte(m_muerte);
+			salud.setSldMadreEdad(m_edad);
+			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
+			salud.setSldMadreViva(m_viva);
+			salud.setSldNombreLugarCentroMedico(medico);
+			salud.setSldObservaciones(observacion);
+			salud.setSldPadreCausaMuerte(p_muerte);
+			salud.setSldPadreEdad(p_edad);
+			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
+			salud.setSldPadreVivo(p_vivo);
+			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
+			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
+			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
 			mngDao.insertar(salud);
 			System.out.println("Bien_insertar_salud");
 		} catch (Exception e) {
@@ -570,13 +567,13 @@ public class ManagerPersona {
 	 * @param vegetariano
 	 * @throws Exception
 	 */
-	public void editarSalud(String dni, String alergias, BigDecimal altura,
-			String asegurado, String carnet, String con_alcohol,
-			String con_tabaco, String dis_tipo, String dis_grado,
-			String con_medicina, String gru_sanguineo, String medicamentos,
-			String niv_azucar, String ejercicios, BigDecimal peso,
-			String presion, Boolean rea_ejercicio, Boolean vegetariano)
-			throws Exception {
+	public void editarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
+			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
+			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
+			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
+			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_viva, String medico, String observacion,
+			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_vivo, String periodicidad_alcohol,
+			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
 			salud.setSldAlergias(alergias);
@@ -596,6 +593,21 @@ public class ManagerPersona {
 			salud.setSldPresion(presion);
 			salud.setSldRealizaEjercicio(rea_ejercicio);
 			salud.setSldVegetariano(vegetariano);
+			salud.setSldAlergiasCronicas2(alergias2);
+			salud.setSldEmbriagar(embriagar);
+			salud.setSldMadreCausaMuerte(m_muerte);
+			salud.setSldMadreEdad(m_edad);
+			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
+			salud.setSldMadreViva(m_viva);
+			salud.setSldNombreLugarCentroMedico(medico);
+			salud.setSldObservaciones(observacion);
+			salud.setSldPadreCausaMuerte(p_muerte);
+			salud.setSldPadreEdad(p_edad);
+			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
+			salud.setSldPadreVivo(p_vivo);
+			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
+			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
+			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
 			mngDao.actualizar(salud);
 			System.out.println("Bien_mod_salud");
 		} catch (Exception e) {
