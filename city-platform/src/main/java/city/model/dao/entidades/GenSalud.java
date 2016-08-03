@@ -83,9 +83,6 @@ public class GenSalud implements Serializable {
 
 	@Column(name="sld_madre_enfermedades_actuales")
 	private String sldMadreEnfermedadesActuales;
-
-	@Column(name="sld_madre_viva")
-	private Boolean sldMadreViva;
 	
 	@Column(name="sld_nombre_lugar_centro_medico")
 	private String sldNombreLugarCentroMedico;
@@ -102,8 +99,11 @@ public class GenSalud implements Serializable {
 	@Column(name="sld_padre_enfermedades_actuales")
 	private String sldPadreEnfermedadesActuales;
 
-	@Column(name="sld_padre_vivo")
-	private Boolean sldPadreVivo;
+	@Column(name="sld_padre_fallecio")
+	private Boolean sldPadreFallecio;
+	
+	@Column(name="sld_madre_fallecio")
+	private Boolean sldMadreFallecio;
 
 	@Column(name="sld_periodicidad_alcohol")
 	private String sldPeriodicidadAlcohol;
@@ -314,14 +314,6 @@ public class GenSalud implements Serializable {
 	public void setSldMadreEnfermedadesActuales(String sldMadreEnfermedadesActuales) {
 		this.sldMadreEnfermedadesActuales = sldMadreEnfermedadesActuales;
 	}
-
-	public Boolean getSldMadreViva() {
-		return this.sldMadreViva;
-	}
-
-	public void setSldMadreViva(Boolean sldMadreViva) {
-		this.sldMadreViva = sldMadreViva;
-	}
 	
 	public String getSldNombreLugarCentroMedico() {
 		return this.sldNombreLugarCentroMedico;
@@ -363,12 +355,20 @@ public class GenSalud implements Serializable {
 		this.sldPadreEnfermedadesActuales = sldPadreEnfermedadesActuales;
 	}
 
-	public Boolean getSldPadreVivo() {
-		return this.sldPadreVivo;
+	public Boolean getSldMadreFallecio() {
+		return this.sldMadreFallecio;
 	}
 
-	public void setSldPadreVivo(Boolean sldPadreVivo) {
-		this.sldPadreVivo = sldPadreVivo;
+	public void setSldMadreFallecio(Boolean sldMadreFallecio) {
+		this.sldMadreFallecio = sldMadreFallecio;
+	}
+
+	public Boolean getSldPadreFallecio() {
+		return this.sldPadreFallecio;
+	}
+
+	public void setSldPadreFallecio(Boolean sldPadreFallecio) {
+		this.sldPadreFallecio = sldPadreFallecio;
 	}
 
 	public String getSldPeriodicidadAlcohol() {

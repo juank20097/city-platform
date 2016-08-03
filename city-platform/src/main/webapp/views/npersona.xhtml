@@ -516,14 +516,14 @@
 						<p:separator />
 						<b:row>
 							<b:column span="2">
-								<h:outputLabel value="Realiza Ejercicio:" />
+								<h:outputLabel value="¿Realiza Ejercicio?:" />
 							</b:column>
-							<b:column span="4">
+							<b:column span="3">
 								<b:switch value="#{personaBean.sldRealizaEjercicio}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
 									onColor="primary" />
 							</b:column>
-							<b:column span="2">
+							<b:column span="3">
 								<h:outputLabel value="Peridiocidad de Ejercicio al mes:" />
 							</b:column>
 							<b:column span="4">
@@ -534,32 +534,32 @@
 						<br />
 						<b:row>
 							<b:column span="2">
-								<h:outputLabel value="Consumo de Alcohol:" />
+								<h:outputLabel value="¿Consume Alcohol?:" />
 							</b:column>
-							<b:column span="4">
+							<b:column span="3">
 								<b:switch value="#{personaBean.sldConsumeAlcohol}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
 									onColor="primary" />
 							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Periodicidad de Consumo de Alcohol al mes:" />
+							<b:column span="3">
+								<h:outputLabel value="Periodicidad de Alcohol al mes:" />
 							</b:column>
 							<b:column span="4">
 								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 									value="#{personaBean.sldPeriodicidadAlcohol}" />
 							</b:column>
 						</b:row>
-						<br/>
+						<br />
 						<b:row>
 							<b:column span="2">
-								<h:outputLabel value="Consumo de Tabaco:" />
+								<h:outputLabel value="¿Consume Tabaco?:" />
 							</b:column>
-							<b:column span="4">
+							<b:column span="3">
 								<b:switch value="#{personaBean.sldConsumeTabaco}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
 									onColor="primary" />
 							</b:column>
-							<b:column span="2">
+							<b:column span="3">
 								<h:outputLabel value="Peridiocidad de Tabaco al mes:" />
 							</b:column>
 							<b:column span="4">
@@ -570,15 +570,15 @@
 						<br />
 						<b:row>
 							<b:column span="2">
-								<h:outputLabel value="Se Embriaga:" />
+								<h:outputLabel value="¿Se Embriaga?:" />
 							</b:column>
-							<b:column span="4">
+							<b:column span="3">
 								<b:switch value="#{personaBean.sldEmbriagar}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
 									onColor="primary" />
 							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Peridiocidad de Tabaco al mes:" />
+							<b:column span="3">
+								<h:outputLabel value="Peridiocidad de Embriagues al mes:" />
 							</b:column>
 							<b:column span="4">
 								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
@@ -586,10 +586,121 @@
 							</b:column>
 						</b:row>
 						<br />
+						<h4>Datos Familiares</h4>
+						<p:separator />
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="¿Su Padre Falleció?:" />
+							</b:column>
+							<b:column span="3">
+								<b:switch value="#{personaBean.sldPadreFallecio}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
+							</b:column>
+							<b:column span="3">
+								<h:outputLabel value="Edad del Padre:" />
+							</b:column>
+							<b:column span="4">
+								<h:panelGrid style="margin-bottom: 10px; width: 100%;">
+									<p:inputText style="width: 100%;" id="txt2"
+										value="#{personaBean.sldPadreEdad}" />
+									<p:slider for="txt2" />
+								</h:panelGrid>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Enfermedades Actuales del Padre:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldPadreEnfermedadesActuales}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row >
+							<b:column span="2">
+								<h:outputLabel value="Causa de Muerte del Padre:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldPadreCausaMuerte}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="¿Su Madre Falleció?:" />
+							</b:column>
+							<b:column span="3">
+								<b:switch value="#{personaBean.sldMadreFallecio}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
+							</b:column>
+							<b:column span="3">
+								<h:outputLabel value="Edad de la Madre:" />
+							</b:column>
+							<b:column span="4">
+								<h:panelGrid style="margin-bottom: 10px; width: 100%;">
+									<p:inputText style="width: 100%;" id="txt3"
+										value="#{personaBean.sldMadreEdad}" />
+									<p:slider for="txt3" />
+								</h:panelGrid>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Enfermedades Actuales de la Madre:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldMadreEnfermedadesActuales}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row >
+							<b:column span="2">
+								<h:outputLabel value="Causa de Muerte de la Madre:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldMadreCausaMuerte}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
 						<h4>Medicación</h4>
 						<p:separator />
 						<br />
 						<b:row>
+							<b:column span="2">
+								<h:outputLabel value="Alergias o Enfermedades Crónicas 1:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldAlergias}">
+								</b:inputTextarea>
+							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Alergias o Enfermedades Crónicas 2:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldAlergiasCronicas2}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
+								<h:outputLabel
+									value="Frecuencia de Consumo de Medicamentos Habituales:" />
+							</b:column>
+							<b:column span="10">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldFrecienciaConsumoMedicame}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row >
 							<b:column span="2">
 								<h:outputLabel value="Consumo de Medicamentos:" />
 							</b:column>
@@ -600,36 +711,8 @@
 								</b:inputTextarea>
 							</b:column>
 						</b:row>
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="Frecuencia de consumo de medicamentos:" />
-							</b:column>
-							<b:column span="10">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldFrecienciaConsumoMedicame}">
-								</b:inputTextarea>
-							</b:column>
-						</b:row>
 						<br />
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="Alergias Crónicas 1:" />
-							</b:column>
-							<b:column span="4">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldAlergias}">
-								</b:inputTextarea>
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Alergias Crónicas 2:" />
-							</b:column>
-							<b:column span="4">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldAlergiasCronicas2}">
-								</b:inputTextarea>
-							</b:column>
-						</b:row>
-						<b:row>
+						<b:row >
 							<b:column span="2">
 								<h:outputLabel value="Lugar y Centro Médico de Atención:" />
 							</b:column>
@@ -649,85 +732,7 @@
 								</b:inputTextarea>
 							</b:column>
 						</b:row>
-						<br />
-						<h4>Datos Familiares</h4>
-						<p:separator />
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="¿Su Padre está vivo?:" />
-							</b:column>
-							<b:column span="4">
-								<b:switch value="#{personaBean.sldPadreVivo}" onText="Si"
-									on-text="Si" offText="No" off-text="No" offColor="success"
-									onColor="primary" />
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Edad del Padre:" />
-							</b:column>
-							<b:column span="4">
-								<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-									<p:inputText style="width: 100%;" id="txt1"
-										value="#{personaBean.sldPadreEdad}" />
-									<p:slider for="txt1" />
-								</h:panelGrid>
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="Enfermedades Actuales del Padre:" />
-							</b:column>
-							<b:column span="10">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldPadreEnfermedadesActuales}">
-								</b:inputTextarea>
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Causa de Muerte del Padre:" />
-							</b:column>
-							<b:column span="4">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldPadreCausaMuerte}">
-								</b:inputTextarea>
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="¿Su Madre está viva?:" />
-							</b:column>
-							<b:column span="4">
-								<b:switch value="#{personaBean.sldMadreViva}" onText="Si"
-									on-text="Si" offText="No" off-text="No" offColor="success"
-									onColor="primary" />
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Edad de la Madre:" />
-							</b:column>
-							<b:column span="4">
-								<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-									<p:inputText style="width: 100%;" id="txt1"
-										value="#{personaBean.sldMadreEdad}" />
-									<p:slider for="txt1" />
-								</h:panelGrid>
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="Enfermedades Actuales de la Madre:" />
-							</b:column>
-							<b:column span="10">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldMadreEnfermedadesActuales}">
-								</b:inputTextarea>
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="Causa de Muerte de la Madre:" />
-							</b:column>
-							<b:column span="4">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									value="#{personaBean.sldMadreCausaMuerte}">
-								</b:inputTextarea>
-							</b:column>
-						</b:row>
+
 					</b:panel>
 				</b:tab>
 			</b:tabView>

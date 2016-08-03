@@ -93,16 +93,20 @@ public class PersonaBean {
 	private String sldMadreCausaMuerte;
 	private Integer sldMadreEdad;
 	private String sldMadreEnfermedadesActuales;
-	private Boolean sldMadreViva;
+	private Boolean sldMadreFallecio;
 	private String sldNombreLugarCentroMedico;
 	private String sldObservaciones;
 	private String sldPadreCausaMuerte;
 	private Integer sldPadreEdad;
 	private String sldPadreEnfermedadesActuales;
-	private Boolean sldPadreVivo;
+	private Boolean sldPadreFallecio;
 	private String sldPeriodicidadAlcohol;
 	private String sldPeriodicidadEmbriagar;
 	private String sldPeriodicidadTabaco;
+
+	private boolean sld_padre;
+	private boolean sld_madre;
+	private boolean sld_enfer;
 
 	// atributos de la clase persona - institucion
 	private String peiEstado;
@@ -162,6 +166,9 @@ public class PersonaBean {
 		edicion = false;
 		select_n = true;
 		select_r = true;
+		sld_enfer = false;
+		sld_madre = false;
+		sld_padre = false;
 		l_ciudad_n = new ArrayList<SelectItem>();
 		l_ciudad_r = new ArrayList<SelectItem>();
 		l_estado_civil = new ArrayList<SelectItem>();
@@ -253,21 +260,6 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @return the sldMadreViva
-	 */
-	public Boolean getSldMadreViva() {
-		return sldMadreViva;
-	}
-
-	/**
-	 * @param sldMadreViva
-	 *            the sldMadreViva to set
-	 */
-	public void setSldMadreViva(Boolean sldMadreViva) {
-		this.sldMadreViva = sldMadreViva;
-	}
-
-	/**
 	 * @return the sldNombreLugarCentroMedico
 	 */
 	public String getSldNombreLugarCentroMedico() {
@@ -343,18 +335,78 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @return the sldPadreVivo
+	 * @return the sld_padre
 	 */
-	public Boolean getSldPadreVivo() {
-		return sldPadreVivo;
+	public boolean isSld_padre() {
+		return sld_padre;
 	}
 
 	/**
-	 * @param sldPadreVivo
-	 *            the sldPadreVivo to set
+	 * @param sld_padre
+	 *            the sld_padre to set
 	 */
-	public void setSldPadreVivo(Boolean sldPadreVivo) {
-		this.sldPadreVivo = sldPadreVivo;
+	public void setSld_padre(boolean sld_padre) {
+		this.sld_padre = sld_padre;
+	}
+
+	/**
+	 * @return the sld_madre
+	 */
+	public boolean isSld_madre() {
+		return sld_madre;
+	}
+
+	/**
+	 * @param sld_madre
+	 *            the sld_madre to set
+	 */
+	public void setSld_madre(boolean sld_madre) {
+		this.sld_madre = sld_madre;
+	}
+
+	/**
+	 * @return the sld_enfer
+	 */
+	public boolean isSld_enfer() {
+		return sld_enfer;
+	}
+
+	/**
+	 * @param sld_enfer
+	 *            the sld_enfer to set
+	 */
+	public void setSld_enfer(boolean sld_enfer) {
+		this.sld_enfer = sld_enfer;
+	}
+
+	/**
+	 * @return the sldMadreFallecio
+	 */
+	public Boolean getSldMadreFallecio() {
+		return sldMadreFallecio;
+	}
+
+	/**
+	 * @param sldMadreFallecio
+	 *            the sldMadreFallecio to set
+	 */
+	public void setSldMadreFallecio(Boolean sldMadreFallecio) {
+		this.sldMadreFallecio = sldMadreFallecio;
+	}
+
+	/**
+	 * @return the sldPadreFallecio
+	 */
+	public Boolean getSldPadreFallecio() {
+		return sldPadreFallecio;
+	}
+
+	/**
+	 * @param sldPadreFallecio
+	 *            the sldPadreFallecio to set
+	 */
+	public void setSldPadreFallecio(Boolean sldPadreFallecio) {
+		this.sldPadreFallecio = sldPadreFallecio;
 	}
 
 	/**
@@ -1990,6 +2042,21 @@ public class PersonaBean {
 		setSldPresion("");
 		setSldRealizaEjercicio(null);
 		setSldVegetariano(null);
+		setSldAlergiasCronicas2("");
+		setSldEmbriagar(false);
+		setSldMadreCausaMuerte("");
+		setSldMadreEdad(null);
+		setSldMadreEnfermedadesActuales("");
+		setSldMadreFallecio(false);
+		setSldNombreLugarCentroMedico("");
+		setSldObservaciones("");
+		setSldPadreCausaMuerte("");
+		setSldPadreEdad(null);
+		setSldPadreEnfermedadesActuales("");
+		setSldPadreFallecio(false);
+		setSldPeriodicidadAlcohol("");
+		setSldPeriodicidadEmbriagar("");
+		setSldPeriodicidadTabaco("");
 		setEdicion(false);
 	}
 
@@ -2010,9 +2077,9 @@ public class PersonaBean {
 						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
 						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
 						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
-						getSldMadreEnfermedadesActuales(), getSldMadreViva(), getSldNombreLugarCentroMedico(),
+						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
 						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
-						getSldPadreEnfermedadesActuales(), getSldPadreVivo(), getSldPeriodicidadAlcohol(),
+						getSldPadreEnfermedadesActuales(), getSldPadreFallecio(), getSldPeriodicidadAlcohol(),
 						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			} else {
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
@@ -2021,9 +2088,9 @@ public class PersonaBean {
 						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
 						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
 						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
-						getSldMadreEnfermedadesActuales(), getSldMadreViva(), getSldNombreLugarCentroMedico(),
+						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
 						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
-						getSldPadreEnfermedadesActuales(), getSldPadreVivo(), getSldPeriodicidadAlcohol(),
+						getSldPadreEnfermedadesActuales(), getSldPadreFallecio(), getSldPeriodicidadAlcohol(),
 						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			}
 
@@ -2057,10 +2124,31 @@ public class PersonaBean {
 			setSldPresion(salud.getSldPresion());
 			setSldRealizaEjercicio(salud.getSldRealizaEjercicio());
 			setSldVegetariano(salud.getSldVegetariano());
+			setSldAlergiasCronicas2(salud.getSldAlergiasCronicas2());
+			setSldEmbriagar(salud.getSldEmbriagar());
+			setSldMadreCausaMuerte(salud.getSldMadreCausaMuerte());
+			setSldMadreEdad(salud.getSldMadreEdad());
+			setSldMadreEnfermedadesActuales(salud.getSldMadreEnfermedadesActuales());
+			setSldMadreFallecio(salud.getSldMadreFallecio());
+			setSldNombreLugarCentroMedico(salud.getSldNombreLugarCentroMedico());
+			setSldObservaciones(salud.getSldObservaciones());
+			setSldPadreCausaMuerte(salud.getSldPadreCausaMuerte());
+			setSldPadreEdad(salud.getSldPadreEdad());
+			setSldPadreEnfermedadesActuales(salud.getSldPadreEnfermedadesActuales());
+			setSldPadreFallecio(salud.getSldPadreFallecio());
+			setSldPeriodicidadAlcohol(salud.getSldPeriodicidadAlcohol());
+			setSldPeriodicidadEmbriagar(salud.getSldPeriodicidadEmbriagar());
+			setSldPeriodicidadTabaco(salud.getSldPeriodicidadTabaco());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "npersona?faces-redirect=true";
 	}
+
+//	public void switch_padre(){
+//		if (getSldPadreFallecio()==true){
+//			sld_padre=
+//		}
+//	}
 }

@@ -498,8 +498,8 @@ public class ManagerPersona {
 			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
 			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
 			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
-			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_viva, String medico, String observacion,
-			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_vivo, String periodicidad_alcohol,
+			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
+			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
 			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
 		try {
 			GenSalud salud = new GenSalud();
@@ -526,13 +526,13 @@ public class ManagerPersona {
 			salud.setSldMadreCausaMuerte(m_muerte);
 			salud.setSldMadreEdad(m_edad);
 			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
-			salud.setSldMadreViva(m_viva);
+			salud.setSldMadreFallecio(m_fallecio);
 			salud.setSldNombreLugarCentroMedico(medico);
 			salud.setSldObservaciones(observacion);
 			salud.setSldPadreCausaMuerte(p_muerte);
 			salud.setSldPadreEdad(p_edad);
 			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
-			salud.setSldPadreVivo(p_vivo);
+			salud.setSldPadreFallecio(p_fallecio);
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
@@ -571,8 +571,8 @@ public class ManagerPersona {
 			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
 			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
 			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
-			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_viva, String medico, String observacion,
-			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_vivo, String periodicidad_alcohol,
+			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
+			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
 			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
@@ -598,13 +598,13 @@ public class ManagerPersona {
 			salud.setSldMadreCausaMuerte(m_muerte);
 			salud.setSldMadreEdad(m_edad);
 			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
-			salud.setSldMadreViva(m_viva);
+			salud.setSldMadreFallecio(m_fallecio);
 			salud.setSldNombreLugarCentroMedico(medico);
 			salud.setSldObservaciones(observacion);
 			salud.setSldPadreCausaMuerte(p_muerte);
 			salud.setSldPadreEdad(p_edad);
 			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
-			salud.setSldPadreVivo(p_vivo);
+			salud.setSldPadreFallecio(p_fallecio);
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
