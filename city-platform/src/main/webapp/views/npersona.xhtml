@@ -47,7 +47,6 @@
 							<b:column span="4">
 								<b:inputText disabled="#{personaBean.edicion}"
 									value="#{personaBean.perDni}">
-									<f:validateRegex pattern="^[0-9A-Z]+$" />
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -59,7 +58,6 @@
 								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 									validatorMessage="Ingrese solo letras en el nombre"
 									value="#{personaBean.perNombres}">
-									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
 								</b:inputText>
 							</b:column>
 							<b:column span="2">
@@ -69,7 +67,6 @@
 								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 									validatorMessage="Ingrese solo letras en el apellido"
 									value="#{personaBean.perApellidos}">
-									<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
 								</b:inputText>
 							</b:column>
 						</b:row>
@@ -102,7 +99,6 @@
 								<b:inputText
 									validatorMessage="Ingrese solo números en el teléfono"
 									maxlength="9" value="#{personaBean.perTelefono}">
-									<f:validateRegex pattern="^[0-9]+$" />
 								</b:inputText>
 							</b:column>
 							<b:column span="2">
@@ -593,9 +589,10 @@
 								<h:outputLabel value="¿Su Padre Falleció?:" />
 							</b:column>
 							<b:column span="3">
-								<b:switch value="#{personaBean.sldPadreFallecio}" onText="Si"
+								<b:switch onchange="ajax:personaBean.switch_padre()"
+									value="#{personaBean.sldPadreFallecio}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
-									onColor="primary" />
+									onColor="primary" update="frm" immediate="true" />
 							</b:column>
 							<b:column span="3">
 								<h:outputLabel value="Edad del Padre:" />
@@ -608,7 +605,7 @@
 								</h:panelGrid>
 							</b:column>
 						</b:row>
-						<b:row>
+						<b:row  rendered="#{!personaBean.sld_padre}">
 							<b:column span="2">
 								<h:outputLabel value="Enfermedades Actuales del Padre:" />
 							</b:column>
@@ -618,7 +615,7 @@
 								</b:inputTextarea>
 							</b:column>
 						</b:row>
-						<b:row >
+						<b:row  rendered="#{personaBean.sld_padre}">
 							<b:column span="2">
 								<h:outputLabel value="Causa de Muerte del Padre:" />
 							</b:column>
@@ -633,9 +630,10 @@
 								<h:outputLabel value="¿Su Madre Falleció?:" />
 							</b:column>
 							<b:column span="3">
-								<b:switch value="#{personaBean.sldMadreFallecio}" onText="Si"
+								<b:switch onchange="ajax:personaBean.switch_madre()"
+									value="#{personaBean.sldMadreFallecio}" onText="Si"
 									on-text="Si" offText="No" off-text="No" offColor="success"
-									onColor="primary" />
+									onColor="primary" update="frm" />
 							</b:column>
 							<b:column span="3">
 								<h:outputLabel value="Edad de la Madre:" />
@@ -648,7 +646,7 @@
 								</h:panelGrid>
 							</b:column>
 						</b:row>
-						<b:row>
+						<b:row rendered="#{!personaBean.sld_madre}">
 							<b:column span="2">
 								<h:outputLabel value="Enfermedades Actuales de la Madre:" />
 							</b:column>
@@ -658,7 +656,7 @@
 								</b:inputTextarea>
 							</b:column>
 						</b:row>
-						<b:row >
+						<b:row rendered="#{personaBean.sld_madre}">
 							<b:column span="2">
 								<h:outputLabel value="Causa de Muerte de la Madre:" />
 							</b:column>
@@ -719,7 +717,7 @@
 							</b:column>
 						</b:row>
 						<br />
-						<b:row >
+						<b:row>
 							<b:column span="2">
 								<h:outputLabel value="Lugar y Centro Médico de Atención:" />
 							</b:column>

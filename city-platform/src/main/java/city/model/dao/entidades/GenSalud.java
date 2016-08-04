@@ -30,11 +30,11 @@ public class GenSalud implements Serializable {
 	@Column(name = "sld_carnet_conadies")
 	private String sldCarnetConadies;
 
-	@Column(name = "sld_consume_alcohol")
-	private Boolean sldConsumeAlcohol;
+	@Column(name="sld_consume_alcohol")
+	private String sldConsumeAlcohol;
 
-	@Column(name = "sld_consume_tabaco")
-	private Boolean sldConsumeTabaco;
+	@Column(name="sld_consume_tabaco")
+	private String sldConsumeTabaco;
 
 	@Column(name = "sld_discapacidad_grado")
 	private String sldDiscapacidadGrado;
@@ -111,8 +111,8 @@ public class GenSalud implements Serializable {
 	@Column(name="sld_periodicidad_tabaco")
 	private String sldPeriodicidadTabaco;
 	
-	@Column(name="sld_medicamentos_cronicos1")
-	private String sldMedicamentosCronicos1;
+	@Column(name="sld_medicamentos")
+	private String sldMedicamentos;
 
 	@Column(name="sld_medicamentos_cronicos2")
 	private String sldMedicamentosCronicos2;
@@ -163,22 +163,6 @@ public class GenSalud implements Serializable {
 
 	public void setSldCarnetConadies(String sldCarnetConadies) {
 		this.sldCarnetConadies = sldCarnetConadies;
-	}
-
-	public Boolean getSldConsumeAlcohol() {
-		return this.sldConsumeAlcohol;
-	}
-
-	public void setSldConsumeAlcohol(Boolean sldConsumeAlcohol) {
-		this.sldConsumeAlcohol = sldConsumeAlcohol;
-	}
-
-	public Boolean getSldConsumeTabaco() {
-		return this.sldConsumeTabaco;
-	}
-
-	public void setSldConsumeTabaco(Boolean sldConsumeTabaco) {
-		this.sldConsumeTabaco = sldConsumeTabaco;
 	}
 
 	public String getSldDiscapacidadGrado() {
@@ -390,12 +374,18 @@ public class GenSalud implements Serializable {
 		this.sldPeriodicidadTabaco = sldPeriodicidadTabaco;
 	}
 
-	public String getSldMedicamentosCronicos1() {
-		return this.sldMedicamentosCronicos1;
+	/**
+	 * @return the sldMedicamentos
+	 */
+	public String getSldMedicamentos() {
+		return sldMedicamentos;
 	}
 
-	public void setSldMedicamentosCronicos1(String sldMedicamentosCronicos1) {
-		this.sldMedicamentosCronicos1 = sldMedicamentosCronicos1;
+	/**
+	 * @param sldMedicamentos the sldMedicamentos to set
+	 */
+	public void setSldMedicamentos(String sldMedicamentos) {
+		this.sldMedicamentos = sldMedicamentos;
 	}
 
 	public String getSldMedicamentosCronicos2() {
@@ -405,4 +395,21 @@ public class GenSalud implements Serializable {
 	public void setSldMedicamentosCronicos2(String sldMedicamentosCronicos2) {
 		this.sldMedicamentosCronicos2 = sldMedicamentosCronicos2;
 	}
+	
+	public String getSldConsumeAlcohol() {
+		return this.sldConsumeAlcohol;
+	}
+
+	public void setSldConsumeAlcohol(String sldConsumeAlcohol) {
+		this.sldConsumeAlcohol = sldConsumeAlcohol;
+	}
+
+	public String getSldConsumeTabaco() {
+		return this.sldConsumeTabaco;
+	}
+
+	public void setSldConsumeTabaco(String sldConsumeTabaco) {
+		this.sldConsumeTabaco = sldConsumeTabaco;
+	}
+
 }

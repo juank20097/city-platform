@@ -120,6 +120,7 @@ public class SeguridadBean {
 
 	@PostConstruct
 	public void ini() {
+		session.validarSesion();
 		f_desde = null;
 		f_hasta = null;
 		segLatitud = 0;

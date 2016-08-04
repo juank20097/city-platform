@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>net.bootsfaces</groupId>
 			<artifactId>bootsfaces</artifactId>
-			<version>0.9.0</version>
+			<version>0.9.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- JSON -->

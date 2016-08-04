@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
@@ -16,6 +17,7 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenPersona;
 import city.model.manager.ManagerEstadistica;
 
@@ -27,6 +29,9 @@ public class EstadisticaBean implements Serializable{
 
 	@EJB
 	private ManagerEstadistica mngEst;
+	
+	@Inject
+	private SesionBean session;
 	
 	private static String COD_EP = "1";
 	private static String COD_TECH = "2";
@@ -61,6 +66,7 @@ public class EstadisticaBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
+		session.validarSesion();
 		personasEP = new ArrayList<GenPersona>();
 		personasIST = new ArrayList<GenPersona>();
 		personasTECH = new ArrayList<GenPersona>();

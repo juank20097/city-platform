@@ -10,7 +10,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
@@ -23,6 +25,14 @@ import city.model.manager.ManagerPersona;
  * @author jestevez
  * 
  */
+/**
+ * @author jestevez
+ *
+ */
+/**
+ * @author jestevez
+ *
+ */
 @SessionScoped
 @ManagedBean
 public class PersonaBean {
@@ -30,6 +40,8 @@ public class PersonaBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerPersona manager;
+	@Inject
+	private SesionBean session;
 
 	// Atriutos de la clase persona detalle
 	private String perDni;
@@ -75,8 +87,8 @@ public class PersonaBean {
 	private BigDecimal sldAltura;
 	private String sldAsegurado;
 	private String sldCarnetConadies;
-	private Boolean sldConsumeAlcohol;
-	private Boolean sldConsumeTabaco;
+	private String sldConsumeAlcohol;
+	private String sldConsumeTabaco;
 	private String sldDiscapacidadGrado;
 	private String sldDiscapacidadTipo;
 	private String sldFrecienciaConsumoMedicame;
@@ -107,7 +119,6 @@ public class PersonaBean {
 
 	private boolean sld_padre;
 	private boolean sld_madre;
-	private boolean sld_enfer;
 
 	// atributos de la clase persona - institucion
 	private String peiEstado;
@@ -164,10 +175,10 @@ public class PersonaBean {
 		// }
 		// };
 
+		session.validarSesion();
 		edicion = false;
 		select_n = true;
 		select_r = true;
-		sld_enfer = false;
 		sld_madre = false;
 		sld_padre = false;
 		l_ciudad_n = new ArrayList<SelectItem>();
@@ -363,21 +374,6 @@ public class PersonaBean {
 	 */
 	public void setSld_madre(boolean sld_madre) {
 		this.sld_madre = sld_madre;
-	}
-
-	/**
-	 * @return the sld_enfer
-	 */
-	public boolean isSld_enfer() {
-		return sld_enfer;
-	}
-
-	/**
-	 * @param sld_enfer
-	 *            the sld_enfer to set
-	 */
-	public void setSld_enfer(boolean sld_enfer) {
-		this.sld_enfer = sld_enfer;
 	}
 
 	/**
@@ -578,30 +574,28 @@ public class PersonaBean {
 	/**
 	 * @return the sldConsumeAlcohol
 	 */
-	public Boolean getSldConsumeAlcohol() {
+	public String getSldConsumeAlcohol() {
 		return sldConsumeAlcohol;
 	}
 
 	/**
-	 * @param sldConsumeAlcohol
-	 *            the sldConsumeAlcohol to set
+	 * @param sldConsumeAlcohol the sldConsumeAlcohol to set
 	 */
-	public void setSldConsumeAlcohol(Boolean sldConsumeAlcohol) {
+	public void setSldConsumeAlcohol(String sldConsumeAlcohol) {
 		this.sldConsumeAlcohol = sldConsumeAlcohol;
 	}
 
 	/**
 	 * @return the sldConsumeTabaco
 	 */
-	public Boolean getSldConsumeTabaco() {
+	public String getSldConsumeTabaco() {
 		return sldConsumeTabaco;
 	}
 
 	/**
-	 * @param sldConsumeTabaco
-	 *            the sldConsumeTabaco to set
+	 * @param sldConsumeTabaco the sldConsumeTabaco to set
 	 */
-	public void setSldConsumeTabaco(Boolean sldConsumeTabaco) {
+	public void setSldConsumeTabaco(String sldConsumeTabaco) {
 		this.sldConsumeTabaco = sldConsumeTabaco;
 	}
 
@@ -2045,8 +2039,8 @@ public class PersonaBean {
 		setSldAltura(null);
 		setSldAsegurado("");
 		setSldCarnetConadies("");
-		setSldConsumeAlcohol(false);
-		setSldConsumeTabaco(false);
+		setSldConsumeAlcohol("");
+		setSldConsumeTabaco("");
 		setSldDiscapacidadGrado("");
 		setSldDiscapacidadTipo("");
 		setSldFrecienciaConsumoMedicame("");
@@ -2134,7 +2128,7 @@ public class PersonaBean {
 			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
 			setSldFrecienciaConsumoMedicame(salud.getSldFrecuenciaConsumoMedicame());
 			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
-			setSldMedicamentosCronicos1(salud.getSldMedicamentosCronicos1());
+			setSldMedicamentosCronicos1(salud.getSldMedicamentos());
 			setSldMedicamentosCronicos2(salud.getSldMedicamentosCronicos2());
 			setSldNivelAzucar(salud.getSldNivelAzucar());
 			setSldPeriodicidadEjercicio(salud.getSldPeriodicidadEjercicio());
@@ -2164,9 +2158,29 @@ public class PersonaBean {
 		return "npersona?faces-redirect=true";
 	}
 
-	// public void switch_padre(){
-	// if (getSldPadreFallecio()==true){
-	// sld_padre=
-	// }
-	// }
+	 /**
+	 * Método para manejo de vista de aspectos del padre
+	 */
+	public void switch_padre(){
+		setSldPadreCausaMuerte("");
+		setSldPadreEnfermedadesActuales("");
+	 if (getSldPadreFallecio()==true){
+		 sld_padre=true;
+	 }else{
+		 sld_padre=false;
+	 }
+	 }
+	
+	/**
+	 * Método para manejo de vista de aspectos de la madre
+	 */
+	public void switch_madre(){
+		 setSldMadreEnfermedadesActuales("");
+		 setSldMadreCausaMuerte("");
+	 if (getSldMadreFallecio()==true){
+		 sld_madre=true;
+	 }else{
+		 sld_madre=false;
+	 }
+	 }
 }
