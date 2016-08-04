@@ -81,7 +81,8 @@ public class PersonaBean {
 	private String sldDiscapacidadTipo;
 	private String sldFrecienciaConsumoMedicame;
 	private String sldGrupoSanguineo;
-	private String sldMedicamentos;
+	private String sldMedicamentosCronicos1;
+	private String sldMedicamentosCronicos2;
 	private String sldNivelAzucar;
 	private String sldPeriodicidadEjercicio;
 	private BigDecimal sldPeso;
@@ -665,18 +666,33 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @return the sldMedicamentos
+	 * @return the sldMedicamentosCronicos1
 	 */
-	public String getSldMedicamentos() {
-		return sldMedicamentos;
+	public String getSldMedicamentosCronicos1() {
+		return sldMedicamentosCronicos1;
 	}
 
 	/**
-	 * @param sldMedicamentos
-	 *            the sldMedicamentos to set
+	 * @param sldMedicamentosCronicos1
+	 *            the sldMedicamentosCronicos1 to set
 	 */
-	public void setSldMedicamentos(String sldMedicamentos) {
-		this.sldMedicamentos = sldMedicamentos;
+	public void setSldMedicamentosCronicos1(String sldMedicamentosCronicos1) {
+		this.sldMedicamentosCronicos1 = sldMedicamentosCronicos1;
+	}
+
+	/**
+	 * @return the sldMedicamentosCronicos2
+	 */
+	public String getSldMedicamentosCronicos2() {
+		return sldMedicamentosCronicos2;
+	}
+
+	/**
+	 * @param sldMedicamentosCronicos2
+	 *            the sldMedicamentosCronicos2 to set
+	 */
+	public void setSldMedicamentosCronicos2(String sldMedicamentosCronicos2) {
+		this.sldMedicamentosCronicos2 = sldMedicamentosCronicos2;
 	}
 
 	/**
@@ -2035,7 +2051,8 @@ public class PersonaBean {
 		setSldDiscapacidadTipo("");
 		setSldFrecienciaConsumoMedicame("");
 		setSldGrupoSanguineo("");
-		setSldMedicamentos("");
+		setSldMedicamentosCronicos1("");
+		setSldMedicamentosCronicos2("");
 		setSldNivelAzucar("");
 		setSldPeriodicidadEjercicio("");
 		setSldPeso(null);
@@ -2074,7 +2091,7 @@ public class PersonaBean {
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
-						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
+						getSldMedicamentosCronicos1(),getSldMedicamentosCronicos2(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
 						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
 						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
 						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
@@ -2085,7 +2102,7 @@ public class PersonaBean {
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
-						getSldMedicamentos(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
+						getSldMedicamentosCronicos1(),getSldMedicamentosCronicos2(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
 						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
 						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
 						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
@@ -2117,7 +2134,8 @@ public class PersonaBean {
 			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
 			setSldFrecienciaConsumoMedicame(salud.getSldFrecuenciaConsumoMedicame());
 			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
-			setSldMedicamentos(salud.getSldMedicamentos());
+			setSldMedicamentosCronicos1(salud.getSldMedicamentosCronicos1());
+			setSldMedicamentosCronicos2(salud.getSldMedicamentosCronicos2());
 			setSldNivelAzucar(salud.getSldNivelAzucar());
 			setSldPeriodicidadEjercicio(salud.getSldPeriodicidadEjercicio());
 			setSldPeso(salud.getSldPeso());
@@ -2146,9 +2164,9 @@ public class PersonaBean {
 		return "npersona?faces-redirect=true";
 	}
 
-//	public void switch_padre(){
-//		if (getSldPadreFallecio()==true){
-//			sld_padre=
-//		}
-//	}
+	// public void switch_padre(){
+	// if (getSldPadreFallecio()==true){
+	// sld_padre=
+	// }
+	// }
 }

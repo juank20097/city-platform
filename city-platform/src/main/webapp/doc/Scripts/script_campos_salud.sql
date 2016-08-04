@@ -1,4 +1,9 @@
-﻿ALTER TABLE gen_salud DROP COLUMN sld_consume_tabaco;
+ALTER TABLE gen_salud DROP COLUMN sld_medicamentos;
+
+ALTER TABLE gen_salud ADD COLUMN sld_medicamentos_cronicos1 varchar(254);
+ALTER TABLE gen_salud ADD COLUMN sld_medicamentos_cronicos2 varchar(254);
+
+ALTER TABLE gen_salud DROP COLUMN sld_consume_tabaco;
 ALTER TABLE gen_salud DROP COLUMN sld_consume_alcohol;
 
 ALTER TABLE gen_salud ADD COLUMN sld_consume_tabaco bool;

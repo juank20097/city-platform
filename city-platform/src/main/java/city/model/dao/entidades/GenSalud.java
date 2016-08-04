@@ -48,9 +48,6 @@ public class GenSalud implements Serializable {
 	@Column(name = "sld_grupo_sanguineo")
 	private String sldGrupoSanguineo;
 
-	@Column(name = "sld_medicamentos")
-	private String sldMedicamentos;
-
 	@Column(name = "sld_nivel_azucar")
 	private String sldNivelAzucar;
 
@@ -113,6 +110,12 @@ public class GenSalud implements Serializable {
 
 	@Column(name="sld_periodicidad_tabaco")
 	private String sldPeriodicidadTabaco;
+	
+	@Column(name="sld_medicamentos_cronicos1")
+	private String sldMedicamentosCronicos1;
+
+	@Column(name="sld_medicamentos_cronicos2")
+	private String sldMedicamentosCronicos2;
 
 	// bi-directional one-to-one association to GenPersona
 	@OneToOne
@@ -209,14 +212,6 @@ public class GenSalud implements Serializable {
 
 	public void setSldGrupoSanguineo(String sldGrupoSanguineo) {
 		this.sldGrupoSanguineo = sldGrupoSanguineo;
-	}
-
-	public String getSldMedicamentos() {
-		return this.sldMedicamentos;
-	}
-
-	public void setSldMedicamentos(String sldMedicamentos) {
-		this.sldMedicamentos = sldMedicamentos;
 	}
 
 	public String getSldNivelAzucar() {
@@ -395,5 +390,19 @@ public class GenSalud implements Serializable {
 		this.sldPeriodicidadTabaco = sldPeriodicidadTabaco;
 	}
 
+	public String getSldMedicamentosCronicos1() {
+		return this.sldMedicamentosCronicos1;
+	}
 
+	public void setSldMedicamentosCronicos1(String sldMedicamentosCronicos1) {
+		this.sldMedicamentosCronicos1 = sldMedicamentosCronicos1;
+	}
+
+	public String getSldMedicamentosCronicos2() {
+		return this.sldMedicamentosCronicos2;
+	}
+
+	public void setSldMedicamentosCronicos2(String sldMedicamentosCronicos2) {
+		this.sldMedicamentosCronicos2 = sldMedicamentosCronicos2;
+	}
 }

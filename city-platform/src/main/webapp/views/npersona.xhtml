@@ -681,6 +681,16 @@
 								</b:inputTextarea>
 							</b:column>
 							<b:column span="2">
+								<h:outputLabel value="Consumo de Medicamentos Crónicos1:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldMedicamentosCronicos1}">
+								</b:inputTextarea>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column span="2">
 								<h:outputLabel value="Alergias o Enfermedades Crónicas 2:" />
 							</b:column>
 							<b:column span="4">
@@ -688,26 +698,23 @@
 									value="#{personaBean.sldAlergiasCronicas2}">
 								</b:inputTextarea>
 							</b:column>
+							<b:column span="2">
+								<h:outputLabel value="Consumo de Medicamentos Crónicos2:" />
+							</b:column>
+							<b:column span="4">
+								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+									value="#{personaBean.sldMedicamentosCronicos2}">
+								</b:inputTextarea>
+							</b:column>
 						</b:row>
 						<b:row>
 							<b:column span="2">
 								<h:outputLabel
-									value="Frecuencia de Consumo de Medicamentos Habituales:" />
+									value="Frecuencia de Consumo de Medicamentos Habituales (No Crónicas):" />
 							</b:column>
 							<b:column span="10">
 								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
 									value="#{personaBean.sldFrecienciaConsumoMedicame}">
-								</b:inputTextarea>
-							</b:column>
-						</b:row>
-						<b:row >
-							<b:column span="2">
-								<h:outputLabel value="Consumo de Medicamentos:" />
-							</b:column>
-							<b:column span="10">
-								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									placeholder="Escribe los medicamentos que está consumiendo la persona....."
-									value="#{personaBean.sldMedicamentos}">
 								</b:inputTextarea>
 							</b:column>
 						</b:row>

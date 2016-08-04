@@ -496,7 +496,7 @@ public class ManagerPersona {
 	 */
 	public void insertarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
 			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
-			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
+			String gru_sanguineo, String medicamentos_cronicos1,String medicamentos_cronicos2, String niv_azucar, String ejercicios, BigDecimal peso,
 			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
 			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
 			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
@@ -514,7 +514,8 @@ public class ManagerPersona {
 			salud.setSldDiscapacidadTipo(dis_tipo);
 			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
-			salud.setSldMedicamentos(medicamentos);
+			salud.setSldMedicamentosCronicos1(medicamentos_cronicos1);
+			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2);
 			salud.setSldNivelAzucar(niv_azucar);
 			salud.setSldPeriodicidadEjercicio(ejercicios);
 			salud.setSldPeso(peso);
@@ -569,7 +570,7 @@ public class ManagerPersona {
 	 */
 	public void editarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
 			Boolean con_alcohol, Boolean con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
-			String gru_sanguineo, String medicamentos, String niv_azucar, String ejercicios, BigDecimal peso,
+			String gru_sanguineo, String medicamentos_cronicos1,String medicamentos_cronicos2, String niv_azucar, String ejercicios, BigDecimal peso,
 			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
 			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
 			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
@@ -586,7 +587,8 @@ public class ManagerPersona {
 			salud.setSldDiscapacidadTipo(dis_tipo);
 			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
-			salud.setSldMedicamentos(medicamentos);
+			salud.setSldMedicamentosCronicos1(medicamentos_cronicos1);
+			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2);
 			salud.setSldNivelAzucar(niv_azucar);
 			salud.setSldPeriodicidadEjercicio(ejercicios);
 			salud.setSldPeso(peso);
