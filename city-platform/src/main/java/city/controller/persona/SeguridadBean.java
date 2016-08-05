@@ -35,6 +35,7 @@ import org.primefaces.model.map.Marker;
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
+import city.model.dao.entidades.SegIncidenciasAdmin;
 import city.model.dao.entidades.SegRegistroEmergencia;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
@@ -64,6 +65,9 @@ public class SeguridadBean {
 	private double segLatitud;
 	private double segLongitud;
 	private String segArchivo;
+	private String usuario;
+
+	private Boolean control;
 
 	private String DatoBusqueda;
 	private String perDni;
@@ -120,7 +124,8 @@ public class SeguridadBean {
 
 	@PostConstruct
 	public void ini() {
-		session.validarSesion();
+		control = false;
+		usuario = session.validarSesion();
 		f_desde = null;
 		f_hasta = null;
 		segLatitud = 0;
@@ -148,6 +153,7 @@ public class SeguridadBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		comprobaradmin();
 		cargarIncidentes();
 	}
 
@@ -166,19 +172,35 @@ public class SeguridadBean {
 		this.dateModel = dateModel;
 	}
 
-	// /**
-	// * @return the dateModel
-	// */
-	// public LineChartModel getDateModel() {
-	// return dateModel;
-	// }
-	//
-	// /**
-	// * @param dateModel the dateModel to set
-	// */
-	// public void setDateModel(LineChartModel dateModel) {
-	// this.dateModel = dateModel;
-	// }
+	/**
+	 * @return the control
+	 */
+	public Boolean getControl() {
+		return control;
+	}
+
+	/**
+	 * @param control
+	 *            the control to set
+	 */
+	public void setControl(Boolean control) {
+		this.control = control;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param usuario
+	 *            the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
 
 	/**
 	 * @return the f_desde
@@ -717,6 +739,7 @@ public class SeguridadBean {
 	 */
 	public String crearSeguridad() {
 		String r = "";
+		System.out.println("valor" + usuario);
 		try {
 			if (this.validarCampos()) {
 				Mensaje.crearMensajeERROR(getSms_validacion());
@@ -725,13 +748,13 @@ public class SeguridadBean {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo());
+							getSegArchivo(), usuario);
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo());
+							getSegArchivo(), usuario);
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
@@ -829,7 +852,11 @@ public class SeguridadBean {
 	public void cargarIncidentes() {
 		try {
 			getL_seguridad().clear();
+			if (getControl()==true){
 			getL_seguridad().addAll(manager.findAllseguridad());
+			}else{
+			getL_seguridad().addAll(manager.findAllseguridad(usuario));
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -925,12 +952,12 @@ public class SeguridadBean {
 				getL_estadistica().add(re);
 			}
 		}
-		if (getL_estadistica().size()>0){
+		if (getL_estadistica().size() > 0) {
 			this.cargarIncidencias();
-		}else{
+		} else {
 			Mensaje.crearMensajeWARN("El filtrado no presenta ninguna Incidencia.");
 		}
-		
+
 	}
 
 	/**
@@ -1349,4 +1376,25 @@ public class SeguridadBean {
 		}
 	}
 
+	/**
+	 * Método para comprobar el admin
+	 */
+	public void comprobaradmin() {
+		try {
+			List<SegIncidenciasAdmin> l = manager.findAlladmin();
+			if (l != null || l.size() > 0) {
+				for (SegIncidenciasAdmin i : l) {
+					if (getUsuario().equals(i.getAdmUsuario())) {
+						setControl(true);
+						break;
+					} else {
+						setControl(false);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

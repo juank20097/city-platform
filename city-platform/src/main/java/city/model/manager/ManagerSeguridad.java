@@ -1,6 +1,7 @@
 package city.model.manager;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.ejb.Stateless;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenParametro;
+import city.model.dao.entidades.SegIncidenciasAdmin;
 import city.model.dao.entidades.SegRegistroEmergencia;
 
 /**
@@ -31,6 +33,18 @@ public class ManagerSeguridad {
 	 */
 	public ManagerSeguridad() {
 	}// Cierre del Constructor
+	
+	// //////////////////////////////////////////////////////////(INCIDENCIAS_ADMIN)/////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SegIncidenciasAdmin> findAlladmin() throws Exception {
+		return mngDao.findAll(SegIncidenciasAdmin.class);
+	}// Cierre del metodo
 
 	// //////////////////////////////////////////////////////////(SEGURIDAD)/////////////////////////////////////////////////////////////////////
 	/**
@@ -46,6 +60,23 @@ public class ManagerSeguridad {
 	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findAllseguridad() throws Exception {
 		return mngDao.findAll(SegRegistroEmergencia.class,"o.segFecha asc");
+	}// Cierre del metodo
+	
+	/**
+	 * Metodo para listar todas los datos existentes
+	 * 
+	 * @return La lista de todas los datos encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SegRegistroEmergencia> findAllseguridad(String usuario) throws Exception {
+		List<SegRegistroEmergencia> l = mngDao.findWhere(SegRegistroEmergencia.class,
+				"o.segUsuarioAplicacion='" + usuario + "'", null);
+		if (l == null || l.size() == 0) {
+			l=new ArrayList<SegRegistroEmergencia>();
+			return l;
+		} else {
+			return l;
+		}
 	}// Cierre del metodo
 
 	/**
@@ -158,20 +189,22 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void insertarSeguridad(Integer id, String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo) throws Exception {
+			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
 			seg.setGenFuncionariosInstitucion(this.findFuncionarioXDni(per_dni));
 			seg.setSegAccion(accion);
 			seg.setSegEmergencia(emergencia);
-			seg.setSegFecha(new Timestamp(new Date().getTime()));
+			seg.setSegFecha(new Timestamp(fecha.getTime()));
 			seg.setSegTipoEmergencia(tipo);
 			seg.setSegLatitud(latitud);
 			seg.setSegLongitud(longitud);
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
 			seg.setSegArchivo(archivo);
+			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
+			seg.setSegUsuarioAplicacion(usuario);
 			mngDao.insertar(seg);
 			System.out.println("Bien_insertar_seguridad");
 		} catch (Exception e) {
@@ -191,7 +224,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo, double latitud,
-			double longitud, String sub_tipo, String sub_hijo, String archivo) throws Exception {
+			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
@@ -203,6 +236,8 @@ public class ManagerSeguridad {
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
 			seg.setSegArchivo(archivo);
+			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
+			seg.setSegUsuarioAplicacion(usuario);
 			mngDao.actualizar(seg);
 			System.out.println("Bien_mod_seguridad");
 		} catch (Exception e) {

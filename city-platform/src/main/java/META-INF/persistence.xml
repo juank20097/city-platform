@@ -26,6 +26,7 @@
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
+		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

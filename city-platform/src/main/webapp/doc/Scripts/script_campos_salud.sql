@@ -1,3 +1,9 @@
+ALTER TABLE seg_registro_emergencias ADD COLUMN seg_usuario_aplicacion character varying(100);
+ALTER TABLE seg_registro_emergencias ADD COLUMN seg_fecha_registro time with time zone;
+
+
+
+
 ALTER TABLE gen_salud DROP COLUMN sld_medicamentos;
 
 ALTER TABLE gen_salud ADD COLUMN sld_medicamentos_cronicos1 varchar(254);

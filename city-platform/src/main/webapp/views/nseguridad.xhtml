@@ -34,7 +34,7 @@
 						<h:outputLabel value="DNI/NOMBRE:*" />
 					</b:column>
 					<b:column span="5">
-						<p:selectOneMenu filter="true"  styleClass="form-control"
+						<p:selectOneMenu filter="true" filterMatchMode="contains" styleClass="form-control"
 							value="#{seguridadBean.datoBusqueda}">
 							<p:ajax
 								listener="#{seguridadBean.BuscarPersona()}"
@@ -187,7 +187,7 @@
 					</b:column>
 				</b:row>
 			</b:panel>
-			<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+			<b:commandButton rendered="#{seguridadBean.control}" value="Guardar" onclick="PF('statusDialog').show()"
 				oncomplete="PF('statusDialog').hide()"
 				action="#{seguridadBean.crearSeguridad()}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 				<b:commandButton value="Cancelar"

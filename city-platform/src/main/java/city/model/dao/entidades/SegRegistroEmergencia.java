@@ -3,6 +3,8 @@ package city.model.dao.entidades;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
+import java.sql.Time;
 import java.sql.Timestamp;
 
 /**
@@ -45,6 +47,12 @@ public class SegRegistroEmergencia implements Serializable {
 
 	@Column(name = "seg_archivo")
 	private String segArchivo;
+	
+	@Column(name="seg_fecha_registro")
+	private Timestamp segFechaRegistro;
+	
+	@Column(name="seg_usuario_aplicacion")
+	private String segUsuarioAplicacion;
 
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
 	@ManyToOne
@@ -141,6 +149,22 @@ public class SegRegistroEmergencia implements Serializable {
 
 	public void setSegArchivo(String segArchivo) {
 		this.segArchivo = segArchivo;
+	}
+	
+	public String getSegUsuarioAplicacion() {
+		return this.segUsuarioAplicacion;
+	}
+
+	public void setSegUsuarioAplicacion(String segUsuarioAplicacion) {
+		this.segUsuarioAplicacion = segUsuarioAplicacion;
+	}
+	
+	public Timestamp getSegFechaRegistro() {
+		return this.segFechaRegistro;
+	}
+
+	public void setSegFechaRegistro(Timestamp segFechaRegistro) {
+		this.segFechaRegistro = segFechaRegistro;
 	}
 
 }
