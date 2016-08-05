@@ -47,7 +47,7 @@ public class ManagerPersona {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<GenPersona> findAllPersonas() throws Exception {
-		return mngDao.findAll(GenPersona.class);
+		return mngDao.findAll(GenPersona.class, "o.perDni asc");
 	}// Cierre del metodo
 
 	@SuppressWarnings("unchecked")
