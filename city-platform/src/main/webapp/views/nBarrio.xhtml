@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head></h:head>
+<body>
+	<br />
+	<h:form id="frm">
+		<b:growl id="growl" delay="4000" placementFrom="top"
+			show-detail="false" global-only="false" show-summary="true"
+			allow-dismiss="true" animation-enter="animated bounceInDown"
+			animation-exit="animated flipOutX" escape="true" />
+		<b:panel title="Registro de Barrios" collapsible="false"
+			look="primary">
+			<br />
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="ID:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+						value="#{barriosBean.id}" disabled="#{barriosBean.edicion}" />
+				</b:column>
+				<b:column span="2">
+					<h:outputLabel value="NOMBRE:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+						value="#{barriosBean.nombre}" />
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="DESCRIPCIÓN:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputTextarea value="#{barriosBean.descripcion}" />
+				</b:column>
+				<b:column span="2">
+					<h:outputLabel value="DISTRITO:*" />
+				</b:column>
+				<b:column span="4">
+					<b:selectOneMenu id="zona" value="#{barriosBean.distritoId}">
+						<f:selectItems value="#{barriosBean.slctDistritos}" />
+					</b:selectOneMenu>
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="MAPA LINK:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText value="#{barriosBean.linkMapa}" />
+				</b:column>
+				<b:column span="2">
+					<h:outputLabel value="PDF LINK:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText value="#{barriosBean.linkPdf}" />
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="HECTÁREAS:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText value="#{barriosBean.hectareas}" required="true"
+						requiredMessage="HECTÁREAS es requerido." />
+				</b:column>
+				<b:column span="2">
+					<h:outputLabel value="METROS CUADRADOS:*" />
+				</b:column>
+				<b:column span="4">
+					<b:inputText value="#{barriosBean.metrosCuadrados}"
+						required="true" requiredMessage="METROS CUADRADOS es requerido." />
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="ESTADO:*" rendered="#{barriosBean.edicion}" />
+				</b:column>
+				<b:column span="4">
+					<b:selectOneMenu value="#{barriosBean.estado}"
+						rendered="#{barriosBean.edicion}">
+						<f:selectItems value="#{barriosBean.slctEstados}" />
+					</b:selectOneMenu>
+				</b:column>
+			</b:row>
+			<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+				oncomplete="PF('statusDialog').hide()"
+				action="#{barriosBean.guardarEditarBarrio()}" update="frm"
+				look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" process="@this"
+				action="#{barriosBean.cancelar()}"
+				onclick="PF('statusDialog').show()"
+				oncomplete="PF('statusDialog').hide()" immediate="true" update="frm"
+				look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+			</b:panel>
+	</h:form>
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage value="../resources/img/cargando.gif" />
+	</p:dialog>
+</body>
+</html>
