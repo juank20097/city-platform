@@ -22,7 +22,7 @@ public class GenBarrio implements Serializable {
 	@Column(name="bar_descripcion")
 	private String barDescripcion;
 
-	@Column(name="bar_estado")
+	@Column(name="bar_estado", columnDefinition = "bpchar")
 	private String barEstado;
 
 	@Column(name="bar_hectareas")

@@ -23,7 +23,7 @@ public class GenDistrito implements Serializable {
 	@Column(name="dis_descripcion")
 	private String disDescripcion;
 
-	@Column(name="dis_estado")
+	@Column(name="dis_estado", columnDefinition = "bpchar")
 	private String disEstado;
 
 	@Column(name="dis_hectareas")

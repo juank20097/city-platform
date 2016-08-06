@@ -164,7 +164,7 @@ public class SectorBean {
 	}
 
 	/**
-	 * Redirecciona a la pagina de creacion de personas
+	 * Redirecciona a la página de creacion de personas
 	 * 
 	 * @return vista
 	 */
