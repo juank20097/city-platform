@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<br />
+		<h:form id="frm">
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Registro de Comunidades" look="primary"
+				collapsible="false">
+				<br />
+				<b:row>
+					<b:column  span="2">
+						<h:outputLabel value="Id:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText disabled="#{comunidadBean.edicion}" onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo ID requerido"
+							value="#{comunidadBean.comId}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Nombre:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Nombre requerido"
+							value="#{comunidadBean.comNombre}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Ubicación:*" />
+					</b:column>
+					<b:column span="10">
+						<b:switch value="#{comunidadBean.comUbicacion}" onText="Si"
+									on-text="Si" offText="No" off-text="No" offColor="success"
+									onColor="primary" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Hectáreas:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Hectáreas requerido"
+							value="#{comunidadBean.comHectareas}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Metros Cuadrados:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Metros Cuadrados requerido"
+							value="#{comunidadBean.comMetrosCuadrados}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Link Mapa:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText  required="false"
+							requiredMessage="Campo Hectáreas requerido"
+							value="#{comunidadBean.comLinkMapa}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Link PDF:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText  required="false"
+							requiredMessage="Campo Metros Cuadrados requerido"
+							value="#{comunidadBean.comLinkPdf}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel rendered="#{sectorBean.edicion}" value="Estado:" />
+					</b:column>
+					<b:column span="10">
+						<b:selectOneMenu rendered="#{sectorBean.edicion}" styleClass="mar"
+							value="#{comunidadBean.comEstado}">
+							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+							<f:selectItems value="#{sectorBean.l_estados}">
+							</f:selectItems>
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
+					action="#{comunidadBean.crearComunidad}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" action="#{comunidadBean.cancelar}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" immediate="true"
+					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

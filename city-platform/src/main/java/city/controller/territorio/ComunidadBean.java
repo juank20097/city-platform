@@ -339,4 +339,14 @@ public class ComunidadBean {
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
+	
+	public String cambio(Boolean b){
+		String a = "";
+		if (b==true){
+			a="SI";
+		}else{
+			a="NO";
+		}
+		return a;
+	}
 }
