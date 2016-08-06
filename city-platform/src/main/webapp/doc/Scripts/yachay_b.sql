@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     6/8/2016 11:30:06                            */
+/* Created on:     6/8/2016 11:44:39                            */
 /*==============================================================*/
 
 
@@ -400,9 +400,10 @@ create table GEN_ZONAS (
 /* Table: GEN_ZONAS_COMUNIDADES                                 */
 /*==============================================================*/
 create table GEN_ZONAS_COMUNIDADES (
+   ZC_ID                VARCHAR(100)         not null,
    COM_ID               VARCHAR(100)         null,
    ZON_ID               VARCHAR(100)         null,
-   ZC_ID                VARCHAR(100)         null
+   constraint PK_GEN_ZONAS_COMUNIDADES primary key (ZC_ID)
 );
 
 /*==============================================================*/

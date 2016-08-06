@@ -8,8 +8,11 @@
 		<class>city.model.dao.entidades.AudActividadAplicacion</class>
 		<class>city.model.dao.entidades.AudActividadInterna</class>
 		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenBarrio</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
 		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
+		<class>city.model.dao.entidades.GenComunidade</class>
+		<class>city.model.dao.entidades.GenDistrito</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucion</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucionPK</class>
 		<class>city.model.dao.entidades.GenExterno</class>
@@ -25,8 +28,10 @@
 		<class>city.model.dao.entidades.GenSitFoto</class>
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
-		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
+		<class>city.model.dao.entidades.GenZona</class>
+		<class>city.model.dao.entidades.GenZonasComunidade</class>
 		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
+		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
