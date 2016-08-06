@@ -14,29 +14,28 @@ import javax.persistence.*;
 public class GenZonasComunidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="zc_id")
-	private String zcId;
+	@EmbeddedId
+	private GenZonasComunidadePK id;
 
 	//bi-directional many-to-one association to GenComunidade
 	@ManyToOne
-	@JoinColumn(name="com_id")
+	@JoinColumn(name="com_id", insertable=false, updatable=false)
 	private GenComunidade genComunidade;
 
 	//bi-directional many-to-one association to GenZona
 	@ManyToOne
-	@JoinColumn(name="zon_id")
+	@JoinColumn(name="zon_id", insertable=false, updatable=false)
 	private GenZona genZona;
 
 	public GenZonasComunidade() {
 	}
 
-	public String getZcId() {
-		return this.zcId;
+	public GenZonasComunidadePK getId() {
+		return this.id;
 	}
 
-	public void setZcId(String zcId) {
-		this.zcId = zcId;
+	public void setId(GenZonasComunidadePK id) {
+		this.id = id;
 	}
 
 	public GenComunidade getGenComunidade() {

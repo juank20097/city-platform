@@ -9,15 +9,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
-import javax.persistence.Column;
-import javax.persistence.Id;
 
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
-import city.model.dao.entidades.GenSectore;
+import city.model.dao.entidades.GenZona;
+import city.model.dao.entidades.GenZonasComunidade;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerComunidades;
-import city.model.manager.ManagerSitios;
 
 /**
  * @author jestevez
@@ -44,7 +42,9 @@ public class ComunidadBean {
 	// manejo de vistas
 	List<GenComunidade> l_comunidades;
 	List<SelectItem> l_estados;
-
+	List<SelectItem> l_zonas_s;
+	List<String> l_zonas;
+	
 	// valor de edición e inserción
 	private boolean edicion;
 
@@ -54,10 +54,13 @@ public class ComunidadBean {
 	@PostConstruct
 	public void init() {
 		edicion = false;
+		l_zonas = new ArrayList<String>();
 		l_comunidades = new ArrayList<GenComunidade>();
 		l_estados = new ArrayList<SelectItem>();
+		l_zonas_s = new ArrayList<SelectItem>();
 		cargarComunidad();
 		cargarEstados();
+		
 	}
 
 	/**
@@ -188,6 +191,34 @@ public class ComunidadBean {
 	}
 
 	/**
+	 * @return the l_zonas_s
+	 */
+	public List<SelectItem> getL_zonas_s() {
+		return l_zonas_s;
+	}
+
+	/**
+	 * @param l_zonas_s the l_zonas_s to set
+	 */
+	public void setL_zonas_s(List<SelectItem> l_zonas_s) {
+		this.l_zonas_s = l_zonas_s;
+	}
+
+	/**
+	 * @return the l_zonas
+	 */
+	public List<String> getL_zonas() {
+		return l_zonas;
+	}
+
+	/**
+	 * @param l_zonas the l_zonas to set
+	 */
+	public void setL_zonas(List<String> l_zonas) {
+		this.l_zonas = l_zonas;
+	}
+
+	/**
 	 * @param comUbicacion
 	 *            the comUbicacion to set
 	 */
@@ -232,6 +263,7 @@ public class ComunidadBean {
 	 */
 	public String nuevaComunidad() {
 		edicion = false;
+		cargarZonas();
 		return "ncomunidad?faces-redirect=true";
 	}
 
@@ -248,12 +280,15 @@ public class ComunidadBean {
 						getComHectareas(), getComMetrosCuadrados(),
 						getComUbicacion(), getComEstado(), getComLinkMapa(),
 						getComLinkPdf());
+				this.eliminarZonaCom(getComId());
+				this.guardarZonas();
 				Mensaje.crearMensajeINFO("Actualizado - Comunidad Modificado");
 			} else {
 				manager.insertarComunidad(getComId(), getComNombre(),
 						getComHectareas(), getComMetrosCuadrados(),
 						getComUbicacion(), getComLinkMapa(), getComLinkPdf());
 				Mensaje.crearMensajeINFO("Registrado - Sector Creado");
+				this.guardarZonas();
 			}
 			r = "comunidad?faces-redirect=true";
 			this.cleanDatos();
@@ -287,8 +322,10 @@ public class ComunidadBean {
 	 */
 	public String cargarComunidad(GenComunidade com) {
 		try {
+			cargarZonas();
 			cargarEstados();
 			setComId(com.getComId());
+			ZonasXComunidad(getComId());
 			setComEstado(com.getComEstado());
 			setComHectareas(com.getComHectareas());
 			setComMetrosCuadrados(com.getComMetrosCuadrados());
@@ -310,6 +347,8 @@ public class ComunidadBean {
 	 * @return
 	 */
 	public String cancelar() {
+		getL_zonas().clear();
+		getL_zonas_s().clear();
 		this.cleanDatos();
 		this.cargarComunidad();
 		return "comunidad?faces-redirect=true";
@@ -337,6 +376,75 @@ public class ComunidadBean {
 		for (GenCatalogoItemsDet i : completo) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+	
+	/**
+	 * Lista de Estado
+	 */
+	public void cargarZonas() {
+		getL_zonas_s().clear();
+		try {
+			List<GenZona> completo= manager.findAllzonas();
+			for (GenZona i : completo) {
+				getL_zonas_s().add(
+						new SelectItem(i.getZonNombre(), i.getZonNombre()));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String cambio(Boolean b){
+		String a = "";
+		if (b==true){
+			a="SI";
+		}else{
+			a="NO";
+		}
+		return a;
+	}
+	
+	public void guardarZonas(){
+		for (String s : l_zonas) {
+			try {
+				manager.insertarZonaCom(getComId(), s);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	public List<String> mostrarZonas(String id){
+		List<String> s = new ArrayList<String>(); 
+		List<GenZonasComunidade> lz=manager.zonacXComunidad(id);
+		if (lz!=null){
+		for (GenZonasComunidade zc : lz) {
+			s.add(zc.getGenZona().getZonNombre());
+		}
+		}
+		return s;
+	}
+	
+	public void ZonasXComunidad(String id){
+		getL_zonas().clear();
+		List<GenZonasComunidade> lz=manager.zonacXComunidad(id);
+		if (lz!=null){
+		for (GenZonasComunidade zc : lz) {
+			getL_zonas().add(zc.getGenZona().getZonNombre());
+		}
+		}
+	}
+	
+	public void eliminarZonaCom(String id_com){
+		List<GenZonasComunidade> lz=manager.zonacXComunidad(id_com);
+		if (lz!=null){
+		for (GenZonasComunidade zc : lz) {
+			manager.eliminarZonaCom(zc.getId());
+		}
 		}
 	}
 }

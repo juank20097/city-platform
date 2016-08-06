@@ -11,6 +11,7 @@ import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenSectore;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
+import city.model.dao.entidades.GenZonasComunidadePK;
 
 @Stateless
 public class ManagerComunidades {
@@ -59,6 +60,38 @@ public class ManagerComunidades {
 	}// Cierre del metodo
 
 	/**
+	 * Busca a los funcionarios por código de institución
+	 * @param insCodigo
+	 * @return List<GenPersona>
+	 */
+	@SuppressWarnings("unchecked")
+	public GenZona zonaXNombre(String nombre){
+		List<GenZona> l= mngDao.findWhere(GenZona.class, 
+				"o.zonNombre='"+nombre+"'",null);
+		if (l==null || l.isEmpty()){
+			return null;
+		}else{
+			return l.get(0);
+		}
+	}
+	
+	/**
+	 * Busca a los funcionarios por código de institución
+	 * @param insCodigo
+	 * @return List<GenPersona>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenZonasComunidade> zonacXComunidad(String id){
+		List<GenZonasComunidade> l= mngDao.findWhere(GenZonasComunidade.class, 
+				"o.genComunidade.comId='"+id+"'",null);
+		if (l==null || l.isEmpty()){
+			return null;
+		}else{
+			return l;
+		}
+	}
+	
+	/**
 	 * Metodo para obtener el Atributo mediante un ID
 	 * 
 	 * @param dni
@@ -68,29 +101,6 @@ public class ManagerComunidades {
 	public GenComunidade ComunidadesByID(String dni) throws Exception {
 		return (GenComunidade) mngDao.findById(GenComunidade.class, dni);
 	}// Cierre del metodo
-
-	/**
-	 * Método para generar el id
-	 * 
-	 * @return
-	 */
-	public Integer zonaComunidadId() {
-		Integer id = 0;
-		try {
-			id = (Integer) mngDao
-					.ejectNativeSQL2("select max(zc_id) from gen_zonas_comunidades limit 1;");
-			if (id == null || id == 0) {
-				id = 1;
-			} else {
-				id = id + 1;
-			}
-			return id;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
 
 	/**
 	 * Método para ingresar una Comunidad a la base de datos
@@ -117,6 +127,33 @@ public class ManagerComunidades {
 			System.out.println("Bien_insertar_comunidades");
 		} catch (Exception e) {
 			System.out.println("Error_insertar_comunidades");
+			e.printStackTrace();
+		}
+	}// Cierre del metodo
+	
+	/**
+	 * Método para ingresar una Comunidad a la base de datos
+	 * 
+	 * @param nombre
+	 * @param direccion
+	 * @param descripcion
+	 * @throws Exception
+	 */
+	public void insertarZonaCom(String id_com, String nom_zon) throws Exception {
+		try {
+			GenZona z=this.zonaXNombre(nom_zon);
+			GenComunidade c=this.ComunidadesByID(id_com);
+			GenZonasComunidadePK zc = new GenZonasComunidadePK();
+			zc.setComId(id_com);
+			zc.setZonId(z.getZonId());
+			GenZonasComunidade zb=new GenZonasComunidade();
+			zb.setGenZona(z);
+			zb.setGenComunidade(c);
+			zb.setId(zc);
+			mngDao.insertar(zb);
+			System.out.println("Bien_insertar_zcomunidades");
+		} catch (Exception e) {
+			System.out.println("Error_insertar_zcomunidades");
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
@@ -150,6 +187,8 @@ public class ManagerComunidades {
 			e.printStackTrace();
 		}
 	}// Cierre del metodo
+	
+	
 
 	/**
 	 * Metodo para listar
@@ -178,4 +217,13 @@ public class ManagerComunidades {
 			return li;
 		}
 	}// Cierre del metodo
+	
+	public void eliminarZonaCom(GenZonasComunidadePK id){
+		try {
+			mngDao.eliminar(GenZonasComunidade.class, id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

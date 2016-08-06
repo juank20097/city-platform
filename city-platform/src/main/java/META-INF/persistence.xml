@@ -30,6 +30,7 @@
 		<class>city.model.dao.entidades.GenTipoSitio</class>
 		<class>city.model.dao.entidades.GenZona</class>
 		<class>city.model.dao.entidades.GenZonasComunidade</class>
+		<class>city.model.dao.entidades.GenZonasComunidadePK</class>
 		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
 		<properties>
