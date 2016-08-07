@@ -2,6 +2,8 @@ package city.controller.persona;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -174,13 +176,11 @@ public class PersonaBean {
 			Institucion[] instituciones = fichaGeneral.getInstituciones();
 			if (instituciones != null)
 				for (Institucion institucion : instituciones) {
-					System.out
-							.println("\n\n******************* " + institucion.getNombre() + " *******************\n\n");
+
 					Registro[] registros = institucion.getDatosPrincipales();
 					if (registros != null)
 						for (Registro registro : registros) {
-							System.out.println(
-									"|" + registro.getCodigo() + "|" + registro.getCampo() + "|" + registro.getValor());
+
 							if (registro.getCodigo().equals("2")) {
 								StringTokenizer allName = new StringTokenizer(registro.getValor());
 
@@ -190,12 +190,26 @@ public class PersonaBean {
 								int count = 0;
 								while (allName.hasMoreTokens()) {
 									if (count++ < 2)
-										name += " "+allName.nextToken();
+										name += " " + allName.nextToken();
 									else
-										lastName += " "+allName.nextToken();
+										lastName += " " + allName.nextToken();
 								}
 								this.perNombres = name;
 								this.perApellidos = lastName;
+							} else if (registro.getCodigo().equals("5")) {
+								System.out.println(registro.getValor());
+								
+									StringTokenizer allDate = new StringTokenizer(registro.getValor(),"/");
+//									
+//								    
+									if (allDate != null) {
+
+										int date = Integer.parseInt(allDate.nextToken());
+										int month = Integer.parseInt(allDate.nextToken());
+										int year = Integer.parseInt(allDate.nextToken());
+										this.perFechaNacimiento = new Date(year-1900, month-1, date);
+									}
+
 							}
 						}
 				}
