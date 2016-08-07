@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<title>Login</title>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="resources/img/favicon.ico" />
+	<h:outputStylesheet library="css" name="estilo_login.css" />
+</h:head>
+<h:body>
+
+	<div style=" margin-top: 0;  top: 0;  background: linear-gradient(to bottom right, #1c68a6 40%, #ffffff 100%);" class="wrapper">
+		<div class="container">
+			<h1 style="color:white;">Yachay City Platform</h1>
+			
+			<h:form id="frmlog" class="form">
+				<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+				<b:inputText style="color:black; width: 350px;" placeholder="USUARIO" value="#{sesionBean.usuario}">
+				</b:inputText>
+				<b:inputSecret style="color:black; width: 350px;" placeholder="CONTRASE&Ntilde;A"
+								value="#{sesionBean.pass}">
+				</b:inputSecret>
+				<b:commandButton size="lg" id="login-button" value="Ingresar" iconAwesome="check-square-o"
+							action="#{sesionBean.logIn()}" styleClass="btn-block btnSend"
+							look="info" update="frmlog" />
+			</h:form>
+		</div>
+
+		<ul class="bg-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</h:body>
+</html>

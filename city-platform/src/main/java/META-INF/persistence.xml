@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="city-platformPU">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>java:/city-platformDatasource</jta-data-source>
+		<class>city.model.dao.entidades.AudActividadAplicacion</class>
+		<class>city.model.dao.entidades.AudActividadInterna</class>
+		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenBarrio</class>
+		<class>city.model.dao.entidades.GenCatalogoCab</class>
+		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
+		<class>city.model.dao.entidades.GenComunidade</class>
+		<class>city.model.dao.entidades.GenDistrito</class>
+		<class>city.model.dao.entidades.GenEstudianteInstitucion</class>
+		<class>city.model.dao.entidades.GenEstudianteInstitucionPK</class>
+		<class>city.model.dao.entidades.GenExterno</class>
+		<class>city.model.dao.entidades.GenFuncionariosInstitucion</class>
+		<class>city.model.dao.entidades.GenFuncionariosInstitucionPK</class>
+		<class>city.model.dao.entidades.GenInstitucione</class>
+		<class>city.model.dao.entidades.GenParametro</class>
+		<class>city.model.dao.entidades.GenPersona</class>
+		<class>city.model.dao.entidades.GenPersonaDetalle</class>
+		<class>city.model.dao.entidades.GenRegistroExcel</class>
+		<class>city.model.dao.entidades.GenSalud</class>
+		<class>city.model.dao.entidades.GenSectore</class>
+		<class>city.model.dao.entidades.GenSitFoto</class>
+		<class>city.model.dao.entidades.GenSitio</class>
+		<class>city.model.dao.entidades.GenTipoSitio</class>
+		<class>city.model.dao.entidades.GenZona</class>
+		<class>city.model.dao.entidades.GenZonasComunidade</class>
+		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
+		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+			<property name="hibernate.ejb.interceptor"
+				value="city.model.manager.ActivityTrackerInterceptor" />
+		</properties>
+	</persistence-unit>
+</persistence>

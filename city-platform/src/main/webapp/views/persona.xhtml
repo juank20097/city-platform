@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form id="frm">
+			<center>
+				<h1>PERSONAS</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Nuevo" iconAwesome="file-o"
+						action="#{personaBean.nuevaPersona}"
+						onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()" />
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+			<br />
+			<b:row>
+				<b:column span="3">
+					<b:inputText placeholder="Buscar..."
+						value="#{personaBean.datoBuscar}"></b:inputText>
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Buscar" onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()"
+						action="#{personaBean.buscarPersona}" />
+				</b:column>
+				<b:column span="1">
+					<b:commandButton value="Buscar Todos"
+						onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()"
+						action="#{personaBean.cargarPersonas()}" update=":frm:dt_per" />
+				</b:column>
+			</b:row>
+			<b:row>
+
+			</b:row>
+			<br />
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<p:dataTable id="dt_per" var="per" value="#{personaBean.l_persona}" reflow="true"
+					rows="10" paginator="true">
+					<p:column headerText="OPCIONES">
+						<b:commandButton iconAwesome="fa fa-pencil-square-o"
+							style="padding: 0; border: none; background: none;color: #000"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()"
+							action="#{personaBean.cargarPersona(per)}">
+						</b:commandButton>
+					</p:column>
+
+					<p:column headerText="DNI">
+						<h:outputText value="#{per.perDni}" />
+					</p:column>
+
+					<p:column headerText="TIPO DNI">
+						<h:outputText value="#{per.perTipoDni}" />
+					</p:column>
+
+					<p:column headerText="NOMBRES">
+						<h:outputText value="#{per.perNombres} #{per.perApellidos}" />
+					</p:column>
+				</p:dataTable>
+			</b:panel>
+		</h:form>
+
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<br />
+		<h:form id="frm">
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Registro de Sectores" look="primary"
+				collapsible="false">
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Nombre:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Nombre requerido"
+							value="#{sectorBean.secNombre}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Dirección Referencial:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Nombre requerido"
+							value="#{sectorBean.secDireccionReferencial}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Descripción:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();" required="true"
+							requiredMessage="Campo Descripción requerido"
+							value="#{sectorBean.secDescripcion}">
+						</b:inputTextarea>
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel rendered="#{sectorBean.edicion}" value="Estado:" />
+					</b:column>
+					<b:column span="10">
+						<b:selectOneMenu rendered="#{sectorBean.edicion}" styleClass="mar"
+							value="#{sectorBean.secEstado}">
+							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+							<f:selectItems value="#{sectorBean.l_estados}">
+							</f:selectItems>
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
+					action="#{sectorBean.crearSector}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" action="#{sectorBean.cancelar}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" immediate="true"
+					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

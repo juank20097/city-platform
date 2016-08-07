@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<br />
+		<h:form id="frm">
+			<b:growl delay="4000" placementFrom="top" show-detail="false"
+				global-only="false" show-summary="true" allow-dismiss="true"
+				animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<b:panel title="Registro de Sitios" collapsible="false"
+				look="primary">
+				<br />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Sitio Identificación:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" placeholder="Ej: BLQ-A-DEP-01-001"
+							value="#{sitioBean.sitId}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Nombre:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitNombre}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<br/>
+				<b:row>
+					<b:column span="1">
+						<h:outputLabel value="Área:*" />
+					</b:column>
+					<b:column span="3">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{sitioBean.area}">
+							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+							<f:selectItems value="#{sitioBean.l_areas}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+					<b:column span="1">
+						<h:outputLabel value="Institución:*" />
+					</b:column>
+					<b:column span="3">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{sitioBean.institucion}">
+							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+							<f:selectItems value="#{sitioBean.l_insti}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+					<b:column span="1">
+						<h:outputLabel value="Tipo de Sitio:*" />
+					</b:column>
+					<b:column span="3">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{sitioBean.tsitio}">
+							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+							<f:selectItems value="#{sitioBean.l_tsitios}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<br />
+				<h4>Caracteristicas</h4>
+				<p:separator />
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Número:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText value="#{sitioBean.sitNumero}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Piso:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitPiso}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Calle Principal:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitCallePrincipal}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Calle Secundaria:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{sitioBean.sitCalleSecundaria}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Capacidad:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText value="#{sitioBean.sitCapacidad}">
+						</b:inputText>
+					</b:column>
+					<b:column span="2">
+						<h:outputLabel value="Costo:*" />
+					</b:column>
+					<b:column span="4">
+						<b:inputText value="#{sitioBean.sitCostoArriendo}">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Conexión con Accesos:*" />
+					</b:column>
+					<b:column span="4">
+						<b:switch value="#{sitioBean.sitIntegracionAccesos}" onText="Si"
+							offText="No" offColor="success" onColor="primary" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel value="Observación:*" />
+					</b:column>
+					<b:column span="10">
+						<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
+							placeholder="Escribe observaciones del sitio en caso de tenerla....."
+							value="#{sitioBean.sitDescripcion}">
+						</b:inputTextarea>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column span="2">
+						<h:outputLabel rendered="#{sitioBean.edicion}" value="Estado:" />
+					</b:column>
+					<b:column span="10">
+						<b:selectOneMenu rendered="#{sitioBean.edicion}"
+							styleClass="mar" value="#{sitioBean.sitEstado}">
+							<f:selectItem itemValue="-1" itemLabel="--Seleccione--" />
+							<f:selectItems value="#{sitioBean.l_estados}">
+							</f:selectItems>
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
+					action="#{sitioBean.crearSitio}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+				<b:commandButton value="Cancelar" action="#{sitioBean.cancelar}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()" immediate="true"
+					update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+           Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<b:container>
+			<h:form id="frmGraf">
+				<b:row rendered="#{!estadisticaBean.abrirInstitucion}">
+					<b:column span="4">
+						<b:panel title="Menú" look="primary">
+							<b:listLinks>
+								<b:navCommandLink value="Yachay EP"
+									actionListener="#{estadisticaBean.cargarPersonal('1')}"
+									update="frmGraf :frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalEP}" />
+								</b:navCommandLink>
+								<b:navCommandLink value="Yachay TECH"
+									actionListener="#{estadisticaBean.cargarPersonal('2')}"
+									update="frmGraf :frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalTECH}" />
+								</b:navCommandLink>
+								<b:navCommandLink value="IST"
+									actionListener="#{estadisticaBean.cargarPersonal('3')}"
+									update="frmGraf :frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalIST}" />
+								</b:navCommandLink>
+								<b:navCommandLink value="Ciudad"
+									actionListener="#{estadisticaBean.cargarPersonal('4')}"
+									update="frmGraf :frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalCIUDAD}" />
+								</b:navCommandLink>
+							</b:listLinks>
+						</b:panel>
+					</b:column>
+					<b:column span="8">
+						<p:tabView activeIndex="0">
+							<p:tab title="Gráfico Barras">
+								<p:chart type="bar" model="#{estadisticaBean.barModel}"
+									style="height:300px;" responsive="true" />
+							</p:tab>
+							<p:tab title="Gráfico Pastel">
+								<p:chart type="pie" model="#{estadisticaBean.pieModel}"
+									style="height:300px" responsive="true" />
+							</p:tab>
+						</p:tabView>
+					</b:column>
+				</b:row>
+			</h:form>
+			<h:form id="frmGrafIns">
+				<b:row rendered="#{estadisticaBean.abrirInstitucion}"
+					style="margin-bottom:10px">
+					<b:column span="2">
+						<b:commandButton value="Volver"
+							actionListener="#{estadisticaBean.volverPrincipal()}"
+							update="frmGrafIns :frmGraf" />
+					</b:column>
+				</b:row>
+				<b:row rendered="#{estadisticaBean.abrirInstitucion}">
+					<b:column span="4">
+						<b:panel title="Menú" look="primary" disabled="true" collapsible="false">
+							<b:listLinks>
+								<b:navCommandLink value="Funcionarios"
+									actionListener="#{estadisticaBean.abrirListado('F')}"
+									update="frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalFuncionarios}" />
+								</b:navCommandLink>
+								<b:navCommandLink value="Estudiantes"
+									actionListener="#{estadisticaBean.abrirListado('E')}"
+									update="frmGrafIns">
+									<b:badge style="margin-left:5px"
+										value="#{estadisticaBean.totalEstudiantes}" />
+								</b:navCommandLink>
+							</b:listLinks>
+						</b:panel>
+					</b:column>
+					<b:column span="8">
+						<p:tabView activeIndex="0">
+							<p:tab title="Gráfico Barras">
+								<p:chart type="bar"
+									model="#{estadisticaBean.institucionBarModel}"
+									style="height:300px;" responsive="true" />
+							</p:tab>
+							<p:tab title="Gráfico Pastel">
+								<p:chart type="pie"
+									model="#{estadisticaBean.inastitucionPieModel}"
+									style="height:300px" responsive="true" />
+							</p:tab>
+						</p:tabView>
+					</b:column>
+				</b:row>
+				<b:row rendered="#{estadisticaBean.abrirEstudiantes}">
+					<h3>Estudiantes</h3>
+					<b:dataTable id="tbe"
+						value="#{estadisticaBean.institucionEstudiantes}" var="est"
+						styleClass="table table-striped table-bordered dt-responsive nowrap"
+						fixedHeader="true" responsive="true" lang="es" style="width:100%">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CÉDULA" />
+							</f:facet>
+							<h:outputText value="#{est.perDni}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="NOMBRE COMPLETO" />
+							</f:facet>
+							<h:outputText value="#{est.perNombres} #{est.perApellidos}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CORREO INSTITUCIONAL" />
+							</f:facet>
+							<h:outputText
+								value="#{est.genEstudianteInstitucions.get(0).estCorreo}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CORREO PERSONAL" />
+							</f:facet>
+							<h:outputText value="#{est.perCorreo}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="FECHA DE NACIMIENTO" />
+							</f:facet>
+							<h:outputText value="#{est.perFechaNacimiento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CARRERA" />
+							</f:facet>
+							<h:outputText
+								value="#{est.genEstudianteInstitucions.get(0).estCarrera}"></h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="NIVEL" />
+							</f:facet>
+							<h:outputText
+								value="#{est.genEstudianteInstitucions.get(0).estNivel}" />
+						</h:column>
+					</b:dataTable>
+				</b:row>
+				<b:row rendered="#{estadisticaBean.abrirFuncionarios}">
+					<h3>Funcionarios</h3>
+					<b:dataTable id="tbf"
+						value="#{estadisticaBean.institucionFuncionarios}" var="fun"
+						styleClass="table table-striped table-bordered dt-responsive nowrap"
+						fixedHeader="true" responsive="true" lang="es" style="width:100%">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CÉDULA" />
+							</f:facet>
+							<h:outputText value="#{fun.perDni}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="NOMBRE COMPLETO" />
+							</f:facet>
+							<h:outputText value="#{fun.perNombres} #{fun.perApellidos}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CORREO PERSONAL" />
+							</f:facet>
+							<h:outputText value="#{fun.perCorreo}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="FECHA DE NACIMIENTO" />
+							</f:facet>
+							<h:outputText value="#{fun.perFechaNacimiento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="GERENCIA" />
+							</f:facet>
+							<h:outputText
+								value="#{fun.genFuncionariosInstitucions.get(0).funGerencia}"></h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="DIRECCIÓN" />
+							</f:facet>
+							<h:outputText
+								value="#{fun.genFuncionariosInstitucions.get(0).funDireccion}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="CARGO" />
+							</f:facet>
+							<h:outputText
+								value="#{fun.genFuncionariosInstitucions.get(0).funCargo}"></h:outputText>
+						</h:column>
+					</b:dataTable>
+				</b:row>
+			</h:form>
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage value="resources/img/cargando.gif" />
+			</p:dialog>
+		</b:container>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<b:row>
+			<b:column span="7">
+				<center>
+					<h:graphicImage style=" width: 75%;"
+						value="../resources/img/ycp.png" styleClass="img-responsive" />
+				</center>
+			</b:column>
+			<b:column span="5" style="padding-top:8%; padding-right:10%;">
+			
+				<b:well >
+					<h1>Yachay City Platform</h1>
+					<p:separator></p:separator>
+					<p>Sistema de manejo y control de la ciudad Yachay. El
+						principal objetivo de este sistema es la administración de cada
+						uno de los datos y conexiones que se genere dentro de la Base de
+						Datos YACHAY.</p>
+				</b:well>
+			</b:column>
+
+
+		</b:row>
+	</ui:define>
+</ui:composition>
+
+</html>
