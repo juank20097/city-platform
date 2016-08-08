@@ -65,7 +65,7 @@
 						</b:commandButton>
 					</p:column>
 
-					<p:column headerText="DNI">
+					<p:column headerText="DNI" filterBy="#{per.perDni}" filterMatchMode="contains">
 						<h:outputText value="#{per.perDni}" />
 					</p:column>
 
@@ -73,7 +73,7 @@
 						<h:outputText value="#{per.perTipoDni}" />
 					</p:column>
 
-					<p:column headerText="NOMBRES">
+					<p:column headerText="NOMBRES"  filterBy="#{per.perNombres} #{per.perApellidos}" filterMatchMode="contains">
 						<h:outputText value="#{per.perNombres} #{per.perApellidos}" />
 					</p:column>
 				</p:dataTable>
