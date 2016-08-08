@@ -48,6 +48,9 @@
 								<b:inputText disabled="#{personaBean.edicion}"
 									value="#{personaBean.perDni}">
 								</b:inputText>
+								<p:commandButton value="Buscar"
+									action="#{personaBean.loadWS}"
+									update="@form:frm" ajax="true" />
 							</b:column>
 						</b:row>
 						<b:row>
