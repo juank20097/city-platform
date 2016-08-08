@@ -16,13 +16,13 @@ public class GenBarrio implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="bar_id")
+	@Column(name="bar_id", length=100)
 	private String barId;
 
-	@Column(name="bar_descripcion")
+	@Column(name="bar_descripcion", length=254)
 	private String barDescripcion;
 
-	@Column(name="bar_estado")
+	@Column(name="bar_estado", columnDefinition="bpchar", length=1)
 	private String barEstado;
 
 	@Column(name="bar_hectareas")
