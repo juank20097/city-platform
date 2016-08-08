@@ -1,6 +1,7 @@
 package city.model.manager;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -45,8 +46,14 @@ public class ManagerComunidades {
 	 * @return La lista de todas los datos encontradas
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenZona> findAllzonas() throws Exception {
-		return mngDao.findAll(GenZona.class);
+	public List<GenZona> findAllzonasActivas() throws Exception {
+		List<GenZona> lz= mngDao.findWhere(GenZona.class, "o.zonEstado='A'", "o.zonNombre asc");
+		if (lz!=null){
+			return lz;
+		}else{
+			lz= new ArrayList<GenZona>();
+			return lz;
+		}
 	}// Cierre del metodo
 
 	/**

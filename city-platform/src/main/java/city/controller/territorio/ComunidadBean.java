@@ -29,7 +29,7 @@ public class ComunidadBean {
 	@EJB
 	private ManagerComunidades manager;
 
-	// Atriutos de la clase comunidad
+	// Atributos de la clase comunidad
 	private String comId;
 	private String comEstado;
 	private BigDecimal comHectareas;
@@ -268,7 +268,7 @@ public class ComunidadBean {
 	}
 
 	/**
-	 * Permite la creacion o modificacion de un sector
+	 * Permite la creación o modificación de un sector
 	 * 
 	 * @return
 	 */
@@ -287,7 +287,7 @@ public class ComunidadBean {
 				manager.insertarComunidad(getComId(), getComNombre(),
 						getComHectareas(), getComMetrosCuadrados(),
 						getComUbicacion(), getComLinkMapa(), getComLinkPdf());
-				Mensaje.crearMensajeINFO("Registrado - Sector Creado");
+				Mensaje.crearMensajeINFO("Registrado - Comunidad Creada");
 				this.guardarZonas();
 			}
 			r = "comunidad?faces-redirect=true";
@@ -300,7 +300,7 @@ public class ComunidadBean {
 	}
 
 	/**
-	 * Metodo de seteo de datos
+	 * Método de seteo de datos
 	 */
 	public void cleanDatos() {
 		setComId("");
@@ -315,7 +315,7 @@ public class ComunidadBean {
 	}
 
 	/**
-	 * Metodo para cargar un Sector para su edicion
+	 * Método para cargar una Comunidad para su edición
 	 * 
 	 * @param persona
 	 * @return
@@ -342,7 +342,7 @@ public class ComunidadBean {
 	}
 
 	/**
-	 * Metodo para setear datos y regresar la vista
+	 * Método para setear datos y regresar la vista
 	 * 
 	 * @return
 	 */
@@ -355,7 +355,7 @@ public class ComunidadBean {
 	}
 
 	/**
-	 * Lista de Sectores
+	 * Lista de Comunidades
 	 */
 	public void cargarComunidad() {
 		try {
@@ -372,21 +372,19 @@ public class ComunidadBean {
 	 */
 	public void cargarEstados() {
 		getL_estados().clear();
-		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estados");
-		for (GenCatalogoItemsDet i : completo) {
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_estados")) {
 			getL_estados().add(
 					new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 	
 	/**
-	 * Lista de Estado
+	 * Método para cargar zonas activas
 	 */
 	public void cargarZonas() {
 		getL_zonas_s().clear();
 		try {
-			List<GenZona> completo= manager.findAllzonas();
-			for (GenZona i : completo) {
+			for (GenZona i : manager.findAllzonasActivas()) {
 				getL_zonas_s().add(
 						new SelectItem(i.getZonNombre(), i.getZonNombre()));
 			}
@@ -396,6 +394,12 @@ public class ComunidadBean {
 		}
 	}
 	
+	/**
+	 * Método cambio de boolean
+	 * 
+	 * @param b
+	 * @return
+	 */
 	public String cambio(Boolean b){
 		String a = "";
 		if (b==true){
@@ -406,6 +410,9 @@ public class ComunidadBean {
 		return a;
 	}
 	
+	/**
+	 * Método para guardar las zonas
+	 */
 	public void guardarZonas(){
 		for (String s : l_zonas) {
 			try {
@@ -418,6 +425,12 @@ public class ComunidadBean {
 		}
 	}
 	
+	/**
+	 * Método para indicar las zonas de una comunidad
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public List<String> mostrarZonas(String id){
 		List<String> s = new ArrayList<String>(); 
 		List<GenZonasComunidade> lz=manager.zonacXComunidad(id);
@@ -429,6 +442,11 @@ public class ComunidadBean {
 		return s;
 	}
 	
+	/**
+	 * Método para obtener las zonas por comunidad
+	 * 
+	 * @param id
+	 */
 	public void ZonasXComunidad(String id){
 		getL_zonas().clear();
 		List<GenZonasComunidade> lz=manager.zonacXComunidad(id);
@@ -439,6 +457,11 @@ public class ComunidadBean {
 		}
 	}
 	
+	/**
+	 * Método para eliminar zonas
+	 * 
+	 * @param id_com
+	 */
 	public void eliminarZonaCom(String id_com){
 		List<GenZonasComunidade> lz=manager.zonacXComunidad(id_com);
 		if (lz!=null){

@@ -23,7 +23,7 @@
 				<br />
 				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="Id:*" />
+						<h:outputLabel value="ID:*" />
 					</b:column>
 					<b:column span="4">
 						<b:inputText disabled="#{comunidadBean.edicion}"
@@ -33,7 +33,7 @@
 						</b:inputText>
 					</b:column>
 					<b:column span="2">
-						<h:outputLabel value="Nombre:*" />
+						<h:outputLabel value="NOMBRE:*" />
 					</b:column>
 					<b:column span="4">
 						<b:inputText onkeyup="this.value=this.value.toUpperCase();"
@@ -44,7 +44,7 @@
 				</b:row>
 				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="Zonas:*" />
+						<h:outputLabel value="ZONAS:*" />
 					</b:column>
 					<b:column span="4">
 						<p:selectManyMenu value="#{comunidadBean.l_zonas}">
@@ -60,30 +60,30 @@
 							<h:outputText value="#{option}" />
 						</p:dataList>
 					</b:column>
-				</b:row>
-				<br/>
-				<b:row>
-				<b:column span="2">
-						<h:outputLabel value="Ubicación:*" />
+					<b:column span="2">
+						<h:outputLabel value="UBICACIÓN:*" />
 					</b:column>
 					<b:column span="2">
 						<b:switch value="#{comunidadBean.comUbicacion}" onText="Si"
 							on-text="Si" offText="No" off-text="No" offColor="success"
 							onColor="primary" />
 					</b:column>
+				</b:row>
+				<br/>
+				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="Hectáreas:*" />
+						<h:outputLabel value="HECTÁREAS:*" />
 					</b:column>
-					<b:column span="2">
+					<b:column span="4">
 						<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 							required="true" requiredMessage="Campo Hectáreas requerido"
 							value="#{comunidadBean.comHectareas}">
 						</b:inputText>
 					</b:column>
 					<b:column span="2">
-						<h:outputLabel value="Metros Cuadrados:*" />
+						<h:outputLabel value="METROS CUADRADOS:*" />
 					</b:column>
-					<b:column span="2">
+					<b:column span="4">
 						<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 							required="true"
 							requiredMessage="Campo Metros Cuadrados requerido"
@@ -93,20 +93,20 @@
 				</b:row>
 				<b:row>
 					<b:column span="2">
-						<h:outputLabel value="Link Mapa:*" />
+						<h:outputLabel value="LINK MAPA:*" />
 					</b:column>
 					<b:column span="4">
 						<b:inputText required="false"
-							requiredMessage="Campo Hectáreas requerido"
+							requiredMessage="Campo Link mapa requerido"
 							value="#{comunidadBean.comLinkMapa}">
 						</b:inputText>
 					</b:column>
 					<b:column span="2">
-						<h:outputLabel value="Link PDF:*" />
+						<h:outputLabel value="LINK PDF:*" />
 					</b:column>
 					<b:column span="4">
 						<b:inputText required="false"
-							requiredMessage="Campo Metros Cuadrados requerido"
+							requiredMessage="Campo Link pdf requerido"
 							value="#{comunidadBean.comLinkPdf}">
 						</b:inputText>
 					</b:column>
