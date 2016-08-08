@@ -2,8 +2,6 @@ package city.controller.persona;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -166,67 +164,10 @@ public class PersonaBean {
 	public PersonaBean() {
 	}
 
-	private void loadWS() {
-
-		ClienteWS conn = new ClienteWS("", "");
-		try {
-			// for (int i = 265; i < 275; i++) {
-
-			FichaGeneral fichaGeneral = conn.getDatosInteroperabilidad("0401646161", "265");
-			Institucion[] instituciones = fichaGeneral.getInstituciones();
-			if (instituciones != null)
-				for (Institucion institucion : instituciones) {
-
-					Registro[] registros = institucion.getDatosPrincipales();
-					if (registros != null)
-						for (Registro registro : registros) {
-
-							if (registro.getCodigo().equals("2")) {
-								StringTokenizer allName = new StringTokenizer(registro.getValor());
-
-								String name = "";
-								String lastName = "";
-
-								int count = 0;
-								while (allName.hasMoreTokens()) {
-									if (count++ < 2)
-										name += " " + allName.nextToken();
-									else
-										lastName += " " + allName.nextToken();
-								}
-								this.perNombres = name;
-								this.perApellidos = lastName;
-							} else if (registro.getCodigo().equals("5")) {
-								System.out.println(registro.getValor());
-								
-									StringTokenizer allDate = new StringTokenizer(registro.getValor(),"/");
-//									
-//								    
-									if (allDate != null) {
-
-										int date = Integer.parseInt(allDate.nextToken());
-										int month = Integer.parseInt(allDate.nextToken());
-										int year = Integer.parseInt(allDate.nextToken());
-										this.perFechaNacimiento = new Date(year-1900, month-1, date);
-									}
-
-							}
-						}
-				}
-			// }
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	@PostConstruct
 	public void init() {
 
-		loadWS();
+		// loadWS();
 		// proceso de filtrado de tabla
 		// this.personas = new LazyDataModel<GenPersona>() {
 		// private static final long serialVersionUID = 1L;
@@ -262,6 +203,9 @@ public class PersonaBean {
 		l_discapacidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
+
+		carga();
+
 		// cargarPersonas();
 
 	}
@@ -2255,6 +2199,135 @@ public class PersonaBean {
 			sld_madre = true;
 		} else {
 			sld_madre = false;
+		}
+	}
+
+	private String getItemName(List<SelectItem> list, String value) {
+
+		String val = "";
+		for (SelectItem selectItem : list) {
+
+			if (selectItem.getLabel().toString().toLowerCase().matches(".*" + value.toLowerCase() + ".*")) {
+				val = selectItem.getValue() + "";
+				break;
+			}
+		}
+
+		return val;
+	}
+
+	public void loadWS() {
+
+		ClienteWS conn = new ClienteWS("", "");
+
+		if (this.perDni == null || this.perDni.isEmpty())
+			return;
+		try {
+			// for (int i = 265; i < 275; i++) {
+
+			FichaGeneral fichaGeneral = conn.getDatosInteroperabilidad(this.perDni, "");
+			Institucion[] instituciones = fichaGeneral.getInstituciones();
+			if (instituciones != null)
+				for (Institucion institucion : instituciones) {
+
+					Registro[] registros = institucion.getDatosPrincipales();
+					if (registros != null)
+						for (Registro registro : registros) {
+
+							if (registro.getCodigo().equals("1")) {
+
+								if (registro.getCampo().equals("cedula")) {
+
+									this.setPerTipoDni("Cédula");
+
+								}
+
+							} else if (registro.getCodigo().equals("2")) {
+								StringTokenizer allName = new StringTokenizer(registro.getValor());
+
+								String name = "";
+								String lastName = "";
+
+								int count = 0;
+								while (allName.hasMoreTokens()) {
+									if (count++ < 2)
+										name += " " + allName.nextToken();
+									else
+										lastName += " " + allName.nextToken();
+								}
+								this.perNombres = name;
+								this.perApellidos = lastName;
+							} else if (registro.getCodigo().equals("3")) {
+								System.out.println(">>" + registro.getCodigo() + ">>" + registro.getCampo() + ">>"
+										+ registro.getValor());
+								if (registro.getValor().equals("HOMBRE"))
+									this.setPerGenero("M");
+								else
+									this.setPerGenero("F");
+								System.out.println(registro.getValor());
+
+							} else if (registro.getCodigo().equals("5")) {
+								System.out.println(registro.getValor());
+
+								StringTokenizer allDate = new StringTokenizer(registro.getValor(), "/");
+
+								if (allDate != null) {
+
+									int date = Integer.parseInt(allDate.nextToken());
+									int month = Integer.parseInt(allDate.nextToken());
+									int year = Integer.parseInt(allDate.nextToken());
+									this.perFechaNacimiento = new Date(year - 1900, month - 1, date);
+								}
+
+							} else if (registro.getCodigo().equals("6")) {
+								StringTokenizer birthPlace = new StringTokenizer(registro.getValor(), "/");
+
+								String province = "";
+								String city = "";
+								String place = "";
+
+								int count = 0;
+								while (birthPlace.hasMoreTokens()) {
+									if (++count == 1)
+										province = birthPlace.nextToken();
+									else if (++count == 2)
+										city = birthPlace.nextToken();
+									else
+										place = birthPlace.nextToken();
+								}
+								this.pdePaisNacimiento = getItemName(l_pais, "Ecuador");
+								this.habilitarCamposNac();
+								this.pdeProvinciaNacimiento = getItemName(l_provincia, province);
+								cargarCiudadesNac(getItemName(l_provincia, province));
+								this.pdeCiudadNacimiento = getItemName(l_ciudad_n, city);
+								this.pdeLugarNacimiento = place;
+							} else if (registro.getCodigo().equals("8")) {
+								if (registro.getCampo().equals("estadoCivil"))
+									this.setPerEstadoCivil(
+											this.getItemName(this.getL_estado_civil(), registro.getValor()));
+
+							} else if (registro.getCodigo().equals("10")) {
+								if (registro.getCampo().equals("conyuge"))
+									this.setPdeConyuge(registro.getValor());
+
+							} else if (registro.getCodigo().equals("11")) {
+								if (registro.getCampo().equals("nombrePadre"))
+									this.setPdeNombrePadre(registro.getValor());
+
+							} else if (registro.getCodigo().equals("13")) {
+								if (registro.getCampo().equals("nombreMadre"))
+									this.setPdeNombreMadre(registro.getValor());
+
+							}
+						}
+				}
+			// }
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
