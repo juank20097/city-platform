@@ -2,6 +2,7 @@ package city.controller.persona;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,9 +12,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
+
+import org.json.simple.JSONObject;
 
 import city.controller.access.SesionBean;
 
@@ -24,6 +29,7 @@ import city.model.dao.entidades.GenSalud;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerPersona;
+import city.model.manager.ManagerWSDinardap;
 import ec.gob.dinardap.interoperacion.interoperadorws.servicio.ClienteWS;
 import ec.gob.dinardap.interoperacion.interoperadorws.servicio.FichaGeneral;
 import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Institucion;
@@ -48,6 +54,10 @@ public class PersonaBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerPersona manager;
+
+	@EJB
+	private ManagerWSDinardap managerWS;
+
 	@Inject
 	private SesionBean session;
 
@@ -204,7 +214,7 @@ public class PersonaBean {
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
 
-		carga();
+
 
 		// cargarPersonas();
 
@@ -2222,7 +2232,7 @@ public class PersonaBean {
 			String itemValue = replaceSpecialChars(selectItem.getLabel().toString().toLowerCase());
 			String findValue = ".*" + replaceSpecialChars(value.toLowerCase()) + ".*";
 			findValue = findValue.isEmpty() ? value.toLowerCase() : findValue;
-			System.out.println(itemValue + " " + findValue + " >> " + value);
+			
 			if (itemValue.matches(findValue)) {
 				val = selectItem.getValue() + "";
 				break;
@@ -2232,6 +2242,7 @@ public class PersonaBean {
 		return val;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void loadWS() {
 
 		ClienteWS conn = new ClienteWS("", "");
@@ -2240,7 +2251,7 @@ public class PersonaBean {
 			return;
 		try {
 			// for (int i = 265; i < 275; i++) {
-			System.out.println(this.perDni);
+
 			FichaGeneral fichaGeneral = conn.getDatosInteroperabilidad(this.perDni, "");
 			Institucion[] instituciones = fichaGeneral.getInstituciones();
 			if (instituciones != null)
@@ -2248,9 +2259,10 @@ public class PersonaBean {
 				for (Institucion institucion : instituciones) {
 					System.out.println("entra 1");
 					Registro[] registros = institucion.getDatosPrincipales();
-					if (registros != null)
+					if (registros != null) {
+						JSONObject jsonResponse = new JSONObject();
 						for (Registro registro : registros) {
-
+							jsonResponse.put(registro.getCampo(), registro.getValor());
 							if (registro.getCodigo().equals("1")) {
 
 								if (registro.getCampo().equals("cedula")) {
@@ -2276,16 +2288,15 @@ public class PersonaBean {
 								setPerApellidos(lastName);
 								System.out.println(getPerNombres() + " " + getPerApellidos());
 							} else if (registro.getCodigo().equals("3")) {
-								System.out.println(">>" + registro.getCodigo() + ">>" + registro.getCampo() + ">>"
-										+ registro.getValor());
+								
 								if (registro.getValor().equals("HOMBRE"))
 									this.setPerGenero("M");
 								else
 									this.setPerGenero("F");
-								System.out.println(registro.getValor());
+								
 
 							} else if (registro.getCodigo().equals("5")) {
-								System.out.println(registro.getValor());
+								
 
 								StringTokenizer allDate = new StringTokenizer(registro.getValor(), "/");
 
@@ -2339,6 +2350,17 @@ public class PersonaBean {
 
 							}
 						}
+						HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+						SesionBean user = (SesionBean) session.getAttribute("sesionBean");
+						String userName = user.getUsuario();
+						
+						try {
+							managerWS.createWS(userName, "", jsonResponse.toJSONString(), new Timestamp(new java.util.Date().getTime()));
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 			// }
 		} catch (RemoteException e) {
