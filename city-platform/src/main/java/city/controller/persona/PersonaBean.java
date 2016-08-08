@@ -1,9 +1,11 @@
 package city.controller.persona;
 
 import java.math.BigDecimal;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -11,8 +13,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.xml.rpc.ServiceException;
 
 import city.controller.access.SesionBean;
+
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
@@ -20,6 +24,10 @@ import city.model.dao.entidades.GenSalud;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerPersona;
+import ec.gob.dinardap.interoperacion.interoperadorws.servicio.ClienteWS;
+import ec.gob.dinardap.interoperacion.interoperadorws.servicio.FichaGeneral;
+import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Institucion;
+import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Registro;
 
 /**
  * @author jestevez
@@ -139,11 +147,11 @@ public class PersonaBean {
 	List<SelectItem> l_sangre;
 	List<SelectItem> l_discapacidad;
 
-	// valor de edici�n e inserci�n
+	// valor de edici�n e inserci�n
 	private boolean edicion;
 	private String datoBuscar;
 
-	// mensaje de validaci�n de campos
+	// mensaje de validaci�n de campos
 	private String sms_validacion;
 
 	// valor de provincias y ciudades
@@ -158,6 +166,8 @@ public class PersonaBean {
 
 	@PostConstruct
 	public void init() {
+
+		// loadWS();
 		// proceso de filtrado de tabla
 		// this.personas = new LazyDataModel<GenPersona>() {
 		// private static final long serialVersionUID = 1L;
@@ -175,7 +185,7 @@ public class PersonaBean {
 		// }
 		// };
 
-		session.validarSesion();
+		// session.validarSesion();
 		edicion = false;
 		select_n = true;
 		select_r = true;
@@ -193,7 +203,11 @@ public class PersonaBean {
 		l_discapacidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
+
+		carga();
+
 		// cargarPersonas();
+
 	}
 
 	/**
@@ -579,7 +593,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param sldConsumeAlcohol the sldConsumeAlcohol to set
+	 * @param sldConsumeAlcohol
+	 *            the sldConsumeAlcohol to set
 	 */
 	public void setSldConsumeAlcohol(String sldConsumeAlcohol) {
 		this.sldConsumeAlcohol = sldConsumeAlcohol;
@@ -593,7 +608,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param sldConsumeTabaco the sldConsumeTabaco to set
+	 * @param sldConsumeTabaco
+	 *            the sldConsumeTabaco to set
 	 */
 	public void setSldConsumeTabaco(String sldConsumeTabaco) {
 		this.sldConsumeTabaco = sldConsumeTabaco;
@@ -1574,7 +1590,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para cargar todos los select
+	 * M�todo para cargar todos los select
 	 */
 	public void carga() {
 		cargarEstadoCivil();
@@ -1588,7 +1604,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * Permite la creaci�n o modificaci�n de una persona
+	 * Permite la creaci�n o modificaci�n de una persona
 	 * 
 	 * @return
 	 */
@@ -1634,6 +1650,7 @@ public class PersonaBean {
 	 * @return
 	 */
 	public String cargarPersona(GenPersona persona) {
+		System.out.println("persona 2");
 		try {
 			this.carga();
 			setSelect_n(false);
@@ -1687,6 +1704,7 @@ public class PersonaBean {
 	public void cargarPersonas() {
 		try {
 			getL_persona().clear();
+			System.out.println("personas 1");
 			getL_persona().addAll(manager.findAllPersonas());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1843,12 +1861,12 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para buscar una persona
+	 * M�todo para buscar una persona
 	 */
 	public void buscarPersona() {
 		l_persona.clear();
 		if (datoBuscar == null || datoBuscar.isEmpty()) {
-			Mensaje.crearMensajeWARN("No existe el dato para realizar la b�squeda.");
+			Mensaje.crearMensajeWARN("No existe el dato para realizar la b�squeda.");
 		} else {
 			l_persona = manager.buscarPersona(datoBuscar);
 		}
@@ -1919,7 +1937,7 @@ public class PersonaBean {
 			setPdePaisResidencia(persona.getPdePaisResidencia());
 			setPdeProvinciaNacimiento(persona.getPdeProvinciaNacimiento());
 			setPdeProvinciaResidencia(persona.getPdeProvinciaResidencia());
-			// actualizaci�n de lista de sitios
+			// actualizaci�n de lista de sitios
 			cargarCiudadesNac(persona.getPdeProvinciaNacimiento());
 			cargarCiudadesRes(persona.getPdeProvinciaResidencia());
 		} catch (Exception e) {
@@ -2085,24 +2103,24 @@ public class PersonaBean {
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
-						getSldMedicamentosCronicos1(),getSldMedicamentosCronicos2(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
-						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
-						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
-						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
-						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
-						getSldPadreEnfermedadesActuales(), getSldPadreFallecio(), getSldPeriodicidadAlcohol(),
-						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
+						getSldMedicamentosCronicos1(), getSldMedicamentosCronicos2(), getSldNivelAzucar(),
+						getSldPeriodicidadEjercicio(), getSldPeso(), getSldPresion(), getSldRealizaEjercicio(),
+						getSldVegetariano(), getSldAlergiasCronicas2(), getSldEmbriagar(), getSldMadreCausaMuerte(),
+						getSldMadreEdad(), getSldMadreEnfermedadesActuales(), getSldMadreFallecio(),
+						getSldNombreLugarCentroMedico(), getSldObservaciones(), getSldPadreCausaMuerte(),
+						getSldPadreEdad(), getSldPadreEnfermedadesActuales(), getSldPadreFallecio(),
+						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			} else {
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
-						getSldMedicamentosCronicos1(),getSldMedicamentosCronicos2(), getSldNivelAzucar(), getSldPeriodicidadEjercicio(), getSldPeso(),
-						getSldPresion(), getSldRealizaEjercicio(), getSldVegetariano(), getSldAlergiasCronicas2(),
-						getSldEmbriagar(), getSldMadreCausaMuerte(), getSldMadreEdad(),
-						getSldMadreEnfermedadesActuales(), getSldMadreFallecio(), getSldNombreLugarCentroMedico(),
-						getSldObservaciones(), getSldPadreCausaMuerte(), getSldPadreEdad(),
-						getSldPadreEnfermedadesActuales(), getSldPadreFallecio(), getSldPeriodicidadAlcohol(),
-						getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
+						getSldMedicamentosCronicos1(), getSldMedicamentosCronicos2(), getSldNivelAzucar(),
+						getSldPeriodicidadEjercicio(), getSldPeso(), getSldPresion(), getSldRealizaEjercicio(),
+						getSldVegetariano(), getSldAlergiasCronicas2(), getSldEmbriagar(), getSldMadreCausaMuerte(),
+						getSldMadreEdad(), getSldMadreEnfermedadesActuales(), getSldMadreFallecio(),
+						getSldNombreLugarCentroMedico(), getSldObservaciones(), getSldPadreCausaMuerte(),
+						getSldPadreEdad(), getSldPadreEnfermedadesActuales(), getSldPadreFallecio(),
+						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
 			}
 
 		} catch (Exception e) {
@@ -2158,29 +2176,177 @@ public class PersonaBean {
 		return "npersona?faces-redirect=true";
 	}
 
-	 /**
-	 * M�todo para manejo de vista de aspectos del padre
+	/**
+	 * M�todo para manejo de vista de aspectos del padre
 	 */
-	public void switch_padre(){
+	public void switch_padre() {
 		setSldPadreCausaMuerte("");
 		setSldPadreEnfermedadesActuales("");
-	 if (getSldPadreFallecio()==true){
-		 sld_padre=true;
-	 }else{
-		 sld_padre=false;
-	 }
-	 }
-	
+		if (getSldPadreFallecio() == true) {
+			sld_padre = true;
+		} else {
+			sld_padre = false;
+		}
+	}
+
 	/**
-	 * M�todo para manejo de vista de aspectos de la madre
+	 * M�todo para manejo de vista de aspectos de la madre
 	 */
-	public void switch_madre(){
-		 setSldMadreEnfermedadesActuales("");
-		 setSldMadreCausaMuerte("");
-	 if (getSldMadreFallecio()==true){
-		 sld_madre=true;
-	 }else{
-		 sld_madre=false;
-	 }
-	 }
+	public void switch_madre() {
+		setSldMadreEnfermedadesActuales("");
+		setSldMadreCausaMuerte("");
+		if (getSldMadreFallecio() == true) {
+			sld_madre = true;
+		} else {
+			sld_madre = false;
+		}
+	}
+
+	private String replaceSpecialChars(String input) {
+		// Cadena de caracteres original a sustituir.
+		String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+		// Cadena de caracteres ASCII que reemplazarán los originales.
+		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+		String output = input;
+		for (int i = 0; i < original.length(); i++) {
+			// Reemplazamos los caracteres especiales.
+			output = output.replace(original.charAt(i), ascii.charAt(i));
+		} // for i
+		return output;
+	}// remove1
+
+	private String getItemName(List<SelectItem> list, String value) {
+
+		String val = "";
+		for (SelectItem selectItem : list) {
+			String itemValue = replaceSpecialChars(selectItem.getLabel().toString().toLowerCase());
+			String findValue = ".*" + replaceSpecialChars(value.toLowerCase()) + ".*";
+			findValue = findValue.isEmpty() ? value.toLowerCase() : findValue;
+			System.out.println(itemValue + " " + findValue + " >> " + value);
+			if (itemValue.matches(findValue)) {
+				val = selectItem.getValue() + "";
+				break;
+			}
+		}
+
+		return val;
+	}
+
+	public void loadWS() {
+
+		ClienteWS conn = new ClienteWS("", "");
+		System.out.println("entra");
+		if (this.perDni == null || this.perDni.isEmpty())
+			return;
+		try {
+			// for (int i = 265; i < 275; i++) {
+			System.out.println(this.perDni);
+			FichaGeneral fichaGeneral = conn.getDatosInteroperabilidad(this.perDni, "");
+			Institucion[] instituciones = fichaGeneral.getInstituciones();
+			if (instituciones != null)
+
+				for (Institucion institucion : instituciones) {
+					System.out.println("entra 1");
+					Registro[] registros = institucion.getDatosPrincipales();
+					if (registros != null)
+						for (Registro registro : registros) {
+
+							if (registro.getCodigo().equals("1")) {
+
+								if (registro.getCampo().equals("cedula")) {
+
+									this.setPerTipoDni("Cédula");
+
+								}
+
+							} else if (registro.getCodigo().equals("2")) {
+								StringTokenizer allName = new StringTokenizer(registro.getValor());
+
+								String name = "";
+								String lastName = "";
+
+								int count = 0;
+								while (allName.hasMoreTokens()) {
+									if (count++ < 2)
+										name += " " + allName.nextToken();
+									else
+										lastName += " " + allName.nextToken();
+								}
+								setPerNombres(name);
+								setPerApellidos(lastName);
+								System.out.println(getPerNombres() + " " + getPerApellidos());
+							} else if (registro.getCodigo().equals("3")) {
+								System.out.println(">>" + registro.getCodigo() + ">>" + registro.getCampo() + ">>"
+										+ registro.getValor());
+								if (registro.getValor().equals("HOMBRE"))
+									this.setPerGenero("M");
+								else
+									this.setPerGenero("F");
+								System.out.println(registro.getValor());
+
+							} else if (registro.getCodigo().equals("5")) {
+								System.out.println(registro.getValor());
+
+								StringTokenizer allDate = new StringTokenizer(registro.getValor(), "/");
+
+								if (allDate != null) {
+
+									int date = Integer.parseInt(allDate.nextToken());
+									int month = Integer.parseInt(allDate.nextToken());
+									int year = Integer.parseInt(allDate.nextToken());
+									this.perFechaNacimiento = new Date(year - 1900, month - 1, date);
+								}
+
+							} else if (registro.getCodigo().equals("6")) {
+								StringTokenizer birthPlace = new StringTokenizer(registro.getValor(), "/");
+
+								String province = "S/N";
+								String city = "S/N";
+								String place = "S/N";
+
+								int count = 0;
+								while (birthPlace.hasMoreTokens()) {
+									if (++count == 1)
+										province = birthPlace.nextToken();
+									else if (count == 2)
+										city = birthPlace.nextToken();
+									else
+										place = birthPlace.nextToken();
+								}
+
+								this.pdePaisNacimiento = getItemName(l_pais, "Ecuador");
+								this.habilitarCamposNac();
+								this.pdeProvinciaNacimiento = getItemName(l_provincia, province);
+								cargarCiudadesNac(getItemName(l_provincia, province));
+								this.pdeCiudadNacimiento = getItemName(l_ciudad_n, city);
+								this.pdeLugarNacimiento = place;
+							} else if (registro.getCodigo().equals("8")) {
+								if (registro.getCampo().equals("estadoCivil"))
+									this.setPerEstadoCivil(
+											this.getItemName(this.getL_estado_civil(), registro.getValor()));
+
+							} else if (registro.getCodigo().equals("10")) {
+								if (registro.getCampo().equals("conyuge"))
+									this.setPdeConyuge(registro.getValor());
+
+							} else if (registro.getCodigo().equals("11")) {
+								if (registro.getCampo().equals("nombrePadre"))
+									this.setPdeNombrePadre(registro.getValor());
+
+							} else if (registro.getCodigo().equals("13")) {
+								if (registro.getCampo().equals("nombreMadre"))
+									this.setPdeNombreMadre(registro.getValor());
+
+							}
+						}
+				}
+			// }
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
