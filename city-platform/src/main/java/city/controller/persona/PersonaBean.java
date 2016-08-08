@@ -214,8 +214,6 @@ public class PersonaBean {
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
 
-
-
 		// cargarPersonas();
 
 	}
@@ -2232,7 +2230,7 @@ public class PersonaBean {
 			String itemValue = replaceSpecialChars(selectItem.getLabel().toString().toLowerCase());
 			String findValue = ".*" + replaceSpecialChars(value.toLowerCase()) + ".*";
 			findValue = findValue.isEmpty() ? value.toLowerCase() : findValue;
-			
+
 			if (itemValue.matches(findValue)) {
 				val = selectItem.getValue() + "";
 				break;
@@ -2245,8 +2243,21 @@ public class PersonaBean {
 	@SuppressWarnings("unchecked")
 	public void loadWS() {
 
+		try {
+			if (!Funciones.validacionCedula(getPerDni())) {
+				Mensaje.crearMensajeWARN("Cédula incorrecta");
+				return;
+			}
+			if (manager.PersonaByID(getPerDni()) != null) {
+				Mensaje.crearMensajeWARN("Persona ya registrada");
+				return;
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		ClienteWS conn = new ClienteWS("", "");
-		System.out.println("entra");
+	
 		if (this.perDni == null || this.perDni.isEmpty())
 			return;
 		try {
@@ -2257,12 +2268,13 @@ public class PersonaBean {
 			if (instituciones != null)
 
 				for (Institucion institucion : instituciones) {
-					System.out.println("entra 1");
 					Registro[] registros = institucion.getDatosPrincipales();
 					if (registros != null) {
 						JSONObject jsonResponse = new JSONObject();
 						for (Registro registro : registros) {
-							jsonResponse.put(registro.getCampo(), registro.getValor());
+
+							jsonResponse.put(registro.getCampo(),
+									registro.getValor() == null ? "" : registro.getValor().trim());
 							if (registro.getCodigo().equals("1")) {
 
 								if (registro.getCampo().equals("cedula")) {
@@ -2286,17 +2298,14 @@ public class PersonaBean {
 								}
 								setPerNombres(name);
 								setPerApellidos(lastName);
-								System.out.println(getPerNombres() + " " + getPerApellidos());
 							} else if (registro.getCodigo().equals("3")) {
-								
+
 								if (registro.getValor().equals("HOMBRE"))
 									this.setPerGenero("M");
 								else
 									this.setPerGenero("F");
-								
 
 							} else if (registro.getCodigo().equals("5")) {
-								
 
 								StringTokenizer allDate = new StringTokenizer(registro.getValor(), "/");
 
@@ -2350,12 +2359,14 @@ public class PersonaBean {
 
 							}
 						}
-						HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+						HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+								.getSession(false);
 						SesionBean user = (SesionBean) session.getAttribute("sesionBean");
 						String userName = user.getUsuario();
-						
+
 						try {
-							managerWS.createWS(userName, "", jsonResponse.toJSONString(), new Timestamp(new java.util.Date().getTime()));
+							managerWS.createWS(userName, "", jsonResponse.toJSONString().trim(),
+									new Timestamp(new java.util.Date().getTime()));
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
