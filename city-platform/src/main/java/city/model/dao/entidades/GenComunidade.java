@@ -20,7 +20,7 @@ public class GenComunidade implements Serializable {
 	@Column(name="com_id")
 	private String comId;
 
-	@Column(name="com_estado")
+	@Column(name="com_estado", columnDefinition="bpchar", length=1)
 	private String comEstado;
 
 	@Column(name="com_hectareas")
