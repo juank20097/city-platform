@@ -16,6 +16,36 @@
 			<h1>Registro de Personas</h1>
 		</center>
 		<br />
+		<h:form id="frmcc">
+			<b:row>
+				<b:column span="2">
+					<h:outputLabel value="Tipo de Identificación:*" />
+				</b:column>
+				<b:column span="3">
+					<h:selectOneMenu id="slt" disabled="#{personaBean.edicion}"
+						styleClass="form-control" value="#{personaBean.perTipoDni}">
+						<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+						<f:selectItems value="#{personaBean.l_tipo_dni}">
+						</f:selectItems>
+					</h:selectOneMenu>
+				</b:column>
+				<b:column span="2">
+					<h:outputLabel value="N° Identificación:*" />
+				</b:column>
+				<b:column span="3">
+					<b:inputText disabled="#{personaBean.edicion}"
+						value="#{personaBean.perDni}">
+					</b:inputText>
+				</b:column>
+				<b:column span="2">
+					<b:commandButton value="Buscar" look="info"
+						onclick="PF('statusDialog').show()"
+						oncomplete="PF('statusDialog').hide()"
+						actionListener="#{personaBean.loadWS()}" update="frmcc :frm">
+					</b:commandButton>
+				</b:column>
+			</b:row>
+		</h:form>
 		<h:form id="frm">
 			<b:growl delay="4000" placementFrom="top" show-detail="false"
 				global-only="false" show-summary="true" allow-dismiss="true"
@@ -29,27 +59,7 @@
 					</f:facet>
 					<b:panel>
 						<br />
-						<b:row>
-							<b:column span="2">
-								<h:outputLabel value="Tipo de Identificación:*" />
-							</b:column>
-							<b:column span="4">
-								<h:selectOneMenu disabled="#{personaBean.edicion}"
-									styleClass="form-control" value="#{personaBean.perTipoDni}">
-									<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
-									<f:selectItems value="#{personaBean.l_tipo_dni}">
-									</f:selectItems>
-								</h:selectOneMenu>
-							</b:column>
-							<b:column span="2">
-								<h:outputLabel value="N° Identificación:*" />
-							</b:column>
-							<b:column span="4">
-								<b:inputText disabled="#{personaBean.edicion}"
-									value="#{personaBean.perDni}">
-								</b:inputText>
-							</b:column>
-						</b:row>
+
 						<b:row>
 							<b:column span="2">
 								<h:outputLabel value="Nombres:*" />
@@ -81,7 +91,7 @@
 									pattern="dd-MM-yyyy" mask="true" />
 							</b:column>
 							<b:column span="2">
-								<h:outputLabel value="Género:*" />
+								<h:outputLabel value="Genero:*" />
 							</b:column>
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
@@ -169,7 +179,7 @@
 						</b:row>
 						<b:row>
 							<b:column span="1">
-								<h:outputLabel value="País:" />
+								<h:outputLabel value="Pais:" />
 							</b:column>
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
@@ -182,7 +192,7 @@
 								</h:selectOneMenu>
 							</b:column>
 							<b:column offset="1" span="1">
-								<h:outputLabel value="País:" />
+								<h:outputLabel value="Pais:" />
 							</b:column>
 							<b:column span="4">
 								<h:selectOneMenu styleClass="form-control"
@@ -400,7 +410,7 @@
 						<b:row>
 							<b:column span="12">
 								<b:inputTextarea onkeyup="this.value=this.value.toUpperCase();"
-									placeholder="Escribe observaciones de la persona en caso de tenerla."
+									placeholder="Escribe observaciones de la persona en caso de tenerla....."
 									value="#{personaBean.pdeObservacion}">
 								</b:inputTextarea>
 							</b:column>
@@ -427,7 +437,7 @@
 						<br />
 						<b:row>
 							<b:column span="2">
-								<h:outputLabel value="Carné:" />
+								<h:outputLabel value="Carnet:" />
 							</b:column>
 							<b:column span="4">
 								<b:inputText value="#{personaBean.sldCarnetConadies}" />
@@ -578,7 +588,7 @@
 									onColor="primary" />
 							</b:column>
 							<b:column span="3">
-								<h:outputLabel value="Peridiocidad de Embriaguez al mes:" />
+								<h:outputLabel value="Peridiocidad de Embriagues al mes:" />
 							</b:column>
 							<b:column span="4">
 								<b:inputText onkeyup="this.value=this.value.toUpperCase();"
@@ -609,7 +619,7 @@
 								</h:panelGrid>
 							</b:column>
 						</b:row>
-						<b:row  rendered="#{!personaBean.sld_padre}">
+						<b:row rendered="#{!personaBean.sld_padre}">
 							<b:column span="2">
 								<h:outputLabel value="Enfermedades Actuales del Padre:" />
 							</b:column>
@@ -619,7 +629,7 @@
 								</b:inputTextarea>
 							</b:column>
 						</b:row>
-						<b:row  rendered="#{personaBean.sld_padre}">
+						<b:row rendered="#{personaBean.sld_padre}">
 							<b:column span="2">
 								<h:outputLabel value="Causa de Muerte del Padre:" />
 							</b:column>
