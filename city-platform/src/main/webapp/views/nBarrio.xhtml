@@ -1,13 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+	xmlns:b="http://bootsfaces.net/ui">
 
-<h:head></h:head>
-<body>
-	<br />
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Barrios
+        </ui:define>
+	<ui:define name="contenido">
 	<h:form id="frm">
 		<b:growl id="growl" delay="4000" placementFrom="top"
 			show-detail="false" global-only="false" show-summary="true"
@@ -105,5 +109,6 @@
 		closable="false" resizable="false" showHeader="false">
 		<p:graphicImage value="../resources/img/cargando.gif" />
 	</p:dialog>
-</body>
+</ui:define>
+</ui:composition>
 </html>

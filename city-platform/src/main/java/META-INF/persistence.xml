@@ -33,6 +33,7 @@
 		<class>city.model.dao.entidades.GenZonasComunidadePK</class>
 		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
+		<class>city.model.dao.entidades.AudWsDinardap</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
