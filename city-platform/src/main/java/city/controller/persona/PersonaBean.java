@@ -2202,12 +2202,28 @@ public class PersonaBean {
 		}
 	}
 
+	private String replaceSpecialChars(String input) {
+		// Cadena de caracteres original a sustituir.
+		String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+		// Cadena de caracteres ASCII que reemplazarán los originales.
+		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+		String output = input;
+		for (int i = 0; i < original.length(); i++) {
+			// Reemplazamos los caracteres especiales.
+			output = output.replace(original.charAt(i), ascii.charAt(i));
+		} // for i
+		return output;
+	}// remove1
+
 	private String getItemName(List<SelectItem> list, String value) {
 
 		String val = "";
 		for (SelectItem selectItem : list) {
-
-			if (selectItem.getLabel().toString().toLowerCase().matches(".*" + value.toLowerCase() + ".*")) {
+			String itemValue = replaceSpecialChars(selectItem.getLabel().toString().toLowerCase());
+			String findValue = ".*" + replaceSpecialChars(value.toLowerCase()) + ".*";
+			findValue = findValue.isEmpty() ? value.toLowerCase() : findValue;
+			System.out.println(itemValue + " " + findValue + " >> " + value);
+			if (itemValue.matches(findValue)) {
 				val = selectItem.getValue() + "";
 				break;
 			}
@@ -2219,17 +2235,18 @@ public class PersonaBean {
 	public void loadWS() {
 
 		ClienteWS conn = new ClienteWS("", "");
-
+		System.out.println("entra");
 		if (this.perDni == null || this.perDni.isEmpty())
 			return;
 		try {
 			// for (int i = 265; i < 275; i++) {
-
+			System.out.println(this.perDni);
 			FichaGeneral fichaGeneral = conn.getDatosInteroperabilidad(this.perDni, "");
 			Institucion[] instituciones = fichaGeneral.getInstituciones();
 			if (instituciones != null)
-				for (Institucion institucion : instituciones) {
 
+				for (Institucion institucion : instituciones) {
+					System.out.println("entra 1");
 					Registro[] registros = institucion.getDatosPrincipales();
 					if (registros != null)
 						for (Registro registro : registros) {
@@ -2255,8 +2272,9 @@ public class PersonaBean {
 									else
 										lastName += " " + allName.nextToken();
 								}
-								this.perNombres = name;
-								this.perApellidos = lastName;
+								setPerNombres(name);
+								setPerApellidos(lastName);
+								System.out.println(getPerNombres() + " " + getPerApellidos());
 							} else if (registro.getCodigo().equals("3")) {
 								System.out.println(">>" + registro.getCodigo() + ">>" + registro.getCampo() + ">>"
 										+ registro.getValor());
@@ -2282,19 +2300,20 @@ public class PersonaBean {
 							} else if (registro.getCodigo().equals("6")) {
 								StringTokenizer birthPlace = new StringTokenizer(registro.getValor(), "/");
 
-								String province = "";
-								String city = "";
-								String place = "";
+								String province = "S/N";
+								String city = "S/N";
+								String place = "S/N";
 
 								int count = 0;
 								while (birthPlace.hasMoreTokens()) {
 									if (++count == 1)
 										province = birthPlace.nextToken();
-									else if (++count == 2)
+									else if (count == 2)
 										city = birthPlace.nextToken();
 									else
 										place = birthPlace.nextToken();
 								}
+
 								this.pdePaisNacimiento = getItemName(l_pais, "Ecuador");
 								this.habilitarCamposNac();
 								this.pdeProvinciaNacimiento = getItemName(l_provincia, province);
