@@ -38,9 +38,9 @@
 					</b:inputText>
 				</b:column>
 				<b:column span="2">
-					<b:commandButton value="Buscar" look="info"
+					<b:commandButton value="Buscar (Dinardap)" look="info"
 						onclick="PF('statusDialog').show()"
-						oncomplete="PF('statusDialog').hide()"
+						oncomplete="PF('statusDialog').hide()" disabled="#{personaBean.edicion}"
 						actionListener="#{personaBean.loadWS()}" update="frmcc :frm">
 					</b:commandButton>
 				</b:column>
