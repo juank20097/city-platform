@@ -23,7 +23,7 @@ public class GenZona implements Serializable {
 	@Column(name="zon_descripcion")
 	private String zonDescripcion;
 
-	@Column(name="zon_estado")
+	@Column(name="zon_estado", columnDefinition="bpchar", length=1)
 	private String zonEstado;
 
 	@Column(name="zon_hectareas")
