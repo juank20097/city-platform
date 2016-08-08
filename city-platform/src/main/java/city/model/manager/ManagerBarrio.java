@@ -32,6 +32,6 @@ public class ManagerBarrio {
 	
 	@SuppressWarnings("unchecked")
 	public List<GenDistrito> findAllDistritosAc(){
-		return mngDAO.findWhere(GenDistrito.class,"o.disEstado ='A' "," o.disNombre" );
+		return mngDAO.findWhere(GenDistrito.class,"o.disEstado ='A'","o.disNombre" );
 	}
 }
