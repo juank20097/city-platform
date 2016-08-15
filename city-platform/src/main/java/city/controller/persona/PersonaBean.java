@@ -157,11 +157,11 @@ public class PersonaBean {
 	List<SelectItem> l_sangre;
 	List<SelectItem> l_discapacidad;
 
-	// valor de edici�n e inserci�n
+	// valor de ediciï¿½n e inserciï¿½n
 	private boolean edicion;
 	private String datoBuscar;
 
-	// mensaje de validaci�n de campos
+	// mensaje de validaciï¿½n de campos
 	private String sms_validacion;
 
 	// valor de provincias y ciudades
@@ -1598,7 +1598,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para cargar todos los select
+	 * Mï¿½todo para cargar todos los select
 	 */
 	public void carga() {
 		cargarEstadoCivil();
@@ -1612,7 +1612,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * Permite la creaci�n o modificaci�n de una persona
+	 * Permite la creaciï¿½n o modificaciï¿½n de una persona
 	 * 
 	 * @return
 	 */
@@ -1869,12 +1869,12 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para buscar una persona
+	 * Mï¿½todo para buscar una persona
 	 */
 	public void buscarPersona() {
 		l_persona.clear();
 		if (datoBuscar == null || datoBuscar.isEmpty()) {
-			Mensaje.crearMensajeWARN("No existe el dato para realizar la b�squeda.");
+			Mensaje.crearMensajeWARN("No existe el dato para realizar la bï¿½squeda.");
 		} else {
 			l_persona = manager.buscarPersona(datoBuscar);
 		}
@@ -1945,7 +1945,7 @@ public class PersonaBean {
 			setPdePaisResidencia(persona.getPdePaisResidencia());
 			setPdeProvinciaNacimiento(persona.getPdeProvinciaNacimiento());
 			setPdeProvinciaResidencia(persona.getPdeProvinciaResidencia());
-			// actualizaci�n de lista de sitios
+			// actualizaciï¿½n de lista de sitios
 			cargarCiudadesNac(persona.getPdeProvinciaNacimiento());
 			cargarCiudadesRes(persona.getPdeProvinciaResidencia());
 		} catch (Exception e) {
@@ -2067,7 +2067,7 @@ public class PersonaBean {
 		setSldCarnetConadies("");
 		setSldConsumeAlcohol("");
 		setSldConsumeTabaco("");
-		setSldDiscapacidadGrado("");
+		setSldDiscapacidadGrado("0");
 		setSldDiscapacidadTipo("");
 		setSldFrecienciaConsumoMedicame("");
 		setSldGrupoSanguineo("");
@@ -2108,6 +2108,9 @@ public class PersonaBean {
 		try {
 			GenSalud sal = manager.SaludByID(getPerDni());
 			if (sal == null) {
+				if (getSldDiscapacidadGrado()==null){
+					setSldDiscapacidadGrado("0");
+				}
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
@@ -2185,7 +2188,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para manejo de vista de aspectos del padre
+	 * Mï¿½todo para manejo de vista de aspectos del padre
 	 */
 	public void switch_padre() {
 		setSldPadreCausaMuerte("");
@@ -2198,7 +2201,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * M�todo para manejo de vista de aspectos de la madre
+	 * Mï¿½todo para manejo de vista de aspectos de la madre
 	 */
 	public void switch_madre() {
 		setSldMadreEnfermedadesActuales("");
@@ -2212,8 +2215,8 @@ public class PersonaBean {
 
 	private String replaceSpecialChars(String input) {
 		// Cadena de caracteres original a sustituir.
-		String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
-		// Cadena de caracteres ASCII que reemplazarán los originales.
+		String original = "Ã¡Ã Ã¤Ã©Ã¨Ã«Ã­Ã¬Ã¯Ã³Ã²Ã¶ÃºÃ¹uÃ±Ã�Ã€Ã„Ã‰ÃˆÃ‹Ã�ÃŒÃ�Ã“Ã’Ã–ÃšÃ™ÃœÃ‘Ã§Ã‡";
+		// Cadena de caracteres ASCII que reemplazarÃ¡n los originales.
 		String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
 		String output = input;
 		for (int i = 0; i < original.length(); i++) {
@@ -2245,7 +2248,7 @@ public class PersonaBean {
 
 		try {
 			if (!Funciones.validacionCedula(getPerDni())) {
-				Mensaje.crearMensajeWARN("Cédula incorrecta");
+				Mensaje.crearMensajeWARN("CÃ©dula incorrecta");
 				return;
 			}
 			if (manager.PersonaByID(getPerDni()) != null) {
@@ -2279,7 +2282,7 @@ public class PersonaBean {
 
 								if (registro.getCampo().equals("cedula")) {
 
-									this.setPerTipoDni("Cédula");
+									this.setPerTipoDni("CÃ©dula");
 
 								}
 

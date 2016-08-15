@@ -33,5 +33,16 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/axis.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/commons-lang3-3.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/javax.wsdl_1.6.2.v201012040545.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/org.apache.commons.logging_1.1.1.v201101211721.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/saaj.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jestevez/Documents/workspace_git/city-platform/city-platform/src/main/webapp/WEB-INF/lib/ws.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
