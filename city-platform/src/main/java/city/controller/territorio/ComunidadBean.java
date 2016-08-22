@@ -15,7 +15,7 @@ import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
 import city.model.generic.Mensaje;
-import city.model.manager.ManagerComunidades;
+import city.model.manager.ManagerTerritorio;
 
 /**
  * @author jestevez
@@ -27,7 +27,7 @@ public class ComunidadBean {
 
 	// Atributos de la Clase
 	@EJB
-	private ManagerComunidades manager;
+	private ManagerTerritorio manager;
 
 	// Atributos de la clase comunidad
 	private String comId;

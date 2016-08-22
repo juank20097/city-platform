@@ -18,8 +18,7 @@ import org.hibernate.validator.constraints.URL;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenDistrito;
 import city.model.generic.Mensaje;
-import city.model.manager.ManagerBarrio;
-import city.model.manager.ManagerDistrito;
+import city.model.manager.ManagerTerritorio;
 
 @SessionScoped
 @ManagedBean
@@ -31,52 +30,49 @@ public class BarriosBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 2042974807682029933L;
 
-	private static String ID_ACTIVO = "A"; 
+	private static String ID_ACTIVO = "A";
 	private static String ID_INACTIVO = "I";
 	private static String SELECT_DISTRITO = "0";
-	
+
 	@EJB
-	private ManagerBarrio mngBarrio;
-	
-	@EJB
-	private ManagerDistrito mngDistrito;
-		
-	@NotEmpty(message="ID no debe estar vacío.")
-	@NotBlank(message="ID no debe ser solo espacios blancos.")
-	private String id; 
-	
-	@NotEmpty(message="DESCRIPCIÓN no debe estar vacío.")
-	@NotBlank(message="DESCRIPCIÓN no debe ser solo espacios blancos.")
+	private ManagerTerritorio manager;
+
+	@NotEmpty(message = "ID no debe estar vacío.")
+	@NotBlank(message = "ID no debe ser solo espacios blancos.")
+	private String id;
+
+	@NotEmpty(message = "DESCRIPCIÓN no debe estar vacío.")
+	@NotBlank(message = "DESCRIPCIÓN no debe ser solo espacios blancos.")
 	private String descripcion;
-	
+
 	private String estado;
-	
+
 	private BigDecimal hectareas;
-	
-	@NotEmpty(message="MAPA LINK no debe estar vacío.")
-	@NotBlank(message="MAPA LINK no debe ser solo espacios blancos.")
-	@URL(message="MAPA LINK no es una url válida.")
+
+	@NotEmpty(message = "MAPA LINK no debe estar vacío.")
+	@NotBlank(message = "MAPA LINK no debe ser solo espacios blancos.")
+	@URL(message = "MAPA LINK no es una url válida.")
 	private String linkMapa;
-	
-	@NotEmpty(message="PDF LINK no debe estar vacío.")
-	@NotBlank(message="PDF LINK no debe ser solo espacios blancos.")
-	@URL(message="PDF LINK no es una url válida.")
+
+	@NotEmpty(message = "PDF LINK no debe estar vacío.")
+	@NotBlank(message = "PDF LINK no debe ser solo espacios blancos.")
+	@URL(message = "PDF LINK no es una url válida.")
 	private String linkPdf;
-	
+
 	private BigDecimal metrosCuadrados;
-	
-	@NotEmpty(message="NOMBRE no debe estar vacío.")
-	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
+
+	@NotEmpty(message = "NOMBRE no debe estar vacío.")
+	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
-	
+
 	private List<GenBarrio> lstBarrios;
 	private boolean edicion;
 	private List<SelectItem> slctEstados;
 	private String distritoId;
 	private List<SelectItem> slctDistritos;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		estado = ID_ACTIVO;
 		lstBarrios = new ArrayList<GenBarrio>();
 		hectareas = new BigDecimal(0);
@@ -191,27 +187,27 @@ public class BarriosBean implements Serializable {
 	public void setSlctDistritos(List<SelectItem> slctDistritos) {
 		this.slctDistritos = slctDistritos;
 	}
-	
+
 	// Métodos
-	
-	private void cargarEstados(){
-		getSlctEstados().add(new SelectItem(ID_ACTIVO,"Activo"));
-		getSlctEstados().add(new SelectItem(ID_INACTIVO,"Inactivo"));
+
+	private void cargarEstados() {
+		getSlctEstados().add(new SelectItem(ID_ACTIVO, "Activo"));
+		getSlctEstados().add(new SelectItem(ID_INACTIVO, "Inactivo"));
 	}
-	
-	private void cargarDistritos (){
-		getSlctDistritos().add(new SelectItem(SELECT_DISTRITO,"Seleccionar"));
-		for (GenDistrito distrito : mngBarrio.findAllDistritosAc()) {
+
+	private void cargarDistritos() {
+		getSlctDistritos().add(new SelectItem(SELECT_DISTRITO, "Seleccionar"));
+		for (GenDistrito distrito : manager.findAllDistritosAc()) {
 			getSlctDistritos().add(new SelectItem(distrito.getDisId(), distrito.getDisNombre()));
 		}
 	}
-	
-	public String nuevoBarrio(){
+
+	public String nuevoBarrio() {
 		limpiarDatos();
 		return "nBarrio?faces-redirect=true";
 	}
-	
-	public String cargarBarrio(GenBarrio barrio){
+
+	public String cargarBarrio(GenBarrio barrio) {
 		setEdicion(true);
 		setId(barrio.getBarId());
 		setDescripcion(barrio.getBarDescripcion());
@@ -222,20 +218,20 @@ public class BarriosBean implements Serializable {
 		setLinkPdf(barrio.getBarLinkPdf());
 		setNombre(barrio.getBarNombre());
 		setDistritoId(barrio.getGenDistrito().getDisId());
-		
+
 		return "nBarrio?faces-redirect=true";
 	}
-	
-	public String guardarEditarBarrio(){
+
+	public String guardarEditarBarrio() {
 		try {
-			if(getDistritoId().equals(SELECT_DISTRITO)){
+			if (getDistritoId().equals(SELECT_DISTRITO)) {
 				Mensaje.crearMensajeWARN("Seleccione un distrito");
 				return "";
-			}else if(!isEdicion() && mngBarrio.findBarrioById(getId())!= null){
+			} else if (!isEdicion() && manager.findBarrioById(getId()) != null) {
 				Mensaje.crearMensajeWARN("Ya existe un barrio con el mimo id, favor cámbielo.");
 				return "";
-			}else {
-				GenBarrio b= new GenBarrio();
+			} else {
+				GenBarrio b = new GenBarrio();
 				b.setBarId(getId());
 				b.setBarDescripcion(getDescripcion());
 				b.setBarEstado(getEstado());
@@ -244,34 +240,34 @@ public class BarriosBean implements Serializable {
 				b.setBarLinkMapa(getLinkMapa());
 				b.setBarLinkPdf(getLinkPdf());
 				b.setBarNombre(getNombre());
-				b.setGenDistrito(mngDistrito.findDistritoById(getDistritoId()));
-				if(isEdicion()){
-					mngBarrio.modicarBarrio(b);
-				}
-				else{
-					mngBarrio.insertarBarrio(b);
+				b.setGenDistrito(manager.findDistritoById(getDistritoId()));
+				if (isEdicion()) {
+					manager.modicarBarrio(b);
+				} else {
+					manager.insertarBarrio(b);
 				}
 				cargarBarrios();
 				limpiarDatos();
-				return "barrios?faces-redirect=true"; 
+				return "barrios?faces-redirect=true";
 			}
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error: "+e.getMessage());
+			Mensaje.crearMensajeERROR("Error: " + e.getMessage());
 			return "";
 		}
 	}
-	
-	public String cancelar(){
+
+	public String cancelar() {
 		limpiarDatos();
 		cargarBarrios();
-		return "barrios?faces-redirect=true"; 
+		return "barrios?faces-redirect=true";
 	}
-	private void cargarBarrios(){
+
+	private void cargarBarrios() {
 		getLstBarrios().clear();
-		getLstBarrios().addAll(mngBarrio.findAllBarrios());
+		getLstBarrios().addAll(manager.findAllBarrios());
 	}
-	
-	private void limpiarDatos(){
+
+	private void limpiarDatos() {
 		setId(null);
 		setDescripcion(null);
 		setEstado(ID_ACTIVO);
@@ -283,5 +279,5 @@ public class BarriosBean implements Serializable {
 		setEdicion(false);
 		setDistritoId(SELECT_DISTRITO);
 	}
-	
+
 }

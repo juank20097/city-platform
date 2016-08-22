@@ -17,8 +17,7 @@ import org.hibernate.validator.constraints.URL;
 
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Mensaje;
-import city.model.manager.ManagerZona;
-
+import city.model.manager.ManagerTerritorio;
 
 @SessionScoped
 @ManagedBean
@@ -30,7 +29,7 @@ public class ZonaBean implements Serializable{
 	private static String ID_INACTIVO = "I"; 
 
 	@EJB
-	private ManagerZona mngZona;
+	private ManagerTerritorio mngZona;
 	
 	@NotEmpty(message="ID no debe estar vacío.")
 	@NotBlank(message="ID no debe ser solo espacios blancos.")

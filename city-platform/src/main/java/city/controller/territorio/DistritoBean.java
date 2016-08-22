@@ -18,8 +18,8 @@ import org.hibernate.validator.constraints.URL;
 import city.model.dao.entidades.GenDistrito;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Mensaje;
-import city.model.manager.ManagerDistrito;
-import city.model.manager.ManagerZona;
+import city.model.manager.ManagerTerritorio;
+
 
 
 @SessionScoped
@@ -33,10 +33,8 @@ public class DistritoBean implements Serializable{
 	private static String SELECT_ZONA = "0";
 
 	@EJB
-	private ManagerDistrito mngDistrito;
-	
-	@EJB
-	private ManagerZona mngZona;
+	private ManagerTerritorio manager;
+
 	
 	@NotEmpty(message="ID no debe estar vacío.")
 	@NotBlank(message="ID no debe ser solo espacios blancos.")
@@ -191,7 +189,7 @@ public class DistritoBean implements Serializable{
 	
 	private void cargarZonas() {
 		getSlctZonas().add(new SelectItem(SELECT_ZONA,"Seleccionar"));
-		for (GenZona z : mngZona.findAllZonasA()) {
+		for (GenZona z : manager.findAllZonasA()) {
 			getSlctZonas().add(new SelectItem(z.getZonId(),z.getZonNombre()));
 		}
 		
@@ -216,7 +214,7 @@ public class DistritoBean implements Serializable{
 			if(getZonaId().equals(SELECT_ZONA)){
 				Mensaje.crearMensajeWARN("Seleccione una zona");
 				return "";
-			}else if(!isEdicion() && mngDistrito.findDistritoById(getId())!=null){
+			}else if(!isEdicion() && manager.findDistritoById(getId())!=null){
 				Mensaje.crearMensajeWARN("Ya existe un distrito con el mismo id, favor cámbielo.");
 				return "";
 			}else{
@@ -224,11 +222,11 @@ public class DistritoBean implements Serializable{
 				d.setDisId(getId());d.setDisDescripcion(getDescripcion());d.setDisEstado(getEstado());
 				d.setDisLinkMapa(getLinkMapa());d.setDisLinkPdf(getLinkPdf());d.setDisHectareas(getHectareas());
 				d.setDisMetrosCuadrados(getMetrosCuadrados());d.setDisNombre(getNombre());
-				d.setGenZona(mngZona.findZonaById(getZonaId()));
+				d.setGenZona(manager.findZonaById(getZonaId()));
 				if(isEdicion())
-					mngDistrito.modicarDistrito(d);
+					manager.modicarDistrito(d);
 				else
-					mngDistrito.insertarDistrito(d);
+					manager.insertarDistrito(d);
 				cargarDistritos();
 				limpiarDatos();
 				return "distritos?faces-redirect=true";
@@ -248,7 +246,7 @@ public class DistritoBean implements Serializable{
 	
 	private void cargarDistritos() {
 		getListDistritos().clear();
-		getListDistritos().addAll(mngDistrito.findAllDistritos());
+		getListDistritos().addAll(manager.findAllDistritos());
 	}
 	
 	private void limpiarDatos(){

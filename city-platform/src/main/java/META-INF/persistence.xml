@@ -7,6 +7,7 @@
 		<jta-data-source>java:/city-platformDatasource</jta-data-source>
 		<class>city.model.dao.entidades.AudActividadAplicacion</class>
 		<class>city.model.dao.entidades.AudActividadInterna</class>
+		<class>city.model.dao.entidades.AudWsDinardap</class>
 		<class>city.model.dao.entidades.GenArea</class>
 		<class>city.model.dao.entidades.GenBarrio</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
@@ -19,6 +20,9 @@
 		<class>city.model.dao.entidades.GenFuncionariosInstitucion</class>
 		<class>city.model.dao.entidades.GenFuncionariosInstitucionPK</class>
 		<class>city.model.dao.entidades.GenInstitucione</class>
+		<class>city.model.dao.entidades.GenManzana</class>
+		<class>city.model.dao.entidades.GenManzanaDetalle</class>
+		<class>city.model.dao.entidades.GenManzanaPosicione</class>
 		<class>city.model.dao.entidades.GenParametro</class>
 		<class>city.model.dao.entidades.GenPersona</class>
 		<class>city.model.dao.entidades.GenPersonaDetalle</class>
@@ -33,7 +37,6 @@
 		<class>city.model.dao.entidades.GenZonasComunidadePK</class>
 		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
-		<class>city.model.dao.entidades.AudWsDinardap</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />

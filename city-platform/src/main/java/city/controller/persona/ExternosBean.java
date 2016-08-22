@@ -53,9 +53,6 @@ public class ExternosBean {
 	private List<Externo> l_externos_total;
 	private List<String> errores;
 
-	// string con todos los errores
-	private String error;
-
 	// atributos de Registro excel
 	private String exc_nombre;
 	private String exc_usuario;
@@ -123,21 +120,6 @@ public class ExternosBean {
 	 */
 	public void setErrores(List<String> errores) {
 		this.errores = errores;
-	}
-
-	/**
-	 * @return the error
-	 */
-	public String getError() {
-		return error;
-	}
-
-	/**
-	 * @param error
-	 *            the error to set
-	 */
-	public void setError(String error) {
-		this.error = error;
 	}
 
 	private void ListExternos() {
@@ -241,12 +223,10 @@ public class ExternosBean {
 	 * Abre un popup con la lista de errores
 	 */
 	private void mostrarListaErrores() {
-		error = "";
-		RequestContext.getCurrentInstance().execute("PF('dlgerr').show()");
 		for (String e : errores) {
-			error = error + e + "\n";
-			System.out.println(error);
+			System.out.println(e);
 		}
+		RequestContext.getCurrentInstance().execute("PF('dlgerr').show()");
 	}
 
 	/**
