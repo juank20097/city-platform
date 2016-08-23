@@ -52,6 +52,22 @@ public class GenPersona implements Serializable {
 	@Column(name = "per_tipo_dni")
 	private String perTipoDni;
 
+	//bi-directional many-to-one association to GenCapacitacione
+	@OneToMany(mappedBy="genPersona")
+	private List<GenCapacitacione> genCapacitaciones;
+
+	//bi-directional many-to-one association to GenExperiencialaboral
+	@OneToMany(mappedBy="genPersona")
+	private List<GenExperiencialaboral> genExperiencialaborals;
+
+	//bi-directional many-to-one association to GenFormacionacademica
+	@OneToMany(mappedBy="genPersona")
+	private List<GenFormacionacademica> genFormacionacademicas;
+
+	//bi-directional many-to-one association to GenVisitante
+	@OneToMany(mappedBy="genPersona")
+	private List<GenVisitante> genVisitantes;
+	
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
 	@OneToMany(mappedBy = "genPersona", fetch = FetchType.EAGER)
 	private List<GenFuncionariosInstitucion> genFuncionariosInstitucions;
@@ -163,6 +179,94 @@ public class GenPersona implements Serializable {
 		this.perTipoDni = perTipoDni;
 	}
 
+	public List<GenCapacitacione> getGenCapacitaciones() {
+		return this.genCapacitaciones;
+	}
+
+	public void setGenCapacitaciones(List<GenCapacitacione> genCapacitaciones) {
+		this.genCapacitaciones = genCapacitaciones;
+	}
+
+	public GenCapacitacione addGenCapacitacione(GenCapacitacione genCapacitacione) {
+		getGenCapacitaciones().add(genCapacitacione);
+		genCapacitacione.setGenPersona(this);
+
+		return genCapacitacione;
+	}
+
+	public GenCapacitacione removeGenCapacitacione(GenCapacitacione genCapacitacione) {
+		getGenCapacitaciones().remove(genCapacitacione);
+		genCapacitacione.setGenPersona(null);
+
+		return genCapacitacione;
+	}
+
+	public List<GenExperiencialaboral> getGenExperiencialaborals() {
+		return this.genExperiencialaborals;
+	}
+
+	public void setGenExperiencialaborals(List<GenExperiencialaboral> genExperiencialaborals) {
+		this.genExperiencialaborals = genExperiencialaborals;
+	}
+
+	public GenExperiencialaboral addGenExperiencialaboral(GenExperiencialaboral genExperiencialaboral) {
+		getGenExperiencialaborals().add(genExperiencialaboral);
+		genExperiencialaboral.setGenPersona(this);
+
+		return genExperiencialaboral;
+	}
+
+	public GenExperiencialaboral removeGenExperiencialaboral(GenExperiencialaboral genExperiencialaboral) {
+		getGenExperiencialaborals().remove(genExperiencialaboral);
+		genExperiencialaboral.setGenPersona(null);
+
+		return genExperiencialaboral;
+	}
+
+	public List<GenFormacionacademica> getGenFormacionacademicas() {
+		return this.genFormacionacademicas;
+	}
+
+	public void setGenFormacionacademicas(List<GenFormacionacademica> genFormacionacademicas) {
+		this.genFormacionacademicas = genFormacionacademicas;
+	}
+
+	public GenFormacionacademica addGenFormacionacademica(GenFormacionacademica genFormacionacademica) {
+		getGenFormacionacademicas().add(genFormacionacademica);
+		genFormacionacademica.setGenPersona(this);
+
+		return genFormacionacademica;
+	}
+
+	public GenFormacionacademica removeGenFormacionacademica(GenFormacionacademica genFormacionacademica) {
+		getGenFormacionacademicas().remove(genFormacionacademica);
+		genFormacionacademica.setGenPersona(null);
+
+		return genFormacionacademica;
+	}
+
+	public List<GenVisitante> getGenVisitantes() {
+		return this.genVisitantes;
+	}
+
+	public void setGenVisitantes(List<GenVisitante> genVisitantes) {
+		this.genVisitantes = genVisitantes;
+	}
+
+	public GenVisitante addGenVisitante(GenVisitante genVisitante) {
+		getGenVisitantes().add(genVisitante);
+		genVisitante.setGenPersona(this);
+
+		return genVisitante;
+	}
+
+	public GenVisitante removeGenVisitante(GenVisitante genVisitante) {
+		getGenVisitantes().remove(genVisitante);
+		genVisitante.setGenPersona(null);
+
+		return genVisitante;
+	}
+	
 	public GenPersonaDetalle getGenPersonaDetalle() {
 		return this.genPersonaDetalle;
 	}

@@ -8,8 +8,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import city.model.dao.entidades.GenCapacitacione;
 import city.model.dao.entidades.GenCatalogoCab;
 import city.model.dao.entidades.GenCatalogoItemsDet;
+import city.model.dao.entidades.GenExperiencialaboral;
+import city.model.dao.entidades.GenFormacionacademica;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
@@ -214,7 +217,7 @@ public class ManagerPersona {
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
 		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
-				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", "o.iteNombre");
 		if (li == null || li.isEmpty()) {
 			return null;
 		} else {
@@ -630,4 +633,246 @@ public class ManagerPersona {
 		}
 	}// Cierre del metodo
 
+	/********** Metodos para manejo de información de CV's **********/
+	/**
+	 * Buscar todos los registros de Formación Académica por cédula
+	 * @param cedula
+	 * @return List<GenFormacionacademica>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenFormacionacademica> findFormAcademicaBYCedula(String cedula){
+		return mngDao.findWhere(GenFormacionacademica.class, "o.genPersona.perDni='"+cedula+"'", "o.foaId");
+	}
+	/**
+	 * Buscar todos los registros de Capacitaciones por cédula
+	 * @param cedula
+	 * @return List<GenCapacitacione>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenCapacitacione> findCapacitacionesByCedula(String cedula){
+		return mngDao.findWhere(GenCapacitacione.class, "o.genPersona.perDni='"+cedula+"'", "o.capId");
+	}
+	
+	/**
+	 * Buscar todos los registros de ExperienciaLaboral por cédula
+	 * @param cedula
+	 * @return List<GenExperiencialaboral>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<GenExperiencialaboral> findExperienciaLabByCedula(String cedula){
+		return mngDao.findWhere(GenExperiencialaboral.class, "o.genPersona.perDni='"+cedula+"'", "o.exlId");
+	}
+	
+	// Formación Académica
+	
+	/**
+	 * Ingresar información académica
+	 * @param persona
+	 * @param areaL
+	 * @param titulo
+	 * @param institucion
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param actual
+	 * @param nivelI
+	 * @param pais
+	 * @param duracion
+	 * @throws Exception
+	 */
+	public void ingresarFormacionAc(GenPersona persona, String areaL,
+			String titulo, String institucion, Date fechaInicio, Date fechaFin,
+			String nivelI, String pais, BigDecimal duracion, boolean registroS)
+			throws Exception {
+		GenFormacionacademica fa = new GenFormacionacademica();
+		fa.setFoaTitulo(titulo);
+		fa.setFoaInstitucion(institucion);
+		fa.setFoaFechaInicio(fechaInicio);
+		fa.setFoaFechaFin(fechaFin);
+		fa.setFoaNivelInstruccion(nivelI);
+		fa.setFoaDuracion(duracion);
+		fa.setFoaPais(pais);
+		fa.setGenPersona(persona);
+		fa.setFoaAreaLaboralEstudio(areaL);
+		fa.setFoaRegistroSenescyt(registroS);
+		mngDao.insertar(fa);
+		fa = null;
+	}
+	/**
+	 * Editar información académica
+	 * @param idF
+	 * @param areaL
+	 * @param titulo
+	 * @param institucion
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param actual
+	 * @param nivelI
+	 * @param pais
+	 * @param duracion
+	 * @throws Exception
+	 */
+	public void editarFormacionAc(Integer idF, String areaL, String titulo,
+			String institucion, Date fechaInicio, Date fechaFin, String nivelI, 
+			String pais, BigDecimal duracion) throws Exception {
+		GenFormacionacademica fa = this.findFormAcademicaById(idF);
+		fa.setFoaTitulo(titulo);
+		fa.setFoaInstitucion(institucion);
+		fa.setFoaFechaInicio(fechaInicio);
+		fa.setFoaFechaFin(fechaFin);
+		fa.setFoaNivelInstruccion(nivelI);
+		fa.setFoaDuracion(duracion);
+		fa.setFoaPais(pais);
+		fa.setFoaAreaLaboralEstudio(areaL);
+		mngDao.actualizar(fa);
+		fa = null;
+
+	}
+	/**
+	 * Buscar Formación Académica por ID
+	 * @param idFormacion
+	 * @return
+	 * @throws Exception
+	 */
+	public GenFormacionacademica findFormAcademicaById(int idFormacion) throws Exception{
+		return (GenFormacionacademica) mngDao.findById(GenFormacionacademica.class, idFormacion);
+	}
+	/**
+	 * Eliminar formación Académica
+	 * @param fa
+	 * @throws Exception
+	 */
+	public void eliminarFormAcademica(GenFormacionacademica fa) throws Exception {
+		mngDao.eliminar(GenFormacionacademica.class, fa.getFoaId());
+	}
+	
+	// Capacitaciones
+	/**
+	 * Ingresar Capacitaciones 
+	 * @param persona
+	 * @param nombre
+	 * @param areaL
+	 * @param tipoEvento
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param numHoras
+	 * @throws Exception
+	 */
+	public void ingresarCapacitaciones(GenPersona persona, boolean relacionPerfil, String nombre,
+			String institucion, String areaL, String tipoEvento, int numHoras) throws Exception {
+		GenCapacitacione ca = new GenCapacitacione();
+		ca.setGenPersona(persona);
+		ca.setCapRelacionPerfilProfesional(relacionPerfil);
+		ca.setCapNombre(nombre);
+		ca.setCapInstitucionCapacitacion(institucion);
+		ca.setCapAreaLaboralEstudio(areaL);
+		ca.setCapTipoEvento(tipoEvento);
+		ca.setCapNumHoras(numHoras);
+		mngDao.insertar(ca);
+	}
+	/**
+	 * Editar Capacitación
+	 * @param idCa
+	 * @param nombre
+	 * @param areaL
+	 * @param tipoEvento
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param numHoras
+	 * @throws Exception
+	 */
+	public void editarCapacitaciones(Integer idCa, boolean relacionPerfil, String nombre,
+			String institucion, String areaL, String tipoEvento, int numHoras) throws Exception {
+		GenCapacitacione ca = this.findCapacitacionesById(idCa);
+		ca.setCapRelacionPerfilProfesional(relacionPerfil);
+		ca.setCapNombre(nombre);
+		ca.setCapInstitucionCapacitacion(institucion);
+		ca.setCapAreaLaboralEstudio(areaL);
+		ca.setCapTipoEvento(tipoEvento);
+		ca.setCapNumHoras(numHoras);
+		mngDao.actualizar(ca);
+	}
+	/**
+	 * Buscar Capacitación por ID
+	 * @param idCapacitaciones
+	 * @return
+	 * @throws Exception
+	 */
+	public GenCapacitacione findCapacitacionesById(int idCapacitaciones) throws Exception{
+		return (GenCapacitacione) mngDao.findById(GenCapacitacione.class, idCapacitaciones);
+	}
+	/**
+	 * Eliminar Capacitación por ID
+	 * @param ca
+	 * @throws Exception
+	 */
+	public void eliminarCapacitaciones(GenCapacitacione ca)
+			throws Exception {
+		mngDao.eliminar(GenCapacitacione.class, ca.getCapId());
+	}
+
+	// Experiencia Laboral
+	
+	public void ingresarExperienciaLab(GenPersona persona, String areaL,
+			String puesto, String empresa, Boolean sectorpublico, String pais,
+			Date fechaInicio, Date fechaFin, String responsabilidades,
+			Boolean actual) throws Exception {
+		GenExperiencialaboral exl = new GenExperiencialaboral();
+		exl.setGenPersona(persona);
+		exl.setExlAreaLaboralEstudio(areaL);
+		exl.setExlPuesto(puesto);
+		exl.setExlEmpresa(empresa);
+		exl.setExlSectorPublico(sectorpublico);
+		exl.setExlPais(pais);
+		exl.setExlFechaInicio(fechaInicio);
+		exl.setExlFechaFin(fechaFin);
+		exl.setExlResponsabilidades(responsabilidades);
+		exl.setExlActual(actual);
+		mngDao.insertar(exl);
+	}
+	/**
+	 * Editar Experiencia Laboral
+	 * @param idExp
+	 * @param areaL
+	 * @param puesto
+	 * @param empresa
+	 * @param sectorpublico
+	 * @param pais
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param responsabilidades
+	 * @param actual
+	 * @throws Exception
+	 */
+	public void editarExperienciaLab(Integer idExp, String areaL,
+			String puesto, String empresa, Boolean sectorpublico, String pais,
+			Date fechaInicio, Date fechaFin, String responsabilidades,
+			Boolean actual) throws Exception {
+		GenExperiencialaboral exl = this.findExperienciaLabById(idExp);
+		exl.setExlAreaLaboralEstudio(areaL);
+		exl.setExlPuesto(puesto);
+		exl.setExlEmpresa(empresa);
+		exl.setExlSectorPublico(sectorpublico);
+		exl.setExlPais(pais);
+		exl.setExlFechaInicio(fechaInicio);
+		exl.setExlFechaFin(fechaFin);
+		exl.setExlResponsabilidades(responsabilidades);
+		exl.setExlActual(actual);
+		mngDao.actualizar(exl);
+	}
+	
+	public GenExperiencialaboral findExperienciaLabById(int idExperienciaLab) throws Exception{
+		return (GenExperiencialaboral) mngDao.findById(GenExperiencialaboral.class, idExperienciaLab);
+	}
+	
+	public void eliminarExperienciaLab(GenExperiencialaboral el) throws Exception {
+		mngDao.eliminar(GenExperiencialaboral.class, el.getExlId());
+	}
+
+	public String catalogoItem(String idItem) throws Exception{
+		GenCatalogoItemsDet it =this.ItemByID(idItem);
+		if(it.equals("")|| it.equals(null)){
+			return "";
+		}else 
+		return it.getIteNombre();
+	}
 }

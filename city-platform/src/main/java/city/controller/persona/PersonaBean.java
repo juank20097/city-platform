@@ -17,13 +17,20 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.rpc.ServiceException;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.json.simple.JSONObject;
+import org.primefaces.context.RequestContext;
 
 import city.controller.access.SesionBean;
-
+import city.model.dao.entidades.GenCapacitacione;
 import city.model.dao.entidades.GenCatalogoItemsDet;
+import city.model.dao.entidades.GenExperiencialaboral;
+import city.model.dao.entidades.GenFormacionacademica;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
@@ -176,6 +183,91 @@ public class PersonaBean {
 	// valor de ususario
 	private String usuario;
 
+	// Curriculum Vitae
+	
+		private GenPersona persona;
+		
+		private List<SelectItem> lstAreasLE;
+		private List<SelectItem> lstNivelesInstruccion;
+		private List<SelectItem> lstTiposEventos;
+		
+		// Formacion Academica
+
+		private boolean actualFA;
+		private Integer idFormacion;
+		
+		@NotNull(message="El campo Título no debe ser nulo.")
+		@NotBlank(message="El campo Título no debe contener solo espacios blancos.")
+		private String titulo;
+		
+		@NotNull(message="El campo Institución no debe ser nulo.")
+		@NotBlank(message="El campo Institución no debe contener solo espacios blancos.")
+		private String institucionFA;
+		private String nivelInstruccion;
+		
+		@NotNull(message="El campo Duración no debe ser nulo.")
+		@DecimalMin("1")
+		private BigDecimal duracion;
+		
+		private String paisFA;
+		private boolean edicionFA;
+		private String areaFA;
+		private boolean registroSenescyt;
+		private Date fechaIniFA;
+		private Date fechaFinFA;
+		private GenFormacionacademica formAcademica;
+		private GenFormacionacademica formAcEliminar;
+		private List<GenFormacionacademica> lstFormAcademica;
+		
+		// Capacitaciones 
+		
+		private Integer idCapacitacion;
+		private boolean edicionCa;
+		
+		@NotNull(message="El campo Nombre no debe ser nulo.")
+		@NotBlank(message="El campo Nombre no debe contener solo espacios blancos.")
+		private String nombreCap;
+		private String tipoEvento;
+		
+		@NotNull(message="El campo Nombre InstituciÃ³n no debe ser nulo.")
+		@NotBlank(message="El campo Nombre InstituciÃ³n no debe contener solo espacios blancos.")
+		private String nombreInstitucion;
+		
+		private boolean relacionPerfil;
+
+		@Min(8)
+		private int numHoras;
+		private String areaCa;
+		private GenCapacitacione capacitacion;
+		private GenCapacitacione capaEliminar;
+		private List<GenCapacitacione> lstCapacitaciones;
+		
+		// Experiencia Laboral
+		
+		private boolean actualEL;
+		private boolean edicionEL;
+		private Integer idExperiencia;
+		
+		@NotNull(message="El campo Puesto no debe ser nulo.")
+		@NotBlank(message="El campo Puesto no debe contener solo espacios blancos.")
+		private String puesto;
+		
+		@NotNull(message="El campo Empresa no debe ser nulo.")
+		@NotBlank(message="El campo Empresa no debe contener solo espacios blancos.")
+		private String empresa;
+		private boolean sectorPublico;
+		
+		@NotNull(message="El campo Responsabilidades no debe ser nulo.")
+		@NotBlank(message="El campo Responsabilidades no debe contener solo espacios blancos.")
+		private String responsabilidades;
+		private String paisEL;
+		private String areaEL;
+		private Date fechaIniEL;
+		private Date fechaFinEL;
+		private GenExperiencialaboral experienciaLab;
+		private GenExperiencialaboral expLabEliminar;
+		private List<GenExperiencialaboral> lstExperienciaLab;
+	
 	public PersonaBean() {
 	}
 
@@ -218,7 +310,28 @@ public class PersonaBean {
 		l_discapacidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
 		sms_validacion = "";
+		
+		// Curriculums
+		lstAreasLE = new ArrayList<SelectItem>();
+		lstNivelesInstruccion = new ArrayList<SelectItem>();
+		lstTiposEventos = new ArrayList<SelectItem>();
 
+		sectorPublico = false;
+		duracion = BigDecimal.ZERO;
+		numHoras =0;
+		fechaIniEL = new Date();
+		fechaIniFA = new Date();
+		fechaFinEL = new Date();
+		fechaFinFA = new Date();
+		paisEL = "EC";
+		paisFA = "EC";
+		areaCa = "S/N";
+		areaEL = "S/N";
+		areaCa = "S/N";
+		areaFA = "S/N";
+		tipoEvento = "S/N";
+		nivelInstruccion = "S/N";
+		
 		// cargarPersonas();
 
 	}
@@ -1661,7 +1774,623 @@ public class PersonaBean {
 		this.carga();
 		return "npersona?faces-redirect=true";
 	}
+	
+	// Getters y Setters de Curriculum
 
+	/**
+	 * @return the lstAreasLE
+	 */
+	public List<SelectItem> getLstAreasLE() {
+		return lstAreasLE;
+	}
+
+	/**
+	 * @param lstAreasLE the lstAreasLE to set
+	 */
+	public void setLstAreasLE(List<SelectItem> lstAreasLE) {
+		this.lstAreasLE = lstAreasLE;
+	}
+
+	/**
+	 * @return the lstNivelesInstruccion
+	 */
+	public List<SelectItem> getLstNivelesInstruccion() {
+		return lstNivelesInstruccion;
+	}
+
+	/**
+	 * @param lstNivelesInstruccion the lstNivelesInstruccion to set
+	 */
+	public void setLstNivelesInstruccion(List<SelectItem> lstNivelesInstruccion) {
+		this.lstNivelesInstruccion = lstNivelesInstruccion;
+	}
+
+	/**
+	 * @return the lstTiposEventos
+	 */
+	public List<SelectItem> getLstTiposEventos() {
+		return lstTiposEventos;
+	}
+
+	/**
+	 * @param lstTiposEventos the lstTiposEventos to set
+	 */
+	public void setLstTiposEventos(List<SelectItem> lstTiposEventos) {
+		this.lstTiposEventos = lstTiposEventos;
+	}
+
+	/**
+	 * @return the actualFA
+	 */
+	public boolean isActualFA() {
+		return actualFA;
+	}
+
+	/**
+	 * @param actualFA the actualFA to set
+	 */
+	public void setActualFA(boolean actualFA) {
+		this.actualFA = actualFA;
+	}
+
+	/**
+	 * @return the idFormacion
+	 */
+	public Integer getIdFormacion() {
+		return idFormacion;
+	}
+
+	/**
+	 * @param idFormacion the idFormacion to set
+	 */
+	public void setIdFormacion(Integer idFormacion) {
+		this.idFormacion = idFormacion;
+	}
+
+	/**
+	 * @return the titulo
+	 */
+	public String getTitulo() {
+		return titulo;
+	}
+
+	/**
+	 * @param titulo the titulo to set
+	 */
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	/**
+	 * @return the institucionFA
+	 */
+	public String getInstitucionFA() {
+		return institucionFA;
+	}
+
+	/**
+	 * @param institucionFA the institucionFA to set
+	 */
+	public void setInstitucionFA(String institucionFA) {
+		this.institucionFA = institucionFA;
+	}
+
+	/**
+	 * @return the nivelInstruccion
+	 */
+	public String getNivelInstruccion() {
+		return nivelInstruccion;
+	}
+
+	/**
+	 * @param nivelInstruccion the nivelInstruccion to set
+	 */
+	public void setNivelInstruccion(String nivelInstruccion) {
+		this.nivelInstruccion = nivelInstruccion;
+	}
+
+	/**
+	 * @return the duracion
+	 */
+	public BigDecimal getDuracion() {
+		return duracion;
+	}
+
+	/**
+	 * @param duracion the duracion to set
+	 */
+	public void setDuracion(BigDecimal duracion) {
+		this.duracion = duracion;
+	}
+
+	/**
+	 * @return the paisFA
+	 */
+	public String getPaisFA() {
+		return paisFA;
+	}
+
+	/**
+	 * @param paisFA the paisFA to set
+	 */
+	public void setPaisFA(String paisFA) {
+		this.paisFA = paisFA;
+	}
+
+	/**
+	 * @return the edicionFA
+	 */
+	public boolean isEdicionFA() {
+		return edicionFA;
+	}
+
+	/**
+	 * @param edicionFA the edicionFA to set
+	 */
+	public void setEdicionFA(boolean edicionFA) {
+		this.edicionFA = edicionFA;
+	}
+
+	/**
+	 * @return the areaFA
+	 */
+	public String getAreaFA() {
+		return areaFA;
+	}
+
+	/**
+	 * @param areaFA the areaFA to set
+	 */
+	public void setAreaFA(String areaFA) {
+		this.areaFA = areaFA;
+	}
+
+	/**
+	 * @return the registroSenescyt
+	 */
+	public boolean isRegistroSenescyt() {
+		return registroSenescyt;
+	}
+
+	/**
+	 * @param registroSenescyt the registroSenescyt to set
+	 */
+	public void setRegistroSenescyt(boolean registroSenescyt) {
+		this.registroSenescyt = registroSenescyt;
+	}
+
+	/**
+	 * @return the fechaIniFA
+	 */
+	public Date getFechaIniFA() {
+		return fechaIniFA;
+	}
+
+	/**
+	 * @param fechaIniFA the fechaIniFA to set
+	 */
+	public void setFechaIniFA(Date fechaIniFA) {
+		this.fechaIniFA = fechaIniFA;
+	}
+
+	/**
+	 * @return the fechaFinFA
+	 */
+	public Date getFechaFinFA() {
+		return fechaFinFA;
+	}
+
+	/**
+	 * @param fechaFinFA the fechaFinFA to set
+	 */
+	public void setFechaFinFA(Date fechaFinFA) {
+		this.fechaFinFA = fechaFinFA;
+	}
+
+	/**
+	 * @return the formAcademica
+	 */
+	public GenFormacionacademica getFormAcademica() {
+		return formAcademica;
+	}
+
+	/**
+	 * @param formAcademica the formAcademica to set
+	 */
+	public void setFormAcademica(GenFormacionacademica formAcademica) {
+		this.formAcademica = formAcademica;
+	}
+
+	/**
+	 * @return the formAcEliminar
+	 */
+	public GenFormacionacademica getFormAcEliminar() {
+		return formAcEliminar;
+	}
+
+	/**
+	 * @param formAcEliminar the formAcEliminar to set
+	 */
+	public void setFormAcEliminar(GenFormacionacademica formAcEliminar) {
+		this.formAcEliminar = formAcEliminar;
+	}
+
+	/**
+	 * @return the lstFormAcademica
+	 */
+	public List<GenFormacionacademica> getLstFormAcademica() {
+		return lstFormAcademica;
+	}
+
+	/**
+	 * @param lstFormAcademica the lstFormAcademica to set
+	 */
+	public void setLstFormAcademica(List<GenFormacionacademica> lstFormAcademica) {
+		this.lstFormAcademica = lstFormAcademica;
+	}
+
+	/**
+	 * @return the idCapacitacion
+	 */
+	public Integer getIdCapacitacion() {
+		return idCapacitacion;
+	}
+
+	/**
+	 * @param idCapacitacion the idCapacitacion to set
+	 */
+	public void setIdCapacitacion(Integer idCapacitacion) {
+		this.idCapacitacion = idCapacitacion;
+	}
+
+	/**
+	 * @return the edicionCa
+	 */
+	public boolean isEdicionCa() {
+		return edicionCa;
+	}
+
+	/**
+	 * @param edicionCa the edicionCa to set
+	 */
+	public void setEdicionCa(boolean edicionCa) {
+		this.edicionCa = edicionCa;
+	}
+
+	/**
+	 * @return the nombreCap
+	 */
+	public String getNombreCap() {
+		return nombreCap;
+	}
+
+	/**
+	 * @param nombreCap the nombreCap to set
+	 */
+	public void setNombreCap(String nombreCap) {
+		this.nombreCap = nombreCap;
+	}
+
+	/**
+	 * @return the tipoEvento
+	 */
+	public String getTipoEvento() {
+		return tipoEvento;
+	}
+
+	/**
+	 * @param tipoEvento the tipoEvento to set
+	 */
+	public void setTipoEvento(String tipoEvento) {
+		this.tipoEvento = tipoEvento;
+	}
+
+	/**
+	 * @return the nombreInstitucion
+	 */
+	public String getNombreInstitucion() {
+		return nombreInstitucion;
+	}
+
+	/**
+	 * @param nombreInstitucion the nombreInstitucion to set
+	 */
+	public void setNombreInstitucion(String nombreInstitucion) {
+		this.nombreInstitucion = nombreInstitucion;
+	}
+
+	/**
+	 * @return the relacionPerfil
+	 */
+	public boolean isRelacionPerfil() {
+		return relacionPerfil;
+	}
+
+	/**
+	 * @param relacionPerfil the relacionPerfil to set
+	 */
+	public void setRelacionPerfil(boolean relacionPerfil) {
+		this.relacionPerfil = relacionPerfil;
+	}
+
+	/**
+	 * @return the numHoras
+	 */
+	public int getNumHoras() {
+		return numHoras;
+	}
+
+	/**
+	 * @param numHoras the numHoras to set
+	 */
+	public void setNumHoras(int numHoras) {
+		this.numHoras = numHoras;
+	}
+
+	/**
+	 * @return the areaCa
+	 */
+	public String getAreaCa() {
+		return areaCa;
+	}
+
+	/**
+	 * @param areaCa the areaCa to set
+	 */
+	public void setAreaCa(String areaCa) {
+		this.areaCa = areaCa;
+	}
+
+	/**
+	 * @return the capacitacion
+	 */
+	public GenCapacitacione getCapacitacion() {
+		return capacitacion;
+	}
+
+	/**
+	 * @param capacitacion the capacitacion to set
+	 */
+	public void setCapacitacion(GenCapacitacione capacitacion) {
+		this.capacitacion = capacitacion;
+	}
+
+	/**
+	 * @return the capaEliminar
+	 */
+	public GenCapacitacione getCapaEliminar() {
+		return capaEliminar;
+	}
+
+	/**
+	 * @param capaEliminar the capaEliminar to set
+	 */
+	public void setCapaEliminar(GenCapacitacione capaEliminar) {
+		this.capaEliminar = capaEliminar;
+	}
+
+	/**
+	 * @return the lstCapacitaciones
+	 */
+	public List<GenCapacitacione> getLstCapacitaciones() {
+		return lstCapacitaciones;
+	}
+
+	/**
+	 * @param lstCapacitaciones the lstCapacitaciones to set
+	 */
+	public void setLstCapacitaciones(List<GenCapacitacione> lstCapacitaciones) {
+		this.lstCapacitaciones = lstCapacitaciones;
+	}
+
+	/**
+	 * @return the actualEL
+	 */
+	public boolean isActualEL() {
+		return actualEL;
+	}
+
+	/**
+	 * @param actualEL the actualEL to set
+	 */
+	public void setActualEL(boolean actualEL) {
+		this.actualEL = actualEL;
+	}
+
+	/**
+	 * @return the edicionEL
+	 */
+	public boolean isEdicionEL() {
+		return edicionEL;
+	}
+
+	/**
+	 * @param edicionEL the edicionEL to set
+	 */
+	public void setEdicionEL(boolean edicionEL) {
+		this.edicionEL = edicionEL;
+	}
+
+	/**
+	 * @return the idExperiencia
+	 */
+	public Integer getIdExperiencia() {
+		return idExperiencia;
+	}
+
+	/**
+	 * @param idExperiencia the idExperiencia to set
+	 */
+	public void setIdExperiencia(Integer idExperiencia) {
+		this.idExperiencia = idExperiencia;
+	}
+
+	/**
+	 * @return the puesto
+	 */
+	public String getPuesto() {
+		return puesto;
+	}
+
+	/**
+	 * @param puesto the puesto to set
+	 */
+	public void setPuesto(String puesto) {
+		this.puesto = puesto;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}
+
+	/**
+	 * @return the sectorPublico
+	 */
+	public boolean isSectorPublico() {
+		return sectorPublico;
+	}
+
+	/**
+	 * @param sectorPublico the sectorPublico to set
+	 */
+	public void setSectorPublico(boolean sectorPublico) {
+		this.sectorPublico = sectorPublico;
+	}
+
+	/**
+	 * @return the responsabilidades
+	 */
+	public String getResponsabilidades() {
+		return responsabilidades;
+	}
+
+	/**
+	 * @param responsabilidades the responsabilidades to set
+	 */
+	public void setResponsabilidades(String responsabilidades) {
+		this.responsabilidades = responsabilidades;
+	}
+
+	/**
+	 * @return the paisEL
+	 */
+	public String getPaisEL() {
+		return paisEL;
+	}
+
+	/**
+	 * @param paisEL the paisEL to set
+	 */
+	public void setPaisEL(String paisEL) {
+		this.paisEL = paisEL;
+	}
+
+	/**
+	 * @return the areaEL
+	 */
+	public String getAreaEL() {
+		return areaEL;
+	}
+
+	/**
+	 * @param areaEL the areaEL to set
+	 */
+	public void setAreaEL(String areaEL) {
+		this.areaEL = areaEL;
+	}
+
+	/**
+	 * @return the fechaIniEL
+	 */
+	public Date getFechaIniEL() {
+		return fechaIniEL;
+	}
+
+	/**
+	 * @param fechaIniEL the fechaIniEL to set
+	 */
+	public void setFechaIniEL(Date fechaIniEL) {
+		this.fechaIniEL = fechaIniEL;
+	}
+
+	/**
+	 * @return the fechaFinEL
+	 */
+	public Date getFechaFinEL() {
+		return fechaFinEL;
+	}
+
+	/**
+	 * @param fechaFinEL the fechaFinEL to set
+	 */
+	public void setFechaFinEL(Date fechaFinEL) {
+		this.fechaFinEL = fechaFinEL;
+	}
+
+	/**
+	 * @return the experienciaLab
+	 */
+	public GenExperiencialaboral getExperienciaLab() {
+		return experienciaLab;
+	}
+
+	/**
+	 * @param experienciaLab the experienciaLab to set
+	 */
+	public void setExperienciaLab(GenExperiencialaboral experienciaLab) {
+		this.experienciaLab = experienciaLab;
+	}
+
+	/**
+	 * @return the expLabEliminar
+	 */
+	public GenExperiencialaboral getExpLabEliminar() {
+		return expLabEliminar;
+	}
+
+	/**
+	 * @param expLabEliminar the expLabEliminar to set
+	 */
+	public void setExpLabEliminar(GenExperiencialaboral expLabEliminar) {
+		this.expLabEliminar = expLabEliminar;
+	}
+
+	/**
+	 * @return the lstExperienciaLab
+	 */
+	public List<GenExperiencialaboral> getLstExperienciaLab() {
+		return lstExperienciaLab;
+	}
+
+	/**
+	 * @param lstExperienciaLab the lstExperienciaLab to set
+	 */
+	public void setLstExperienciaLab(List<GenExperiencialaboral> lstExperienciaLab) {
+		this.lstExperienciaLab = lstExperienciaLab;
+	}
+	/**
+	 * @return the persona
+	 */
+	public GenPersona getPersona() {
+		return persona;
+	}
+
+	/**
+	 * @param persona the persona to set
+	 */
+	public void setPersona(GenPersona persona) {
+		this.persona = persona;
+	}
 	/**
 	 * Mï¿½todo para cargar todos los select
 	 */
@@ -1674,6 +2403,12 @@ public class PersonaBean {
 		cargarTipoSangre();
 		cargarEstados();
 		cargarDiscapacidad();
+		
+		//CV
+		
+		cargarAreasLaboralEstudio();
+		cargarNivelesInstruccion();
+		cargarTiposEventos();
 	}
 
 	/**
@@ -1751,6 +2486,18 @@ public class PersonaBean {
 			if (sl != null)
 				this.cargarSalud(sl);
 
+			// setea la persona
+			setPersona(persona);
+			
+			// carga de formaciÃ²n acadÃ¨mica
+			findAllFormacionAcademica();
+			
+			// carga de capacitaciones
+			findAllCapacitaciones();
+			
+			// cargar de experiencia laboral
+			findAllExperianciaLaboral();
+			
 			setEdicion(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -2459,4 +3206,436 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 	}
+	
+	// *** MÃ¨todos de Curriculum
+	
+		/**
+		 * Lista de Areas Laborales Estudio desde Catalogos
+		 */
+		public void cargarAreasLaboralEstudio() {
+			getLstAreasLE().clear();
+			getLstAreasLE().add(new SelectItem("S/N","--Seleccione--"));
+			for (GenCatalogoItemsDet i :  manager.AllofItems("cat_areas_LE")) {
+				getLstAreasLE().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			}
+		}
+		
+		/**
+		 * Lista de Niveles de Instruccion desde Catalogos
+		 */
+		public void cargarNivelesInstruccion() {
+			getLstNivelesInstruccion().clear();
+			getLstNivelesInstruccion().add(new SelectItem("S/N","--Seleccione--"));
+			for (GenCatalogoItemsDet i :  manager.AllofItems("cat_nivel_instruccion")) {
+				getLstNivelesInstruccion().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			}
+		}
+		
+		/**
+		 * Lista de Tipos de Eventos desde Catalogos
+		 */
+		public void cargarTiposEventos() {
+			getLstTiposEventos().clear();
+			getLstTiposEventos().add(new SelectItem("S/N","--Seleccione--"));
+			for (GenCatalogoItemsDet i :  manager.AllofItems("cat_tipo_evento")) {
+				getLstTiposEventos().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			}
+		}
+		
+		/**
+		 * Permite cambiar el nombre del boton de agregar a actualizar en el momento
+		 * de edicion de datos de formacion academica, capacitacion y experiencia
+		 * laboral
+		 * 
+		 * @return
+		 */
+		public String nombreBoton() {
+			if (isEdicionFA() || isEdicionCa() || isEdicionEL()) {
+				return "Actualizar";
+			} else {
+				return "Insertar";
+			}
+		}
+
+		/********** formaciÃ²n acadÃ¨mica **********/
+		
+		/**
+		 * Metodo para mostrar los campos de Formacion Academica en el formulario
+		 * para su edicion
+		 * 
+		 * @param fAca
+		 */
+		public void cargarFormacionAc(GenFormacionacademica fAca) {
+			try {
+				setEdicionFA(true);
+				setIdFormacion(fAca.getFoaId());
+				setInstitucionFA(fAca.getFoaInstitucion());
+				setTitulo(fAca.getFoaTitulo());
+				setPaisFA(fAca.getFoaPais());
+				setNivelInstruccion(fAca.getFoaNivelInstruccion());
+				setAreaFA(fAca.getFoaAreaLaboralEstudio());
+				setDuracion(fAca.getFoaDuracion());
+				setFechaIniFA(fAca.getFoaFechaInicio());
+				setFechaFinFA(fAca.getFoaFechaFin());
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+
+		}
+		/**
+		 * Metodo para agregar o editar FormaciÃ³n AcadÃ©mica
+		 */
+		public void agregarEditarFormAc() {
+			try {
+				if(validarSelectItemsFA()){
+					System.out.println("---> ingreso validar campos ");
+					if(validarFechaFinFA()){
+						System.out.println("---> ingreso validar fecha Fin ");
+						if (!isEdicionFA()) {
+							System.out.println("---> ingreso guardar nuevo ");
+							manager.ingresarFormacionAc(getPersona(),
+									getAreaFA(), getTitulo().trim(), getInstitucionFA().trim(),
+									getFechaIniFA(), getFechaFinFA(),
+									getNivelInstruccion(),
+									getPaisFA(), getDuracion(),isRegistroSenescyt());
+							Mensaje.crearMensajeINFO("Datos guardados correctamente.");
+						} else {
+							System.out.println("---> ingreso editar ");
+							manager.editarFormacionAc(getIdFormacion(),
+									getAreaFA(), getTitulo().trim(), getInstitucionFA().trim(),
+									getFechaIniFA(), getFechaFinFA(),
+									getNivelInstruccion(),
+									getPaisFA(), getDuracion());
+							Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
+						}
+						limpiarCamposFA();
+						findAllFormacionAcademica();
+					}else {
+						Mensaje.crearMensajeWARN("La fecha fin debe ser mayor a la fecha inicio.");
+					}
+				}else 
+					Mensaje.crearMensajeWARN("Seleccione todos los campos para continuar.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al ingresar o editar la FormaciÃ³n AcadÃ©mica: "+e.getMessage());
+			}
+		}
+
+		public void limpiarCamposFA(){
+			setIdFormacion(0);
+			setAreaFA("S/N");
+			setTitulo("");
+			setInstitucionFA("");
+			setPaisFA("EC");
+			setDuracion(BigDecimal.ZERO);
+			setFechaIniFA(new Date());
+			setFechaFinFA(new Date());
+			setNivelInstruccion("S/N");
+			
+			setEdicionFA(false);
+			
+		}
+		public boolean validarSelectItemsFA() {
+			if (getAreaFA().equals("S/N") || getPaisFA().equals("S/N")
+					|| getNivelInstruccion().equals("S/N")) {
+				return false;
+			} else
+				return true;
+		}
+		public boolean validarSelectItemsCa() {
+			if (getAreaCa().equals("S/N")
+					|| getTipoEvento().equals("S/N") ) {
+				return false;
+			} else
+				return true;
+		}
+		public boolean validarSelectItemsEL() {
+			if (getAreaEL().equals("S/N") || getPaisEL().equals("S/N")) {
+				return false;
+			} else
+				return true;
+		}
+		
+		private boolean validarFechaFinFA() {
+				if (!getFechaFinFA().before(getFechaIniFA())){
+					return true;
+				} else{
+					return false;
+				}
+		}
+		private boolean validarFechaFinEL() {
+			if (!isActualEL()) {
+				if (!getFechaFinEL().before(getFechaIniEL())) {
+					return true;
+				} else
+					return false;
+			} else
+				return true;
+		}	  
+		/**
+		 * Mostrar dialogo de confirmaciÃ³n y setear la formacion academica
+		 * 
+		 * @param fa
+		 */
+		public void dialogElFormAcademica(GenFormacionacademica fa) {
+			setFormAcEliminar(fa);
+			RequestContext.getCurrentInstance().execute("PF('dlgefa').show();");
+		}
+		/**
+		 * Metodo para eliminar FormaciÃ³n AcadÃ©mica
+		 */
+		public void eliminarFormacionAca() {
+			try {
+				manager.eliminarFormAcademica(getFormAcEliminar());
+				Mensaje.crearMensajeINFO("Datos eliminados correctamente.");
+				findAllFormacionAcademica();
+				//liberar 
+				setFormAcEliminar(null);
+				
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+		}
+		public void findAllFormacionAcademica(){
+			setLstFormAcademica(manager
+					.findFormAcademicaBYCedula(getPersona().getPerDni()));
+		
+		}
+		public String validarBoleano(boolean valor){
+			String respuesta= "";
+			try {
+				if(valor == true){
+					respuesta = "Si";
+				}else {
+					respuesta = "No";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al validar campos Boleanos. "+e.getMessage());
+			}
+			return respuesta;
+		}
+		
+		public String validarItemCatalogo(String item){
+			String respuesta= "";
+			try {
+				respuesta= manager.catalogoItem(item);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al validar Item. "+e.getMessage());
+			}
+			return respuesta;
+		} 
+		
+		
+		/********** capacitaciones **********/
+		
+		/**
+		 * Metodo para mostrar los campos de Capacitaciones en el formulario para su
+		 * edicion
+		 * 
+		 * @param cap
+		 */
+		public void cargarCapacitacion(GenCapacitacione cap) {
+			try {
+				setEdicionCa(true);
+				setIdCapacitacion(cap.getCapId());
+				setAreaCa(cap.getCapAreaLaboralEstudio());
+				setNombreCap(cap.getCapNombre());
+				setTipoEvento(cap.getCapTipoEvento());
+				setNumHoras(cap.getCapNumHoras());
+				setNombreInstitucion(cap.getCapInstitucionCapacitacion());
+				setRelacionPerfil(cap.getCapRelacionPerfilProfesional());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+
+		}
+		
+		public void agregarEditarCapacitaciones() {
+			try {
+				if(validarSelectItemsCa()){
+					if (!isEdicionCa()) {
+						manager.ingresarCapacitaciones(getPersona(),
+								isRelacionPerfil(), getNombreCap().trim(),
+								getNombreInstitucion().trim(), getAreaCa(),
+								getTipoEvento(), getNumHoras());
+						Mensaje.crearMensajeINFO("Datos guardados correctamente.");
+					} else {
+						manager.editarCapacitaciones(getIdCapacitacion(),
+								isRelacionPerfil(), getNombreCap().trim(),
+								getNombreInstitucion().trim(), getAreaCa(),
+								getTipoEvento(), getNumHoras());
+						Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
+					}
+					limpiarCamposCa();
+					findAllCapacitaciones();
+				}else 
+					Mensaje.crearMensajeWARN("Seleccione todos los campos para continuar.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al ingresar o editar CapacitaciÃ³n: "+e.getMessage());
+			}
+		}
+		
+		public void limpiarCamposCa(){
+			setIdCapacitacion(0);
+			setRelacionPerfil(false);
+			setNombreCap("");
+			setNombreInstitucion("");
+			setAreaCa("S/N");
+			setTipoEvento("S/N");
+			setNumHoras(0);
+			
+			setEdicionCa(false);
+		}
+		
+		public void dialogElCapacitacion(GenCapacitacione ca) {
+			setCapaEliminar(ca);
+			RequestContext.getCurrentInstance().execute("PF('dlgeC').show();");
+		}
+		public void eliminarCapacitaciones() {
+			try {
+				manager.eliminarCapacitaciones(getCapaEliminar());
+				Mensaje.crearMensajeINFO("Datos eliminados correctamente.");
+				findAllCapacitaciones();
+				// liberar
+				setCapaEliminar(null);
+
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+		}
+			
+		public void findAllCapacitaciones(){
+			setLstCapacitaciones(manager
+					.findCapacitacionesByCedula(getPersona().getPerDni()));
+		}
+		
+		/********** experiencia laboral **********/
+		
+		/**
+		 * Metodo para mostrar los campos de Experiencia laboral en el formulario
+		 * para su edicion
+		 * 
+		 * @param exl
+		 */
+		public void cargarExperienciaLab(GenExperiencialaboral exl) {
+			try {
+				setEdicionEL(true);
+				setIdExperiencia(exl.getExlId());
+				setAreaEL(exl.getExlAreaLaboralEstudio());
+				setPuesto(exl.getExlPuesto());
+				setEmpresa(exl.getExlEmpresa());
+				setSectorPublico(exl.getExlSectorPublico());
+				setPaisEL(exl.getExlPais());
+				setFechaIniEL(exl.getExlFechaInicio());
+				setFechaFinEL(exl.getExlFechaFin());
+				setResponsabilidades(exl.getExlResponsabilidades());
+				setActualEL(exl.getExlActual());
+				if (exl.getExlActual().equals("S"))
+					setFechaFinEL(new Date());
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+		}
+		
+		public void agregarEditarExperienciaLab() {
+			try {
+				if(validarSelectItemsEL()){
+					if(validarFechaFinEL()){
+						if (!isEdicionEL()) {
+		
+							manager.ingresarExperienciaLab(getPersona(),
+									getAreaEL(), getPuesto().trim(), getEmpresa().trim(),
+									isSectorPublico(), getPaisEL(),
+									getFechaIniEL(), getFechaFinEL(),
+									getResponsabilidades().trim(), isActualEL());
+							Mensaje.crearMensajeINFO("Datos guardados correctamente.");
+						} else {
+							manager.editarExperienciaLab(getIdExperiencia(),
+									getAreaEL(), getPuesto(), getEmpresa(),
+									isSectorPublico(), getPaisEL(),
+									getFechaIniEL(), getFechaFinEL(),
+									getResponsabilidades(), isActualEL());
+							Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
+						}
+						limpiarCamposEL();
+						findAllExperianciaLaboral();
+					}else {
+						Mensaje.crearMensajeWARN("La fecha fin debe ser mayor a la fecha inicio.");
+					}
+				}else 
+					Mensaje.crearMensajeWARN("Seleccione todos los campos para continuar.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al ingresar o editar Experiencia Laboral: "+e.getMessage());
+			}
+		}
+		
+		
+		public void limpiarCamposEL(){
+			setIdExperiencia(0);
+			setAreaEL("S/N");
+			setPuesto("");
+			setEmpresa("");
+			setSectorPublico(false);
+			setPaisEL("EC");
+			setFechaIniEL(new Date());
+			setFechaFinEL(new Date());
+			setResponsabilidades("");
+			setActualEL(false);
+			
+			setEdicionEL(false);
+			
+		}
+		public void dialogElExpeLaboral(GenExperiencialaboral el) {
+			setExpLabEliminar(el);
+			RequestContext.getCurrentInstance().execute("PF('dlgeEl').show();");
+		}
+		
+		public void eliminarExperienciaLab() {
+			try {
+				manager.eliminarExperienciaLab(getExpLabEliminar());
+				Mensaje.crearMensajeINFO("Datos eliminados correctamente.");
+				findAllExperianciaLaboral();
+				setExpLabEliminar(null);
+
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR(e.getMessage());
+			}
+		}
+		public void findAllExperianciaLaboral(){
+			setLstExperienciaLab(manager
+					.findExperienciaLabByCedula(getPersona().getPerDni()));
+		}
+		
+		public String validarPaisEL(GenExperiencialaboral el){
+			String pais= "";
+			try {
+				pais= manager.catalogoItem(el.getExlPais());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				Mensaje.crearMensajeERROR("Error al validar PaÃ­s FormaciÃ³n AcadÃ©mica. "+e.getMessage());
+			}
+			return pais;
+		}
+		
+		public void switch_actualFA() {
+			 if(isActualFA()==true){
+				setFechaFinFA(null);
+			} else {
+				setFechaFinFA(new Date());
+			}
+		}
+		public void switch_actualEL() {
+			if (isActualEL()== true) {
+				setFechaFinEL(null);
+			} else {
+				setFechaFinEL(new Date());
+			}
+		}
 }
