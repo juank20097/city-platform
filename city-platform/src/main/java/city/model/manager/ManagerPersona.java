@@ -342,8 +342,9 @@ public class ManagerPersona {
 			String ciudad_nac, String lugar_nac, String pais_rec, String provincia_rec, String ciudad_rec,
 			String direccion_rec, String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos,
 			String nombre_pad, String nacionalidad_pad, String nombre_madre, String nacionalidad_madre,
-			String nombre_emergencia, String id_emergencia, String telefono_emergencia, String inscripcion_defuncion,
-			Date fecha_defuncion, String observacion) throws Exception {
+			String nombre_emergencia, String id_emergencia, String telefono_emergencia, String telefono2_emergencia,
+			String correo_emergencia, String inscripcion_defuncion, Date fecha_defuncion, String observacion)
+			throws Exception {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
 			personad.setPdeDni(dni);
@@ -370,6 +371,8 @@ public class ManagerPersona {
 			personad.setPdeFechaDefuncion(fecha_defuncion);
 			personad.setPdeInscripcionDefuncion(inscripcion_defuncion);
 			personad.setPdeObservacion(observacion);
+			personad.setPdeEmergContactoTelefono2(telefono2_emergencia);
+			personad.setPdeEmergContactoCorreo(correo_emergencia);
 			mngDao.insertar(personad);
 			System.out.println("Bien_insertar_personaDetalle");
 		} catch (Exception e) {
@@ -409,7 +412,8 @@ public class ManagerPersona {
 			String lugar_nac, String pais_rec, String provincia_rec, String ciudad_rec, String direccion_rec,
 			String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos, String nombre_pad,
 			String nacionalidad_pad, String nombre_madre, String nacionalidad_madre, String nombre_emergencia,
-			String id_emergencia, String telefono_emergencia, String inscripcion_defuncion, Date fecha_defuncion,
+			String id_emergencia, String telefono_emergencia, String telefono2_emergencia,
+			String correo_emergencia, String inscripcion_defuncion, Date fecha_defuncion,
 			String observacion) throws Exception {
 		try {
 			GenPersonaDetalle personad = this.PersonaDetalleByID(dni);
@@ -436,6 +440,8 @@ public class ManagerPersona {
 			personad.setPdeFechaDefuncion(fecha_defuncion);
 			personad.setPdeInscripcionDefuncion(inscripcion_defuncion);
 			personad.setPdeObservacion(observacion);
+			personad.setPdeEmergContactoTelefono2(telefono2_emergencia);
+			personad.setPdeEmergContactoCorreo(correo_emergencia);
 			mngDao.actualizar(personad);
 			System.out.println("Bien_mod_personaDetalle");
 		} catch (Exception e) {
@@ -496,11 +502,12 @@ public class ManagerPersona {
 	 */
 	public void insertarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
 			String con_alcohol, String con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
-			String gru_sanguineo, String medicamentos_cronicos1,String medicamentos_cronicos2, String niv_azucar, String ejercicios, BigDecimal peso,
-			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
-			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
-			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
-			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
+			String gru_sanguineo, String medicamentos_cronicos1, String medicamentos_cronicos2, String niv_azucar,
+			String ejercicios, BigDecimal peso, String presion, Boolean rea_ejercicio, Boolean vegetariano,
+			String alergias2, Boolean embriagar, String m_muerte, Integer m_edad, String m_enfermedades,
+			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
+			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
+			String periodicidad_tabaco,Boolean estupefacientes,String periodicidad_estupefacientes) throws Exception {
 		try {
 			GenSalud salud = new GenSalud();
 			salud.setPerDni(dni);
@@ -537,6 +544,8 @@ public class ManagerPersona {
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
+			salud.setSldEstupefacientes(estupefacientes);
+			salud.setSldPeriodicidadEstupefacientes(periodicidad_estupefacientes);
 			mngDao.insertar(salud);
 			System.out.println("Bien_insertar_salud");
 		} catch (Exception e) {
@@ -570,11 +579,12 @@ public class ManagerPersona {
 	 */
 	public void editarSalud(String dni, String alergias, BigDecimal altura, String asegurado, String carnet,
 			String con_alcohol, String con_tabaco, String dis_tipo, String dis_grado, String con_medicina,
-			String gru_sanguineo, String medicamentos_cronicos1,String medicamentos_cronicos2, String niv_azucar, String ejercicios, BigDecimal peso,
-			String presion, Boolean rea_ejercicio, Boolean vegetariano, String alergias2, Boolean embriagar,
-			String m_muerte, Integer m_edad, String m_enfermedades, Boolean m_fallecio, String medico, String observacion,
-			String p_muerte, Integer p_edad, String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol,
-			String periodicidad_embriaga, String periodicidad_tabaco) throws Exception {
+			String gru_sanguineo, String medicamentos_cronicos1, String medicamentos_cronicos2, String niv_azucar,
+			String ejercicios, BigDecimal peso, String presion, Boolean rea_ejercicio, Boolean vegetariano,
+			String alergias2, Boolean embriagar, String m_muerte, Integer m_edad, String m_enfermedades,
+			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
+			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
+			String periodicidad_tabaco,Boolean estupefacientes,String periodicidad_estupefacientes) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
 			salud.setSldAlergias(alergias);
@@ -610,6 +620,8 @@ public class ManagerPersona {
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
+			salud.setSldEstupefacientes(estupefacientes);
+			salud.setSldPeriodicidadEstupefacientes(periodicidad_estupefacientes);
 			mngDao.actualizar(salud);
 			System.out.println("Bien_mod_salud");
 		} catch (Exception e) {

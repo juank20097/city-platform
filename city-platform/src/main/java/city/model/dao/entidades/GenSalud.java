@@ -116,6 +116,12 @@ public class GenSalud implements Serializable {
 
 	@Column(name="sld_medicamentos_cronicos2")
 	private String sldMedicamentosCronicos2;
+	
+	@Column(name="sld_estupefacientes")
+	private Boolean sldEstupefacientes;
+	
+	@Column(name="sld_periodicidad_estupefacientes")
+	private String sldPeriodicidadEstupefacientes;
 
 	// bi-directional one-to-one association to GenPersona
 	@OneToOne
@@ -410,6 +416,22 @@ public class GenSalud implements Serializable {
 
 	public void setSldConsumeTabaco(String sldConsumeTabaco) {
 		this.sldConsumeTabaco = sldConsumeTabaco;
+	}
+	
+	public Boolean getSldEstupefacientes() {
+		return this.sldEstupefacientes;
+	}
+
+	public void setSldEstupefacientes(Boolean sldEstupefacientes) {
+		this.sldEstupefacientes = sldEstupefacientes;
+	}
+
+	public String getSldPeriodicidadEstupefacientes() {
+		return this.sldPeriodicidadEstupefacientes;
+	}
+
+	public void setSldPeriodicidadEstupefacientes(String sldPeriodicidadEstupefacientes) {
+		this.sldPeriodicidadEstupefacientes = sldPeriodicidadEstupefacientes;
 	}
 
 }

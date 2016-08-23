@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenZona;
@@ -25,17 +28,26 @@ import city.model.manager.ManagerTerritorio;
 @ManagedBean
 public class ComunidadBean {
 
-	// Atributos de la Clase
 	@EJB
 	private ManagerTerritorio manager;
 
 	// Atributos de la clase comunidad
+	@NotEmpty(message="ID no debe estar vacío.")
+	@NotBlank(message="ID no debe ser solo espacios blancos.")
 	private String comId;
+	@NotEmpty(message="ESTADO no debe estar vacío.")
+	@NotBlank(message="ESTADO no debe ser solo espacios blancos.")
 	private String comEstado;
 	private BigDecimal comHectareas;
+	@NotEmpty(message="LINK MAPA no debe estar vacío.")
+	@NotBlank(message="LINK MAPA no debe ser solo espacios blancos.")
 	private String comLinkMapa;
+	@NotEmpty(message="LINK PDF no debe estar vacío.")
+	@NotBlank(message="LINK PDF no debe ser solo espacios blancos.")
 	private String comLinkPdf;
 	private BigDecimal comMetrosCuadrados;
+	@NotEmpty(message="NOMBRE no debe estar vacío.")
+	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
 	private String comNombre;
 	private Boolean comUbicacion;
 
@@ -384,7 +396,7 @@ public class ComunidadBean {
 	public void cargarZonas() {
 		getL_zonas_s().clear();
 		try {
-			for (GenZona i : manager.findAllzonasActivas()) {
+			for (GenZona i : manager.findAllZonasA()) {
 				getL_zonas_s().add(
 						new SelectItem(i.getZonNombre(), i.getZonNombre()));
 			}

@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.persistence.Column;
 import javax.servlet.http.HttpSession;
 import javax.xml.rpc.ServiceException;
 
@@ -99,6 +100,8 @@ public class PersonaBean {
 	private String pdeProvinciaNacimiento;
 	private String pdeProvinciaResidencia;
 	private Integer pdeNumHijos;
+	private String pdeEmergContactoTelefono2;
+	private String pdeEmergContactoCorreo;
 
 	// Atributos de la clase salud
 	private String sldAlergias;
@@ -134,6 +137,8 @@ public class PersonaBean {
 	private String sldPeriodicidadAlcohol;
 	private String sldPeriodicidadEmbriagar;
 	private String sldPeriodicidadTabaco;
+	private Boolean sldEstupefacientes;
+	private String sldPeriodicidadEstupefacientes;
 
 	private boolean sld_padre;
 	private boolean sld_madre;
@@ -216,6 +221,66 @@ public class PersonaBean {
 
 		// cargarPersonas();
 
+	}
+
+	/**
+	 * @return the sldEstupefacientes
+	 */
+	public Boolean getSldEstupefacientes() {
+		return sldEstupefacientes;
+	}
+
+	/**
+	 * @param sldEstupefacientes
+	 *            the sldEstupefacientes to set
+	 */
+	public void setSldEstupefacientes(Boolean sldEstupefacientes) {
+		this.sldEstupefacientes = sldEstupefacientes;
+	}
+
+	/**
+	 * @return the sldPeriodicidadEstupefacientes
+	 */
+	public String getSldPeriodicidadEstupefacientes() {
+		return sldPeriodicidadEstupefacientes;
+	}
+
+	/**
+	 * @param sldPeriodicidadEstupefacientes
+	 *            the sldPeriodicidadEstupefacientes to set
+	 */
+	public void setSldPeriodicidadEstupefacientes(String sldPeriodicidadEstupefacientes) {
+		this.sldPeriodicidadEstupefacientes = sldPeriodicidadEstupefacientes;
+	}
+
+	/**
+	 * @return the pdeEmergContactoTelefono2
+	 */
+	public String getPdeEmergContactoTelefono2() {
+		return pdeEmergContactoTelefono2;
+	}
+
+	/**
+	 * @param pdeEmergContactoTelefono2
+	 *            the pdeEmergContactoTelefono2 to set
+	 */
+	public void setPdeEmergContactoTelefono2(String pdeEmergContactoTelefono2) {
+		this.pdeEmergContactoTelefono2 = pdeEmergContactoTelefono2;
+	}
+
+	/**
+	 * @return the pdeEmergContactoCorreo
+	 */
+	public String getPdeEmergContactoCorreo() {
+		return pdeEmergContactoCorreo;
+	}
+
+	/**
+	 * @param pdeEmergContactoCorreo
+	 *            the pdeEmergContactoCorreo to set
+	 */
+	public void setPdeEmergContactoCorreo(String pdeEmergContactoCorreo) {
+		this.pdeEmergContactoCorreo = pdeEmergContactoCorreo;
 	}
 
 	/**
@@ -1826,12 +1891,13 @@ public class PersonaBean {
 		getL_estados().clear();
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estados");
 		for (GenCatalogoItemsDet i : completo) {
-			getL_estados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+			if (!i.getIteCodigo().trim().equals("P"))
+				getL_estados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
 	/**
-	 * Metodo para cambiar el char nombre por el nombre completo
+	 * Método para cambiar el char nombre por el nombre completo
 	 * 
 	 * @param estado
 	 * @return
@@ -1897,8 +1963,8 @@ public class PersonaBean {
 						getPdeDireccion(), getPdeCondicionCiudadana(), getPdeConyuge(), getPdeFechaMatrimonio(),
 						getPdeNumHijos(), getPdeNombrePadre(), getPdeNacionalidadPadre(), getPdeNombreMadre(),
 						getPdeNacionalidadMadre(), getPdeEmergContactoNombres(), getPdeEmergContactoId(),
-						getPdeEmergContactoTelefono(), getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
-						getPdeObservacion());
+						getPdeEmergContactoTelefono(), getPdeEmergContactoTelefono2(), getPdeEmergContactoCorreo(),
+						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(), getPdeObservacion());
 			} else {
 				manager.editarPersonaDetalle(getPerDni(), getPdeFoto(), getPdePaisNacimiento(),
 						getPdeProvinciaNacimiento(), getPdeCiudadNacimiento(), getPdeLugarNacimiento(),
@@ -1906,8 +1972,8 @@ public class PersonaBean {
 						getPdeDireccion(), getPdeCondicionCiudadana(), getPdeConyuge(), getPdeFechaMatrimonio(),
 						getPdeNumHijos(), getPdeNombrePadre(), getPdeNacionalidadPadre(), getPdeNombreMadre(),
 						getPdeNacionalidadMadre(), getPdeEmergContactoNombres(), getPdeEmergContactoId(),
-						getPdeEmergContactoTelefono(), getPdeInscripcionDefuncion(), getPdeFechaDefuncion(),
-						getPdeObservacion());
+						getPdeEmergContactoTelefono(), getPdeEmergContactoTelefono2(), getPdeEmergContactoCorreo(),
+						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(), getPdeObservacion());
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
@@ -1945,6 +2011,8 @@ public class PersonaBean {
 			setPdePaisResidencia(persona.getPdePaisResidencia());
 			setPdeProvinciaNacimiento(persona.getPdeProvinciaNacimiento());
 			setPdeProvinciaResidencia(persona.getPdeProvinciaResidencia());
+			setPdeEmergContactoTelefono2(persona.getPdeEmergContactoTelefono2());
+			setPdeEmergContactoCorreo(persona.getPdeEmergContactoCorreo());
 			// actualizaciï¿½n de lista de sitios
 			cargarCiudadesNac(persona.getPdeProvinciaNacimiento());
 			cargarCiudadesRes(persona.getPdeProvinciaResidencia());
@@ -2060,6 +2128,8 @@ public class PersonaBean {
 		setPdePaisResidencia("");
 		setPdeProvinciaNacimiento("");
 		setPdeProvinciaResidencia("");
+		setPdeEmergContactoTelefono2("");
+		setPdeEmergContactoCorreo("");
 		// salud
 		setSldAlergias("");
 		setSldAltura(null);
@@ -2094,6 +2164,8 @@ public class PersonaBean {
 		setSldPeriodicidadAlcohol("");
 		setSldPeriodicidadEmbriagar("");
 		setSldPeriodicidadTabaco("");
+		setSldEstupefacientes(false);
+		setSldPeriodicidadEstupefacientes("");
 		setEdicion(false);
 	}
 
@@ -2108,7 +2180,7 @@ public class PersonaBean {
 		try {
 			GenSalud sal = manager.SaludByID(getPerDni());
 			if (sal == null) {
-				if (getSldDiscapacidadGrado()==null){
+				if (getSldDiscapacidadGrado() == null) {
 					setSldDiscapacidadGrado("0");
 				}
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
@@ -2120,7 +2192,8 @@ public class PersonaBean {
 						getSldMadreEdad(), getSldMadreEnfermedadesActuales(), getSldMadreFallecio(),
 						getSldNombreLugarCentroMedico(), getSldObservaciones(), getSldPadreCausaMuerte(),
 						getSldPadreEdad(), getSldPadreEnfermedadesActuales(), getSldPadreFallecio(),
-						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
+						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco(),
+						getSldEstupefacientes(), getSldPeriodicidadEstupefacientes());
 			} else {
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
@@ -2131,7 +2204,8 @@ public class PersonaBean {
 						getSldMadreEdad(), getSldMadreEnfermedadesActuales(), getSldMadreFallecio(),
 						getSldNombreLugarCentroMedico(), getSldObservaciones(), getSldPadreCausaMuerte(),
 						getSldPadreEdad(), getSldPadreEnfermedadesActuales(), getSldPadreFallecio(),
-						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco());
+						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco(),
+						getSldEstupefacientes(), getSldPeriodicidadEstupefacientes());
 			}
 
 		} catch (Exception e) {
@@ -2260,7 +2334,7 @@ public class PersonaBean {
 			e1.printStackTrace();
 		}
 		ClienteWS conn = new ClienteWS("", "");
-	
+
 		if (this.perDni == null || this.perDni.isEmpty())
 			return;
 		try {

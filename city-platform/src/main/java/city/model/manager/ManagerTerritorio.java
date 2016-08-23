@@ -1,7 +1,6 @@
 package city.model.manager;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -11,6 +10,9 @@ import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenDistrito;
+import city.model.dao.entidades.GenManzana;
+import city.model.dao.entidades.GenManzanaDetalle;
+import city.model.dao.entidades.GenManzanaPosicione;
 import city.model.dao.entidades.GenSectore;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
@@ -20,7 +22,7 @@ import city.model.dao.entidades.GenZonasComunidadePK;
 public class ManagerTerritorio {
 	@EJB
 	ManagerDAO mngDAO;
-	
+
 	// //////////////////////////////////////////////////////////(BARRIOS)/////////////////////////////////////////////////////////////////////
 
 	public GenBarrio findBarrioById(String idBarrio) throws Exception {
@@ -46,42 +48,12 @@ public class ManagerTerritorio {
 	}
 
 	// //////////////////////////////////////////////////////////(COMUNIDADES)/////////////////////////////////////////////////////////////////////
-	/**
-	 * Creación de metodos para el manejo de la tabla COMUNIDADES
-	 * 
-	 */
 
-	/**
-	 * Metodo para listar todas los datos existentes
-	 * 
-	 * @return La lista de todas los datos encontradas
-	 */
 	@SuppressWarnings("unchecked")
 	public List<GenComunidade> findAllcomunidades() throws Exception {
 		return mngDAO.findAll(GenComunidade.class);
 	}// Cierre del metodo
 
-	/**
-	 * Metodo para listar todas los datos existentes
-	 * 
-	 * @return La lista de todas los datos encontradas
-	 */
-	@SuppressWarnings("unchecked")
-	public List<GenZona> findAllzonasActivas() throws Exception {
-		List<GenZona> lz = mngDAO.findWhere(GenZona.class, "o.zonEstado='A'", "o.zonNombre asc");
-		if (lz != null) {
-			return lz;
-		} else {
-			lz = new ArrayList<GenZona>();
-			return lz;
-		}
-	}// Cierre del metodo
-
-	/**
-	 * Metodo para listar todas los datos existentes
-	 * 
-	 * @return La lista de todas los datos encontradas
-	 */
 	@SuppressWarnings("unchecked")
 	public List<GenZonasComunidade> findAllzonaComu() throws Exception {
 		return mngDAO.findAll(GenZonasComunidade.class);
@@ -120,25 +92,10 @@ public class ManagerTerritorio {
 		}
 	}
 
-	/**
-	 * Metodo para obtener el Atributo mediante un ID
-	 * 
-	 * @param dni
-	 * @return Objeto
-	 * @throws Exception
-	 */
 	public GenComunidade ComunidadesByID(String dni) throws Exception {
 		return (GenComunidade) mngDAO.findById(GenComunidade.class, dni);
 	}// Cierre del metodo
 
-	/**
-	 * Método para ingresar una Comunidad a la base de datos
-	 * 
-	 * @param nombre
-	 * @param direccion
-	 * @param descripcion
-	 * @throws Exception
-	 */
 	public void insertarComunidad(String id, String nombre, BigDecimal hectareas, BigDecimal metros, Boolean ubicacion,
 			String mapa, String pdf) throws Exception {
 		try {
@@ -159,14 +116,6 @@ public class ManagerTerritorio {
 		}
 	}// Cierre del metodo
 
-	/**
-	 * Método para ingresar una Comunidad a la base de datos
-	 * 
-	 * @param nombre
-	 * @param direccion
-	 * @param descripcion
-	 * @throws Exception
-	 */
 	public void insertarZonaCom(String id_com, String nom_zon) throws Exception {
 		try {
 			GenZona z = this.zonaXNombre(nom_zon);
@@ -186,16 +135,6 @@ public class ManagerTerritorio {
 		}
 	}// Cierre del metodo
 
-	/**
-	 * Metodo para editar un Atributo en la base de datos
-	 * 
-	 * @param id
-	 * @param nombre
-	 * @param direccion
-	 * @param descripcion
-	 * @param estado
-	 * @throws Exception
-	 */
 	public void editarComunidad(String id, String nombre, BigDecimal hectareas, BigDecimal metros, Boolean ubicacion,
 			String estado, String mapa, String pdf) throws Exception {
 		try {
@@ -215,22 +154,12 @@ public class ManagerTerritorio {
 		}
 	}// Cierre del metodo
 
-	/**
-	 * Metodo para listar
-	 * 
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<GenSectore> AllSectoresActivos() {
 		List<GenSectore> l = mngDAO.findWhere(GenSectore.class, "o.secEstado='A'", null);
 		return l;
 	}// Cierre del metodo
 
-	/**
-	 * Metodo para listar
-	 * 
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
 		List<GenCatalogoItemsDet> li = mngDAO.findWhere(GenCatalogoItemsDet.class,
@@ -250,47 +179,98 @@ public class ManagerTerritorio {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// //////////////////////////////////////////////////////////(DISTRITOS)/////////////////////////////////////////////////////////////////////
-	
-	public GenDistrito findDistritoById(String idZona) throws Exception{
+
+	public GenDistrito findDistritoById(String idZona) throws Exception {
 		return (GenDistrito) mngDAO.findById(GenDistrito.class, idZona);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<GenDistrito> findAllDistritos(){
+	public List<GenDistrito> findAllDistritos() {
 		return mngDAO.findAll(GenDistrito.class);
 	}
-	
-	public void insertarDistrito(GenDistrito zona) throws Exception{
+
+	public void insertarDistrito(GenDistrito zona) throws Exception {
 		mngDAO.insertar(zona);
 	}
-	
-	public void modicarDistrito(GenDistrito zona) throws Exception{
+
+	public void modicarDistrito(GenDistrito zona) throws Exception {
 		mngDAO.actualizar(zona);
 	}
-	
-	public GenZona findZonaById(String idZona) throws Exception{
+
+	public GenZona findZonaById(String idZona) throws Exception {
 		return (GenZona) mngDAO.findById(GenZona.class, idZona);
 	}
-	
+
 	// //////////////////////////////////////////////////////////(ZONAS)/////////////////////////////////////////////////////////////////////
-	
+
 	@SuppressWarnings("unchecked")
-	public List<GenZona> findAllZonas(){
+	public List<GenZona> findAllZonas() {
 		return mngDAO.findAll(GenZona.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<GenZona> findAllZonasA(){
-		return mngDAO.findWhere(GenZona.class,"o.zonEstado='A'",null);
+	public List<GenZona> findAllZonasA() {
+		return mngDAO.findWhere(GenZona.class, "o.zonEstado='A'", null);
 	}
-	
-	public void insertarZona(GenZona zona) throws Exception{
+
+	public void insertarZona(GenZona zona) throws Exception {
 		mngDAO.insertar(zona);
 	}
-	
-	public void modicarZona(GenZona zona) throws Exception{
+
+	public void modicarZona(GenZona zona) throws Exception {
 		mngDAO.actualizar(zona);
 	}
+
+	// //////////////////////////////////////////////////////////(MANZANAS)/////////////////////////////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenManzana> findAllManzanas() {
+		return mngDAO.findAll(GenManzana.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenManzana> findAllManzanasA() {
+		return mngDAO.findWhere(GenManzana.class, "o.manEstado='A'", null);
+	}
+
+	public void insertarManzana(GenManzana manzana) throws Exception {
+		mngDAO.insertar(manzana);
+	}
+
+	public void modicarManzana(GenManzana manzana) throws Exception {
+		mngDAO.actualizar(manzana);
+	}
+
+	// //////////////////////////////////////////////////////////(MANZANAS-DETALLES)/////////////////////////////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenManzanaDetalle> findAllManzanasDetalles() {
+		return mngDAO.findAll(GenManzanaDetalle.class);
+	}
+
+	public void insertarManzanaDetalle(GenManzanaDetalle manzana) throws Exception {
+		mngDAO.insertar(manzana);
+	}
+
+	public void modicarManzanaDetalle(GenManzanaDetalle manzana) throws Exception {
+		mngDAO.actualizar(manzana);
+	}
+
+	// //////////////////////////////////////////////////////////(MANZANAS-POSICIONES)/////////////////////////////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenManzanaPosicione> findAllManzanasPosiciones() {
+		return mngDAO.findAll(GenManzanaPosicione.class);
+	}
+
+	public void insertarManzanaPosiciones(GenManzanaPosicione manzana) throws Exception {
+		mngDAO.insertar(manzana);
+	}
+
+	public void modicarManzanaPosiciones(GenManzanaPosicione manzana) throws Exception {
+		mngDAO.actualizar(manzana);
+	}
+
 }

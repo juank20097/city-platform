@@ -22,6 +22,9 @@ public class GenManzana implements Serializable {
 
 	@Column(name="man_nombre")
 	private String manNombre;
+	
+	@Column(name="man_estado",columnDefinition="bpchar")
+	private String manEstado;
 
 	//bi-directional many-to-one association to GenManzanaDetalle
 	@OneToMany(mappedBy="genManzana")
@@ -105,6 +108,14 @@ public class GenManzana implements Serializable {
 
 	public void setGenBarrio(GenBarrio genBarrio) {
 		this.genBarrio = genBarrio;
+	}
+	
+	public String getManEstado() {
+		return this.manEstado;
+	}
+
+	public void setManEstado(String manEstado) {
+		this.manEstado = manEstado;
 	}
 
 }
