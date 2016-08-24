@@ -32,7 +32,7 @@ and open the template in the editor.
 				<c:forEach var="t" items="#{sesionBean.menu}">
 					<b:dropMenu value="#{t.nombre}" iconAwesome="fa fa-folder">
 						<c:forEach var="i" items="#{t.lstLinks}">
-							<b:navLink value="#{i.nombre}" href="#{i.link}"
+        						<b:navLink value="#{i.nombre}" href="#{i.link}"
 								iconAwesome="fa fa-location-arrow" />
 						</c:forEach>
 					</b:dropMenu>

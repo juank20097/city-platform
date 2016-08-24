@@ -7,6 +7,10 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
+	<h:form>
+		<p:remoteCommand name="onload"
+			actionListener="#{personaBean.perAsignada()}" autoRun="true" />
+	</h:form>
 	<ui:define name="titulo">
             Yachay City Platform
         </ui:define>
@@ -54,8 +58,8 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-				<p:dataTable id="dt_per" var="per" value="#{personaBean.l_persona}" reflow="true"
-					rows="10" paginator="true">
+				<p:dataTable id="dt_per" var="per" value="#{personaBean.l_persona}"
+					reflow="true" rows="10" paginator="true">
 					<p:column headerText="OPCIONES">
 						<b:commandButton iconAwesome="fa fa-pencil-square-o"
 							style="padding: 0; border: none; background: none;color: #000"
@@ -65,7 +69,8 @@
 						</b:commandButton>
 					</p:column>
 
-					<p:column headerText="DNI" filterBy="#{per.perDni}" filterMatchMode="contains">
+					<p:column headerText="DNI" filterBy="#{per.perDni}"
+						filterMatchMode="contains">
 						<h:outputText value="#{per.perDni}" />
 					</p:column>
 
@@ -73,7 +78,9 @@
 						<h:outputText value="#{per.perTipoDni}" />
 					</p:column>
 
-					<p:column headerText="NOMBRES"  filterBy="#{per.perNombres} #{per.perApellidos}" filterMatchMode="contains">
+					<p:column headerText="NOMBRES"
+						filterBy="#{per.perNombres} #{per.perApellidos}"
+						filterMatchMode="contains">
 						<h:outputText value="#{per.perNombres} #{per.perApellidos}" />
 					</p:column>
 				</p:dataTable>

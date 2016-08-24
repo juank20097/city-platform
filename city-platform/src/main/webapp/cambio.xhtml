@@ -20,7 +20,7 @@
 		style="margin-top: 0; top: 0; background: linear-gradient(to bottom right, #1c68a6 40%, #ffffff 100%);"
 		class="wrapper">
 		<div class="container">
-			<h1 style="color: white;">Yachay City Platform</h1>
+			<h1 style="color: white;">Cambio de Clave</h1>
 
 			<h:form id="frmlog" class="form">
 				<b:growl delay="4000" placementFrom="top" show-detail="false"
@@ -31,27 +31,15 @@
 					placeholder="USUARIO" value="#{sesionBean.usuario}">
 				</b:inputText>
 				<b:inputSecret style="color:black; width: 350px;"
-					placeholder="CONTRASE&Ntilde;A" value="#{sesionBean.pass}">
+					placeholder="CONTRASE&Ntilde;A NUEVA" value="#{sesionBean.pass}">
 				</b:inputSecret>
-				<b:commandButton size="lg" id="login-button" value="Ingresar"
-					iconAwesome="check-square-o" action="#{sesionBean.logIn()}"
+				<b:inputSecret style="color:black; width: 350px;"
+					placeholder="REPITA CONTRASE&Ntilde;A" value="#{sesionBean.pass2}">
+				</b:inputSecret>
+				<b:commandButton size="lg" id="login-button" value="Cambiar Clave"
+				 action="#{sesionBean.cambiarClave()}"
 					styleClass="btn-block btnSend" look="info" update="frmlog" />
 				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<br />
-				<b:commandButton value="Recuperar Contraseña" immediate="true" look="danger" size="sm"
-							action="contrasena?faces-redirect=true"></b:commandButton>
 			</h:form>
 						
 		</div>

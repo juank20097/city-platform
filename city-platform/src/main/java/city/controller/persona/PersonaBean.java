@@ -15,7 +15,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import javax.persistence.Column;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -274,25 +273,7 @@ public class PersonaBean {
 	@PostConstruct
 	public void init() {
 
-		// loadWS();
-		// proceso de filtrado de tabla
-		// this.personas = new LazyDataModel<GenPersona>() {
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public List<GenPersona> load(int first, int pageSize, String
-		// sortField, SortOrder sortOrder,
-		// Map<String, String> filters) {
-		// List<GenPersona> result = inventoryManagerEJB.getResultList(first,
-		// pageSize, sortField, sortOrder,
-		// filters);
-		// model.setRowCount(inventoryManagerEJB.count(sortField, sortOrder,
-		// filters));
-		// return result;
-		// }
-		// };
-
-		// session.validarSesion();
+		
 		edicion = false;
 		select_n = true;
 		select_r = true;
@@ -331,9 +312,7 @@ public class PersonaBean {
 		areaFA = "S/N";
 		tipoEvento = "S/N";
 		nivelInstruccion = "S/N";
-		
-		// cargarPersonas();
-
+		cargarPersona(session.validarPersona("npersona.xhtml"));
 	}
 
 	/**
@@ -1771,6 +1750,7 @@ public class PersonaBean {
 	public String nuevaPersona() {
 		setSelect_n(true);
 		setSelect_r(true);
+		cleanDatos();
 		this.carga();
 		return "npersona?faces-redirect=true";
 	}
@@ -2452,13 +2432,12 @@ public class PersonaBean {
 	}
 
 	/**
-	 * Metodo para cargar una Persona para su edicion
+	 * Metodo para cargar una Persona para su edición
 	 * 
 	 * @param persona
 	 * @return
 	 */
 	public String cargarPersona(GenPersona persona) {
-		System.out.println("persona 2");
 		try {
 			this.carga();
 			setSelect_n(false);
@@ -2505,6 +2484,7 @@ public class PersonaBean {
 		}
 		return "npersona?faces-redirect=true";
 	}
+	
 
 	/**
 	 * Metodo para setear datos y regresar la vista
@@ -2524,13 +2504,13 @@ public class PersonaBean {
 	public void cargarPersonas() {
 		try {
 			getL_persona().clear();
-			System.out.println("personas 1");
 			getL_persona().addAll(manager.findAllPersonas());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Lista de TiposDNI
@@ -3637,5 +3617,9 @@ public class PersonaBean {
 			} else {
 				setFechaFinEL(new Date());
 			}
+		}
+		
+		public void perAsignada(){
+			cargarPersona(session.validarPersona("npersona.xhtml"));
 		}
 }
