@@ -115,6 +115,35 @@ public class ConsumeREST {
 		return objeto;
 	}
 	
+	public static String postClientRestEasy2(String url, JSONObject peticion) throws Exception{
+		//Define the API URI where API will be accessed
+	    ClientRequest request = new ClientRequest(url);
+        //Set the accept header to tell the accepted response format
+	    request.body("application/json", peticion.toJSONString());
+	    
+	    //Send the request
+	    ClientResponse<String> response = request.post(String.class);
+	     
+	    //First validate the api status code
+	    int apiResponseCode = response.getResponseStatus().getStatusCode();
+	    if(response.getResponseStatus().getStatusCode() != 200)
+	    {
+	        throw new RuntimeException("Failed with HTTP error code : " + apiResponseCode);
+	    }
+	    
+	    BufferedReader br = new BufferedReader(new InputStreamReader(
+				new ByteArrayInputStream(response.getEntity().getBytes())));
+
+		String output;
+		String objeto = "";
+
+		while ((output = br.readLine()) != null) {
+			objeto += output;
+		}
+
+		return objeto;
+	}
+	
 	/**
 	 * CONSUME UN SERVICIO DE REST EASY TIPO GET DEVOLVIENDO UN OBJECT
 	 * @param urlServicio

@@ -31,11 +31,17 @@
 					placeholder="USUARIO" value="#{sesionBean.usuario}">
 				</b:inputText>
 				<b:commandButton size="lg" id="login-button" value="Enviar Correo"
-				 action="#{sesionBean.EnviarClave()}"
+					action="#{sesionBean.EnviarClave()}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
 					styleClass="btn-block btnSend" look="info" update="frmlog" />
 				<br />
 			</h:form>
-						
+
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage value="../resources/img/cargando.gif" />
+			</p:dialog>
 		</div>
 
 		<ul class="bg-bubbles">
@@ -51,5 +57,7 @@
 			<li></li>
 		</ul>
 	</div>
+
+
 </h:body>
 </html>

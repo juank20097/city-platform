@@ -9,17 +9,14 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.json.JsonObject;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.primefaces.context.RequestContext;
 
 import city.model.access.Menu;
+import city.model.dao.entidades.GenParametro;
 import city.model.dao.entidades.GenPersona;
 import city.model.generic.ConsumeREST;
-import city.model.generic.Funciones;
-import city.model.generic.Mail;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerAcceso;
 import city.model.manager.ManagerPersona;
@@ -263,8 +260,9 @@ public class SesionBean implements Serializable {
 	
 	public String WSUsuario(String usuario){
 		String r = "";
-		String param = "http://10.20.8.190:8080/yachay-ws/usuario/"+usuario+";";
 		try {
+			GenParametro p = mngAcc.ParametroByID("usuario_ws");
+			String param = p.getParValor()+"/"+usuario;
 			r = ConsumeREST.consumeGetRestEasyObject2(param);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -274,30 +272,33 @@ public class SesionBean implements Serializable {
 	}
 	
 	public void EnviarClave(){
-		GenPersona p= new GenPersona();
-		String usu=WSUsuario(getUsuario()); //método de obtener cedula por usuario
-		p=ponerPersona(usu);
-		if (p!=null){
-			String t = "<html>"
-					+ "<body>"
-					+ "<p>Ingrese al siguiente link para cambiar su clave:<a href='http://localhost:8080/city-platform/cambio.xhtml'>Link de Cambio</a></p>"
-					+ "</body>"
-					+ "</html>";
+		String cambio="";
+		String usu=WSUsuario(getUsuario());
+		GenPersona p=ponerPersona(usu);
 			try {
-				Mail.generateAndSendEmail(p.getPerCorreo(), "Cambio de Clave YACHAY CITY PLATFORM", t);
+				GenParametro p1 = mngAcc.ParametroByID("direccion_cambio");
+				cambio= p1.getParValor();
+				if (p!=null){
+					String t = "<html>"
+							+ "<body>"
+							+ "<p>Ingrese al siguiente link para cambiar su clave:<a href='"+cambio+"'>Cambio de Credencial</a></p>"
+							+ "</body>"
+							+ "</html>";
+				envioMailWS(p.getPerCorreo(), "Cambio de Credenciales", t);
 				Mensaje.crearMensajeINFO("El correo se envió satisfactoriamente.");
+				}else{
+					Mensaje.crearMensajeERROR("El usuario ingresado no existe");
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
-			Mensaje.crearMensajeERROR("El usuario ingresado no existe");
-		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public String cambiarClave(){
 		String r="";
+		String t="";
 		String ws=WSUsuario(getUsuario());
 		if (ws.equals("ERROR") || ws.equals("")){
 			Mensaje.crearMensajeERROR("Usuario no existente.");
@@ -307,8 +308,17 @@ public class SesionBean implements Serializable {
 				json.put("usr", getUsuario());
 				json.put("pwd", getPass());
 				try {
-					ConsumeREST.postClientRestEasy("http://10.20.8.190:8080/yachay-ws/usuario", json);
-					r="index?faces-redirect=true";
+					 t=ConsumeREST.postClientRestEasy2("http://10.20.8.190:8080/yachay-ws/usuario", json);
+					 setPass("");
+					 setPass2("");
+					 setUsuario("");
+					 if (t.equals("ERROR")){
+						 Mensaje.crearMensajeERROR("Su clave no pudo ser cambiada.");
+						 r=""; 
+					 }else if(t.equals("OK")){
+						 Mensaje.crearMensajeINFO("Su clave fue cambiada exitosamente.");
+						 r="index?faces-redirect=true";
+					 }
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -319,6 +329,22 @@ public class SesionBean implements Serializable {
 		}
 		return r;
 	}
+	
+	@SuppressWarnings("unchecked")
+	 public void envioMailWS(String para, String asunto, String body) throws Exception {
+	  GenParametro param= mngAcc.ParametroByID("email_ws");
+	  GenParametro idWS = mngAcc.ParametroByID("id_email");
+	  JSONObject objSalida = new JSONObject();
+	  objSalida.put("id", idWS.getParValor());
+	  objSalida.put("para", para);
+	  objSalida.put("asunto", asunto);
+	  objSalida.put("body",body);
+	  System.out.println("Envio Mail ---> "+objSalida);
+	  String url = param.getParValor();
+	  JSONObject respuesta = ConsumeREST.postClientRestEasy(url, objSalida);
+	  if (!respuesta.get("respuesta").equals("OK"))
+	   throw new Exception("Error al enviar el correo. (WS)");
+	 }
 	
 	
 }
