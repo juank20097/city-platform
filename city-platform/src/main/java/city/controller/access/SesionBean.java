@@ -308,7 +308,8 @@ public class SesionBean implements Serializable {
 				json.put("usr", getUsuario());
 				json.put("pwd", getPass());
 				try {
-					 t=ConsumeREST.postClientRestEasy2("http://10.20.8.190:8080/yachay-ws/usuario", json);
+					GenParametro p1 = mngAcc.ParametroByID("usuario_ws");
+					 t=ConsumeREST.postClientRestEasy2(p1.getParValor(), json);
 					 setPass("");
 					 setPass2("");
 					 setUsuario("");
