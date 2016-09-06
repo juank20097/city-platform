@@ -30,6 +30,9 @@ public class GenPersona implements Serializable {
 	@Column(name = "per_correo")
 	private String perCorreo;
 
+	@Column(name = "per_correo2")
+	private String perCorreo2;
+
 	@Column(name = "per_estado", columnDefinition = "bpchar")
 	private String perEstado;
 
@@ -52,22 +55,22 @@ public class GenPersona implements Serializable {
 	@Column(name = "per_tipo_dni")
 	private String perTipoDni;
 
-	//bi-directional many-to-one association to GenCapacitacione
-	@OneToMany(mappedBy="genPersona")
+	// bi-directional many-to-one association to GenCapacitacione
+	@OneToMany(mappedBy = "genPersona")
 	private List<GenCapacitacione> genCapacitaciones;
 
-	//bi-directional many-to-one association to GenExperiencialaboral
-	@OneToMany(mappedBy="genPersona")
+	// bi-directional many-to-one association to GenExperiencialaboral
+	@OneToMany(mappedBy = "genPersona")
 	private List<GenExperiencialaboral> genExperiencialaborals;
 
-	//bi-directional many-to-one association to GenFormacionacademica
-	@OneToMany(mappedBy="genPersona")
+	// bi-directional many-to-one association to GenFormacionacademica
+	@OneToMany(mappedBy = "genPersona")
 	private List<GenFormacionacademica> genFormacionacademicas;
 
-	//bi-directional many-to-one association to GenVisitante
-	@OneToMany(mappedBy="genPersona")
+	// bi-directional many-to-one association to GenVisitante
+	@OneToMany(mappedBy = "genPersona")
 	private List<GenVisitante> genVisitantes;
-	
+
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
 	@OneToMany(mappedBy = "genPersona", fetch = FetchType.EAGER)
 	private List<GenFuncionariosInstitucion> genFuncionariosInstitucions;
@@ -266,7 +269,7 @@ public class GenPersona implements Serializable {
 
 		return genVisitante;
 	}
-	
+
 	public GenPersonaDetalle getGenPersonaDetalle() {
 		return this.genPersonaDetalle;
 	}
@@ -287,8 +290,7 @@ public class GenPersona implements Serializable {
 		return this.genFuncionariosInstitucions;
 	}
 
-	public void setGenFuncionariosInstitucions(
-			List<GenFuncionariosInstitucion> genFuncionariosInstitucions) {
+	public void setGenFuncionariosInstitucions(List<GenFuncionariosInstitucion> genFuncionariosInstitucions) {
 		this.genFuncionariosInstitucions = genFuncionariosInstitucions;
 	}
 
@@ -312,21 +314,18 @@ public class GenPersona implements Serializable {
 		return this.genEstudianteInstitucions;
 	}
 
-	public void setGenEstudianteInstitucions(
-			List<GenEstudianteInstitucion> genEstudianteInstitucions) {
+	public void setGenEstudianteInstitucions(List<GenEstudianteInstitucion> genEstudianteInstitucions) {
 		this.genEstudianteInstitucions = genEstudianteInstitucions;
 	}
 
-	public GenEstudianteInstitucion addGenEstudianteInstitucion(
-			GenEstudianteInstitucion genEstudianteInstitucion) {
+	public GenEstudianteInstitucion addGenEstudianteInstitucion(GenEstudianteInstitucion genEstudianteInstitucion) {
 		getGenEstudianteInstitucions().add(genEstudianteInstitucion);
 		genEstudianteInstitucion.setGenPersona(this);
 
 		return genEstudianteInstitucion;
 	}
 
-	public GenEstudianteInstitucion removeGenEstudianteInstitucion(
-			GenEstudianteInstitucion genEstudianteInstitucion) {
+	public GenEstudianteInstitucion removeGenEstudianteInstitucion(GenEstudianteInstitucion genEstudianteInstitucion) {
 		getGenEstudianteInstitucions().remove(genEstudianteInstitucion);
 		genEstudianteInstitucion.setGenPersona(null);
 
@@ -339,6 +338,14 @@ public class GenPersona implements Serializable {
 
 	public void setGenExterno(GenExterno genExterno) {
 		this.genExterno = genExterno;
+	}
+
+	public String getPerCorreo2() {
+		return this.perCorreo2;
+	}
+
+	public void setPerCorreo2(String perCorreo2) {
+		this.perCorreo2 = perCorreo2;
 	}
 
 }

@@ -8,7 +8,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenTipoSitio;
 import city.model.generic.Mensaje;
@@ -25,6 +27,8 @@ public class TipoSitioBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerSitios manager;
+	@Inject
+	private SesionBean session;
 
 	// Atriutos de la clase sector
 	private Integer tsiId;
@@ -44,6 +48,7 @@ public class TipoSitioBean {
 
 	@PostConstruct
 	public void init() {
+		session.validarSesion();
 		edicion = false;
 		l_estados = new ArrayList<SelectItem>();
 		l_tsitio = new ArrayList<GenTipoSitio>();

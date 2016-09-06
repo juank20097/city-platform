@@ -93,13 +93,21 @@ public class GenPersonaDetalle implements Serializable {
 
 	@Column(name = "pde_provincia_residencia")
 	private String pdeProvinciaResidencia;
-	
-	@Column(name="pde_emerg_contacto_telefono2")
+
+	@Column(name = "pde_emerg_contacto_telefono2")
 	private String pdeEmergContactoTelefono2;
-	
-	@Column(name="pde_emerg_contacto_correo")
+
+	@Column(name = "pde_emerg_contacto_correo")
 	private String pdeEmergContactoCorreo;
 
+	@Column(name = "pde_residencia")
+	private String pdeResidencia;
+
+	@Column(name = "pde_estadia_dias")
+	private Integer pdeEstadiaDias;
+
+	@Column(name = "pde_estadia_horas")
+	private Integer pdeEstadiaHoras;
 
 	// bi-directional one-to-one association to GenPersona
 	@OneToOne
@@ -316,7 +324,7 @@ public class GenPersonaDetalle implements Serializable {
 	public void setGenPersona(GenPersona genPersona) {
 		this.genPersona = genPersona;
 	}
-	
+
 	public String getPdeEmergContactoTelefono2() {
 		return this.pdeEmergContactoTelefono2;
 	}
@@ -324,13 +332,37 @@ public class GenPersonaDetalle implements Serializable {
 	public void setPdeEmergContactoTelefono2(String pdeEmergContactoTelefono2) {
 		this.pdeEmergContactoTelefono2 = pdeEmergContactoTelefono2;
 	}
-	
+
 	public String getPdeEmergContactoCorreo() {
 		return this.pdeEmergContactoCorreo;
 	}
 
 	public void setPdeEmergContactoCorreo(String pdeEmergContactoCorreo) {
 		this.pdeEmergContactoCorreo = pdeEmergContactoCorreo;
+	}
+	
+	public String getPdeResidencia() {
+		return this.pdeResidencia;
+	}
+
+	public void setPdeResidencia(String pdeResidencia) {
+		this.pdeResidencia = pdeResidencia;
+	}
+	
+	public Integer getPdeEstadiaDias() {
+		return this.pdeEstadiaDias;
+	}
+
+	public void setPdeEstadiaDias(Integer pdeEstadiaDias) {
+		this.pdeEstadiaDias = pdeEstadiaDias;
+	}
+
+	public Integer getPdeEstadiaHoras() {
+		return this.pdeEstadiaHoras;
+	}
+
+	public void setPdeEstadiaHoras(Integer pdeEstadiaHoras) {
+		this.pdeEstadiaHoras = pdeEstadiaHoras;
 	}
 
 }

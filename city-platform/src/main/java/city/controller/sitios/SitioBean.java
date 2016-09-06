@@ -9,7 +9,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenArea;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenInstitucione;
@@ -29,6 +31,8 @@ public class SitioBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerSitios manager;
+	@Inject
+	private SesionBean session;
 
 	// Atriutos de la clase
 	private String sitId;
@@ -61,6 +65,7 @@ public class SitioBean {
 
 	@PostConstruct
 	public void init() {
+		session.validarSesion();
 		edicion = false;
 		l_sitios = new ArrayList<GenSitio>();
 		l_estados = new ArrayList<SelectItem>();

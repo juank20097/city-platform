@@ -10,11 +10,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerTerritorio;
@@ -30,6 +32,8 @@ public class ZonaBean implements Serializable{
 
 	@EJB
 	private ManagerTerritorio mngZona;
+	@Inject
+	private SesionBean session;
 	
 	@NotEmpty(message="ID no debe estar vacío.")
 	@NotBlank(message="ID no debe ser solo espacios blancos.")
@@ -57,6 +61,7 @@ public class ZonaBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
+		session.validarSesion();
 		estado = ID_ACTIVO;
 		slctEstados = new ArrayList<SelectItem>();
 		listZonas = new ArrayList<GenZona>();

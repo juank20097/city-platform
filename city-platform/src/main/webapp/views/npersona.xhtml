@@ -132,18 +132,28 @@
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Correo:*" />
+										<h:outputLabel value="Correo Opción 1:*" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toLowerCase();"
+										<b:inputText 
 											value="#{personaBean.perCorreo}">
 										</b:inputText>
 									</b:column>
+								<b:column span="2">
+										<h:outputLabel value="Correo Opción 2:*" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText
+											value="#{personaBean.perCorreo2}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row>
 									<b:column span="2">
 										<h:outputLabel value="Estado Civil:*" />
 									</b:column>
 									<b:column span="4">
-										<h:selectOneMenu styleClass="form-control"
+										<h:selectOneMenu disabled="true" styleClass="form-control"
 											value="#{personaBean.perEstadoCivil}">
 											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 											<f:selectItems value="#{personaBean.l_estado_civil}">
@@ -1144,7 +1154,7 @@
 										offLabel="No" style="width:60px" />
 								</b:column>
 							</b:row>
-							<b:row>
+							<b:row style="margin-top=10px;">
 								<b:column col-xs="2">
 									<h:outputText value="Puesto*" />
 								</b:column>

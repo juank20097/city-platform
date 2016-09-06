@@ -10,11 +10,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenDistrito;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Mensaje;
@@ -34,6 +36,8 @@ public class DistritoBean implements Serializable{
 
 	@EJB
 	private ManagerTerritorio manager;
+	@Inject
+	private SesionBean session;
 
 	
 	@NotEmpty(message="ID no debe estar vacío.")
@@ -66,6 +70,7 @@ public class DistritoBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
+		session.validarSesion();
 		estado = ID_ACTIVO;
 		listDistritos = new ArrayList<GenDistrito>();
 		hectareas = new BigDecimal(0);

@@ -90,13 +90,14 @@ public class ManagerPersona {
 	 * @throws Exception
 	 */
 	public void insertarPersona(String dni, String tipo_dni, String nombres, String apellidos, Date fecha_nacimiento,
-			String genero, String telefono, String celular, String correo, String estado_civil) throws Exception {
+			String genero, String telefono, String celular, String correo, String estado_civil, String correo2)
+			throws Exception {
 		try {
 			GenPersona persona = new GenPersona();
 			persona.setPerDni(dni);
 			persona.setPerTipoDni(tipo_dni);
-			persona.setPerNombres(nombres);
-			persona.setPerApellidos(apellidos);
+			persona.setPerNombres(nombres.toUpperCase());
+			persona.setPerApellidos(apellidos.toUpperCase());
 			persona.setPerFechaNacimiento(fecha_nacimiento);
 			persona.setPerGenero(genero);
 			persona.setPerTelefono(telefono);
@@ -104,6 +105,7 @@ public class ManagerPersona {
 			persona.setPerCorreo(correo);
 			persona.setPerEstadoCivil(estado_civil);
 			persona.setPerEstado("A");
+			persona.setPerCorreo2(correo2);
 			mngDao.insertar(persona);
 			System.out.println("Bien_insertar_persona");
 		} catch (Exception e) {
@@ -128,18 +130,19 @@ public class ManagerPersona {
 	 * @throws Exception
 	 */
 	public void editarPersona(String dni, String tipo_dni, String nombres, String apellidos, Date fecha_nacimiento,
-			String genero, String telefono, String celular, String correo, String estado_civil, String estado)
-			throws Exception {
+			String genero, String telefono, String celular, String correo, String estado_civil, String correo2,
+			String estado) throws Exception {
 		try {
 			GenPersona persona = this.PersonaByID(dni);
 			persona.setPerTipoDni(tipo_dni);
-			persona.setPerNombres(nombres);
-			persona.setPerApellidos(apellidos);
+			persona.setPerNombres(nombres.toUpperCase());
+			persona.setPerApellidos(apellidos.toUpperCase());
 			persona.setPerFechaNacimiento(fecha_nacimiento);
 			persona.setPerGenero(genero);
 			persona.setPerTelefono(telefono);
 			persona.setPerCelular(celular);
 			persona.setPerCorreo(correo);
+			persona.setPerCorreo2(correo2);
 			persona.setPerEstadoCivil(estado_civil);
 			if (estado != null)
 				persona.setPerEstado(estado);
@@ -346,8 +349,8 @@ public class ManagerPersona {
 			String direccion_rec, String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos,
 			String nombre_pad, String nacionalidad_pad, String nombre_madre, String nacionalidad_madre,
 			String nombre_emergencia, String id_emergencia, String telefono_emergencia, String telefono2_emergencia,
-			String correo_emergencia, String inscripcion_defuncion, Date fecha_defuncion, String observacion)
-			throws Exception {
+			String correo_emergencia, String inscripcion_defuncion, Date fecha_defuncion, String observacion,
+			String residencia, Integer estadia_dias, Integer estadia_horas) throws Exception {
 		try {
 			GenPersonaDetalle personad = new GenPersonaDetalle();
 			personad.setPdeDni(dni);
@@ -355,27 +358,30 @@ public class ManagerPersona {
 			personad.setPdePaisNacimiento(pais_nac);
 			personad.setPdeProvinciaNacimiento(provincia_nac);
 			personad.setPdeCiudadNacimiento(ciudad_nac);
-			personad.setPdeLugarNacimiento(lugar_nac);
+			personad.setPdeLugarNacimiento(lugar_nac.toUpperCase());
 			personad.setPdePaisResidencia(pais_rec);
 			personad.setPdeFoto(foto);
 			personad.setPdeProvinciaResidencia(provincia_rec);
 			personad.setPdeCiudadResidencia(ciudad_rec);
-			personad.setPdeDireccion(direccion_rec);
+			personad.setPdeDireccion(direccion_rec.toUpperCase());
 			personad.setPdeCondicionCiudadana(condicion_ciudadana);
 			personad.setPdeConyuge(conyuge);
 			personad.setPdeFechaMatrimonio(fecha_matrimonio);
-			personad.setPdeNombrePadre(nombre_pad);
+			personad.setPdeNombrePadre(nombre_pad.toUpperCase());
 			personad.setPdeNacionalidadPadre(nacionalidad_pad);
-			personad.setPdeNombreMadre(nombre_madre);
+			personad.setPdeNombreMadre(nombre_madre.toUpperCase());
 			personad.setPdeNacionalidadMadre(nacionalidad_madre);
-			personad.setPdeEmergContactoNombres(nombre_emergencia);
+			personad.setPdeEmergContactoNombres(nombre_emergencia.toUpperCase());
 			personad.setPdeEmergContactoId(id_emergencia);
 			personad.setPdeEmergContactoTelefono(telefono_emergencia);
 			personad.setPdeFechaDefuncion(fecha_defuncion);
 			personad.setPdeInscripcionDefuncion(inscripcion_defuncion);
-			personad.setPdeObservacion(observacion);
+			personad.setPdeObservacion(observacion.toUpperCase());
 			personad.setPdeEmergContactoTelefono2(telefono2_emergencia);
 			personad.setPdeEmergContactoCorreo(correo_emergencia);
+			personad.setPdeEstadiaDias(estadia_dias);
+			personad.setPdeEstadiaHoras(estadia_horas);
+			personad.setPdeResidencia(residencia);
 			mngDao.insertar(personad);
 			System.out.println("Bien_insertar_personaDetalle");
 		} catch (Exception e) {
@@ -415,36 +421,40 @@ public class ManagerPersona {
 			String lugar_nac, String pais_rec, String provincia_rec, String ciudad_rec, String direccion_rec,
 			String condicion_ciudadana, String conyuge, Date fecha_matrimonio, Integer num_hijos, String nombre_pad,
 			String nacionalidad_pad, String nombre_madre, String nacionalidad_madre, String nombre_emergencia,
-			String id_emergencia, String telefono_emergencia, String telefono2_emergencia,
-			String correo_emergencia, String inscripcion_defuncion, Date fecha_defuncion,
-			String observacion) throws Exception {
+			String id_emergencia, String telefono_emergencia, String telefono2_emergencia, String correo_emergencia,
+			String inscripcion_defuncion, Date fecha_defuncion, String observacion, String residencia,
+			Integer estadia_dias, Integer estadia_horas) throws Exception {
 		try {
 			GenPersonaDetalle personad = this.PersonaDetalleByID(dni);
-			personad.setPdePaisNacimiento(pais_nac);
+			personad.setPdeDni(dni);
 			personad.setPdeNumHijos(num_hijos);
+			personad.setPdePaisNacimiento(pais_nac);
 			personad.setPdeProvinciaNacimiento(provincia_nac);
 			personad.setPdeCiudadNacimiento(ciudad_nac);
-			personad.setPdeLugarNacimiento(lugar_nac);
-			personad.setPdeFoto(foto);
+			personad.setPdeLugarNacimiento(lugar_nac.toUpperCase());
 			personad.setPdePaisResidencia(pais_rec);
+			personad.setPdeFoto(foto);
 			personad.setPdeProvinciaResidencia(provincia_rec);
 			personad.setPdeCiudadResidencia(ciudad_rec);
-			personad.setPdeDireccion(direccion_rec);
+			personad.setPdeDireccion(direccion_rec.toUpperCase());
 			personad.setPdeCondicionCiudadana(condicion_ciudadana);
 			personad.setPdeConyuge(conyuge);
 			personad.setPdeFechaMatrimonio(fecha_matrimonio);
-			personad.setPdeNombrePadre(nombre_pad);
+			personad.setPdeNombrePadre(nombre_pad.toUpperCase());
 			personad.setPdeNacionalidadPadre(nacionalidad_pad);
-			personad.setPdeNombreMadre(nombre_madre);
+			personad.setPdeNombreMadre(nombre_madre.toUpperCase());
 			personad.setPdeNacionalidadMadre(nacionalidad_madre);
-			personad.setPdeEmergContactoNombres(nombre_emergencia);
+			personad.setPdeEmergContactoNombres(nombre_emergencia.toUpperCase());
 			personad.setPdeEmergContactoId(id_emergencia);
 			personad.setPdeEmergContactoTelefono(telefono_emergencia);
 			personad.setPdeFechaDefuncion(fecha_defuncion);
 			personad.setPdeInscripcionDefuncion(inscripcion_defuncion);
-			personad.setPdeObservacion(observacion);
+			personad.setPdeObservacion(observacion.toUpperCase());
 			personad.setPdeEmergContactoTelefono2(telefono2_emergencia);
 			personad.setPdeEmergContactoCorreo(correo_emergencia);
+			personad.setPdeEstadiaDias(estadia_dias);
+			personad.setPdeEstadiaHoras(estadia_horas);
+			personad.setPdeResidencia(residencia);
 			mngDao.actualizar(personad);
 			System.out.println("Bien_mod_personaDetalle");
 		} catch (Exception e) {
@@ -510,11 +520,13 @@ public class ManagerPersona {
 			String alergias2, Boolean embriagar, String m_muerte, Integer m_edad, String m_enfermedades,
 			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
 			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
-			String periodicidad_tabaco,Boolean estupefacientes,String periodicidad_estupefacientes) throws Exception {
+			String periodicidad_tabaco, Boolean estupefacientes, String periodicidad_estupefacientes, boolean seg_iess,
+			boolean seg_privado, boolean discapacidad, Integer ejercicio_horas, Integer tabaco_semana,
+			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = new GenSalud();
 			salud.setPerDni(dni);
-			salud.setSldAlergias(alergias);
+			salud.setSldAlergias(alergias.toUpperCase());
 			salud.setSldAltura(altura);
 			salud.setSldAsegurado(asegurado);
 			salud.setSldCarnetConadies(carnet);
@@ -524,8 +536,8 @@ public class ManagerPersona {
 			salud.setSldDiscapacidadTipo(dis_tipo);
 			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
-			salud.setSldMedicamentos(medicamentos_cronicos1);
-			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2);
+			salud.setSldMedicamentos(medicamentos_cronicos1.toUpperCase());
+			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2.toUpperCase());
 			salud.setSldNivelAzucar(niv_azucar);
 			salud.setSldPeriodicidadEjercicio(ejercicios);
 			salud.setSldPeso(peso);
@@ -538,24 +550,33 @@ public class ManagerPersona {
 			salud.setSldMadreEdad(m_edad);
 			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
 			salud.setSldMadreFallecio(m_fallecio);
-			salud.setSldNombreLugarCentroMedico(medico);
-			salud.setSldObservaciones(observacion);
-			salud.setSldPadreCausaMuerte(p_muerte);
+			salud.setSldNombreLugarCentroMedico(medico.toUpperCase());
+			salud.setSldObservaciones(observacion.toUpperCase());
+			salud.setSldPadreCausaMuerte(p_muerte.toUpperCase());
 			salud.setSldPadreEdad(p_edad);
-			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
+			salud.setSldPadreEnfermedadesActuales(p_enfermedades.toUpperCase());
 			salud.setSldPadreFallecio(p_fallecio);
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
 			salud.setSldEstupefacientes(estupefacientes);
 			salud.setSldPeriodicidadEstupefacientes(periodicidad_estupefacientes);
+			salud.setSldSeguroIess(seg_iess);
+			salud.setSldSeguroPrivado(seg_privado);
+			salud.setSldDiscapacidad(discapacidad);
+			salud.setSldEjercicioHoras(ejercicio_horas);
+			salud.setSldTabacoSemana(tabaco_semana);
+			salud.setSldAlergiasCronicas3(enfermedades_cronicas3);
+			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3);
 			mngDao.insertar(salud);
 			System.out.println("Bien_insertar_salud");
 		} catch (Exception e) {
 			System.out.println("Error_insertar_salud");
 			e.printStackTrace();
 		}
-	}// Cierre del metodo
+	}// Cierre
+		// del
+		// metodo
 
 	/**
 	 * Metodo para editar un Atributo en la base de datos
@@ -587,10 +608,13 @@ public class ManagerPersona {
 			String alergias2, Boolean embriagar, String m_muerte, Integer m_edad, String m_enfermedades,
 			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
 			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
-			String periodicidad_tabaco,Boolean estupefacientes,String periodicidad_estupefacientes) throws Exception {
+			String periodicidad_tabaco, Boolean estupefacientes, String periodicidad_estupefacientes, boolean seg_iess,
+			boolean seg_privado, boolean discapacidad, Integer ejercicio_horas, Integer tabaco_semana,
+			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
-			salud.setSldAlergias(alergias);
+			salud.setPerDni(dni);
+			salud.setSldAlergias(alergias.toUpperCase());
 			salud.setSldAltura(altura);
 			salud.setSldAsegurado(asegurado);
 			salud.setSldCarnetConadies(carnet);
@@ -600,8 +624,8 @@ public class ManagerPersona {
 			salud.setSldDiscapacidadTipo(dis_tipo);
 			salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 			salud.setSldGrupoSanguineo(gru_sanguineo);
-			salud.setSldMedicamentos(medicamentos_cronicos1);
-			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2);
+			salud.setSldMedicamentos(medicamentos_cronicos1.toUpperCase());
+			salud.setSldMedicamentosCronicos2(medicamentos_cronicos2.toUpperCase());
 			salud.setSldNivelAzucar(niv_azucar);
 			salud.setSldPeriodicidadEjercicio(ejercicios);
 			salud.setSldPeso(peso);
@@ -614,17 +638,24 @@ public class ManagerPersona {
 			salud.setSldMadreEdad(m_edad);
 			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
 			salud.setSldMadreFallecio(m_fallecio);
-			salud.setSldNombreLugarCentroMedico(medico);
-			salud.setSldObservaciones(observacion);
-			salud.setSldPadreCausaMuerte(p_muerte);
+			salud.setSldNombreLugarCentroMedico(medico.toUpperCase());
+			salud.setSldObservaciones(observacion.toUpperCase());
+			salud.setSldPadreCausaMuerte(p_muerte.toUpperCase());
 			salud.setSldPadreEdad(p_edad);
-			salud.setSldPadreEnfermedadesActuales(p_enfermedades);
+			salud.setSldPadreEnfermedadesActuales(p_enfermedades.toUpperCase());
 			salud.setSldPadreFallecio(p_fallecio);
 			salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 			salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
 			salud.setSldPeriodicidadTabaco(periodicidad_tabaco);
 			salud.setSldEstupefacientes(estupefacientes);
 			salud.setSldPeriodicidadEstupefacientes(periodicidad_estupefacientes);
+			salud.setSldSeguroIess(seg_iess);
+			salud.setSldSeguroPrivado(seg_privado);
+			salud.setSldDiscapacidad(discapacidad);
+			salud.setSldEjercicioHoras(ejercicio_horas);
+			salud.setSldTabacoSemana(tabaco_semana);
+			salud.setSldAlergiasCronicas3(enfermedades_cronicas3);
+			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3);
 			mngDao.actualizar(salud);
 			System.out.println("Bien_mod_salud");
 		} catch (Exception e) {
@@ -636,37 +667,42 @@ public class ManagerPersona {
 	/********** Metodos para manejo de información de CV's **********/
 	/**
 	 * Buscar todos los registros de Formación Académica por cédula
+	 * 
 	 * @param cedula
 	 * @return List<GenFormacionacademica>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenFormacionacademica> findFormAcademicaBYCedula(String cedula){
-		return mngDao.findWhere(GenFormacionacademica.class, "o.genPersona.perDni='"+cedula+"'", "o.foaId");
+	public List<GenFormacionacademica> findFormAcademicaBYCedula(String cedula) {
+		return mngDao.findWhere(GenFormacionacademica.class, "o.genPersona.perDni='" + cedula + "'", "o.foaId");
 	}
+
 	/**
 	 * Buscar todos los registros de Capacitaciones por cédula
+	 * 
 	 * @param cedula
 	 * @return List<GenCapacitacione>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenCapacitacione> findCapacitacionesByCedula(String cedula){
-		return mngDao.findWhere(GenCapacitacione.class, "o.genPersona.perDni='"+cedula+"'", "o.capId");
+	public List<GenCapacitacione> findCapacitacionesByCedula(String cedula) {
+		return mngDao.findWhere(GenCapacitacione.class, "o.genPersona.perDni='" + cedula + "'", "o.capId");
 	}
-	
+
 	/**
 	 * Buscar todos los registros de ExperienciaLaboral por cédula
+	 * 
 	 * @param cedula
 	 * @return List<GenExperiencialaboral>
 	 */
 	@SuppressWarnings("unchecked")
-	public List<GenExperiencialaboral> findExperienciaLabByCedula(String cedula){
-		return mngDao.findWhere(GenExperiencialaboral.class, "o.genPersona.perDni='"+cedula+"'", "o.exlId");
+	public List<GenExperiencialaboral> findExperienciaLabByCedula(String cedula) {
+		return mngDao.findWhere(GenExperiencialaboral.class, "o.genPersona.perDni='" + cedula + "'", "o.exlId");
 	}
-	
+
 	// Formación Académica
-	
+
 	/**
 	 * Ingresar información académica
+	 * 
 	 * @param persona
 	 * @param areaL
 	 * @param titulo
@@ -679,9 +715,8 @@ public class ManagerPersona {
 	 * @param duracion
 	 * @throws Exception
 	 */
-	public void ingresarFormacionAc(GenPersona persona, String areaL,
-			String titulo, String institucion, Date fechaInicio, Date fechaFin,
-			String nivelI, String pais, BigDecimal duracion, boolean registroS)
+	public void ingresarFormacionAc(GenPersona persona, String areaL, String titulo, String institucion,
+			Date fechaInicio, Date fechaFin, String nivelI, String pais, BigDecimal duracion, boolean registroS)
 			throws Exception {
 		GenFormacionacademica fa = new GenFormacionacademica();
 		fa.setFoaTitulo(titulo);
@@ -697,8 +732,10 @@ public class ManagerPersona {
 		mngDao.insertar(fa);
 		fa = null;
 	}
+
 	/**
 	 * Editar información académica
+	 * 
 	 * @param idF
 	 * @param areaL
 	 * @param titulo
@@ -711,9 +748,8 @@ public class ManagerPersona {
 	 * @param duracion
 	 * @throws Exception
 	 */
-	public void editarFormacionAc(Integer idF, String areaL, String titulo,
-			String institucion, Date fechaInicio, Date fechaFin, String nivelI, 
-			String pais, BigDecimal duracion) throws Exception {
+	public void editarFormacionAc(Integer idF, String areaL, String titulo, String institucion, Date fechaInicio,
+			Date fechaFin, String nivelI, String pais, BigDecimal duracion) throws Exception {
 		GenFormacionacademica fa = this.findFormAcademicaById(idF);
 		fa.setFoaTitulo(titulo);
 		fa.setFoaInstitucion(institucion);
@@ -727,27 +763,32 @@ public class ManagerPersona {
 		fa = null;
 
 	}
+
 	/**
 	 * Buscar Formación Académica por ID
+	 * 
 	 * @param idFormacion
 	 * @return
 	 * @throws Exception
 	 */
-	public GenFormacionacademica findFormAcademicaById(int idFormacion) throws Exception{
+	public GenFormacionacademica findFormAcademicaById(int idFormacion) throws Exception {
 		return (GenFormacionacademica) mngDao.findById(GenFormacionacademica.class, idFormacion);
 	}
+
 	/**
 	 * Eliminar formación Académica
+	 * 
 	 * @param fa
 	 * @throws Exception
 	 */
 	public void eliminarFormAcademica(GenFormacionacademica fa) throws Exception {
 		mngDao.eliminar(GenFormacionacademica.class, fa.getFoaId());
 	}
-	
+
 	// Capacitaciones
 	/**
-	 * Ingresar Capacitaciones 
+	 * Ingresar Capacitaciones
+	 * 
 	 * @param persona
 	 * @param nombre
 	 * @param areaL
@@ -757,8 +798,8 @@ public class ManagerPersona {
 	 * @param numHoras
 	 * @throws Exception
 	 */
-	public void ingresarCapacitaciones(GenPersona persona, boolean relacionPerfil, String nombre,
-			String institucion, String areaL, String tipoEvento, int numHoras) throws Exception {
+	public void ingresarCapacitaciones(GenPersona persona, boolean relacionPerfil, String nombre, String institucion,
+			String areaL, String tipoEvento, int numHoras) throws Exception {
 		GenCapacitacione ca = new GenCapacitacione();
 		ca.setGenPersona(persona);
 		ca.setCapRelacionPerfilProfesional(relacionPerfil);
@@ -769,8 +810,10 @@ public class ManagerPersona {
 		ca.setCapNumHoras(numHoras);
 		mngDao.insertar(ca);
 	}
+
 	/**
 	 * Editar Capacitación
+	 * 
 	 * @param idCa
 	 * @param nombre
 	 * @param areaL
@@ -780,8 +823,8 @@ public class ManagerPersona {
 	 * @param numHoras
 	 * @throws Exception
 	 */
-	public void editarCapacitaciones(Integer idCa, boolean relacionPerfil, String nombre,
-			String institucion, String areaL, String tipoEvento, int numHoras) throws Exception {
+	public void editarCapacitaciones(Integer idCa, boolean relacionPerfil, String nombre, String institucion,
+			String areaL, String tipoEvento, int numHoras) throws Exception {
 		GenCapacitacione ca = this.findCapacitacionesById(idCa);
 		ca.setCapRelacionPerfilProfesional(relacionPerfil);
 		ca.setCapNombre(nombre);
@@ -791,30 +834,32 @@ public class ManagerPersona {
 		ca.setCapNumHoras(numHoras);
 		mngDao.actualizar(ca);
 	}
+
 	/**
 	 * Buscar Capacitación por ID
+	 * 
 	 * @param idCapacitaciones
 	 * @return
 	 * @throws Exception
 	 */
-	public GenCapacitacione findCapacitacionesById(int idCapacitaciones) throws Exception{
+	public GenCapacitacione findCapacitacionesById(int idCapacitaciones) throws Exception {
 		return (GenCapacitacione) mngDao.findById(GenCapacitacione.class, idCapacitaciones);
 	}
+
 	/**
 	 * Eliminar Capacitación por ID
+	 * 
 	 * @param ca
 	 * @throws Exception
 	 */
-	public void eliminarCapacitaciones(GenCapacitacione ca)
-			throws Exception {
+	public void eliminarCapacitaciones(GenCapacitacione ca) throws Exception {
 		mngDao.eliminar(GenCapacitacione.class, ca.getCapId());
 	}
 
 	// Experiencia Laboral
-	
-	public void ingresarExperienciaLab(GenPersona persona, String areaL,
-			String puesto, String empresa, Boolean sectorpublico, String pais,
-			Date fechaInicio, Date fechaFin, String responsabilidades,
+
+	public void ingresarExperienciaLab(GenPersona persona, String areaL, String puesto, String empresa,
+			Boolean sectorpublico, String pais, Date fechaInicio, Date fechaFin, String responsabilidades,
 			Boolean actual) throws Exception {
 		GenExperiencialaboral exl = new GenExperiencialaboral();
 		exl.setGenPersona(persona);
@@ -829,8 +874,10 @@ public class ManagerPersona {
 		exl.setExlActual(actual);
 		mngDao.insertar(exl);
 	}
+
 	/**
 	 * Editar Experiencia Laboral
+	 * 
 	 * @param idExp
 	 * @param areaL
 	 * @param puesto
@@ -843,10 +890,8 @@ public class ManagerPersona {
 	 * @param actual
 	 * @throws Exception
 	 */
-	public void editarExperienciaLab(Integer idExp, String areaL,
-			String puesto, String empresa, Boolean sectorpublico, String pais,
-			Date fechaInicio, Date fechaFin, String responsabilidades,
-			Boolean actual) throws Exception {
+	public void editarExperienciaLab(Integer idExp, String areaL, String puesto, String empresa, Boolean sectorpublico,
+			String pais, Date fechaInicio, Date fechaFin, String responsabilidades, Boolean actual) throws Exception {
 		GenExperiencialaboral exl = this.findExperienciaLabById(idExp);
 		exl.setExlAreaLaboralEstudio(areaL);
 		exl.setExlPuesto(puesto);
@@ -859,20 +904,20 @@ public class ManagerPersona {
 		exl.setExlActual(actual);
 		mngDao.actualizar(exl);
 	}
-	
-	public GenExperiencialaboral findExperienciaLabById(int idExperienciaLab) throws Exception{
+
+	public GenExperiencialaboral findExperienciaLabById(int idExperienciaLab) throws Exception {
 		return (GenExperiencialaboral) mngDao.findById(GenExperiencialaboral.class, idExperienciaLab);
 	}
-	
+
 	public void eliminarExperienciaLab(GenExperiencialaboral el) throws Exception {
 		mngDao.eliminar(GenExperiencialaboral.class, el.getExlId());
 	}
 
-	public String catalogoItem(String idItem) throws Exception{
-		GenCatalogoItemsDet it =this.ItemByID(idItem);
-		if(it.equals("")|| it.equals(null)){
+	public String catalogoItem(String idItem) throws Exception {
+		GenCatalogoItemsDet it = this.ItemByID(idItem);
+		if (it.equals("") || it.equals(null)) {
 			return "";
-		}else 
-		return it.getIteNombre();
+		} else
+			return it.getIteNombre();
 	}
 }

@@ -125,7 +125,7 @@ public class SeguridadBean {
 	@PostConstruct
 	public void ini() {
 		control = false;
-		usuario = session.validarSesion();
+		session.validarSesion();
 		f_desde = null;
 		f_hasta = null;
 		segLatitud = 0;
@@ -153,8 +153,8 @@ public class SeguridadBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		comprobaradmin();
-		cargarIncidentes();
+		//comprobaradmin();
+		//cargarIncidentes();
 	}
 
 	/**

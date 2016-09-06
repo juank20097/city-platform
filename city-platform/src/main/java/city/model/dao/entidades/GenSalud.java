@@ -30,10 +30,10 @@ public class GenSalud implements Serializable {
 	@Column(name = "sld_carnet_conadies")
 	private String sldCarnetConadies;
 
-	@Column(name="sld_consume_alcohol")
+	@Column(name = "sld_consume_alcohol")
 	private String sldConsumeAlcohol;
 
-	@Column(name="sld_consume_tabaco")
+	@Column(name = "sld_consume_tabaco")
 	private String sldConsumeTabaco;
 
 	@Column(name = "sld_discapacidad_grado")
@@ -66,62 +66,83 @@ public class GenSalud implements Serializable {
 	@Column(name = "sld_vegetariano")
 	private Boolean sldVegetariano;
 
-	@Column(name="sld_alergias_cronicas2")
+	@Column(name = "sld_alergias_cronicas2")
 	private String sldAlergiasCronicas2;
-	
-	@Column(name="sld_embriagar")
+
+	@Column(name = "sld_embriagar")
 	private Boolean sldEmbriagar;
-	
-	@Column(name="sld_madre_causa_muerte")
+
+	@Column(name = "sld_madre_causa_muerte")
 	private String sldMadreCausaMuerte;
 
-	@Column(name="sld_madre_edad")
+	@Column(name = "sld_madre_edad")
 	private Integer sldMadreEdad;
 
-	@Column(name="sld_madre_enfermedades_actuales")
+	@Column(name = "sld_madre_enfermedades_actuales")
 	private String sldMadreEnfermedadesActuales;
-	
-	@Column(name="sld_nombre_lugar_centro_medico")
+
+	@Column(name = "sld_nombre_lugar_centro_medico")
 	private String sldNombreLugarCentroMedico;
 
-	@Column(name="sld_observaciones")
+	@Column(name = "sld_observaciones")
 	private String sldObservaciones;
 
-	@Column(name="sld_padre_causa_muerte")
+	@Column(name = "sld_padre_causa_muerte")
 	private String sldPadreCausaMuerte;
 
-	@Column(name="sld_padre_edad")
+	@Column(name = "sld_padre_edad")
 	private Integer sldPadreEdad;
 
-	@Column(name="sld_padre_enfermedades_actuales")
+	@Column(name = "sld_padre_enfermedades_actuales")
 	private String sldPadreEnfermedadesActuales;
 
-	@Column(name="sld_padre_fallecio")
+	@Column(name = "sld_padre_fallecio")
 	private Boolean sldPadreFallecio;
-	
-	@Column(name="sld_madre_fallecio")
+
+	@Column(name = "sld_madre_fallecio")
 	private Boolean sldMadreFallecio;
 
-	@Column(name="sld_periodicidad_alcohol")
+	@Column(name = "sld_periodicidad_alcohol")
 	private String sldPeriodicidadAlcohol;
-	
-	@Column(name="sld_periodicidad_embriagar")
+
+	@Column(name = "sld_periodicidad_embriagar")
 	private String sldPeriodicidadEmbriagar;
 
-	@Column(name="sld_periodicidad_tabaco")
+	@Column(name = "sld_periodicidad_tabaco")
 	private String sldPeriodicidadTabaco;
-	
-	@Column(name="sld_medicamentos")
+
+	@Column(name = "sld_medicamentos")
 	private String sldMedicamentos;
 
-	@Column(name="sld_medicamentos_cronicos2")
+	@Column(name = "sld_medicamentos_cronicos2")
 	private String sldMedicamentosCronicos2;
-	
-	@Column(name="sld_estupefacientes")
+
+	@Column(name = "sld_estupefacientes")
 	private Boolean sldEstupefacientes;
-	
-	@Column(name="sld_periodicidad_estupefacientes")
+
+	@Column(name = "sld_periodicidad_estupefacientes")
 	private String sldPeriodicidadEstupefacientes;
+
+	@Column(name = "sld_ejercicio_horas")
+	private Integer sldEjercicioHoras;
+
+	@Column(name = "sld_discapacidad")
+	private Boolean sldDiscapacidad;
+
+	@Column(name = "sld_seguro_iess")
+	private Boolean sldSeguroIess;
+
+	@Column(name = "sld_seguro_privado")
+	private Boolean sldSeguroPrivado;
+
+	@Column(name = "sld_tabaco_semana")
+	private Integer sldTabacoSemana;
+
+	@Column(name = "sld_alergias_cronicas3")
+	private String sldAlergiasCronicas3;
+
+	@Column(name = "sld_medicamentos_cronicos3")
+	private String sldMedicamentosCronicos3;
 
 	// bi-directional one-to-one association to GenPersona
 	@OneToOne
@@ -191,8 +212,7 @@ public class GenSalud implements Serializable {
 		return sldFrecuenciaConsumoMedicame;
 	}
 
-	public void setSldFrecuenciaConsumoMedicame(
-			String sldFrecuenciaConsumoMedicame) {
+	public void setSldFrecuenciaConsumoMedicame(String sldFrecuenciaConsumoMedicame) {
 		this.sldFrecuenciaConsumoMedicame = sldFrecuenciaConsumoMedicame;
 	}
 
@@ -267,7 +287,7 @@ public class GenSalud implements Serializable {
 	public void setSldAlergiasCronicas2(String sldAlergiasCronicas2) {
 		this.sldAlergiasCronicas2 = sldAlergiasCronicas2;
 	}
-	
+
 	public Boolean getSldEmbriagar() {
 		return this.sldEmbriagar;
 	}
@@ -275,7 +295,7 @@ public class GenSalud implements Serializable {
 	public void setSldEmbriagar(Boolean sldEmbriagar) {
 		this.sldEmbriagar = sldEmbriagar;
 	}
-	
+
 	public String getSldMadreCausaMuerte() {
 		return this.sldMadreCausaMuerte;
 	}
@@ -299,7 +319,7 @@ public class GenSalud implements Serializable {
 	public void setSldMadreEnfermedadesActuales(String sldMadreEnfermedadesActuales) {
 		this.sldMadreEnfermedadesActuales = sldMadreEnfermedadesActuales;
 	}
-	
+
 	public String getSldNombreLugarCentroMedico() {
 		return this.sldNombreLugarCentroMedico;
 	}
@@ -363,7 +383,7 @@ public class GenSalud implements Serializable {
 	public void setSldPeriodicidadAlcohol(String sldPeriodicidadAlcohol) {
 		this.sldPeriodicidadAlcohol = sldPeriodicidadAlcohol;
 	}
-	
+
 	public String getSldPeriodicidadEmbriagar() {
 		return this.sldPeriodicidadEmbriagar;
 	}
@@ -388,7 +408,8 @@ public class GenSalud implements Serializable {
 	}
 
 	/**
-	 * @param sldMedicamentos the sldMedicamentos to set
+	 * @param sldMedicamentos
+	 *            the sldMedicamentos to set
 	 */
 	public void setSldMedicamentos(String sldMedicamentos) {
 		this.sldMedicamentos = sldMedicamentos;
@@ -401,7 +422,7 @@ public class GenSalud implements Serializable {
 	public void setSldMedicamentosCronicos2(String sldMedicamentosCronicos2) {
 		this.sldMedicamentosCronicos2 = sldMedicamentosCronicos2;
 	}
-	
+
 	public String getSldConsumeAlcohol() {
 		return this.sldConsumeAlcohol;
 	}
@@ -417,7 +438,7 @@ public class GenSalud implements Serializable {
 	public void setSldConsumeTabaco(String sldConsumeTabaco) {
 		this.sldConsumeTabaco = sldConsumeTabaco;
 	}
-	
+
 	public Boolean getSldEstupefacientes() {
 		return this.sldEstupefacientes;
 	}
@@ -432,6 +453,62 @@ public class GenSalud implements Serializable {
 
 	public void setSldPeriodicidadEstupefacientes(String sldPeriodicidadEstupefacientes) {
 		this.sldPeriodicidadEstupefacientes = sldPeriodicidadEstupefacientes;
+	}
+
+	public Boolean getSldSeguroIess() {
+		return this.sldSeguroIess;
+	}
+
+	public void setSldSeguroIess(Boolean sldSeguroIess) {
+		this.sldSeguroIess = sldSeguroIess;
+	}
+
+	public Boolean getSldSeguroPrivado() {
+		return this.sldSeguroPrivado;
+	}
+
+	public void setSldSeguroPrivado(Boolean sldSeguroPrivado) {
+		this.sldSeguroPrivado = sldSeguroPrivado;
+	}
+
+	public Integer getSldTabacoSemana() {
+		return this.sldTabacoSemana;
+	}
+
+	public void setSldTabacoSemana(Integer sldTabacoSemana) {
+		this.sldTabacoSemana = sldTabacoSemana;
+	}
+
+	public String getSldMedicamentosCronicos3() {
+		return this.sldMedicamentosCronicos3;
+	}
+
+	public void setSldMedicamentosCronicos3(String sldMedicamentosCronicos3) {
+		this.sldMedicamentosCronicos3 = sldMedicamentosCronicos3;
+	}
+
+	public Integer getSldEjercicioHoras() {
+		return this.sldEjercicioHoras;
+	}
+
+	public void setSldEjercicioHoras(Integer sldEjercicioHoras) {
+		this.sldEjercicioHoras = sldEjercicioHoras;
+	}
+
+	public Boolean getSldDiscapacidad() {
+		return this.sldDiscapacidad;
+	}
+
+	public void setSldDiscapacidad(Boolean sldDiscapacidad) {
+		this.sldDiscapacidad = sldDiscapacidad;
+	}
+
+	public String getSldAlergiasCronicas3() {
+		return this.sldAlergiasCronicas3;
+	}
+
+	public void setSldAlergiasCronicas3(String sldAlergiasCronicas3) {
+		this.sldAlergiasCronicas3 = sldAlergiasCronicas3;
 	}
 
 }

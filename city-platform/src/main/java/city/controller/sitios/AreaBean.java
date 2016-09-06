@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.MarkerDragEvent;
@@ -16,6 +17,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenArea;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenSectore;
@@ -45,6 +47,8 @@ public class AreaBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerSitios manager;
+	@Inject
+	private SesionBean session;
 
 	// Atriutos de la clase area
 	private Integer areId;
@@ -75,6 +79,7 @@ public class AreaBean {
 
 	@PostConstruct
 	public void init() {
+		session.validarSesion();
 		edicion = false;
 		l_areas = new ArrayList<GenArea>();
 		l_estados = new ArrayList<SelectItem>();

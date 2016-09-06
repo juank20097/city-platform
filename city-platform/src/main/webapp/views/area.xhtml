@@ -19,7 +19,7 @@
 				<b:column span="1">
 					<b:commandButton value="Nuevo" iconAwesome="file-o"
 						action="#{areaBean.nuevaArea}" onclick="PF('statusDialog').show()"
-									oncomplete="PF('statusDialog').hide()" />
+						oncomplete="PF('statusDialog').hide()" />
 				</b:column>
 				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -35,15 +35,18 @@
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
 				<b:dataTable id="dt_per" value="#{areaBean.l_areas}" var="are"
-					styleClass="table table-striped table-bordered dt-responsive nowrap" 
-					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
+					styleClass="table table-striped table-bordered dt-responsive nowrap"
+					fixedHeader="true" responsive="true" lang="es" style="width:100%">
 					<h:column width="100">
 						<f:facet name="header">
 							<h:outputText value="OPCIONES" />
 						</f:facet>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton iconAwesome="fa fa-pencil-square-o"  style="padding: 0; border: none; background: none;color: #000"
-							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{areaBean.cargarArea(are)}">
+						<b:commandButton iconAwesome="fa fa-pencil-square-o"
+							style="padding: 0; border: none; background: none;color: #000"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()"
+							action="#{areaBean.cargarArea(are)}">
 						</b:commandButton>
 					</h:column>
 					<h:column>
@@ -74,7 +77,7 @@
 						<f:facet name="header">
 							<h:outputText value="UBICACIÓN" />
 						</f:facet>
-						<h:outputText value="#{are.areLatitud} , #{are.areLongitud}"/>
+						<h:outputText value="#{are.areLatitud} , #{are.areLongitud}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -82,11 +85,11 @@
 						</f:facet>
 						<h:outputText value="#{are.areEstado}" />
 					</h:column>
-					</b:dataTable>
+				</b:dataTable>
 			</b:panel>
 		</h:form>
 
-		
+
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 			closable="false" resizable="false" showHeader="false">
 			<p:graphicImage value="../resources/img/cargando.gif" />

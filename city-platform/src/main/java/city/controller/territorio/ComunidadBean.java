@@ -9,10 +9,12 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenZona;
@@ -30,6 +32,8 @@ public class ComunidadBean {
 
 	@EJB
 	private ManagerTerritorio manager;
+	@Inject
+	private SesionBean session;
 
 	// Atributos de la clase comunidad
 	@NotEmpty(message="ID no debe estar vacío.")
@@ -65,6 +69,7 @@ public class ComunidadBean {
 
 	@PostConstruct
 	public void init() {
+		session.validarSesion();
 		edicion = false;
 		l_zonas = new ArrayList<String>();
 		l_comunidades = new ArrayList<GenComunidade>();
