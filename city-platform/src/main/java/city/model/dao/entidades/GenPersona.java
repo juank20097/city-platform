@@ -55,6 +55,9 @@ public class GenPersona implements Serializable {
 	@Column(name = "per_tipo_dni")
 	private String perTipoDni;
 
+	@Column(name = "per_dinardap")
+	private Boolean perDinardap;
+
 	// bi-directional many-to-one association to GenCapacitacione
 	@OneToMany(mappedBy = "genPersona")
 	private List<GenCapacitacione> genCapacitaciones;
@@ -346,6 +349,14 @@ public class GenPersona implements Serializable {
 
 	public void setPerCorreo2(String perCorreo2) {
 		this.perCorreo2 = perCorreo2;
+	}
+
+	public Boolean getPerDinardap() {
+		return this.perDinardap;
+	}
+
+	public void setPerDinardap(Boolean perDinardap) {
+		this.perDinardap = perDinardap;
 	}
 
 }

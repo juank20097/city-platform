@@ -41,6 +41,9 @@ public class GenFormacionacademica implements Serializable {
 
 	@Column(name="foa_institucion", length=200)
 	private String foaInstitucion;
+	
+	@Column(name="foa_niveles_aprobados", length=50)
+	private String foaNivelesAprobados;
 
 	@Column(name="foa_nivel_instruccion", length=50)
 	private String foaNivelInstruccion;
@@ -121,6 +124,14 @@ public class GenFormacionacademica implements Serializable {
 		this.foaInstitucion = foaInstitucion;
 	}
 
+	public String getFoaNivelesAprobados() {
+		return foaNivelesAprobados;
+	}
+	
+	public void setFoaNivelesAprobados(String foaNivelesAprobados) {
+		this.foaNivelesAprobados = foaNivelesAprobados;
+	}
+	
 	public String getFoaNivelInstruccion() {
 		return this.foaNivelInstruccion;
 	}

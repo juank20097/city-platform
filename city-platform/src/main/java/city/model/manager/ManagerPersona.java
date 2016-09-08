@@ -12,6 +12,7 @@ import city.model.dao.entidades.GenCapacitacione;
 import city.model.dao.entidades.GenCatalogoCab;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenExperiencialaboral;
+import city.model.dao.entidades.GenFamiliare;
 import city.model.dao.entidades.GenFormacionacademica;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
@@ -227,6 +228,17 @@ public class ManagerPersona {
 			return li;
 		}
 	}// Cierre del metodo
+	
+	@SuppressWarnings("unchecked")
+	public List<GenCatalogoItemsDet> AllItemsOrder(String cat_nombre) {
+		List<GenCatalogoItemsDet> li = mngDao.findWhere(GenCatalogoItemsDet.class,
+				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", "o.iteCodigo");
+		if (li == null || li.isEmpty()) {
+			return null;
+		} else {
+			return li;
+		}
+	}// Cierre del metodo
 
 	/**
 	 * Metodo para listar
@@ -388,7 +400,7 @@ public class ManagerPersona {
 			System.out.println("Error_insertar_personaDetalle");
 			e.printStackTrace();
 		}
-	}// Cierre del metodo
+	}
 
 	/**
 	 * Metodo para editar un Atributo en la base de datos
@@ -461,7 +473,94 @@ public class ManagerPersona {
 			System.out.println("Error_mod_personaDetalle");
 			e.printStackTrace();
 		}
-	}// Cierre del metodo
+	}
+	
+	// //////////////////////////////////////////////////////////(FAMILIARES)//////////////////////////////////////////////////////////////////
+	
+	/**
+	 * Metodo para generar el id_familiares
+	 * 
+	 * @return
+	 */
+	public Integer familiarId() {
+		Integer id = 0;
+		try {
+			id = (Integer) mngDao.ejectNativeSQL2("select max(fam_id) from gen_familiares limit 1;");
+			if (id == null || id == 0) {
+				id = 1;
+			} else {
+				id = id + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GenFamiliare> findAllFamiliares() throws Exception {
+		return mngDao.findAll(GenFamiliare.class);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public GenFamiliare findFamiliarByID(Integer id,String per_dni) throws Exception {
+		List<GenFamiliare> l_familiares = mngDao.findWhere(GenFamiliare.class, "o.id.pdeDni='"+per_dni+"' and o.id.famId="+id+"", "o.famNombre asc");
+		if (l_familiares!=null && l_familiares.size()>0){
+				return l_familiares.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean FamiliarByConyuge(String per_dni) throws Exception {
+		List<GenFamiliare> l_familiares = mngDao.findWhere(GenFamiliare.class, "o.id.pdeDni='"+per_dni+"' and o.famTipo='Conyuge'", "o.famNombre asc");
+		if (l_familiares!=null && l_familiares.size()>0){
+				return true;
+		}else{
+			return false;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GenFamiliare> familiarByDNI(String per_dni) throws Exception {
+		List<GenFamiliare> l_familiares = mngDao.findWhere(GenFamiliare.class, "o.id.pdeDni='"+per_dni+"'", "o.famNombre asc");
+		if (l_familiares!=null && l_familiares.size()>0){
+			return l_familiares;
+		}else{
+			return null;
+		}
+	}
+	
+	public void insertarFamiliar(GenFamiliare familiar){
+		try {
+			mngDao.insertar(familiar);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarFamiliar(GenFamiliare familiar){
+		try {
+			mngDao.actualizar(familiar);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void eliminarFamiliar(GenFamiliare familiar){
+		try {
+			mngDao.eliminar(GenFamiliare.class, familiar.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	// //////////////////////////////////////////////////////////(SALUD)/////////////////////////////////////////////////////////////////////
 	/**
@@ -477,7 +576,7 @@ public class ManagerPersona {
 	@SuppressWarnings("unchecked")
 	public List<GenSalud> findAllSalud() throws Exception {
 		return mngDao.findAll(GenSalud.class);
-	}// Cierre del metodo
+	}
 
 	/**
 	 * Metodo para obtener el Atributo mediante un ID
@@ -521,7 +620,7 @@ public class ManagerPersona {
 			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
 			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
 			String periodicidad_tabaco, Boolean estupefacientes, String periodicidad_estupefacientes, boolean seg_iess,
-			boolean seg_privado, boolean discapacidad, Integer ejercicio_horas, Integer tabaco_semana,
+			boolean seg_privado, boolean discapacidad, String ejercicio_horas, String tabaco_semana,
 			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = new GenSalud();
@@ -544,11 +643,11 @@ public class ManagerPersona {
 			salud.setSldPresion(presion);
 			salud.setSldRealizaEjercicio(rea_ejercicio);
 			salud.setSldVegetariano(vegetariano);
-			salud.setSldAlergiasCronicas2(alergias2);
+			salud.setSldAlergiasCronicas2(alergias2.toUpperCase());
 			salud.setSldEmbriagar(embriagar);
 			salud.setSldMadreCausaMuerte(m_muerte);
 			salud.setSldMadreEdad(m_edad);
-			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
+			salud.setSldMadreEnfermedadesActuales(m_enfermedades.toUpperCase());
 			salud.setSldMadreFallecio(m_fallecio);
 			salud.setSldNombreLugarCentroMedico(medico.toUpperCase());
 			salud.setSldObservaciones(observacion.toUpperCase());
@@ -564,19 +663,17 @@ public class ManagerPersona {
 			salud.setSldSeguroIess(seg_iess);
 			salud.setSldSeguroPrivado(seg_privado);
 			salud.setSldDiscapacidad(discapacidad);
-			salud.setSldEjercicioHoras(ejercicio_horas);
-			salud.setSldTabacoSemana(tabaco_semana);
-			salud.setSldAlergiasCronicas3(enfermedades_cronicas3);
-			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3);
+			salud.setSldEjercicioHoras(Integer.parseInt(ejercicio_horas));
+			salud.setSldTabacoSemana(Integer.parseInt(tabaco_semana));
+			salud.setSldAlergiasCronicas3(enfermedades_cronicas3.toUpperCase());
+			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3.toUpperCase());
 			mngDao.insertar(salud);
 			System.out.println("Bien_insertar_salud");
 		} catch (Exception e) {
 			System.out.println("Error_insertar_salud");
 			e.printStackTrace();
 		}
-	}// Cierre
-		// del
-		// metodo
+	}
 
 	/**
 	 * Metodo para editar un Atributo en la base de datos
@@ -609,10 +706,16 @@ public class ManagerPersona {
 			Boolean m_fallecio, String medico, String observacion, String p_muerte, Integer p_edad,
 			String p_enfermedades, Boolean p_fallecio, String periodicidad_alcohol, String periodicidad_embriaga,
 			String periodicidad_tabaco, Boolean estupefacientes, String periodicidad_estupefacientes, boolean seg_iess,
-			boolean seg_privado, boolean discapacidad, Integer ejercicio_horas, Integer tabaco_semana,
+			boolean seg_privado, boolean discapacidad, String ejercicio_horas, String tabaco_semana,
 			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
+			if (ejercicio_horas.equals("null")){
+				ejercicio_horas="0";
+			}
+			if (tabaco_semana.equals("null")){
+				tabaco_semana="0";
+			}
 			salud.setPerDni(dni);
 			salud.setSldAlergias(alergias.toUpperCase());
 			salud.setSldAltura(altura);
@@ -632,11 +735,11 @@ public class ManagerPersona {
 			salud.setSldPresion(presion);
 			salud.setSldRealizaEjercicio(rea_ejercicio);
 			salud.setSldVegetariano(vegetariano);
-			salud.setSldAlergiasCronicas2(alergias2);
+			salud.setSldAlergiasCronicas2(alergias2.toUpperCase());
 			salud.setSldEmbriagar(embriagar);
 			salud.setSldMadreCausaMuerte(m_muerte);
 			salud.setSldMadreEdad(m_edad);
-			salud.setSldMadreEnfermedadesActuales(m_enfermedades);
+			salud.setSldMadreEnfermedadesActuales(m_enfermedades.toUpperCase());
 			salud.setSldMadreFallecio(m_fallecio);
 			salud.setSldNombreLugarCentroMedico(medico.toUpperCase());
 			salud.setSldObservaciones(observacion.toUpperCase());
@@ -652,17 +755,17 @@ public class ManagerPersona {
 			salud.setSldSeguroIess(seg_iess);
 			salud.setSldSeguroPrivado(seg_privado);
 			salud.setSldDiscapacidad(discapacidad);
-			salud.setSldEjercicioHoras(ejercicio_horas);
-			salud.setSldTabacoSemana(tabaco_semana);
-			salud.setSldAlergiasCronicas3(enfermedades_cronicas3);
-			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3);
+			salud.setSldEjercicioHoras(Integer.parseInt(ejercicio_horas));
+			salud.setSldTabacoSemana(Integer.parseInt(tabaco_semana));
+			salud.setSldAlergiasCronicas3(enfermedades_cronicas3.toUpperCase());
+			salud.setSldMedicamentosCronicos3(medicamentos_cronicos3.toUpperCase());
 			mngDao.actualizar(salud);
 			System.out.println("Bien_mod_salud");
 		} catch (Exception e) {
 			System.out.println("Error_mod_salud");
 			e.printStackTrace();
 		}
-	}// Cierre del metodo
+	}
 
 	/********** Metodos para manejo de información de CV's **********/
 	/**
@@ -715,9 +818,10 @@ public class ManagerPersona {
 	 * @param duracion
 	 * @throws Exception
 	 */
-	public void ingresarFormacionAc(GenPersona persona, String areaL, String titulo, String institucion,
-			Date fechaInicio, Date fechaFin, String nivelI, String pais, BigDecimal duracion, boolean registroS)
-			throws Exception {
+	public void ingresarFormacionAc(GenPersona persona, String titulo,
+			String institucion, Date fechaInicio, Date fechaFin, String nivelI,
+			String pais, BigDecimal duracion, boolean registroS,
+			String nivelesAprob) throws Exception {
 		GenFormacionacademica fa = new GenFormacionacademica();
 		fa.setFoaTitulo(titulo);
 		fa.setFoaInstitucion(institucion);
@@ -727,8 +831,8 @@ public class ManagerPersona {
 		fa.setFoaDuracion(duracion);
 		fa.setFoaPais(pais);
 		fa.setGenPersona(persona);
-		fa.setFoaAreaLaboralEstudio(areaL);
 		fa.setFoaRegistroSenescyt(registroS);
+		fa.setFoaNivelesAprobados(nivelesAprob);
 		mngDao.insertar(fa);
 		fa = null;
 	}
@@ -748,8 +852,9 @@ public class ManagerPersona {
 	 * @param duracion
 	 * @throws Exception
 	 */
-	public void editarFormacionAc(Integer idF, String areaL, String titulo, String institucion, Date fechaInicio,
-			Date fechaFin, String nivelI, String pais, BigDecimal duracion) throws Exception {
+	public void editarFormacionAc(Integer idF, String titulo,
+			String institucion, Date fechaInicio, Date fechaFin, String nivelI, 
+			String pais, BigDecimal duracion, String nivelesAprob) throws Exception {
 		GenFormacionacademica fa = this.findFormAcademicaById(idF);
 		fa.setFoaTitulo(titulo);
 		fa.setFoaInstitucion(institucion);
@@ -758,10 +863,9 @@ public class ManagerPersona {
 		fa.setFoaNivelInstruccion(nivelI);
 		fa.setFoaDuracion(duracion);
 		fa.setFoaPais(pais);
-		fa.setFoaAreaLaboralEstudio(areaL);
+		fa.setFoaNivelesAprobados(nivelesAprob);
 		mngDao.actualizar(fa);
 		fa = null;
-
 	}
 
 	/**
@@ -914,10 +1018,14 @@ public class ManagerPersona {
 	}
 
 	public String catalogoItem(String idItem) throws Exception {
-		GenCatalogoItemsDet it = this.ItemByID(idItem);
-		if (it.equals("") || it.equals(null)) {
+		if (idItem.equals("")) {
 			return "";
-		} else
-			return it.getIteNombre();
+		} else {
+			GenCatalogoItemsDet it = this.ItemByID(idItem);
+			if (it.equals("") || it.equals(null)) {
+				return "";
+			} else
+				return it.getIteNombre();
+		}
 	}
 }

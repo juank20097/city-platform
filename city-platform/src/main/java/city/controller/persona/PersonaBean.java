@@ -16,10 +16,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.BorderUIResource.EmptyBorderUIResource;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.rpc.ServiceException;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,6 +34,8 @@ import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCapacitacione;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenExperiencialaboral;
+import city.model.dao.entidades.GenFamiliare;
+import city.model.dao.entidades.GenFamiliarePK;
 import city.model.dao.entidades.GenFormacionacademica;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
@@ -44,18 +49,6 @@ import ec.gob.dinardap.interoperacion.interoperadorws.servicio.FichaGeneral;
 import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Institucion;
 import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Registro;
 
-/**
- * @author jestevez
- * 
- */
-/**
- * @author jestevez
- *
- */
-/**
- * @author jestevez
- *
- */
 @SessionScoped
 @ManagedBean
 public class PersonaBean {
@@ -115,6 +108,15 @@ public class PersonaBean {
 	private Integer pdeEstadiaDias;
 	private Integer pdeEstadiaHoras;
 
+	// Atributos de la clase Familiares
+	private Integer famid;
+	private String famEstabilidad;
+	private Date famFechaNacimiento;
+	private String famLabor;
+	private String famLugar;
+	private String famNombre;
+	private String famTipo;
+
 	// Atributos de la clase salud
 	private String sldAlergias;
 	private BigDecimal sldAltura;
@@ -151,11 +153,11 @@ public class PersonaBean {
 	private String sldPeriodicidadTabaco;
 	private Boolean sldEstupefacientes;
 	private String sldPeriodicidadEstupefacientes;
-	private Integer sldEjercicioHoras;
+	private String sldEjercicioHoras;
 	private Boolean sldDiscapacidad;
 	private Boolean sldSeguroIess;
 	private Boolean sldSeguroPrivado;
-	private Integer sldTabacoSemana;
+	private String sldTabacoSemana;
 	private String sldAlergiasCronicas3;
 	private String sldMedicamentosCronicos3;
 
@@ -170,6 +172,7 @@ public class PersonaBean {
 
 	// manejo de vistas
 	List<GenPersona> l_persona;
+	List<GenFamiliare> l_familiares;
 	List<SelectItem> l_estados;
 	List<SelectItem> l_tipo_dni;
 	List<SelectItem> l_genero;
@@ -183,6 +186,9 @@ public class PersonaBean {
 	List<SelectItem> l_residencia;
 	List<SelectItem> l_dias;
 	List<SelectItem> l_horas;
+	List<SelectItem> l_fam_tipo;
+	List<SelectItem> l_fam_actividad;
+	List<SelectItem> l_fam_estabilidad;
 
 	// manejo de booleanos
 	private boolean seguro;
@@ -192,6 +198,9 @@ public class PersonaBean {
 	private boolean estupefacientes;
 	private boolean discapacidad;
 	private boolean embriaguez;
+	private boolean familia;
+	private boolean dinardap;
+	private boolean estabilidad;
 
 	// valor de ediciï¿½n e inserciï¿½n
 	private boolean edicion;
@@ -215,6 +224,8 @@ public class PersonaBean {
 	private List<SelectItem> lstNivelesInstruccion;
 	private List<SelectItem> lstTiposEventos;
 
+	private List<SelectItem> lstNivelesAprobados;
+
 	// Formacion Academica
 
 	private boolean actualFA;
@@ -228,6 +239,7 @@ public class PersonaBean {
 	@NotBlank(message = "El campo Institución no debe contener solo espacios blancos.")
 	private String institucionFA;
 	private String nivelInstruccion;
+	private String nivelesAprobados;
 
 	@NotNull(message = "El campo Duración no debe ser nulo.")
 	@DecimalMin("1")
@@ -235,13 +247,13 @@ public class PersonaBean {
 
 	private String paisFA;
 	private boolean edicionFA;
-	private String areaFA;
 	private boolean registroSenescyt;
 	private Date fechaIniFA;
 	private Date fechaFinFA;
 	private GenFormacionacademica formAcademica;
 	private GenFormacionacademica formAcEliminar;
 	private List<GenFormacionacademica> lstFormAcademica;
+	private boolean visualizarCampos;
 
 	// Capacitaciones
 
@@ -283,6 +295,7 @@ public class PersonaBean {
 
 	@NotNull(message = "El campo Responsabilidades no debe ser nulo.")
 	@NotBlank(message = "El campo Responsabilidades no debe contener solo espacios blancos.")
+	@Size(max = 500, message = "El campo Responsabilidades debe contener máximo 500 caracteres.")
 	private String responsabilidades;
 	private String paisEL;
 	private String areaEL;
@@ -297,7 +310,7 @@ public class PersonaBean {
 
 	@PostConstruct
 	public void init() {
-		// session.validarSesion();
+		session.validarSesion();
 		edicion = false;
 		select_n = true;
 		select_r = true;
@@ -316,20 +329,22 @@ public class PersonaBean {
 		l_dias = new ArrayList<SelectItem>();
 		l_horas = new ArrayList<SelectItem>();
 		l_discapacidad = new ArrayList<SelectItem>();
+		l_fam_tipo = new ArrayList<SelectItem>();
+		l_fam_actividad = new ArrayList<SelectItem>();
+		l_fam_estabilidad = new ArrayList<SelectItem>();
 		l_persona = new ArrayList<GenPersona>();
-		seguro = false;
-		ejercicio = false;
-		alcohol = false;
-		tabaco = false;
-		discapacidad = false;
-		estupefacientes = false;
-		embriaguez = false;
+		l_familiares = new ArrayList<GenFamiliare>();
+		familia = false;
+		estabilidad = false;
 		sms_validacion = "";
 
 		// Curriculums
 		lstAreasLE = new ArrayList<SelectItem>();
 		lstNivelesInstruccion = new ArrayList<SelectItem>();
 		lstTiposEventos = new ArrayList<SelectItem>();
+
+		lstNivelesAprobados = new ArrayList<SelectItem>();
+		nivelesAprobados = "S/N";
 
 		sectorPublico = false;
 		duracion = BigDecimal.ZERO;
@@ -343,11 +358,160 @@ public class PersonaBean {
 		areaCa = "S/N";
 		areaEL = "S/N";
 		areaCa = "S/N";
-		areaFA = "S/N";
 		tipoEvento = "S/N";
 		nivelInstruccion = "S/N";
-		this.carga();
-		// cargarPersona(session.validarPersona("npersona2.xhtml"));
+		visualizarCampos = true;
+		// this.carga();
+		cargarPersona(session.validarPersona("npersona2.xhtml"));
+	}
+
+	/**
+	 * @return the estabilidad
+	 */
+	public boolean isEstabilidad() {
+		return estabilidad;
+	}
+
+	/**
+	 * @param estabilidad the estabilidad to set
+	 */
+	public void setEstabilidad(boolean estabilidad) {
+		this.estabilidad = estabilidad;
+	}
+
+	/**
+	 * @return the famid
+	 */
+	public Integer getFamid() {
+		return famid;
+	}
+
+	/**
+	 * @param famid
+	 *            the famid to set
+	 */
+	public void setFamid(Integer famid) {
+		this.famid = famid;
+	}
+
+	/**
+	 * @return the famEstabilidad
+	 */
+	public String getFamEstabilidad() {
+		return famEstabilidad;
+	}
+
+	/**
+	 * @return the dinardap
+	 */
+	public boolean isDinardap() {
+		return dinardap;
+	}
+
+	/**
+	 * @param dinardap
+	 *            the dinardap to set
+	 */
+	public void setDinardap(boolean dinardap) {
+		this.dinardap = dinardap;
+	}
+
+	/**
+	 * @param famEstabilidad
+	 *            the famEstabilidad to set
+	 */
+	public void setFamEstabilidad(String famEstabilidad) {
+		this.famEstabilidad = famEstabilidad;
+	}
+
+	/**
+	 * @return the famFechaNacimiento
+	 */
+	public Date getFamFechaNacimiento() {
+		return famFechaNacimiento;
+	}
+
+	/**
+	 * @param famFechaNacimiento
+	 *            the famFechaNacimiento to set
+	 */
+	public void setFamFechaNacimiento(Date famFechaNacimiento) {
+		this.famFechaNacimiento = famFechaNacimiento;
+	}
+
+	/**
+	 * @return the famLabor
+	 */
+	public String getFamLabor() {
+		return famLabor;
+	}
+
+	/**
+	 * @param famLabor
+	 *            the famLabor to set
+	 */
+	public void setFamLabor(String famLabor) {
+		this.famLabor = famLabor;
+	}
+
+	/**
+	 * @return the famLugar
+	 */
+	public String getFamLugar() {
+		return famLugar;
+	}
+
+	/**
+	 * @param famLugar
+	 *            the famLugar to set
+	 */
+	public void setFamLugar(String famLugar) {
+		this.famLugar = famLugar;
+	}
+
+	/**
+	 * @return the famNombre
+	 */
+	public String getFamNombre() {
+		return famNombre;
+	}
+
+	/**
+	 * @param famNombre
+	 *            the famNombre to set
+	 */
+	public void setFamNombre(String famNombre) {
+		this.famNombre = famNombre;
+	}
+
+	/**
+	 * @return the famTipo
+	 */
+	public String getFamTipo() {
+		return famTipo;
+	}
+
+	/**
+	 * @param famTipo
+	 *            the famTipo to set
+	 */
+	public void setFamTipo(String famTipo) {
+		this.famTipo = famTipo;
+	}
+
+	/**
+	 * @return the l_familiares
+	 */
+	public List<GenFamiliare> getL_familiares() {
+		return l_familiares;
+	}
+
+	/**
+	 * @param l_familiares
+	 *            the l_familiares to set
+	 */
+	public void setL_familiares(List<GenFamiliare> l_familiares) {
+		this.l_familiares = l_familiares;
 	}
 
 	/**
@@ -411,21 +575,6 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @return the sldEjercicioHoras
-	 */
-	public Integer getSldEjercicioHoras() {
-		return sldEjercicioHoras;
-	}
-
-	/**
-	 * @param sldEjercicioHoras
-	 *            the sldEjercicioHoras to set
-	 */
-	public void setSldEjercicioHoras(Integer sldEjercicioHoras) {
-		this.sldEjercicioHoras = sldEjercicioHoras;
-	}
-
-	/**
 	 * @return the sldDiscapacidad
 	 */
 	public Boolean getSldDiscapacidad() {
@@ -471,9 +620,24 @@ public class PersonaBean {
 	}
 
 	/**
+	 * @return the sldEjercicioHoras
+	 */
+	public String getSldEjercicioHoras() {
+		return sldEjercicioHoras;
+	}
+
+	/**
+	 * @param sldEjercicioHoras
+	 *            the sldEjercicioHoras to set
+	 */
+	public void setSldEjercicioHoras(String sldEjercicioHoras) {
+		this.sldEjercicioHoras = sldEjercicioHoras;
+	}
+
+	/**
 	 * @return the sldTabacoSemana
 	 */
-	public Integer getSldTabacoSemana() {
+	public String getSldTabacoSemana() {
 		return sldTabacoSemana;
 	}
 
@@ -481,7 +645,7 @@ public class PersonaBean {
 	 * @param sldTabacoSemana
 	 *            the sldTabacoSemana to set
 	 */
-	public void setSldTabacoSemana(Integer sldTabacoSemana) {
+	public void setSldTabacoSemana(String sldTabacoSemana) {
 		this.sldTabacoSemana = sldTabacoSemana;
 	}
 
@@ -505,6 +669,21 @@ public class PersonaBean {
 	 */
 	public String getSldMedicamentosCronicos3() {
 		return sldMedicamentosCronicos3;
+	}
+
+	/**
+	 * @return the familia
+	 */
+	public boolean isFamilia() {
+		return familia;
+	}
+
+	/**
+	 * @param familia
+	 *            the familia to set
+	 */
+	public void setFamilia(boolean familia) {
+		this.familia = familia;
 	}
 
 	/**
@@ -775,6 +954,51 @@ public class PersonaBean {
 	 */
 	public Integer getSldPadreEdad() {
 		return sldPadreEdad;
+	}
+
+	/**
+	 * @return the l_fam_tipo
+	 */
+	public List<SelectItem> getL_fam_tipo() {
+		return l_fam_tipo;
+	}
+
+	/**
+	 * @param l_fam_tipo
+	 *            the l_fam_tipo to set
+	 */
+	public void setL_fam_tipo(List<SelectItem> l_fam_tipo) {
+		this.l_fam_tipo = l_fam_tipo;
+	}
+
+	/**
+	 * @return the l_fam_actividad
+	 */
+	public List<SelectItem> getL_fam_actividad() {
+		return l_fam_actividad;
+	}
+
+	/**
+	 * @param l_fam_actividad
+	 *            the l_fam_actividad to set
+	 */
+	public void setL_fam_actividad(List<SelectItem> l_fam_actividad) {
+		this.l_fam_actividad = l_fam_actividad;
+	}
+
+	/**
+	 * @return the l_fam_estabilidad
+	 */
+	public List<SelectItem> getL_fam_estabilidad() {
+		return l_fam_estabilidad;
+	}
+
+	/**
+	 * @param l_fam_estabilidad
+	 *            the l_fam_estabilidad to set
+	 */
+	public void setL_fam_estabilidad(List<SelectItem> l_fam_estabilidad) {
+		this.l_fam_estabilidad = l_fam_estabilidad;
 	}
 
 	/**
@@ -2153,6 +2377,21 @@ public class PersonaBean {
 	}
 
 	/**
+	 * @return the lstNivelesAprobados
+	 */
+	public List<SelectItem> getLstNivelesAprobados() {
+		return lstNivelesAprobados;
+	}
+
+	/**
+	 * @param lstNivelesAprobados
+	 *            the lstNivelesAprobados to set
+	 */
+	public void setLstNivelesAprobados(List<SelectItem> lstNivelesAprobados) {
+		this.lstNivelesAprobados = lstNivelesAprobados;
+	}
+
+	/**
 	 * @return the actualFA
 	 */
 	public boolean isActualFA() {
@@ -2228,6 +2467,36 @@ public class PersonaBean {
 	}
 
 	/**
+	 * @return the nivelesAprobados
+	 */
+	public String getNivelesAprobados() {
+		return nivelesAprobados;
+	}
+
+	/**
+	 * @param nivelesAprobados
+	 *            the nivelesAprobados to set
+	 */
+	public void setNivelesAprobados(String nivelesAprobados) {
+		this.nivelesAprobados = nivelesAprobados;
+	}
+
+	/**
+	 * @return the visualizarCampos
+	 */
+	public boolean isVisualizarCampos() {
+		return visualizarCampos;
+	}
+
+	/**
+	 * @param visualizarCampos
+	 *            the visualizarCampos to set
+	 */
+	public void setVisualizarCampos(boolean visualizarCampos) {
+		this.visualizarCampos = visualizarCampos;
+	}
+
+	/**
 	 * @return the duracion
 	 */
 	public BigDecimal getDuracion() {
@@ -2270,21 +2539,6 @@ public class PersonaBean {
 	 */
 	public void setEdicionFA(boolean edicionFA) {
 		this.edicionFA = edicionFA;
-	}
-
-	/**
-	 * @return the areaFA
-	 */
-	public String getAreaFA() {
-		return areaFA;
-	}
-
-	/**
-	 * @param areaFA
-	 *            the areaFA to set
-	 */
-	public void setAreaFA(String areaFA) {
-		this.areaFA = areaFA;
 	}
 
 	/**
@@ -2778,6 +3032,9 @@ public class PersonaBean {
 		cargarTiposDni();
 		cargarTipoSangre();
 		cargarTiposResidencia();
+		cargarTiposFamiliares();
+		cargarActividadFamiliares();
+		cargarEstabilidadFamiliares();
 		cargarDias();
 		cargarHoras();
 		cargarEstados();
@@ -2809,7 +3066,7 @@ public class PersonaBean {
 							getPerEstadoCivil().trim(), getPerCorreo2().trim());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
+					Mensaje.crearMensajeINFO("Persona registrada correctamente");
 					// setEdicion(true);
 				} else {
 					manager.editarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
@@ -2818,7 +3075,7 @@ public class PersonaBean {
 							getPerEstadoCivil().trim(), getPerCorreo2(), getPerEstado());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
+					Mensaje.crearMensajeINFO("Persona actualizada correctamente");
 				}
 				r = "npersona?faces-redirect=true";
 				// this.cleanDatos();
@@ -2849,7 +3106,7 @@ public class PersonaBean {
 							getPerEstadoCivil().trim(), getPerCorreo2().trim());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Registrado - Persona Creada");
+					Mensaje.crearMensajeINFO("Persona creada correctamente");
 					// setEdicion(true);
 				} else {
 					manager.editarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
@@ -2858,7 +3115,7 @@ public class PersonaBean {
 							getPerEstadoCivil().trim(), getPerCorreo2(), getPerEstado());
 					this.crearEditarPersonaDetalle();
 					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Actualizado - Persona Modificada");
+					Mensaje.crearMensajeINFO("Persona modificada correctamente");
 				}
 				r = "npersona2?faces-redirect=true";
 				// this.cleanDatos();
@@ -2879,6 +3136,10 @@ public class PersonaBean {
 	public String cargarPersona(GenPersona persona) {
 		try {
 			this.carga();
+			if (persona.getPerDinardap() == null || persona.getPerDinardap() == false) {
+				dinardap = false;
+			} else
+				dinardap = true;
 			setSelect_n(false);
 			setSelect_r(false);
 			cargarEstados();
@@ -2936,6 +3197,13 @@ public class PersonaBean {
 		getL_persona().clear();
 		return "persona?faces-redirect=true";
 	}
+	
+	public String cancelar2() {
+		this.cleanDatos();
+		// this.cargarPersonas();
+		getL_persona().clear();
+		return "index?faces-redirect=true";
+	}
 
 	/**
 	 * Lista de Personas
@@ -2984,7 +3252,7 @@ public class PersonaBean {
 	}
 
 	/**
-	 * Lista de Rsidencias
+	 * Lista de Residencias
 	 */
 	public void cargarTiposResidencia() {
 		getL_residencia().clear();
@@ -3033,6 +3301,39 @@ public class PersonaBean {
 		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_estado_civil");
 		for (GenCatalogoItemsDet i : completo) {
 			getL_estado_civil().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de Tipos Familiares
+	 */
+	public void cargarTiposFamiliares() {
+		getL_fam_tipo().clear();
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_fam_tipo");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_fam_tipo().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de Activiades Familiares
+	 */
+	public void cargarActividadFamiliares() {
+		getL_fam_actividad().clear();
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_fam_actividad");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_fam_actividad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	/**
+	 * Lista de Estabilidad Familiares
+	 */
+	public void cargarEstabilidadFamiliares() {
+		getL_fam_estabilidad().clear();
+		List<GenCatalogoItemsDet> completo = manager.AllofItems("cat_fam_estabilidad");
+		for (GenCatalogoItemsDet i : completo) {
+			getL_fam_estabilidad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
 
@@ -3214,6 +3515,7 @@ public class PersonaBean {
 			setPdeEstadiaDias(persona.getPdeEstadiaDias());
 			setPdeEstadiaHoras(persona.getPdeEstadiaHoras());
 			setPdeEmergContactoCorreo(persona.getPdeEmergContactoCorreo());
+			setL_familiares(manager.familiarByDNI(getPerDni()));
 			// actualizaciï¿½n de lista de sitios
 			cargarCiudadesNac(persona.getPdeProvinciaNacimiento());
 			cargarCiudadesRes(persona.getPdeProvinciaResidencia());
@@ -3274,7 +3576,10 @@ public class PersonaBean {
 	public boolean validarCampos() {
 		if ((getPerApellidos() == null || getPerApellidos().isEmpty())
 				|| (getPerCelular() == null || getPerCelular().isEmpty())
-				|| (getPerCorreo() == null || getPerCorreo().isEmpty())
+				|| (getPerCorreo() == null || getPerCorreo().isEmpty()
+						|| Funciones.validarEmail(getPerCorreo()) == false)
+				|| (getPerCorreo2() == null || getPerCorreo2().isEmpty()
+						|| Funciones.validarEmail(getPerCorreo2()) == false)
 				|| (getPerDni() == null || getPerDni().isEmpty())
 				|| (getPerEstadoCivil() == null || getPerEstadoCivil().equals("S/N"))
 				|| (getPerFechaNacimiento() == null) || (getPerGenero() == null || getPerGenero().equals("S/N"))
@@ -3379,7 +3684,157 @@ public class PersonaBean {
 		setSldAlergiasCronicas3("");
 		setSldMedicamentosCronicos3("");
 		setEdicion(false);
+	}
 
+	// ////////////////////////////////////////////////////////FAMILIAR/////////////////////////////////////////////////////////
+
+	public void cargarFamiliar(GenFamiliare familiar) {
+		try {
+			setFamEstabilidad(familiar.getFamEstabilidad());
+			setFamFechaNacimiento(familiar.getFamFechaNacimiento());
+			setFamLabor(familiar.getFamLabor());
+			setFamLugar(familiar.getFamLugar());
+			setFamTipo(familiar.getFamTipo());
+			setFamid(familiar.getId().getFamId());
+			setFamNombre(familiar.getFamNombre());
+			RequestContext.getCurrentInstance().execute("PF('dlgeditar').show()");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Permite la creacion de un familiar
+	 * 
+	 * @return
+	 */
+	public void crearEditarFamiliar() {
+		try {
+			if (getPerDni() == null) {
+				Mensaje.crearMensajeINFO(
+						"Debe guardar la pestaña principal para poder almacenar los familares en el detalle.");
+			} else {
+				if (getFamid() == null) {
+					setFamid(0);
+				}
+				GenFamiliare res_familiar = manager.findFamiliarByID(getFamid(), getPerDni());
+				if (res_familiar == null) {
+					GenFamiliarePK familiar_pk = new GenFamiliarePK();
+					familiar_pk.setFamId(manager.familiarId());
+					familiar_pk.setPdeDni(getPerDni());
+					GenFamiliare familiar = new GenFamiliare();
+					familiar.setId(familiar_pk);
+					familiar.setFamEstabilidad(getFamEstabilidad());
+					familiar.setFamFechaNacimiento(getFamFechaNacimiento());
+					familiar.setFamLabor(getFamLabor());
+					familiar.setFamLugar(getFamLugar().toUpperCase());
+					familiar.setFamNombre(getFamNombre().toUpperCase());
+					familiar.setFamTipo(getFamTipo());
+					familiar.setGenPersonaDetalle(manager.PersonaDetalleByID(getPerDni()));
+					verificarConyugeInsertar(familiar.getFamTipo(), familiar);
+					setL_familiares(manager.familiarByDNI(getPerDni()));
+				} else {
+					res_familiar.setFamEstabilidad(getFamEstabilidad());
+					res_familiar.setFamFechaNacimiento(getFamFechaNacimiento());
+					res_familiar.setFamLabor(getFamLabor());
+					res_familiar.setFamLugar(getFamLugar().toUpperCase());
+					res_familiar.setFamNombre(getFamNombre().toUpperCase());
+					res_familiar.setFamTipo(getFamTipo());
+					verificarConyugeEditar(res_familiar.getFamTipo(), res_familiar);
+					setL_familiares(manager.familiarByDNI(getPerDni()));
+				}
+			}
+			this.setearFamiliares();
+			RequestContext.getCurrentInstance().execute("PF('dlgeditar').hide()");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void verificarConyugeEditar(String tipo,GenFamiliare familiar){
+			try {
+				if (tipo.equals("Conyuge")){
+				if (manager.FamiliarByConyuge(getPerDni())){
+					Mensaje.crearMensajeERROR("La persona ya cuenta con un Conyuge");
+				}else{
+					manager.editarFamiliar(familiar);
+				}
+				}else
+					manager.editarFamiliar(familiar);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+	
+	public void verificarConyugeInsertar(String tipo,GenFamiliare familiar){
+		try {
+			if (tipo.equals("Conyuge")){
+			if (manager.FamiliarByConyuge(getPerDni())){
+				Mensaje.crearMensajeERROR("La persona ya cuenta con un Conyuge");
+			}else{
+				manager.insertarFamiliar(familiar);
+			}
+			}else
+				manager.insertarFamiliar(familiar);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
+	
+
+	public void mostrarIngresoFamiliar() {
+		this.setearFamiliares();
+		RequestContext.getCurrentInstance().execute("PF('dlgeditar').show()");
+	}
+
+	public void setearFamiliares() {
+		setFamEstabilidad("S/N");
+		setFamFechaNacimiento(null);
+		setFamLabor("S/N");
+		setFamLugar("");
+		setFamNombre("");
+		setFamTipo("S/N");
+	}
+
+	public boolean validarCamposFamiliar() {
+		if (getFamFechaNacimiento() == null) {
+			System.err.println("fecha");
+			return true;
+		} else if (getFamLabor() == null || getFamLabor().equals("S/N")) {
+			System.err.println("labor");
+			return true;
+		} else if (getFamLugar() == null || getFamLugar().equals("")) {
+			System.err.println("lugar");
+			return true;
+		} else if (getFamNombre() == null || getFamNombre().equals("")) {
+			System.err.println("nombre");
+			return true;
+		} else if (getFamTipo() == null || getFamTipo().equals("S/N")) {
+			System.err.println("tipo");
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void eliminarFamiliar(GenFamiliare familiar) {
+		try {
+			getL_familiares().clear();
+			manager.eliminarFamiliar(familiar);
+			setL_familiares(manager.familiarByDNI(getPerDni()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void cancelarFamiliar() {
+		RequestContext.getCurrentInstance().execute("PF('dlgeditar').hide()");
 	}
 
 	// ////////////////////////////////////////////////////////SALUD/////////////////////////////////////////////////////////
@@ -3396,6 +3851,15 @@ public class PersonaBean {
 				if (getSldDiscapacidadGrado() == null) {
 					setSldDiscapacidadGrado("0");
 				}
+				if (getSldDiscapacidad() == null) {
+					setSldDiscapacidad(false);
+				}
+				if (getSldSeguroPrivado() == null) {
+					setSldSeguroPrivado(false);
+				}
+				if (getSldSeguroIess() == null) {
+					setSldSeguroIess(false);
+				}
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
@@ -3410,6 +3874,15 @@ public class PersonaBean {
 						getSldSeguroPrivado(), getSldDiscapacidad(), getSldEjercicioHoras(), getSldTabacoSemana(),
 						getSldAlergiasCronicas3(), getSldMedicamentosCronicos3());
 			} else {
+				if (getSldDiscapacidad() == null) {
+					setSldDiscapacidad(false);
+				}
+				if (getSldSeguroPrivado() == null) {
+					setSldSeguroPrivado(false);
+				}
+				if (getSldSeguroIess() == null) {
+					setSldSeguroIess(false);
+				}
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
@@ -3427,6 +3900,7 @@ public class PersonaBean {
 
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -3474,15 +3948,43 @@ public class PersonaBean {
 			setSldSeguroIess(salud.getSldSeguroIess());
 			setSldSeguroPrivado(salud.getSldSeguroPrivado());
 			setSldDiscapacidad(salud.getSldDiscapacidad());
-			setSldEjercicioHoras(salud.getSldEjercicioHoras());
-			setSldTabacoSemana(salud.getSldTabacoSemana());
+			setSldEjercicioHoras("" + salud.getSldEjercicioHoras());
+			setSldTabacoSemana("" + salud.getSldTabacoSemana());
 			setSldAlergiasCronicas3(salud.getSldAlergiasCronicas3());
 			setSldMedicamentosCronicos3(salud.getSldMedicamentosCronicos3());
+			this.llenarBooleanos(getSldSeguroPrivado(), getSldDiscapacidad(), getSldRealizaEjercicio(),
+					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "npersona?faces-redirect=true";
+	}
+
+	public void llenarBooleanos(boolean seguro_privado_switch, boolean discapacidad_switch, boolean ejercicio_switch,
+			String alcohol_switch, boolean embriago_switch, String tabaco_switch) {
+		seguro = verificarSwitch(seguro_privado_switch);
+		ejercicio = verificarSwitch(ejercicio_switch);
+		alcohol = verificarSwitch(alcohol_switch);
+		tabaco = verificarSwitch(tabaco_switch);
+		discapacidad = verificarSwitch(discapacidad_switch);
+		embriaguez = verificarSwitch(embriago_switch);
+	}
+
+	public boolean verificarSwitch(boolean dato) {
+		if (dato == false) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public boolean verificarSwitch(String dato) {
+		if (dato == null || dato.equals("false")) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -3512,41 +4014,50 @@ public class PersonaBean {
 	}
 
 	public void switch_seguro() {
-		if (isSeguro() == false)
+		if (isSeguro() == false) {
 			setSeguro(true);
-		else if (isSeguro() == true)
+		} else if (isSeguro() == true) {
+			setSldAsegurado("");
 			setSeguro(false);
+		}
 	}
 
 	public void switch_ejercicio() {
-		if (isEjercicio() == false)
+		if (isEjercicio() == false) {
 			setEjercicio(true);
-		else if (isEjercicio() == true)
+		} else if (isEjercicio() == true) {
+			setSldEjercicioHoras("0");
+			setSldPeriodicidadEjercicio("0");
 			setEjercicio(false);
+		}
 	}
 
 	public void switch_alcohol() {
-		if (isAlcohol() == false){
+		if (isAlcohol() == false) {
 			setAlcohol(true);
-			setEmbriaguez(true);
-		}else if (isAlcohol() == true){
+		} else if (isAlcohol() == true) {
 			setAlcohol(false);
-			setEmbriaguez(false);
+			setSldPeriodicidadAlcohol("0");
 		}
 	}
 
 	public void switch_embriaguez() {
 		if (isEmbriaguez() == false)
 			setEmbriaguez(true);
-		else if (isEmbriaguez() == true)
+		else if (isEmbriaguez() == true) {
 			setEmbriaguez(false);
+			setSldPeriodicidadEmbriagar("0");
+		}
 	}
 
 	public void switch_tabaco() {
 		if (isTabaco() == false)
 			setTabaco(true);
-		else if (isTabaco() == true)
+		else if (isTabaco() == true) {
 			setTabaco(false);
+			setSldPeriodicidadTabaco("0");
+			setSldTabacoSemana("0");
+		}
 	}
 
 	public void switch_estupefacientes() {
@@ -3559,8 +4070,12 @@ public class PersonaBean {
 	public void switch_discapacidad() {
 		if (isDiscapacidad() == false)
 			setDiscapacidad(true);
-		else if (isDiscapacidad() == true)
+		else if (isDiscapacidad() == true) {
+			setSldCarnetConadies("");
+			setSldDiscapacidadTipo("");
+			setSldDiscapacidadGrado("0");
 			setDiscapacidad(false);
+		}
 	}
 
 	private String replaceSpecialChars(String input) {
@@ -3755,9 +4270,48 @@ public class PersonaBean {
 	public void cargarNivelesInstruccion() {
 		getLstNivelesInstruccion().clear();
 		getLstNivelesInstruccion().add(new SelectItem("S/N", "--Seleccione--"));
-		for (GenCatalogoItemsDet i : manager.AllofItems("cat_nivel_instruccion")) {
+		for (GenCatalogoItemsDet i : manager.AllItemsOrder("cat_nivel_instruccion")) {
 			getLstNivelesInstruccion().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
+	}
+
+	public void cargarNivelesAprobadosEB() {
+		getLstNivelesAprobados().clear();
+		getLstNivelesAprobados().add(new SelectItem("S/N", "--Seleccione--"));
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_nvl_aprobados_eb")) {
+			getLstNivelesAprobados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	public void cargarNivelesAprobadosBa() {
+		getLstNivelesAprobados().clear();
+		getLstNivelesAprobados().add(new SelectItem("S/N", "--Seleccione--"));
+		for (GenCatalogoItemsDet i : manager.AllofItems("cat_nvl_aprobados_ba")) {
+			getLstNivelesAprobados().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+
+	public void cargaNivelesAp() {
+		if (getNivelInstruccion().equals("nvlIns_1")) {
+			cargarNivelesAprobadosEB();
+			setTitulo("--");
+			setInstitucion("--");
+			setVisualizarCampos(false);
+
+		} else if (getNivelInstruccion().equals("nvlIns_2")) {
+			cargarNivelesAprobadosBa();
+			setTitulo("--");
+			setInstitucion("--");
+			setVisualizarCampos(false);
+
+		} else {
+			setTitulo("");
+			setInstitucion("");
+			setVisualizarCampos(true);
+			setNivelesAprobados("S/N");
+			setLstNivelesAprobados(new ArrayList<SelectItem>());
+		}
+
 	}
 
 	/**
@@ -3797,19 +4351,30 @@ public class PersonaBean {
 	public void cargarFormacionAc(GenFormacionacademica fAca) {
 		try {
 			setEdicionFA(true);
+			if (fAca.getFoaNivelInstruccion().equals("nvlIns_1")) {
+				cargarNivelesAprobadosEB();
+				setNivelesAprobados(fAca.getFoaNivelesAprobados());
+				setVisualizarCampos(false);
+			} else if (fAca.getFoaNivelInstruccion().equals("nvlIns_2")) {
+				cargarNivelesAprobadosBa();
+				setNivelesAprobados(fAca.getFoaNivelesAprobados());
+				setVisualizarCampos(false);
+			} else {
+				setLstNivelesAprobados(new ArrayList<SelectItem>());
+				setVisualizarCampos(true);
+			}
 			setIdFormacion(fAca.getFoaId());
-			setInstitucionFA(fAca.getFoaInstitucion());
+			setInstitucion(fAca.getFoaInstitucion());
 			setTitulo(fAca.getFoaTitulo());
 			setPaisFA(fAca.getFoaPais());
 			setNivelInstruccion(fAca.getFoaNivelInstruccion());
-			setAreaFA(fAca.getFoaAreaLaboralEstudio());
+
 			setDuracion(fAca.getFoaDuracion());
 			setFechaIniFA(fAca.getFoaFechaInicio());
 			setFechaFinFA(fAca.getFoaFechaFin());
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
-
 	}
 
 	/**
@@ -3818,20 +4383,16 @@ public class PersonaBean {
 	public void agregarEditarFormAc() {
 		try {
 			if (validarSelectItemsFA()) {
-				System.out.println("---> ingreso validar campos ");
 				if (validarFechaFinFA()) {
-					System.out.println("---> ingreso validar fecha Fin ");
 					if (!isEdicionFA()) {
-						System.out.println("---> ingreso guardar nuevo ");
-						manager.ingresarFormacionAc(getPersona(), getAreaFA(), getTitulo().trim(),
-								getInstitucionFA().trim(), getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(),
-								getPaisFA(), getDuracion(), isRegistroSenescyt());
+						manager.ingresarFormacionAc(getPersona(), getTitulo().trim(), getInstitucion().trim(),
+								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
+								isRegistroSenescyt(), getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos guardados correctamente.");
 					} else {
-						System.out.println("---> ingreso editar ");
-						manager.editarFormacionAc(getIdFormacion(), getAreaFA(), getTitulo().trim(),
-								getInstitucionFA().trim(), getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(),
-								getPaisFA(), getDuracion());
+						manager.editarFormacionAc(getIdFormacion(), getTitulo().trim(), getInstitucion().trim(),
+								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
+								getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
 					}
 					limpiarCamposFA();
@@ -3849,21 +4410,25 @@ public class PersonaBean {
 
 	public void limpiarCamposFA() {
 		setIdFormacion(0);
-		setAreaFA("S/N");
 		setTitulo("");
-		setInstitucionFA("");
+		setInstitucion("");
 		setPaisFA("EC");
 		setDuracion(BigDecimal.ZERO);
 		setFechaIniFA(new Date());
 		setFechaFinFA(new Date());
 		setNivelInstruccion("S/N");
+		setVisualizarCampos(true);
+		setNivelesAprobados("S/N");
 
 		setEdicionFA(false);
 
 	}
 
 	public boolean validarSelectItemsFA() {
-		if (getAreaFA().equals("S/N") || getPaisFA().equals("S/N") || getNivelInstruccion().equals("S/N")) {
+		if (getPaisFA().equals("S/N") || getNivelInstruccion().equals("S/N")) {
+			return false;
+		} else if (getNivelesAprobados().equals("S/N")
+				&& (getNivelInstruccion().equals("nvlIns_1") || getNivelInstruccion().equals("nvlIns_1"))) {
 			return false;
 		} else
 			return true;

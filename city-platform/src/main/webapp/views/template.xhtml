@@ -20,6 +20,7 @@ and open the template in the editor.
 	<h:outputStylesheet library="css" name="estilo.css" />
 	<link rel="shortcut icon" type="image/x-icon"
 		href="../resources/img/favicon.ico" />
+	<f:event listener="#{sesionBean.validarSesion()}" type="preRenderView"></f:event>
 	<ui:insert name="google"></ui:insert>
 </h:head>
 <h:body
@@ -31,7 +32,7 @@ and open the template in the editor.
 				<c:forEach var="t" items="#{sesionBean.menu}">
 					<b:dropMenu value="#{t.nombre}" iconAwesome="fa fa-folder">
 						<c:forEach var="i" items="#{t.lstLinks}">
-        						<b:navLink value="#{i.nombre}" href="#{i.link}"
+							<b:navLink value="#{i.nombre}" href="#{i.link}"
 								iconAwesome="fa fa-location-arrow" />
 						</c:forEach>
 					</b:dropMenu>
@@ -60,7 +61,15 @@ and open the template in the editor.
 					onclick="PF('cs').hide();" />
 			</p:confirmDialog>
 		</h:form>
-		
+		<h:form>
+			<p:remoteCommand name="onload"
+				actionListener="#{sesionBean.validarSesion()}" autoRun="true" />
+
+			<p:idleMonitor timeout="600000">
+				<p:ajax event="idle" listener="#{sesionBean.validarSesion()}" />
+			</p:idleMonitor>
+		</h:form>
+
 	</b:container>
 	<b:navBar fluid="true" fixed="bottom" inverse="true" role="navigation">
 		<center>

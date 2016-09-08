@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the gen_persona_detalle database table.
@@ -113,6 +114,10 @@ public class GenPersonaDetalle implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "pde_dni")
 	private GenPersona genPersona;
+
+	// bi-directional many-to-one association to GenFamiliare
+	@OneToMany(mappedBy = "genPersonaDetalle")
+	private List<GenFamiliare> genFamiliares;
 
 	public GenPersonaDetalle() {
 	}
@@ -340,7 +345,7 @@ public class GenPersonaDetalle implements Serializable {
 	public void setPdeEmergContactoCorreo(String pdeEmergContactoCorreo) {
 		this.pdeEmergContactoCorreo = pdeEmergContactoCorreo;
 	}
-	
+
 	public String getPdeResidencia() {
 		return this.pdeResidencia;
 	}
@@ -348,7 +353,7 @@ public class GenPersonaDetalle implements Serializable {
 	public void setPdeResidencia(String pdeResidencia) {
 		this.pdeResidencia = pdeResidencia;
 	}
-	
+
 	public Integer getPdeEstadiaDias() {
 		return this.pdeEstadiaDias;
 	}
@@ -363,6 +368,28 @@ public class GenPersonaDetalle implements Serializable {
 
 	public void setPdeEstadiaHoras(Integer pdeEstadiaHoras) {
 		this.pdeEstadiaHoras = pdeEstadiaHoras;
+	}
+
+	public List<GenFamiliare> getGenFamiliares() {
+		return this.genFamiliares;
+	}
+
+	public void setGenFamiliares(List<GenFamiliare> genFamiliares) {
+		this.genFamiliares = genFamiliares;
+	}
+
+	public GenFamiliare addGenFamiliare(GenFamiliare genFamiliare) {
+		getGenFamiliares().add(genFamiliare);
+		genFamiliare.setGenPersonaDetalle(this);
+
+		return genFamiliare;
+	}
+
+	public GenFamiliare removeGenFamiliare(GenFamiliare genFamiliare) {
+		getGenFamiliares().remove(genFamiliare);
+		genFamiliare.setGenPersonaDetalle(null);
+
+		return genFamiliare;
 	}
 
 }

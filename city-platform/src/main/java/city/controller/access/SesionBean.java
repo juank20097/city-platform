@@ -171,7 +171,7 @@ public class SesionBean implements Serializable {
 		SesionBean user = (SesionBean) session.getAttribute("sesionBean");
 		if (user == null || user.getPersona() == null) {
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("/cityplatform/index.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/city-platform/index.xhtml");
 			} catch (IOException ex) {
 				Mensaje.crearMensajeERROR(ex.getMessage());
 			}
@@ -189,7 +189,7 @@ public class SesionBean implements Serializable {
 				}
 			else {
 				try {
-					FacesContext.getCurrentInstance().getExternalContext().redirect("/cityplatform/views/index.xhtml");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/city-platform/views/index.xhtml");
 				} catch (IOException ex) {
 					Mensaje.crearMensajeERROR(ex.getMessage());
 				}
@@ -211,7 +211,7 @@ public class SesionBean implements Serializable {
 		SesionBean user = (SesionBean) session.getAttribute("sesionBean");
 		if (user == null || user.getUsuario() == null) {
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("/cityplatform/index.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/city-platform/index.xhtml");
 			} catch (IOException ex) {
 				Mensaje.crearMensajeERROR(ex.getMessage());
 			}
