@@ -18,6 +18,7 @@
 		<b:tabView tabPosition="top" pills="true"
 			contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 			<b:tab title="Datos Personales">
+
 				<h:form id="frmcc">
 					<b:row>
 						<b:column span="2">
@@ -25,7 +26,7 @@
 								value="Documento Nacional de Identificación (DNI):*" />
 						</b:column>
 						<b:column span="3">
-							<h:selectOneMenu id="slt" disabled="#{personaBean.edicion}"
+							<h:selectOneMenu id="slt" disabled="#{personaBean.dinardap}"
 								styleClass="form-control" value="#{personaBean.perTipoDni}">
 								<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 								<f:selectItems value="#{personaBean.l_tipo_dni}">
@@ -36,7 +37,7 @@
 							<h:outputLabel value="N° Identificación:*" />
 						</b:column>
 						<b:column span="3">
-							<b:inputText disabled="#{personaBean.edicion}"
+							<b:inputText disabled="#{personaBean.dinardap}"
 								value="#{personaBean.perDni}">
 							</b:inputText>
 						</b:column>
@@ -92,7 +93,7 @@
 									<b:column span="4">
 										<p:calendar disabled="#{personaBean.dinardap}"
 											value="#{personaBean.perFechaNacimiento}"
-											pattern="dd-MM-yyyy" mask="true" />
+											pattern="dd-MM-yyyy" yearRange="c-80:c+0" navigator="true" mask="true" />
 									</b:column>
 									<b:column span="2">
 										<h:outputLabel value="Sexo:*" />
@@ -727,7 +728,7 @@
 											value="#{personaBean.sldConsumeAlcohol}" onLabel="Si"
 											offLabel="No" style="width:60px">
 											<p:ajax listener="#{personaBean.switch_alcohol()}"
-												update="frm:alcohol1 frm:fila_emb frm:embriaguez"></p:ajax>
+												update="frm:alcohol1"></p:ajax>
 										</p:selectBooleanButton>
 									</b:column>
 									<b:column offset="1" span="2">
@@ -743,7 +744,7 @@
 									</b:column>
 								</b:row>
 								<br />
-								<b:row id="fila_emb" rendered="#{personaBean.alcohol}">
+								<b:row>
 									<b:column span="2">
 										<h:outputLabel value="¿Se Embriaga?:" />
 									</b:column>
@@ -786,13 +787,17 @@
 										<h:outputLabel value="Tabacos al día:" />
 									</b:column>
 									<b:column span="2">
-									<p:spinner size="4" id="tabaco1" disabled="#{!personaBean.tabaco}" value="#{personaBean.sldPeriodicidadTabaco}" />
+										<p:spinner size="4" id="tabaco1"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldPeriodicidadTabaco}" />
 									</b:column>
 									<b:column span="2">
 										<h:outputLabel value="Tabacos a la Semana:" />
 									</b:column>
 									<b:column span="2">
-									<p:spinner size="4" id="tabaco2" disabled="#{!personaBean.tabaco}" value="#{personaBean.sldTabacoSemana}" />
+										<p:spinner size="4" id="tabaco2"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldTabacoSemana}" />
 									</b:column>
 								</b:row>
 								<br />
@@ -990,22 +995,11 @@
 					<br />
 					<center>
 						<b:commandButton value="Guardar"
-							onclick="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							action="#{personaBean.crearPersonaPersonal()}" update="frm"
-							look="info">
-							<p:confirm header="Confirmación"
-												message="Seguro quieres guardar la información ingresada?"
-												icon="ui-icon-alert" />
+							action="#{personaBean.mostrarDialog()}" look="info">
 						</b:commandButton>
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-											<p:commandButton value="Si" type="button"
-												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-											<p:commandButton value="No" type="button"
-												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-										</p:confirmDialog>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton value="Volver" action="#{personaBean.cancelar2}"
+						<b:commandButton value="Volver"
+							action="#{personaBean.cancelarFicha}"
 							onclick="PF('statusDialog').show()"
 							oncomplete="PF('statusDialog').hide()" immediate="true"
 							update="frm" look="info"></b:commandButton>
@@ -1014,6 +1008,23 @@
 							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
 							severity="success" />
 					</center>
+				</h:form>
+
+				<h:form id="frmPrincipal">
+					<p:dialog id="principal" style="padding-top:50px;"
+						header="Confirmación" widgetVar="dlgprincipal" width="500"
+						modal="true" resizable="false" closable="true" position="top">
+						<center>
+							<h:outputLabel value="Seguro de guardar la información?" />
+						</center>
+						&nbsp;&nbsp;&nbsp;
+						<center>
+							<p:commandButton value="SI"
+								action="#{personaBean.crearPersonaPersonal()}" update="frm"></p:commandButton>
+							&nbsp;&nbsp;&nbsp;
+							<p:commandButton value="No" onclick="PF('dlgprincipal').hide()"></p:commandButton>
+						</center>
+					</p:dialog>
 				</h:form>
 
 				<h:form id="frm2">
@@ -1078,7 +1089,8 @@
 									<h:outputLabel value="Estabilidad:" />
 								</b:column>
 								<b:column span="4">
-									<h:selectOneMenu disabled="#{personaBean.estabilidad}" styleClass="form-control"
+									<h:selectOneMenu disabled="#{personaBean.estabilidad}"
+										styleClass="form-control"
 										value="#{personaBean.famEstabilidad}">
 										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 										<f:selectItems value="#{personaBean.l_fam_estabilidad}">
@@ -1100,6 +1112,9 @@
 
 			</b:tab>
 			<b:tab title="Información CV">
+				<f:facet name="anchor">
+					<b:iconAwesome name="fa fa-folder-open" />
+				</f:facet>
 				<b:tabView tabPosition="left" pills="true"
 					contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 					<b:tab title="Formaci&oacute;n Acad&eacute;mica">

@@ -3198,8 +3198,8 @@ public class PersonaBean {
 		return "persona?faces-redirect=true";
 	}
 	
-	public String cancelar2() {
-		this.cleanDatos();
+	public String cancelarFicha() {
+		//this.cleanDatos();
 		// this.cargarPersonas();
 		getL_persona().clear();
 		return "index?faces-redirect=true";
@@ -3441,6 +3441,10 @@ public class PersonaBean {
 		} else {
 			l_persona = manager.buscarPersona(datoBuscar);
 		}
+	}
+	
+	public void mostrarDialog(){
+		RequestContext.getCurrentInstance().execute("PF('dlgprincipal').show()");
 	}
 
 	// ////////////////////////////////////////////////////////PERSONA-DETALLE/////////////////////////////////////////////////////////
@@ -3912,6 +3916,18 @@ public class PersonaBean {
 	 */
 	public String cargarSalud(GenSalud salud) {
 		try {
+			if (salud.getSldDiscapacidad()==null){
+				salud.setSldDiscapacidad(false);
+			}
+			if (salud.getSldSeguroPrivado()==null){
+				salud.setSldSeguroPrivado(false);
+			}
+			if (salud.getSldRealizaEjercicio()==null){
+				salud.setSldRealizaEjercicio(false);
+			}
+			if (salud.getSldEmbriagar()==null){
+				salud.setSldEmbriagar(false);
+			}
 			setSldAlergias(salud.getSldAlergias());
 			setSldAltura(salud.getSldAltura());
 			setSldAsegurado(salud.getSldAsegurado());
@@ -3963,6 +3979,7 @@ public class PersonaBean {
 
 	public void llenarBooleanos(boolean seguro_privado_switch, boolean discapacidad_switch, boolean ejercicio_switch,
 			String alcohol_switch, boolean embriago_switch, String tabaco_switch) {
+		System.out.println(seguro_privado_switch+" "+discapacidad_switch+ejercicio_switch+alcohol_switch+embriago_switch+tabaco_switch);
 		seguro = verificarSwitch(seguro_privado_switch);
 		ejercicio = verificarSwitch(ejercicio_switch);
 		alcohol = verificarSwitch(alcohol_switch);

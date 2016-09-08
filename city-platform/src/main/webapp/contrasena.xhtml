@@ -28,10 +28,16 @@
 					animation-enter="animated bounceInDown"
 					animation-exit="animated flipOutX" escape="true" />
 				<b:inputText style="color:black; width: 350px;"
-					placeholder="USUARIO" value="#{sesionBean.usuario}">
+					placeholder="CÉDULA" value="#{sesionBean.usuario}">
 				</b:inputText>
 				<b:commandButton size="lg" id="login-button" value="Enviar Correo"
 					action="#{sesionBean.EnviarClave()}"
+					onclick="PF('statusDialog').show()"
+					oncomplete="PF('statusDialog').hide()"
+					styleClass="btn-block btnSend" look="info" update="frmlog" />
+				<br />
+				<b:commandButton size="md" id="login-button-cancelar" value="Cancelar"
+					action="/index.xhtml"
 					onclick="PF('statusDialog').show()"
 					oncomplete="PF('statusDialog').hide()"
 					styleClass="btn-block btnSend" look="info" update="frmlog" />
