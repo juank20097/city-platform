@@ -719,6 +719,7 @@ public class SeguridadBean {
 	 */
 	public String nuevoIncidente() {
 		this.carga();
+		setControl(true);
 		setSegFecha(new Date());
 		setEdicion(true);
 		return "nseguridad?faces-redirect=true";
@@ -758,6 +759,7 @@ public class SeguridadBean {
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
+				setControl(false);
 				this.cleanDatos();
 				this.cargarIncidentes();
 			}
@@ -841,6 +843,7 @@ public class SeguridadBean {
 	 * @return
 	 */
 	public String cancelar() {
+		setControl(false);
 		this.cleanDatos();
 		this.cargarIncidentes();
 		return "seguridad?faces-redirect=true";
