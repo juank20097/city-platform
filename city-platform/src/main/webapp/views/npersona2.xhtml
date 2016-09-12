@@ -110,7 +110,7 @@
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono:*" />
+										<h:outputLabel value="Teléfono Convencional:*" />
 									</b:column>
 									<b:column span="4">
 										<p:inputMask size="34" value="#{personaBean.perTelefono}"
@@ -133,14 +133,14 @@
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Correo Personal:*" />
+										<h:outputLabel value="Correo Institucional:*" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.perCorreo}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Correo Institucional:*" />
+										<h:outputLabel value="Correo Personal:*" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.perCorreo2}">
@@ -312,7 +312,7 @@
 									</b:column>
 								</b:row>
 								<br />
-								<h4>Tiempo de estancia en Yachay:</h4>
+								<h4>Tiempo de estancia (residencia - trabajo) en Yachay Ciudad del Conocimiento:</h4>
 								<p:separator />
 								<b:row>
 									<b:column span="2">
@@ -349,9 +349,6 @@
 									liveScroll="true" paginator="true"
 									paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 									<p:column headerText="Opciones">
-										<p:commandButton icon="ui-icon-pencil"
-											action="#{personaBean.cargarFamiliar(fam)}"
-											update=":frm2:dialog" />
 										<p:commandButton icon="ui-icon-trash"
 											action="#{personaBean.eliminarFamiliar(fam)}"
 											update=":frm:dtfam">
@@ -457,7 +454,7 @@
 								<p:separator />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Nombre Contacto Emergencia:" />
+										<h:outputLabel value="Nombre Contacto:" />
 									</b:column>
 									<b:column span="10">
 										<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
@@ -466,14 +463,14 @@
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Dni Contacto Emergencia:" />
+										<h:outputLabel value="C.I. Contacto:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoId}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="E-mail Contacto Emergencia:" />
+										<h:outputLabel value="E-mail Contacto:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoCorreo}">
@@ -482,21 +479,20 @@
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono Contacto Emergencia 1:" />
+										<h:outputLabel value="Teléfono Contacto 1:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono Contacto Emergencia: 2" />
+										<h:outputLabel value="Teléfono Contacto 2:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoTelefono2}">
 										</b:inputText>
 									</b:column>
 								</b:row>
-								<br />
 								<b:row rendered="false">
 									<h4>Datos de Defunción</h4>
 									<p:separator />
@@ -521,7 +517,7 @@
 								<b:row>
 									<b:column span="12">
 										<b:inputTextarea
-											placeholder="Escribe observaciones de la persona en caso de tenerla....."
+											placeholder="Escribe observaciones de la persona en caso de tenerla."
 											value="#{personaBean.pdeObservacion}">
 										</b:inputTextarea>
 									</b:column>
@@ -819,7 +815,7 @@
 									</b:column>
 								</b:row>
 								<br />
-								<h4>Datos Familiares de Enfermedades</h4>
+								<h4>Datos de Enfermedades en Familiares </h4>
 								<p:separator />
 								<b:row rendered="#{!personaBean.sld_padre}">
 									<b:column span="2">
@@ -833,7 +829,7 @@
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="¿Su Padre Falleció?:" />
+										<h:outputLabel value="¿Padre Fallecido?:" />
 									</b:column>
 									<b:column span="3">
 										<p:selectBooleanButton onIcon="ui-icon-check"
@@ -846,11 +842,8 @@
 										<h:outputLabel value="Edad del Padre:" />
 									</b:column>
 									<b:column span="4">
-										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-											<p:inputText style="width: 100%;" id="txt2"
-												value="#{personaBean.sldPadreEdad}" />
-											<p:slider for="txt2" />
-										</h:panelGrid>
+										<p:spinner id="txt2" min="0"
+											value="#{personaBean.sldPadreEdad}" />
 									</b:column>
 								</b:row>
 								<b:row rendered="false">
@@ -874,7 +867,7 @@
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="¿Su Madre Falleció?:" />
+										<h:outputLabel value="¿Madre Fallecida?:" />
 									</b:column>
 									<b:column span="3">
 										<p:selectBooleanButton onIcon="ui-icon-check"
@@ -887,11 +880,8 @@
 										<h:outputLabel value="Edad de la Madre:" />
 									</b:column>
 									<b:column span="4">
-										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-											<p:inputText style="width: 100%;" id="txt3"
-												value="#{personaBean.sldMadreEdad}" />
-											<p:slider for="txt3" />
-										</h:panelGrid>
+										<p:spinner id="txt3" min="0"
+											value="#{personaBean.sldMadreEdad}" />
 									</b:column>
 								</b:row>
 								<b:row rendered="false">
@@ -904,7 +894,7 @@
 									</b:column>
 								</b:row>
 								<br />
-								<h4>Enfermedades - Medicación</h4>
+								<h4>Datos de sus principales Enfermedades y/o Medicación</h4>
 								<p:separator />
 								<br />
 								<b:row>
@@ -972,7 +962,7 @@
 								<b:row>
 									<b:column span="2">
 										<h:outputLabel
-											value="Lugar y Centro Médico de Atención Frecuente:" />
+											value="Lugar y/o Centro Médico en el que se atiende frecuentemente:" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea

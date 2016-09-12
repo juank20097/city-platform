@@ -313,6 +313,7 @@ public class ManagerCarga {
 		// seteo de variable de conteo
 		exc_error = 0;
 		String errores = "";
+		if (column.length >= 14) {
 		// validar cedula
 		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA ESTUDIANTE vacío, ";
@@ -401,6 +402,7 @@ public class ManagerCarga {
 				|| column[POSICION_MODALIDAD].getContents().trim().isEmpty()) {
 			errores += " MODALIDAD vacío, ";
 			exc_error += 1;
+		}
 		}
 		// retornar errores
 		return errores;
@@ -739,101 +741,107 @@ public class ManagerCarga {
 		// seteo de variable de conteo
 		exc_error = 0;
 		String errores = "";
-		// validar cedula
-		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
-			errores += " CÉDULA ESTUDIANTE vacío, ";
-			exc_error += 1;
-		} else if (Funciones.validacionCedula(column[POSICION_CEDULA].getContents().trim()) != true) {
-			errores += " CÉDULA ESTUDIANTE inválido, ";
-			exc_error = +1;
-		}
-		// validar nombre
-		if (column[POSICION_NOMBRES].getContents() == null || column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
-			errores += " NOMBRE ESTUDIANTE vacío, ";
-			exc_error += 1;
-		}
-		// validar apellidos
-		if (column[POSICION_APELLIDOS].getContents() == null
-				|| column[POSICION_APELLIDOS].getContents().trim().isEmpty()) {
-			errores += " APELLIDOS ESTUDIANTE vacío, ";
-			exc_error += 1;
-		}
-		// validar fecha nacimiento
-		if (column[POSICION_FECHA].getContents() == null || column[POSICION_FECHA].getContents().trim().isEmpty()) {
-			errores += " FECHA NACIMIENTO vacío, ";
-			exc_error += 1;
-		}
-		// validar correo
-		if (column[POSICION_CORREO_PRO].getContents() == null
-				|| column[POSICION_CORREO_PRO].getContents().trim().isEmpty()) {
-			errores += " CORREO PROPIO vacío, ";
-			exc_error += 1;
-		} else {
-			if (Funciones.validarEmail(column[POSICION_CORREO_PRO].getContents().trim()) != true) {
-				errores += " CORREO PROPIO inválido, ";
+		if (column.length >= 16) {
+			// validar cedula
+			if (column[POSICION_CEDULA].getContents() == null
+					|| column[POSICION_CEDULA].getContents().trim().isEmpty()) {
+				errores += " CÉDULA ESTUDIANTE vacío, ";
+				exc_error += 1;
+			} else if (Funciones.validacionCedula(column[POSICION_CEDULA].getContents().trim()) != true) {
+				errores += " CÉDULA ESTUDIANTE inválido, ";
+				exc_error = +1;
+			}
+			// validar nombre
+			if (column[POSICION_NOMBRES].getContents() == null
+					|| column[POSICION_NOMBRES].getContents().trim().isEmpty()) {
+				errores += " NOMBRE ESTUDIANTE vacío, ";
 				exc_error += 1;
 			}
-		}
-		// validar genero
-		if (column[POSICION_GENERO].getContents() == null || column[POSICION_GENERO].getContents().trim().isEmpty()) {
-			errores += " GENERO vacío, ";
-			exc_error += 1;
-		}
-		// validar celular
-		if (column[POSICION_CELULAR].getContents() == null || column[POSICION_CELULAR].getContents().trim().isEmpty()) {
-			errores += " CELULAR ESTUDIO vacío, ";
-			exc_error += 1;
-		}
-		// validar telefono
-		if (column[POSICION_TELEFONO].getContents() == null
-				|| column[POSICION_TELEFONO].getContents().trim().isEmpty()) {
-			errores += " TELÉFONO vacío, ";
-			exc_error += 1;
-		}
-		// validar estado_civil
-		if (column[POSICION_ESTADO_CIV].getContents() == null
-				|| column[POSICION_ESTADO_CIV].getContents().trim().isEmpty()) {
-			errores += " ESTADO CIVIL vacío, ";
-			exc_error += 1;
-		}
-		// validar cargo
-		if (column[POSICION_CARGO].getContents() == null || column[POSICION_CARGO].getContents().trim().isEmpty()) {
-			errores += " CARGO vacío, ";
-			exc_error += 1;
-		}
-		// validar direccion
-		if (column[POSICION_DIRECCION].getContents() == null
-				|| column[POSICION_DIRECCION].getContents().trim().isEmpty()) {
-			errores += " DIRECCIÓN vacío, ";
-			exc_error += 1;
-		}
-		// validar fecha ingreso
-		if (column[POSICION_FECHAINGRESO].getContents() == null
-				|| column[POSICION_FECHAINGRESO].getContents().trim().isEmpty()) {
-			errores += " FECHA INGRESO vacío, ";
-			exc_error += 1;
-		}
-		// validar gerencia
-		if (column[POSICION_GERENCIA].getContents() == null
-				|| column[POSICION_GERENCIA].getContents().trim().isEmpty()) {
-			errores += " GERENCIA vacío, ";
-			exc_error += 1;
-		}
-		// validar tipo
-		if (column[POSICION_TIPOF].getContents() == null || column[POSICION_TIPOF].getContents().trim().isEmpty()) {
-			errores += " TIPO vacío, ";
-			exc_error += 1;
-		}
-		// validar JEFE inmediato
-		if (column[POSICION_JEFE].getContents() == null || column[POSICION_JEFE].getContents().trim().isEmpty()) {
-			errores += " JEFE INMEDIATO vacío, ";
-			exc_error += 1;
-		}
-		// validar tipo evaluación
-		if (column[POSICION_EVALUACION].getContents() == null
-				|| column[POSICION_EVALUACION].getContents().trim().isEmpty()) {
-			errores += " TIPO EVALUACIÓN vacío, ";
-			exc_error += 1;
+			// validar apellidos
+			if (column[POSICION_APELLIDOS].getContents() == null
+					|| column[POSICION_APELLIDOS].getContents().trim().isEmpty()) {
+				errores += " APELLIDOS ESTUDIANTE vacío, ";
+				exc_error += 1;
+			}
+			// validar fecha nacimiento
+			if (column[POSICION_FECHA].getContents() == null || column[POSICION_FECHA].getContents().trim().isEmpty()) {
+				errores += " FECHA NACIMIENTO vacío, ";
+				exc_error += 1;
+			}
+			// validar correo
+			if (column[POSICION_CORREO_PRO].getContents() == null
+					|| column[POSICION_CORREO_PRO].getContents().trim().isEmpty()) {
+				errores += " CORREO PROPIO vacío, ";
+				exc_error += 1;
+			} else {
+				if (Funciones.validarEmail(column[POSICION_CORREO_PRO].getContents().trim()) != true) {
+					errores += " CORREO PROPIO inválido, ";
+					exc_error += 1;
+				}
+			}
+			// validar genero
+			if (column[POSICION_GENERO].getContents() == null
+					|| column[POSICION_GENERO].getContents().trim().isEmpty()) {
+				errores += " GENERO vacío, ";
+				exc_error += 1;
+			}
+			// validar celular
+			if (column[POSICION_CELULAR].getContents() == null
+					|| column[POSICION_CELULAR].getContents().trim().isEmpty()) {
+				errores += " CELULAR ESTUDIO vacío, ";
+				exc_error += 1;
+			}
+			// validar telefono
+			if (column[POSICION_TELEFONO].getContents() == null
+					|| column[POSICION_TELEFONO].getContents().trim().isEmpty()) {
+				errores += " TELÉFONO vacío, ";
+				exc_error += 1;
+			}
+			// validar estado_civil
+			if (column[POSICION_ESTADO_CIV].getContents() == null
+					|| column[POSICION_ESTADO_CIV].getContents().trim().isEmpty()) {
+				errores += " ESTADO CIVIL vacío, ";
+				exc_error += 1;
+			}
+			// validar cargo
+			if (column[POSICION_CARGO].getContents() == null || column[POSICION_CARGO].getContents().trim().isEmpty()) {
+				errores += " CARGO vacío, ";
+				exc_error += 1;
+			}
+			// validar direccion
+			if (column[POSICION_DIRECCION].getContents() == null
+					|| column[POSICION_DIRECCION].getContents().trim().isEmpty()) {
+				errores += " DIRECCIÓN vacío, ";
+				exc_error += 1;
+			}
+			// validar fecha ingreso
+			if (column[POSICION_FECHAINGRESO].getContents() == null
+					|| column[POSICION_FECHAINGRESO].getContents().trim().isEmpty()) {
+				errores += " FECHA INGRESO vacío, ";
+				exc_error += 1;
+			}
+			// validar gerencia
+			if (column[POSICION_GERENCIA].getContents() == null
+					|| column[POSICION_GERENCIA].getContents().trim().isEmpty()) {
+				errores += " GERENCIA vacío, ";
+				exc_error += 1;
+			}
+			// validar tipo
+			if (column[POSICION_TIPOF].getContents() == null || column[POSICION_TIPOF].getContents().trim().isEmpty()) {
+				errores += " TIPO vacío, ";
+				exc_error += 1;
+			}
+			// validar JEFE inmediato
+			if (column[POSICION_JEFE].getContents() == null || column[POSICION_JEFE].getContents().trim().isEmpty()) {
+				errores += " JEFE INMEDIATO vacío, ";
+				exc_error += 1;
+			}
+			// validar tipo evaluación
+			if (column[POSICION_EVALUACION].getContents() == null
+					|| column[POSICION_EVALUACION].getContents().trim().isEmpty()) {
+				errores += " TIPO EVALUACIÓN vacío, ";
+				exc_error += 1;
+			}
 		}
 		// retornar errores
 		return errores;
@@ -885,31 +893,13 @@ public class ManagerCarga {
 		for (Funcionario e : listadoFuncionarios) {
 			if (validarExistenciaPersona(e.getPerDni())) {
 				GenPersona p = PersonaByID(e.getPerDni());
-				p.setPerApellidos(e.getPerApellidos());
-				p.setPerCelular(e.getPerCelular());
-				p.setPerCorreo(e.getPerCorreo());
-				p.setPerEstado(e.getPerEstado());
-				p.setPerEstadoCivil(e.getPerEstadoCivil());
-				p.setPerFechaNacimiento(e.getPerFechaNacimiento());
-				p.setPerGenero(e.getPerGenero());
-				p.setPerNombres(e.getPerNombres());
-				p.setPerTelefono(e.getPerTelefono());
-				p.setPerTipoDni("Cédula");
+				setearFuncionarios(e, p);
 				mngDao.actualizar(p);
 				System.out.println("Bien_actualizado_persona");
 			} else {
 				GenPersona p = new GenPersona();
 				p.setPerDni(e.getPerDni());
-				p.setPerApellidos(e.getPerApellidos());
-				p.setPerCelular(e.getPerCelular());
-				p.setPerCorreo(e.getPerCorreo());
-				p.setPerEstado(e.getPerEstado());
-				p.setPerEstadoCivil(e.getPerEstadoCivil());
-				p.setPerFechaNacimiento(e.getPerFechaNacimiento());
-				p.setPerGenero(e.getPerGenero());
-				p.setPerNombres(e.getPerNombres());
-				p.setPerTelefono(e.getPerTelefono());
-				p.setPerTipoDni("Cédula");
+				setearFuncionarios(e, p);
 				mngDao.insertar(p);
 				System.out.println("Bien_insertado_persona");
 			}
@@ -925,6 +915,19 @@ public class ManagerCarga {
 				exc_nuevos = exc_nuevos + 1;
 			}
 		}
+	}
+
+	private void setearFuncionarios(Funcionario e, GenPersona p) {
+		p.setPerApellidos(e.getPerApellidos());
+		p.setPerCelular(e.getPerCelular());
+		p.setPerCorreo(e.getPerCorreo());
+		p.setPerEstado(e.getPerEstado());
+		p.setPerEstadoCivil(e.getPerEstadoCivil());
+		p.setPerFechaNacimiento(e.getPerFechaNacimiento());
+		p.setPerGenero(e.getPerGenero());
+		p.setPerNombres(e.getPerNombres());
+		p.setPerTelefono(e.getPerTelefono());
+		p.setPerTipoDni("Cédula");
 	}
 
 	/**
@@ -1076,6 +1079,7 @@ public class ManagerCarga {
 		// seteo de variable de conteo
 		exc_error = 0;
 		String errores = "";
+		if (column.length >= 11) {
 		// validar cedula
 		if (column[POSICION_CEDULA].getContents() == null || column[POSICION_CEDULA].getContents().trim().isEmpty()) {
 			errores += " CÉDULA EXTERNO vacío, ";
@@ -1143,6 +1147,7 @@ public class ManagerCarga {
 				|| column[POSICION_ESTADO_CIV].getContents().trim().isEmpty()) {
 			errores += " ESTADO CIVIL vacío, ";
 			exc_error += 1;
+		}
 		}
 		// retornar errores
 		return errores;
