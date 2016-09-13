@@ -668,7 +668,7 @@ public class ManagerCarga {
 			GenFuncionariosInstitucion funcionario = this.FuncionarioByID(ins_codigo, per_dni);
 			funcionario.setFunCargo(cargo);
 			funcionario.setFunDireccion(direccion);
-			funcionario.setFunEstado(estado);
+			funcionario.setFunEstado("A");
 			funcionario.setFunFechaIngreso(fecha_ingreso);
 			funcionario.setFunGerencia(gerencia);
 			funcionario.setFunJefeInmediato(jefe_inmediato);
@@ -891,12 +891,7 @@ public class ManagerCarga {
 		exc_actualizados = 0;
 		exc_nuevos = 0;
 		for (Funcionario e : listadoFuncionarios) {
-			if (validarExistenciaPersona(e.getPerDni())) {
-				GenPersona p = PersonaByID(e.getPerDni());
-				setearFuncionarios(e, p);
-				mngDao.actualizar(p);
-				System.out.println("Bien_actualizado_persona");
-			} else {
+			if (!validarExistenciaPersona(e.getPerDni())) {
 				GenPersona p = new GenPersona();
 				p.setPerDni(e.getPerDni());
 				setearFuncionarios(e, p);
@@ -953,13 +948,10 @@ public class ManagerCarga {
 	 * 
 	 * @param estudiantes_excel
 	 */
-	public void inactivarFuncionario(List<Funcionario> funcionarios_excel, String ins_codigo) {
+	public void inactivarFuncionario(String ins_codigo) {
 		exc_inactivados = 0;
 		try {
-			for (GenFuncionariosInstitucion fun : findAllFuncionariosXInstitucionActivos(ins_codigo)) {
-				inactivarEstadoFuncionario(fun, ins_codigo);
-				exc_inactivados = exc_inactivados + 1;
-			}
+			mngDao.ejectNativeSQL("update gen_funcionarios_institucion set fun_estado='I' where ins_codigo='"+ins_codigo+"';");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -291,7 +291,7 @@ public class FuncionarioBean {
 			}
 		}
 		// inactivar estudiantes no encontrados y activos
-		manager.inactivarFuncionario(l_funcionarios, getInsCodigo());
+		manager.inactivarFuncionario(getInsCodigo());
 		// ingreso de estudiantes
 		manager.ingresarFuncionario(l_funcionarios);
 		// Inserciones a registros Excel
