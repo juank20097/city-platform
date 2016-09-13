@@ -77,7 +77,7 @@ public class ManagerSeguridad {
 		} else {
 			return l;
 		}
-	}// Cierre del metodo
+	}
 
 	/**
 	 * Metodo para listar todas los datos existentes
@@ -99,7 +99,7 @@ public class ManagerSeguridad {
 	public String ParametroByID(String dni) throws Exception {
 		GenParametro p = (GenParametro) mngDao.findById(GenParametro.class, dni);
 		return p.getParValor();
-	}// Cierre del metodo
+	}
 
 	/**
 	 * Metodo para obtener el Atributo mediante un ID
@@ -110,7 +110,7 @@ public class ManagerSeguridad {
 	 */
 	public SegRegistroEmergencia SeguridadByID(Integer dni) throws Exception {
 		return (SegRegistroEmergencia) mngDao.findById(SegRegistroEmergencia.class, dni);
-	}// Cierre del metodo
+	}
 
 	/**
 	 * Metodo para listar todas los datos existentes
@@ -189,7 +189,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void insertarSeguridad(Integer id, String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario) throws Exception {
+			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
@@ -203,6 +203,7 @@ public class ManagerSeguridad {
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
 			seg.setSegArchivo(archivo);
+			seg.setSegDocumento(documento);
 			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
 			seg.setSegUsuarioAplicacion(usuario);
 			mngDao.insertar(seg);
@@ -224,7 +225,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo, double latitud,
-			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario) throws Exception {
+			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
@@ -236,6 +237,7 @@ public class ManagerSeguridad {
 			seg.setSegSubTipo(sub_tipo);
 			seg.setSegSubHijo(sub_hijo);
 			seg.setSegArchivo(archivo);
+			seg.setSegDocumento(documento);
 			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
 			seg.setSegUsuarioAplicacion(usuario);
 			mngDao.actualizar(seg);

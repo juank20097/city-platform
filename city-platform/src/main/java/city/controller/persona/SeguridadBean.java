@@ -15,8 +15,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 import org.primefaces.model.UploadedFile;
 import org.primefaces.context.RequestContext;
@@ -37,6 +39,7 @@ import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.SegIncidenciasAdmin;
 import city.model.dao.entidades.SegRegistroEmergencia;
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
 
@@ -66,6 +69,7 @@ public class SeguridadBean {
 	private double segLongitud;
 	private String segArchivo;
 	private String usuario;
+	private String segDocumento;
 
 	private Boolean control;
 
@@ -153,8 +157,23 @@ public class SeguridadBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//comprobaradmin();
-		//cargarIncidentes();
+		// comprobaradmin();
+		// cargarIncidentes();
+	}
+
+	/**
+	 * @return the segDocumento
+	 */
+	public String getSegDocumento() {
+		return segDocumento;
+	}
+
+	/**
+	 * @param segDocumento
+	 *            the segDocumento to set
+	 */
+	public void setSegDocumento(String segDocumento) {
+		this.segDocumento = segDocumento;
 	}
 
 	/**
@@ -749,13 +768,13 @@ public class SeguridadBean {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo(), usuario);
+							getSegArchivo(), usuario, getSegDocumento());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo(), usuario);
+							getSegArchivo(), usuario, getSegDocumento());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
@@ -855,10 +874,10 @@ public class SeguridadBean {
 	public void cargarIncidentes() {
 		try {
 			getL_seguridad().clear();
-			if (getControl()==true){
-			getL_seguridad().addAll(manager.findAllseguridad());
-			}else{
-			getL_seguridad().addAll(manager.findAllseguridad(usuario));
+			if (getControl() == true) {
+				getL_seguridad().addAll(manager.findAllseguridad());
+			} else {
+				getL_seguridad().addAll(manager.findAllseguridad(usuario));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1327,7 +1346,7 @@ public class SeguridadBean {
 		return l;
 	}
 
-	//////////////////////////// (PROCESO_DE_GUARDAR_IMAGEN)////////////////////////////////////////////////
+	//////////////////////////// (PROCESO_DE_GUARDAR_ARCHIVO)////////////////////////////////////////////////
 
 	// metodo para guardar la imagen en el servidor
 	public void cargaArchivo(FileUploadEvent event) throws IOException {
@@ -1338,12 +1357,10 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-				// ServletContext servletContext = (ServletContext)
-				// FacesContext.getCurrentInstance().getExternalContext()
-				// .getContext();
-				// String carpeta = servletContext.getRealPath(File.separator +
-				// "resources/doc/");
-				String carpeta = url_doc + "/";
+				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+						.getContext();
+				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
+				// String carpeta = url_doc + "/doc_incidecnias/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
@@ -1400,4 +1417,77 @@ public class SeguridadBean {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Método para descargar un archivo excel
+	 */
+	public void descargarArchivo(SegRegistroEmergencia emergencia) {
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+					.getContext();
+			String contextPath = servletContext
+					.getRealPath(File.separator + "resources/doc/doc_incidencias/"+emergencia.getSegArchivo()+".pdf");
+//			Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Funcionarios.xls");
+			Funciones.descargarPDF(contextPath);
+		}
+
+	//////////////////////////// (PROCESO_DE_GUARDAR_DOCUMENTO)////////////////////////////////////////////////
+
+	// metodo para guardar la imagen en el servidor
+	public void cargaDocumento(FileUploadEvent event) throws IOException {
+		file = event.getFile();
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+
+		if (file != null) {
+			try {
+				// Tomar PAD REAL
+				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+						.getContext();
+				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
+				// String carpeta = url_doc + "/doc_incidencias/";
+				if (getPerDni() == null || getPerDni().isEmpty()) {
+					Mensaje.crearMensajeWARN(
+							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
+				} else {
+					DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmm");
+					setSegDocumento("Documento_" + manager.seguridadId() + dateFormat.format(getSegFecha()) + ".pdf");
+					System.out.println("PAD------> " + carpeta);
+					System.out.println("name------> " + getSegDocumento());
+					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getSegDocumento()));
+					inputStream = file.getInputstream();
+
+					int read = 0;
+					byte[] bytes = new byte[1024];
+
+					while ((read = inputStream.read(bytes)) != -1) {
+						outputStream.write(bytes, 0, read);
+					}
+					Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+				}
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+		} else {
+			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+		}
+	}
+	/**
+	 * Método para descargar un archivo excel
+	 */
+	public void descargarDocumento(SegRegistroEmergencia emergencia) {
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+					.getContext();
+			String contextPath = servletContext
+					.getRealPath(File.separator + "resources/doc/doc_incidencias/"+emergencia.getSegDocumento()+".pdf");
+//			Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Funcionarios.xls");
+			Funciones.descargarPDF(contextPath);
+		}
 }

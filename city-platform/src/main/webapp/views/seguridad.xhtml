@@ -95,6 +95,23 @@
 						</f:facet>
 						<h:outputText value="#{seg.segLatitud} , #{seg.segLongitud}" />
 					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="INFORME" />
+						</f:facet>
+						
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="DOCUMENTO RESPALDO" />
+						</f:facet>
+						<p:commandLink ajax="false" update="mensaje2"
+								action="#{funcionarioBean.descargarArchivo()}">
+								<p:graphicImage value="../resources/img/xls.png"
+									styleClass="img-responsive" />
+								<b:label text="Descargar Datos"></b:label>
+							</p:commandLink>
+					</h:column>
 				</b:dataTable>
 			</b:panel>
 		</h:form>
