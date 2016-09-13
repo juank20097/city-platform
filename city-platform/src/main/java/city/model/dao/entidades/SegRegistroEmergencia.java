@@ -28,6 +28,9 @@ public class SegRegistroEmergencia implements Serializable {
 
 	@Column(name = "seg_fecha")
 	private Timestamp segFecha;
+	
+	@Column(name="seg_documento")
+	private String segDocumento;
 
 	@Column(name = "seg_tipo_emergencia")
 	private String segTipoEmergencia;
@@ -164,6 +167,14 @@ public class SegRegistroEmergencia implements Serializable {
 
 	public void setSegFechaRegistro(Timestamp segFechaRegistro) {
 		this.segFechaRegistro = segFechaRegistro;
+	}
+	
+	public String getSegDocumento() {
+		return this.segDocumento;
+	}
+
+	public void setSegDocumento(String segDocumento) {
+		this.segDocumento = segDocumento;
 	}
 
 }
