@@ -283,7 +283,7 @@
 								<br />
 								<b:row>
 									<b:column span="1">
-										<h:outputLabel value="Lugar:" />
+										<h:outputLabel value="Ciudad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeLugarNacimiento}">
@@ -815,7 +815,7 @@
 									</b:column>
 								</b:row>
 								<br />
-								<h4>Datos de Enfermedades en Familiares </h4>
+								<h4>Datos de Enfermedades Crónicas Diagnosticadas en Familiares</h4>
 								<p:separator />
 								<b:row rendered="#{!personaBean.sld_padre}">
 									<b:column span="2">
@@ -828,21 +828,23 @@
 									</b:column>
 								</b:row>
 								<b:row>
-									<b:column span="2">
-										<h:outputLabel value="¿Padre Fallecido?:" />
+									<b:column span="3">
+										<h:outputLabel value="¿Padre fallecido a causa de la enfermedad crónica?:" />
 									</b:column>
 									<b:column span="3">
 										<p:selectBooleanButton onIcon="ui-icon-check"
 											offIcon="ui-icon-close"
 											value="#{personaBean.sldPadreFallecio}" onLabel="Si"
 											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_padre()}"
+												update="frm:txt2"></p:ajax>
 										</p:selectBooleanButton>
 									</b:column>
 									<b:column span="3">
-										<h:outputLabel value="Edad del Padre:" />
+										<h:outputLabel value="¿Qué edad tenía su padre al momento de fallecer?:" />
 									</b:column>
-									<b:column span="4">
-										<p:spinner id="txt2" min="0"
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_p}" size="5" id="txt2" min="0"
 											value="#{personaBean.sldPadreEdad}" />
 									</b:column>
 								</b:row>
@@ -866,21 +868,23 @@
 									</b:column>
 								</b:row>
 								<b:row>
-									<b:column span="2">
-										<h:outputLabel value="¿Madre Fallecida?:" />
+									<b:column span="3">
+										<h:outputLabel value="¿Madre fallecida a causa de la enfermedad crónica?:" />
 									</b:column>
 									<b:column span="3">
 										<p:selectBooleanButton onIcon="ui-icon-check"
 											offIcon="ui-icon-close"
 											value="#{personaBean.sldMadreFallecio}" onLabel="Si"
 											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_madre()}"
+												update="frm:txt3"></p:ajax>
 										</p:selectBooleanButton>
 									</b:column>
 									<b:column span="3">
-										<h:outputLabel value="Edad de la Madre:" />
+										<h:outputLabel value="¿Qué edad tenía su madre al momento de fallecer?:" />
 									</b:column>
-									<b:column span="4">
-										<p:spinner id="txt3" min="0"
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_m}" size="5" id="txt3" min="0"
 											value="#{personaBean.sldMadreEdad}" />
 									</b:column>
 								</b:row>
@@ -906,7 +910,7 @@
 										</b:inputTextarea>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Medicación/ Presentación/ Periodicidad:" />
+										<h:outputLabel value="Medicación Prescrita/ Presentación/ Periodicidad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputTextarea
@@ -923,7 +927,7 @@
 										</b:inputTextarea>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Medicación/ Presentación/ Periodicidad:" />
+										<h:outputLabel value="Medicación Prescrita/ Presentación/ Periodicidad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputTextarea
@@ -940,7 +944,7 @@
 										</b:inputTextarea>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Medicación/ Presentación/ Periodicidad:" />
+										<h:outputLabel value="Medicación Prescrita/ Presentación/ Periodicidad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputTextarea
@@ -962,7 +966,7 @@
 								<b:row>
 									<b:column span="2">
 										<h:outputLabel
-											value="Lugar y/o Centro Médico en el que se atiende frecuentemente:" />
+											value=" Lugar y/o Centro médico al que acude cuando se enferma (nombre y ciudad):" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea
@@ -1062,6 +1066,7 @@
 									<h:selectOneMenu value="#{personaBean.famLabor}"
 										styleClass="form-control">
 										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItem itemLabel="Ninguno" itemValue="Ninguno"></f:selectItem>
 										<f:selectItems value="#{personaBean.l_fam_actividad}">
 										</f:selectItems>
 									</h:selectOneMenu>
@@ -1076,7 +1081,7 @@
 							</b:row>
 							<b:row>
 								<b:column span="2">
-									<h:outputLabel value="Estabilidad:" />
+									<h:outputLabel value="Permanencia:" />
 								</b:column>
 								<b:column span="4">
 									<h:selectOneMenu disabled="#{personaBean.estabilidad}"

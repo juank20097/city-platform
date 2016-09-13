@@ -201,6 +201,8 @@ public class PersonaBean {
 	private boolean familia;
 	private boolean dinardap;
 	private boolean estabilidad;
+	private boolean edad_p;
+	private boolean edad_m;
 
 	// valor de ediciï¿½n e inserciï¿½n
 	private boolean edicion;
@@ -729,6 +731,34 @@ public class PersonaBean {
 	 */
 	public Integer getPdeEstadiaHoras() {
 		return pdeEstadiaHoras;
+	}
+
+	/**
+	 * @return the edad_p
+	 */
+	public boolean isEdad_p() {
+		return edad_p;
+	}
+
+	/**
+	 * @param edad_p the edad_p to set
+	 */
+	public void setEdad_p(boolean edad_p) {
+		this.edad_p = edad_p;
+	}
+
+	/**
+	 * @return the edad_m
+	 */
+	public boolean isEdad_m() {
+		return edad_m;
+	}
+
+	/**
+	 * @param edad_m the edad_m to set
+	 */
+	public void setEdad_m(boolean edad_m) {
+		this.edad_m = edad_m;
 	}
 
 	/**
@@ -3969,7 +3999,7 @@ public class PersonaBean {
 			setSldAlergiasCronicas3(salud.getSldAlergiasCronicas3());
 			setSldMedicamentosCronicos3(salud.getSldMedicamentosCronicos3());
 			this.llenarBooleanos(getSldSeguroPrivado(), getSldDiscapacidad(), getSldRealizaEjercicio(),
-					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco());
+					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco(), getSldPadreFallecio(),getSldMadreFallecio());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -3978,7 +4008,7 @@ public class PersonaBean {
 	}
 
 	public void llenarBooleanos(boolean seguro_privado_switch, boolean discapacidad_switch, boolean ejercicio_switch,
-			String alcohol_switch, boolean embriago_switch, String tabaco_switch) {
+			String alcohol_switch, boolean embriago_switch, String tabaco_switch,boolean edad_padre,boolean edad_madre) {
 		System.out.println(seguro_privado_switch+" "+discapacidad_switch+ejercicio_switch+alcohol_switch+embriago_switch+tabaco_switch);
 		seguro = verificarSwitch(seguro_privado_switch);
 		ejercicio = verificarSwitch(ejercicio_switch);
@@ -3986,6 +4016,8 @@ public class PersonaBean {
 		tabaco = verificarSwitch(tabaco_switch);
 		discapacidad = verificarSwitch(discapacidad_switch);
 		embriaguez = verificarSwitch(embriago_switch);
+		edad_m = verificarSwitch(edad_madre);
+		edad_p = verificarSwitch(edad_padre);
 	}
 
 	public boolean verificarSwitch(boolean dato) {
@@ -4008,12 +4040,11 @@ public class PersonaBean {
 	 * Mï¿½todo para manejo de vista de aspectos del padre
 	 */
 	public void switch_padre() {
-		setSldPadreCausaMuerte("");
-		setSldPadreEnfermedadesActuales("");
-		if (getSldPadreFallecio() == true) {
-			sld_padre = true;
+		if (isEdad_p() == true) {
+			setEdad_p(false);
 		} else {
-			sld_padre = false;
+			setSldPadreEdad(0);
+			setEdad_p(true);
 		}
 	}
 
@@ -4021,12 +4052,11 @@ public class PersonaBean {
 	 * Mï¿½todo para manejo de vista de aspectos de la madre
 	 */
 	public void switch_madre() {
-		setSldMadreEnfermedadesActuales("");
-		setSldMadreCausaMuerte("");
-		if (getSldMadreFallecio() == true) {
-			sld_madre = true;
+		if (isEdad_m() == true) {
+			setEdad_m(false);
 		} else {
-			sld_madre = false;
+			setSldMadreEdad(0);
+			setEdad_m(true);
 		}
 	}
 
