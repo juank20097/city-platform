@@ -738,7 +738,7 @@ public class SeguridadBean {
 	 */
 	public String nuevoIncidente() {
 		this.carga();
-		setControl(true);
+		//setControl(true);
 		setSegFecha(new Date());
 		setEdicion(true);
 		return "nseguridad?faces-redirect=true";
@@ -778,7 +778,7 @@ public class SeguridadBean {
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
-				setControl(false);
+				//setControl(false);
 				this.cleanDatos();
 				this.cargarIncidentes();
 			}
@@ -852,6 +852,7 @@ public class SeguridadBean {
 			setSegSubHijo(incidente.getSegSubHijo());
 			setSegArchivo(incidente.getSegArchivo());
 			setSegDocumento(incidente.getSegDocumento());
+			System.out.println(getControl());
 			setEdicion(false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -866,7 +867,7 @@ public class SeguridadBean {
 	 * @return
 	 */
 	public String cancelar() {
-		setControl(false);
+		//setControl(false);
 		this.cleanDatos();
 		this.cargarIncidentes();
 		return "seguridad?faces-redirect=true";
@@ -1361,10 +1362,10 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-						.getContext();
-				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
-				// String carpeta = url_doc + "/doc_incidecnias/";
+//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//						.getContext();
+//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
+				 String carpeta = url_doc + "/doc_incidecnias/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
@@ -1426,13 +1427,12 @@ public class SeguridadBean {
 	 * Método para descargar un archivo excel
 	 */
 	public void descargarArchivo(SegRegistroEmergencia emergencia) {
-		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-				.getContext();
-		String contextPath = servletContext
-				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegArchivo()+"");
-		System.out.println(contextPath);
-//		String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegArchivo()+"";
-//		Funciones.descargarExcel(contextPath);
+//		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//				.getContext();
+//		String contextPath = servletContext
+//				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegArchivo()+"");
+//		System.out.println(contextPath);
+		String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegArchivo()+"";
 		if (contextPath == null) {
 			Mensaje.crearMensajeERROR("La incidencia no cuenta con un archivo asignado.");
 		} else {
@@ -1451,10 +1451,10 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-						.getContext();
-				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
-				// String carpeta = url_doc + "/doc_incidencias/";
+//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//						.getContext();
+//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
+				 String carpeta = url_doc + "/doc_incidencias/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
@@ -1504,13 +1504,12 @@ public class SeguridadBean {
 	 * Método para descargar un archivo excel
 	 */
 	public void descargarDocumento(SegRegistroEmergencia emergencia) {
-		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-				.getContext();
-		String contextPath = servletContext
-				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegDocumento()+"");
-		System.out.println(contextPath);
-//		String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegDocumento()+"";
-//		Funciones.descargarExcel(contextPath);
+//		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
+//				.getContext();
+//		String contextPath = servletContext
+//				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegDocumento()+"");
+//		System.out.println(contextPath);
+		String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegDocumento()+"";
 		if (contextPath == null) {
 		Mensaje.crearMensajeERROR("La incidencia no cuenta con un documento de respaldo.");
 		} else {
