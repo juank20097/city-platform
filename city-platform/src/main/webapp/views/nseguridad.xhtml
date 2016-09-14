@@ -203,7 +203,7 @@
 					</b:column>
 				</b:row>
 			</b:panel>
-			<b:commandButton rendered="#{seguridadBean.control}" value="Guardar" onclick="PF('statusDialog').show()"
+			<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
 				oncomplete="PF('statusDialog').hide()"
 				action="#{seguridadBean.crearSeguridad()}" update="frm" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 				<b:commandButton value="Cancelar"

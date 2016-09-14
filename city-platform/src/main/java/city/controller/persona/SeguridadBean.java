@@ -822,6 +822,8 @@ public class SeguridadBean {
 		setSegLatitud(0);
 		setSegLongitud(0);
 		setDatoBusqueda("");
+		setSegArchivo("");
+		setSegDocumento("");
 		setEdicion(false);
 	}
 
@@ -848,6 +850,8 @@ public class SeguridadBean {
 			setSegLongitud(incidente.getSegLongitud());
 			setSegSubTipo(incidente.getSegSubTipo());
 			setSegSubHijo(incidente.getSegSubHijo());
+			setSegArchivo(incidente.getSegArchivo());
+			setSegDocumento(incidente.getSegDocumento());
 			setEdicion(false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1366,7 +1370,7 @@ public class SeguridadBean {
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
 				} else {
 					DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmm");
-					setSegArchivo("Informe_" + manager.seguridadId() + dateFormat.format(getSegFecha()) + ".pdf");
+					setSegArchivo("Informe_" + idImagen() + dateFormat.format(getSegFecha()) + ".pdf");
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getSegArchivo());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getSegArchivo()));
@@ -1456,7 +1460,7 @@ public class SeguridadBean {
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
 				} else {
 					DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmm");
-					setSegDocumento("Documento_" + manager.seguridadId() + dateFormat.format(getSegFecha()) + ".pdf");
+					setSegDocumento("Documento_" + idImagen() + dateFormat.format(getSegFecha()) + ".pdf");
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getSegDocumento());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getSegDocumento()));
@@ -1484,6 +1488,16 @@ public class SeguridadBean {
 		} else {
 			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
 		}
+	}
+	
+	private String idImagen(){
+		String retorno;
+		if (getSegId()==null){
+			retorno= manager.seguridadId().toString();
+		}else{
+			retorno=getSegId().toString();
+		}
+		return retorno;
 	}
 
 	/**

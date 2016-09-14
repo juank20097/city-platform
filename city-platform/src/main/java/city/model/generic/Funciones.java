@@ -525,5 +525,35 @@ public class Funciones {
         }
         return cifrado.toString();
     }
+    
+    //método para cifrar el texto
+    public static String cifradoPropio(String texto, int codigo) {
+    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 26;
+        for (int i = 0; i < texto.length(); i++) {
+                if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
+                    cifrado.append((char) (texto.charAt(i) + codigo - 30));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) + codigo));
+                }
+        }
+        return cifrado.toString();
+    }
+    
+    //método para descifrar el texto
+    public static String descifradoPropio(String texto, int codigo) {
+    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    	StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 26;
+        for (int i = 0; i < texto.length(); i++) {
+                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) - codigo));
+                }
+        }
+        return cifrado.toString();
+    }
 
 }

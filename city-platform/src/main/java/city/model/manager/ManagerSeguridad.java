@@ -70,7 +70,7 @@ public class ManagerSeguridad {
 	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findAllseguridad(String usuario) throws Exception {
 		List<SegRegistroEmergencia> l = mngDao.findWhere(SegRegistroEmergencia.class,
-				"o.segUsuarioAplicacion='" + usuario + "'", null);
+				"o.segUsuarioAplicacion='" + usuario + "'", "o.segFecha asc");
 		if (l == null || l.size() == 0) {
 			l=new ArrayList<SegRegistroEmergencia>();
 			return l;
