@@ -30,7 +30,7 @@ public class ConsumeREST {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		conn.setRequestProperty("Content-Type", "application/json");
 		//AGREGAR DATOS Y ENVIO
 		OutputStream os = conn.getOutputStream();
 		os.write(objetoJSON.toJSONString().getBytes());
