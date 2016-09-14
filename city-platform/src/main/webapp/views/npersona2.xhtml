@@ -1116,106 +1116,22 @@
 						<f:facet name="anchor">
 							<b:iconAwesome name="graduation-cap" />
 						</f:facet>
-						<h:form id="frmfa">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Nivel Instrucci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;"
-										value="#{personaBean.nivelInstruccion}">
-										<p:ajax listener="#{personaBean.cargaNivelesAp()}"
-											update=":frmfa"></p:ajax>
-										<f:selectItems value="#{personaBean.lstNivelesInstruccion}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2" rendered="#{!personaBean.visualizarCampos}">
-									<h:outputText value="Niveles Aprobados*" />
-								</b:column>
-								<b:column col-xs="4" rendered="#{!personaBean.visualizarCampos}">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;"
-										value="#{personaBean.nivelesAprobados}">
-										<f:selectItems value="#{personaBean.lstNivelesAprobados}" />
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row rendered="#{personaBean.visualizarCampos}">
-								<b:column col-xs="2">
-									<h:outputText value="T&iacute;tulo*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.titulo}" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Instituci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.institucion}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Pa&iacute;s*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.paisFA}">
-										<f:selectItems value="#{personaBean.l_pais}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Duraci&oacute;n (A&ntilde;os)*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:spinner value="#{personaBean.duracion}" min="0" max="70" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Inicio*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar value="#{personaBean.fechaIniFA}" size="15"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
-										yearRange="c-30:c+0" navigator="true" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Fin" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar id="ff1" value="#{personaBean.fechaFinFA}"
-										yearRange="c-30:c+0" size="15" navigator="true"
-										pattern="dd-MM-yyyy" mask="true" showOn="button">
-									</p:calendar>
-								</b:column>
-							</b:row>
-							<b:row style="margin-top:10px;">
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarFormAc()}"
-										styleClass="btn btn-info" style="padding:.4em;"
-										update="frmfa :frmlfa">
-									</p:commandButton>
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										actionListener="#{personaBean.limpiarCamposFA()}"
-										disabled="#{!personaBean.edicion}" styleClass="btn btn-info"
-										style="padding:.4em;" update="frmfa :frmlfa" process="@this">
-										<p:resetInput target="frmfa" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+						<h:form id="frmlfa">
 							<b:row>
 								<b:column>
-									<p:messages id="fa" closable="true" />
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlfa">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus" value="Ingresar Formaci&oacute;n Acad&eacute;mica"
+									action="#{personaBean.mostrarDlgFormacionAca()}"
+									update=":frmfa" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtfa" var="faca" rows="8"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstFormAcademica}" scrollable="true"
@@ -1285,86 +1201,22 @@
 						<f:facet name="anchor">
 							<b:iconAwesome name="pencil-square-o" />
 						</f:facet>
-						<h:form id="frmca">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Relaci&oacute;n Perfil Profesional*" />
-								</b:column>
-								<b:column col-xs="10">
-									<p:selectBooleanButton value="#{personaBean.relacionPerfil}"
-										onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
-										offLabel="No" style="width:60px" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Nombre Capacitaci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="10">
-									<b:inputText value="#{personaBean.nombreCap}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Instituci&oacute;n Capacitacitadora*" />
-								</b:column>
-								<b:column col-xs="10">
-									<b:inputText value="#{personaBean.nombreInstitucion}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="&Aacute;rea Estudios*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.areaCa}">
-										<f:selectItems value="#{personaBean.lstAreasLE}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Tipo Evento*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.tipoEvento}">
-										<f:selectItems value="#{personaBean.lstTiposEventos}" />
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="N&uacute;mero Horas (Mayor a 8 Horas)*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.numHoras}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarCapacitaciones()}"
-										styleClass="btn btn-info" update="ca frmca :frmlca"
-										style="padding:.4em;" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.limpiarCamposCa()}"
-										styleClass="btn btn-info" update="frmca :frmlca"
-										style="padding:.4em;" process="@this">
-										<p:resetInput target="frmca" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+						<h:form id="frmlca">
 							<b:row>
 								<b:column>
-									<p:messages id="ca" closable="true" />
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlca">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus" value="Ingresar Capacitaci&oacute;n"
+									action="#{personaBean.mostrarDlgCapacitacion()}"
+									update=":frmca" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtca" var="cap" rows="5"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstCapacitaciones}" scrollable="true"
@@ -1413,119 +1265,23 @@
 						<f:facet name="anchor">
 							<b:iconAwesome name="briefcase" />
 						</f:facet>
-						<h:form id="frmel">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Actual*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:selectBooleanButton value="#{personaBean.actualEL}"
-										onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
-										offLabel="No" style="width:60px">
-										<p:ajax listener="#{personaBean.switch_actualEL()}"
-											update="ff2" />
-									</p:selectBooleanButton>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Sector P&uacute;blico*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:selectBooleanButton value="#{personaBean.sectorPublico}"
-										onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
-										offLabel="No" style="width:60px" />
-								</b:column>
-							</b:row>
-							<b:row style="margin-top:10px;">
-								<b:column col-xs="2">
-									<h:outputText value="Puesto*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.puesto}" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Empresa*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.empresa}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="&Aacute;rea Laboral*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.areaEL}">
-										<f:selectItems value="#{personaBean.lstAreasLE}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Pa&iacute;s*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.paisEL}">
-										<f:selectItems value="#{personaBean.l_pais}">
-										</f:selectItems>
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Inicio*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar value="#{personaBean.fechaIniEL}" size="15"
-										yearRange="c-30:c+0" pattern="dd-MM-yyyy" mask="true"
-										showOn="button" navigator="true" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Fin" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar id="ff2" value="#{personaBean.fechaFinEL}"
-										yearRange="c-30:c+0" size="15" navigator="true"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
-										disabled="#{personaBean.actualEL}" />
-								</b:column>
-							</b:row>
-							<br />
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText
-										value="Principales Actividades y Responsabilidades*" />
-								</b:column>
-								<b:column col-xs="10">
-									<b:inputTextarea rows="3"
-										value="#{personaBean.responsabilidades}" />
-								</b:column>
-							</b:row>
-							<br />
-							<b:row>
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarExperienciaLab()}"
-										styleClass="btn btn-info" update="el frmel :frmlel"
-										style="padding:.4em;" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.limpiarCamposEL()}"
-										styleClass="btn btn-info" update="frmel :frmlel"
-										style="padding:.4em;" process="@this">
-										<p:resetInput target="frmel" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+						
+						<h:form id="frmlel">
 							<b:row>
 								<b:column>
-									<p:messages id="el" closable="true" />
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlel">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus" value="Ingresar Experiencia Laboral"
+									action="#{personaBean.mostrarDlgExperienciaLa()}"
+									update=":frmel" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtel" var="exl" rows="5"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstExperienciaLab}" scrollable="true"
@@ -1646,6 +1402,302 @@
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 			closable="false" resizable="false" showHeader="false">
 			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+		<p:dialog widgetVar="fADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmfa">
+				<b:row>
+					<b:column>
+						<p:messages id="fa" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nivel Instrucci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelInstruccion}">
+							<p:ajax listener="#{personaBean.cargaNivelesAp()}"
+								update=":frmfa"></p:ajax>
+							<f:selectItems value="#{personaBean.lstNivelesInstruccion}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2" rendered="#{!personaBean.visualizarCampos}">
+						<h:outputText value="Niveles Aprobados*" />
+					</b:column>
+					<b:column col-xs="4" rendered="#{!personaBean.visualizarCampos}">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelesAprobados}">
+							<f:selectItems value="#{personaBean.lstNivelesAprobados}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row rendered="#{personaBean.visualizarCampos}">
+					<b:column col-xs="2">
+						<h:outputText value="T&iacute;tulo*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.titulo}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.institucionFA}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisFA}">
+							<f:selectItems value="#{personaBean.l_pais}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Duraci&oacute;n (A&ntilde;os)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:spinner value="#{personaBean.duracion}" min="0" max="70" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniFA}" size="15"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-30:c+0" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff1" value="#{personaBean.fechaFinFA}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button">
+						</p:calendar>
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarFormAc()}"
+							look="info" style="padding:.4em;"
+							update="frmfa :frmlfa">
+						</b:commandButton>
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{personaBean.cancelarFA()}"
+							disabled="#{!personaBean.edicion}" look="info"
+							style="padding:.4em;" update="frmfa :frmlfa" process="@this">
+							<p:resetInput target="frmfa" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="cADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmca">
+				<b:row>
+					<b:column>
+						<p:messages id="ca" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Relaci&oacute;n Perfil Profesional*" />
+					</b:column>
+					<b:column col-xs="10">
+						<p:selectBooleanButton value="#{personaBean.relacionPerfil}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nombre Capacitaci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreCap}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n Capacitacitadora*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreInstitucion}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Estudios*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaCa}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Tipo Evento*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.tipoEvento}">
+							<f:selectItems value="#{personaBean.lstTiposEventos}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="N&uacute;mero Horas (Mayor a 8 Horas)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.numHoras}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarCapacitaciones()}"
+							look="info" update="ca frmca :frmlca"
+							style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarCa()}"
+							look="info" update="frmca :frmlca"
+							style="padding:.4em;" process="@this">
+							<p:resetInput target="frmca" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="eLDlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmel">
+				<b:row>
+					<b:column>
+						<p:messages id="el" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Actual*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.actualEL}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px">
+							<p:ajax listener="#{personaBean.switch_actualEL()}" update="ff2" />
+						</p:selectBooleanButton>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Sector P&uacute;blico*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.sectorPublico}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<h:outputText value="Puesto*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.puesto}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Empresa*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.empresa}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Laboral*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaEL}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisEL}">
+							<f:selectItems value="#{personaBean.l_pais}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniEL}" size="15"
+							yearRange="c-30:c+0" pattern="dd-MM-yyyy" mask="true"
+							showOn="button" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff2" value="#{personaBean.fechaFinEL}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							disabled="#{personaBean.actualEL}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Principales Actividades y Responsabilidades*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputTextarea rows="3" value="#{personaBean.responsabilidades}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarExperienciaLab()}"
+							look="info" update="el frmel :frmlel"
+							style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarEL()}"
+							look="info" update="frmel :frmlel"
+							style="padding:.4em;" process="@this">
+							<p:resetInput target="frmel" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
 		</p:dialog>
 	</ui:define>
 </ui:composition>

@@ -4419,6 +4419,8 @@ public class PersonaBean {
 			setDuracion(fAca.getFoaDuracion());
 			setFechaIniFA(fAca.getFoaFechaInicio());
 			setFechaFinFA(fAca.getFoaFechaFin());
+			
+			RequestContext.getCurrentInstance().execute("PF('fADlg').show();");
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -4444,6 +4446,7 @@ public class PersonaBean {
 					}
 					limpiarCamposFA();
 					findAllFormacionAcademica();
+					RequestContext.getCurrentInstance().execute("PF('fADlg').hide();");
 				} else {
 					Mensaje.crearMensajeWARN("La fecha fin debe ser mayor a la fecha inicio.");
 				}
@@ -4453,6 +4456,11 @@ public class PersonaBean {
 			e.printStackTrace();
 			Mensaje.crearMensajeERROR("Error al ingresar o editar la FormaciÃ³n AcadÃ©mica: " + e.getMessage());
 		}
+	}
+	
+	public void cancelarFA(){
+		limpiarCamposFA();
+		RequestContext.getCurrentInstance().execute("PF('fADlg').hide();");
 	}
 
 	public void limpiarCamposFA() {
@@ -4544,6 +4552,10 @@ public class PersonaBean {
 
 	}
 
+	public void mostrarDlgFormacionAca(){
+		RequestContext.getCurrentInstance().execute("PF('fADlg').show();");
+	}
+	
 	public String validarBoleano(boolean valor) {
 		String respuesta = "";
 		try {
@@ -4589,6 +4601,8 @@ public class PersonaBean {
 			setNumHoras(cap.getCapNumHoras());
 			setNombreInstitucion(cap.getCapInstitucionCapacitacion());
 			setRelacionPerfil(cap.getCapRelacionPerfilProfesional());
+			
+			RequestContext.getCurrentInstance().execute("PF('cADlg').show();");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Mensaje.crearMensajeERROR(e.getMessage());
@@ -4610,6 +4624,7 @@ public class PersonaBean {
 				}
 				limpiarCamposCa();
 				findAllCapacitaciones();
+				RequestContext.getCurrentInstance().execute("PF('cADlg').hide();");
 			} else
 				Mensaje.crearMensajeWARN("Seleccione todos los campos para continuar.");
 		} catch (Exception e) {
@@ -4618,6 +4633,11 @@ public class PersonaBean {
 		}
 	}
 
+	public void cancelarCa(){
+		limpiarCamposCa();
+		RequestContext.getCurrentInstance().execute("PF('cADlg').hide();");
+	}
+	
 	public void limpiarCamposCa() {
 		setIdCapacitacion(0);
 		setRelacionPerfil(false);
@@ -4648,6 +4668,10 @@ public class PersonaBean {
 		}
 	}
 
+	public void mostrarDlgCapacitacion(){
+		RequestContext.getCurrentInstance().execute("PF('cADlg').show();");
+	}
+	
 	public void findAllCapacitaciones() {
 		setLstCapacitaciones(manager.findCapacitacionesByCedula(getPersona().getPerDni()));
 	}
@@ -4675,6 +4699,7 @@ public class PersonaBean {
 			setActualEL(exl.getExlActual());
 			if (exl.getExlActual().equals("S"))
 				setFechaFinEL(new Date());
+			RequestContext.getCurrentInstance().execute("PF('eLDlg').show();");
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 		}
@@ -4698,6 +4723,7 @@ public class PersonaBean {
 					}
 					limpiarCamposEL();
 					findAllExperianciaLaboral();
+					RequestContext.getCurrentInstance().execute("PF('eLDlg').hide();");
 				} else {
 					Mensaje.crearMensajeWARN("La fecha fin debe ser mayor a la fecha inicio.");
 				}
@@ -4709,6 +4735,11 @@ public class PersonaBean {
 		}
 	}
 
+	public void cancelarEL(){
+		limpiarCamposEL();
+		RequestContext.getCurrentInstance().execute("PF('eLDlg').hide();");
+	}
+	
 	public void limpiarCamposEL() {
 		setIdExperiencia(0);
 		setAreaEL("S/N");
@@ -4742,6 +4773,10 @@ public class PersonaBean {
 		}
 	}
 
+	public void mostrarDlgExperienciaLa(){
+		RequestContext.getCurrentInstance().execute("PF('eLDlg').show();");
+	}
+	
 	public void findAllExperianciaLaboral() {
 		setLstExperienciaLab(manager.findExperienciaLabByCedula(getPersona().getPerDni()));
 	}
@@ -4753,7 +4788,7 @@ public class PersonaBean {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Mensaje.crearMensajeERROR("Error al validar PaÃ­s FormaciÃ³n AcadÃ©mica. " + e.getMessage());
+			Mensaje.crearMensajeERROR("Error al validar País Formación Académica. " + e.getMessage());
 		}
 		return pais;
 	}

@@ -258,10 +258,18 @@ public class SesionBean implements Serializable {
 			GenParametro p1 = mngAcc.ParametroByID("direccion_cambio");
 			cambio = p1.getParValor();
 			if (p != null) {
-				String t = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
-						+ "?usuario=" + Funciones.cifradoCesar(getUsuario().trim(),3) + "'>Cambio de Credencial</a></p>"
+				String texto;
+				if (Funciones.isNumeric(getUsuario().trim())){
+				texto = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
+						+ "?usuario=" + Funciones.cifradoCesarInteger(getUsuario().trim(),3) + "'>Cambio de Credencial</a></p>"
 						+ "</body>" + "</html>";
-				envioMailWS(p.getPerCorreo(), "Cambio de Credenciales", t);
+				}else{
+				texto = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
+							+ "?usuario=" + Funciones.cifradoCesar(getUsuario().trim(),3) + "'>Cambio de Credencial</a></p>"
+							+ "</body>" + "</html>";
+				}
+				
+				envioMailWS(p.getPerCorreo(), "Cambio de Credenciales", texto);
 				Mensaje.crearMensajeINFO("El correo se envió satisfactoriamente.");
 			} else {
 				Mensaje.crearMensajeERROR("El usuario ingresado no existe");
@@ -276,7 +284,12 @@ public class SesionBean implements Serializable {
 		String respuesta = "";
 		String res_json = "";
 		try {
-			String variable = Funciones.descifradoCesar(getUsuario().trim(),3);
+			String variable;
+			if (Funciones.isNumeric(getUsuario().trim())){
+			variable = Funciones.descifradoCesarInteger(getUsuario().trim(),3);
+			}else{
+			variable = Funciones.descifradoCesar(getUsuario().trim(),3);
+			}
 			System.out.println(variable);
 			if (verificarSimilitudPassword(pass, pass2)) {
 				try {

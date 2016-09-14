@@ -99,17 +99,18 @@
 						<f:facet name="header">
 							<h:outputText value="INFORME" />
 						</f:facet>
-						
+						<p:commandLink ajax="false" update="mensaje2"
+								action="#{seguridadBean.descargarArchivo(seg)}">
+								Descargar
+							</p:commandLink>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="DOCUMENTO RESPALDO" />
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
-								action="#{funcionarioBean.descargarArchivo()}">
-								<p:graphicImage value="../resources/img/xls.png"
-									styleClass="img-responsive" />
-								<b:label text="Descargar Datos"></b:label>
+								action="#{seguridadBean.descargarDocumento(seg)}">
+								Descargar
 							</p:commandLink>
 					</h:column>
 				</b:dataTable>

@@ -1,11 +1,13 @@
 package city.model.manager;
 
-
+import city.model.generic.Funciones;
 
 public class Test {
 
 	public static void main(String[] args) {
-		
+		System.out.println("valor: "+Funciones.cifradoCesarInteger("10003422365", 3));
+		System.out.println("valor decifrado:"+ Funciones.descifradoCesarInteger("43336755698", 3) );
+
 //		SingletonJDBC s = SingletonJDBC.getInstance();
 //		
 //		try {

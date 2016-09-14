@@ -473,6 +473,21 @@ public class Funciones {
         }
         return cifrado.toString();
     }
+    
+    //método para cifrar el texto
+    public static String cifradoCesarInteger(String texto, int codigo) {
+    	String valor="0123456789";
+        StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 9;
+        for (int i = 0; i < texto.length(); i++) {
+                if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
+                    cifrado.append((char) (texto.charAt(i) + codigo - 9));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) + codigo));
+                }
+        }
+        return cifrado.toString();
+    }
 
     //método para descifrar el texto
     public static String descifradoCesar(String texto, int codigo) {
@@ -492,6 +507,21 @@ public class Funciones {
                     cifrado.append((char) (texto.charAt(i) - codigo));
                 }
             }
+        }
+        return cifrado.toString();
+    }
+    
+    //método para descifrar el texto
+    public static String descifradoCesarInteger(String texto, int codigo) {
+    	String valor="0123456789";
+    	StringBuilder cifrado = new StringBuilder();
+        codigo = codigo % 9;
+        for (int i = 0; i < texto.length(); i++) {
+                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+                    cifrado.append((char) (texto.charAt(i) - codigo + 9));
+                } else {
+                    cifrado.append((char) (texto.charAt(i) - codigo));
+                }
         }
         return cifrado.toString();
     }
