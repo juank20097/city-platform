@@ -1007,11 +1007,12 @@ public class ManagerPersona {
 	}
 
 	public String catalogoItem(String idItem) throws Exception {
-		if (idItem.equals("")) {
+		System.out.println("valor Item-->"+idItem);
+		if (idItem ==null || idItem.equals("")) {
 			return "";
 		} else {
 			GenCatalogoItemsDet it = this.ItemByID(idItem);
-			if (it.equals("") || it.equals(null)) {
+			if (it==null || it.equals("")) {
 				return "";
 			} else
 				return it.getIteNombre();
