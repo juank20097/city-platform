@@ -313,31 +313,10 @@ public class PersonaBean {
 	@PostConstruct
 	public void init() {
 		session.validarSesion();
-		edicion = false;
-		select_n = true;
-		select_r = true;
-		sld_madre = false;
-		sld_padre = false;
-		l_ciudad_n = new ArrayList<SelectItem>();
-		l_ciudad_r = new ArrayList<SelectItem>();
-		l_estado_civil = new ArrayList<SelectItem>();
-		l_estados = new ArrayList<SelectItem>();
-		l_genero = new ArrayList<SelectItem>();
-		l_pais = new ArrayList<SelectItem>();
-		l_provincia = new ArrayList<SelectItem>();
-		l_tipo_dni = new ArrayList<SelectItem>();
-		l_sangre = new ArrayList<SelectItem>();
-		l_residencia = new ArrayList<SelectItem>();
-		l_dias = new ArrayList<SelectItem>();
-		l_horas = new ArrayList<SelectItem>();
-		l_discapacidad = new ArrayList<SelectItem>();
-		l_fam_tipo = new ArrayList<SelectItem>();
-		l_fam_actividad = new ArrayList<SelectItem>();
-		l_fam_estabilidad = new ArrayList<SelectItem>();
+		setearBooleanInit();
+		cargarSelectItemsInit();
 		l_persona = new ArrayList<GenPersona>();
 		l_familiares = new ArrayList<GenFamiliare>();
-		familia = false;
-		estabilidad = false;
 		sms_validacion = "";
 
 		// Curriculums
@@ -2346,19 +2325,6 @@ public class PersonaBean {
 		this.edicion = edicion;
 	}
 
-	/**
-	 * Redirecciona a la pagina de creacion de personas
-	 * 
-	 * @return vista
-	 */
-	public String nuevaPersona() {
-		setSelect_n(true);
-		setSelect_r(true);
-		cleanDatos();
-		this.carga();
-		return "npersona?faces-redirect=true";
-	}
-
 	// Getters y Setters de Curriculum
 
 	/**
@@ -3050,6 +3016,68 @@ public class PersonaBean {
 	public void setPersona(GenPersona persona) {
 		this.persona = persona;
 	}
+	
+	/**
+	 * Redirecciona a la pagina de creacion de personas
+	 * 
+	 * @return vista
+	 */
+	public String nuevaPersona() {
+		setSelect_n(true);
+		setSelect_r(true);
+		setDinardap(false);
+		getL_familiares().clear();
+		cleanDatos();
+		this.carga();
+		return "npersona3?faces-redirect=true";
+	}
+	
+	/**
+	 * Método para inicializar valores booleanos en el init()
+	 */
+	public void setearBooleanInit(){
+		familia = false;
+		estabilidad = false;
+		edicion = false;
+		select_n = true;
+		select_r = true;
+		sld_madre = false;
+		sld_padre = false;
+		seguro=false;
+		ejercicio=false;
+		alcohol=false;
+		tabaco=false;
+		estupefacientes=false;
+		discapacidad=false;
+		embriaguez=false;
+		familia=false;
+		dinardap=false;
+		estabilidad=false;
+		edad_p=false;
+		edad_m=false;
+	}
+	
+	/**
+	 * Método para inicializar las listas de todos los SelectItems
+	 */
+	public void cargarSelectItemsInit(){
+		l_ciudad_n = new ArrayList<SelectItem>();
+		l_ciudad_r = new ArrayList<SelectItem>();
+		l_estado_civil = new ArrayList<SelectItem>();
+		l_estados = new ArrayList<SelectItem>();
+		l_genero = new ArrayList<SelectItem>();
+		l_pais = new ArrayList<SelectItem>();
+		l_provincia = new ArrayList<SelectItem>();
+		l_tipo_dni = new ArrayList<SelectItem>();
+		l_sangre = new ArrayList<SelectItem>();
+		l_residencia = new ArrayList<SelectItem>();
+		l_dias = new ArrayList<SelectItem>();
+		l_horas = new ArrayList<SelectItem>();
+		l_discapacidad = new ArrayList<SelectItem>();
+		l_fam_tipo = new ArrayList<SelectItem>();
+		l_fam_actividad = new ArrayList<SelectItem>();
+		l_fam_estabilidad = new ArrayList<SelectItem>();
+	}
 
 	/**
 	 * Mï¿½todo para cargar todos los select
@@ -3107,7 +3135,7 @@ public class PersonaBean {
 					this.crearEditarSalud();
 					Mensaje.crearMensajeINFO("Persona actualizada correctamente");
 				}
-				r = "npersona?faces-redirect=true";
+				r = "npersona3?faces-redirect=true";
 				// this.cleanDatos();
 				// this.cargarPersonas();
 			}
@@ -3775,7 +3803,8 @@ public class PersonaBean {
 					res_familiar.setFamLugar(getFamLugar().toUpperCase());
 					res_familiar.setFamNombre(getFamNombre().toUpperCase());
 					res_familiar.setFamTipo(getFamTipo());
-					verificarConyugeEditar(res_familiar.getFamTipo(), res_familiar);
+					manager.editarFamiliar(res_familiar);
+					//verificarConyugeEditar(res_familiar.getFamTipo(), res_familiar);
 					setL_familiares(manager.familiarByDNI(getPerDni()));
 				}
 			}
