@@ -45,15 +45,15 @@ public class Funciones {
 	public static String hostWS = "http://app-permisos.yachay.gob.ec/";
 
 	public static Boolean validacionCedula(String cedula) {
-		// verifica que los dos primeros dígitos correspondan a un valor entre 1
+		// verifica que los dos primeros dï¿½gitos correspondan a un valor entre 1
 		// y NUMERO_DE_PROVINCIAS
 		int prov = Integer.parseInt(cedula.substring(0, 2));
 		if (!((prov > 0) && (prov <= num_provincias) || prov == 30)) {
-			// addError("La cédula ingresada no es válida");
+			// addError("La cï¿½dula ingresada no es vï¿½lida");
 			System.out.println("Error: cedula ingresada mal");
 			return false;
 		}
-		// verifica que el último dígito de la cédula sea válido
+		// verifica que el ï¿½ltimo dï¿½gito de la cï¿½dula sea vï¿½lido
 		int[] d = new int[10];
 		// Asignamos el string a un array
 		for (int i = 0; i < d.length; i++) {
@@ -61,12 +61,12 @@ public class Funciones {
 		}
 		int imp = 0;
 		int par = 0;
-		// sumamos los duplos de posición impar
+		// sumamos los duplos de posiciï¿½n impar
 		for (int i = 0; i < d.length; i += 2) {
 			d[i] = ((d[i] * 2) > 9) ? ((d[i] * 2) - 9) : (d[i] * 2);
 			imp += d[i];
 		}
-		// sumamos los digitos de posición par
+		// sumamos los digitos de posiciï¿½n par
 		for (int i = 1; i < (d.length - 1); i += 2) {
 			par += d[i];
 		}
@@ -76,14 +76,14 @@ public class Funciones {
 		int d10 = Integer.parseInt(String.valueOf(suma + 10).substring(0, 1)
 				+ "0")
 				- suma;
-		// Si es diez el décimo dígito es cero
+		// Si es diez el dï¿½cimo dï¿½gito es cero
 		d10 = (d10 == 10) ? 0 : d10;
-		// si el décimo dígito calculado es igual al digitado la cédula es
+		// si el dï¿½cimo dï¿½gito calculado es igual al digitado la cï¿½dula es
 		// correcta
 		if (d10 == d[9]) {
 			return true;
 		} else {
-			// addError("La cédula ingresada no es válida");
+			// addError("La cï¿½dula ingresada no es vï¿½lida");
 			return false;
 		}
 	}
@@ -264,7 +264,7 @@ public class Funciones {
 	}
 
 	/**
-	 * Convierte una cadena en otra con codificación utf-8
+	 * Convierte una cadena en otra con codificaciï¿½n utf-8
 	 * 
 	 * @param cadena
 	 * @return String
@@ -301,18 +301,18 @@ public class Funciones {
 		// Se asigna la fecha recibida a la fecha de nacimiento.
 		fechaNacimiento.setTime(fecha);
 		// Se restan la fecha actual y la fecha de nacimiento
-		int año = fechaActual.get(Calendar.YEAR)
+		int anio = fechaActual.get(Calendar.YEAR)
 				- fechaNacimiento.get(Calendar.YEAR);
 		int mes = fechaActual.get(Calendar.MONTH)
 				- fechaNacimiento.get(Calendar.MONTH);
 		int dia = fechaActual.get(Calendar.DATE)
 				- fechaNacimiento.get(Calendar.DATE);
-		// Se ajusta el año dependiendo el mes y el día
+		// Se ajusta el aï¿½o dependiendo el mes y el dï¿½a
 		if (mes < 0 || (mes == 0 && dia < 0)) {
-			año--;
+			anio--;
 		}
 		// Regresa la edad en base a la fecha de nacimiento
-		return año;
+		return anio;
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class Funciones {
 	}
 
 	/**
-	 * Método para descargar archivos excel
+	 * Mï¿½todo para descargar archivos excel
 	 * 
 	 * @param url
 	 */
@@ -403,56 +403,9 @@ public class Funciones {
 		}
 	}
 	
-	/**
-	 * Método para descargar archivos excel
-	 * 
-	 * @param url
-	 */
-	public static void descargarPDF(String url) {
-		System.out.println(url);
-		File ficheroXLS = new File(url);
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(ficheroXLS);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		byte[] bytes = new byte[1000];
-		int read = 0;
-
-		if (!ctx.getResponseComplete()) {
-			String fileName = ficheroXLS.getName();
-//			String contentType = "application/vnd.ms-excel";
-			 String contentType = "application/pdf";
-			HttpServletResponse response = (HttpServletResponse) ctx
-					.getExternalContext().getResponse();
-			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ fileName + "\"");
-			ServletOutputStream out = null;
-			try {
-				out = response.getOutputStream();
-				while ((read = fis.read(bytes)) != -1) {
-					out.write(bytes, 0, read);
-				}
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			System.out.println("Descargado PDF....!!!");
-			ctx.responseComplete();
-		}
-	}
+	//Mï¿½todo Cifrado
 	
-	//Método Cifrado
-	
-	 //método para cifrar el texto
+	 //mï¿½todo para cifrar el texto
     public static String cifradoCesar(String texto, int codigo) {
         StringBuilder cifrado = new StringBuilder();
         codigo = codigo % 26;
@@ -474,7 +427,7 @@ public class Funciones {
         return cifrado.toString();
     }
     
-    //método para cifrar el texto
+    //mï¿½todo para cifrar el texto
     public static String cifradoCesarInteger(String texto, int codigo) {
     	String valor="0123456789";
         StringBuilder cifrado = new StringBuilder();
@@ -489,7 +442,7 @@ public class Funciones {
         return cifrado.toString();
     }
 
-    //método para descifrar el texto
+    //mï¿½todo para descifrar el texto
     public static String descifradoCesar(String texto, int codigo) {
         StringBuilder cifrado = new StringBuilder();
         codigo = codigo % 26;
@@ -511,7 +464,7 @@ public class Funciones {
         return cifrado.toString();
     }
     
-    //método para descifrar el texto
+    //mï¿½todo para descifrar el texto
     public static String descifradoCesarInteger(String texto, int codigo) {
     	String valor="0123456789";
     	StringBuilder cifrado = new StringBuilder();
@@ -526,7 +479,7 @@ public class Funciones {
         return cifrado.toString();
     }
     
-    //método para cifrar el texto
+    //mï¿½todo para cifrar el texto
     public static String cifradoPropio(String texto, int codigo) {
     	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder cifrado = new StringBuilder();
@@ -541,7 +494,7 @@ public class Funciones {
         return cifrado.toString();
     }
     
-    //método para descifrar el texto
+    //mï¿½todo para descifrar el texto
     public static String descifradoPropio(String texto, int codigo) {
     	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     	StringBuilder cifrado = new StringBuilder();
