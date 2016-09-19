@@ -497,7 +497,13 @@ public class FuncionarioBean {
 //					.getContext();
 //			String contextPath = servletContext
 //					.getRealPath(File.separator + "resources/doc/descargaDatosExcel_Funcionarios.xls");
-			Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Funcionarios.xls");
+			try {
+				Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Funcionarios.xls");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Mensaje.crearMensajeERROR("El archivo no fue generado correctamente.");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -508,6 +514,12 @@ public class FuncionarioBean {
 //		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
 //				.getContext();
 //		String contextPath = servletContext.getRealPath(File.separator + "resources/doc/Ejemplo_Base_Funcionario.xls");
-		Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Funcionario.xls");
+		try {
+			Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Funcionario.xls");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Mensaje.crearMensajeERROR("El archivo no fue encontrado para su descarga.");
+			e.printStackTrace();
+		}
 	}
 }

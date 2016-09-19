@@ -361,7 +361,7 @@ public class Funciones {
 	 * 
 	 * @param url
 	 */
-	public static void descargarExcel(String url) {
+	public static void descargarExcel(String url)  throws Exception{
 		System.out.println(url);
 		File ficheroXLS = new File(url);
 		FacesContext ctx = FacesContext.getCurrentInstance();
@@ -408,7 +408,7 @@ public class Funciones {
 	 * 
 	 * @param url
 	 */
-	public static void descargarPDF(String url) {
+	public static void descargarPDF(String url) throws Exception {
 		System.out.println(url);
 		File ficheroXLS = new File(url);
 		FacesContext ctx = FacesContext.getCurrentInstance();

@@ -495,7 +495,13 @@ public class EstudiantesBean {
 //					.getContext();
 //			String contextPath = servletContext
 //					.getRealPath(File.separator + "resources/doc/descargaDatosExcel_Estudiante.xls");
-		Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Estudiante.xls");
+		try {
+			Funciones.descargarExcel(url_doc+"/descargaDatosExcel_Estudiante.xls");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Mensaje.crearMensajeERROR("El archivo no fue generado correctamente.");
+			e.printStackTrace();
+		}
 		}
 	}
 	
@@ -508,6 +514,12 @@ public class EstudiantesBean {
 		// .getContext();
 		// String contextPath = servletContext.getRealPath(File.separator +
 		// "resources/doc/Ejemplo_Base_Estudiantes.xls");
-		Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Estudiantes.xls");
+		try {
+			Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Estudiantes.xls");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Mensaje.crearMensajeERROR("El archivo no fue encontrado para su descarga.");
+			e.printStackTrace();
+		}
 	}
 }

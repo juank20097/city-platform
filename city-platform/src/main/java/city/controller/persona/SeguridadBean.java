@@ -1432,12 +1432,14 @@ public class SeguridadBean {
 //		String contextPath = servletContext
 //				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegArchivo()+"");
 //		System.out.println(contextPath);
-		if (emergencia.getSegArchivo() == null || emergencia.getSegArchivo().isEmpty()) {
-			Mensaje.crearMensajeERROR("La incidencia no cuenta con un archivo asignado.");
-		} else {
-			String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegArchivo()+"";
-			Funciones.descargarPDF(contextPath);
-		}
+			try {
+				String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegArchivo()+"";
+				Funciones.descargarPDF(contextPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Mensaje.crearMensajeERROR("La incidencia no cuenta con un archivo asignado.");
+				e.printStackTrace();
+			}
 	}
 
 	//////////////////////////// (PROCESO_DE_GUARDAR_DOCUMENTO)////////////////////////////////////////////////
@@ -1509,11 +1511,13 @@ public class SeguridadBean {
 //		String contextPath = servletContext
 //				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegDocumento()+"");
 //		System.out.println(contextPath);
-		if (emergencia.getSegDocumento() == null || emergencia.getSegDocumento().isEmpty()) {
-		Mensaje.crearMensajeERROR("La incidencia no cuenta con un documento de respaldo.");
-		} else {
-			String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegDocumento()+"";
-			Funciones.descargarPDF(contextPath);
+			try {
+				String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegDocumento()+"";
+				Funciones.descargarPDF(contextPath);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Mensaje.crearMensajeERROR("La incidencia no cuenta con un documento de respaldo.");
+				e.printStackTrace();
+			}
 		}
-	}
 }
