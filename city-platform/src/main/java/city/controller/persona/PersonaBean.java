@@ -1602,7 +1602,7 @@ public class PersonaBean {
 	 * @param institucion
 	 *            the institucion to set
 	 */
-	public void setInstitucion(String institucion) {
+	public void FA(String institucion) {
 		this.institucion = institucion;
 	}
 
@@ -3032,7 +3032,7 @@ public class PersonaBean {
 		getL_familiares().clear();
 		cleanDatos();
 		this.carga();
-		return "npersona3?faces-redirect=true";
+		return "npersona?faces-redirect=true";
 	}
 
 	/**
@@ -3138,7 +3138,7 @@ public class PersonaBean {
 					this.crearEditarSalud();
 					Mensaje.crearMensajeINFO("Persona actualizada correctamente");
 				}
-				r = "npersona3?faces-redirect=true";
+				r = "npersona?faces-redirect=true";
 				// this.cleanDatos();
 				// this.cargarPersonas();
 			}
@@ -3749,6 +3749,10 @@ public class PersonaBean {
 		setSldAlergiasCronicas3("");
 		setSldMedicamentosCronicos3("");
 		setEdicion(false);
+		//seteo de listas de CV
+		getLstExperienciaLab().clear();
+		getLstCapacitaciones().clear();
+		getLstFormAcademica().clear();
 	}
 
 	// ////////////////////////////////////////////////////////FAMILIAR/////////////////////////////////////////////////////////
@@ -4377,18 +4381,18 @@ public class PersonaBean {
 		if (getNivelInstruccion().equals("nvlIns_1")) {
 			cargarNivelesAprobadosEB();
 			setTitulo("--");
-			setInstitucion("--");
+			setInstitucionFA("--");
 			setVisualizarCampos(false);
 
 		} else if (getNivelInstruccion().equals("nvlIns_2")) {
 			cargarNivelesAprobadosBa();
 			setTitulo("--");
-			setInstitucion("--");
+			setInstitucionFA("--");
 			setVisualizarCampos(false);
 
 		} else {
 			setTitulo("");
-			setInstitucion("");
+			setInstitucionFA("");
 			setVisualizarCampos(true);
 			setNivelesAprobados("S/N");
 			setLstNivelesAprobados(new ArrayList<SelectItem>());
@@ -4446,7 +4450,7 @@ public class PersonaBean {
 				setVisualizarCampos(true);
 			}
 			setIdFormacion(fAca.getFoaId());
-			setInstitucion(fAca.getFoaInstitucion());
+			setInstitucionFA(fAca.getFoaInstitucion());
 			setTitulo(fAca.getFoaTitulo());
 			setPaisFA(fAca.getFoaPais());
 			setNivelInstruccion(fAca.getFoaNivelInstruccion());
@@ -4469,12 +4473,12 @@ public class PersonaBean {
 			if (validarSelectItemsFA()) {
 				if (validarFechaFinFA()) {
 					if (!isEdicionFA()) {
-						manager.ingresarFormacionAc(getPersona(), getTitulo().trim(), getInstitucion().trim(),
+						manager.ingresarFormacionAc(getPersona(), getTitulo().trim(), getInstitucionFA().trim(),
 								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
 								isRegistroSenescyt(), getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos guardados correctamente.");
 					} else {
-						manager.editarFormacionAc(getIdFormacion(), getTitulo().trim(), getInstitucion().trim(),
+						manager.editarFormacionAc(getIdFormacion(), getTitulo().trim(), getInstitucionFA().trim(),
 								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
 								getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
@@ -4501,7 +4505,7 @@ public class PersonaBean {
 	public void limpiarCamposFA() {
 		setIdFormacion(0);
 		setTitulo("");
-		setInstitucion("");
+		setInstitucionFA("");
 		setPaisFA("EC");
 		setDuracion(BigDecimal.ZERO);
 		setFechaIniFA(new Date());
