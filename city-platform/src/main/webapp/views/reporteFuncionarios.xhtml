@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Lista funcionarios
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmReporteFuncionarios">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:dataTable id="tbl" var="funcionario"
+				value="#{reporteFuncionariosBean.funcionarios}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+				paginator="true" rows="10" style="margin-bottom:20px">
+				<f:facet name="{Exporters}">
+					<h:commandLink>
+						<p:graphicImage name="../resources/img/excel.png" width="24" />
+						<p:dataExporter type="xls" target="tbl" fileName="cars" />
+					</h:commandLink>
+
+					<h:commandLink>
+						<p:graphicImage name="../resources/img/pdf.png" width="24" />
+						<p:dataExporter type="pdf" target="tbl" fileName="cars" />
+					</h:commandLink>
+
+					<h:commandLink>
+						<p:graphicImage name="../resources/img/csv.png" width="24" />
+						<p:dataExporter type="csv" target="tbl" fileName="cars" />
+					</h:commandLink>
+
+					<h:commandLink>
+						<p:graphicImage name="../resources/img/xml.png" width="24" />
+						<p:dataExporter type="xml" target="tbl" fileName="cars" />
+					</h:commandLink>
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="No." />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="LUGAR DE TRABAJO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="NOMBRES Y APELLIDOS" />
+					</f:facet>
+					<h:outputText
+						value="#{funcionario.perApellidos} #{funcionario.perNombress}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="CEDULA" />
+					</f:facet>
+					<h:outputText value="#{funcionario.perDni}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="CARGO INSTITUCIONAL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="GERENCIA" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="DIRECCION" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="REMUNERACION" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="GRUPO OCUPACIONAL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="FECHA DE INGRESO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="FECHA NUEVO CARGO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="MODALIDAD" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="FECHA TERMINACION COMISION DE SERVICIOS" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="CORREO ELECTRONICO INSTITUCIONAL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="3° NIVEL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="INSTRUCCION FORMAL TITULO 3 NIVEL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="4° NIVEL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="TITULO 4to. NIVEL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="FECHA DE NACIMIENTO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="AÑOS, MESES, DIAS" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="EDAD" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="SEXO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="CORREO ELECTRONICO PERSONAL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="DIRECCION DOMICILIARIA" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="NUMERO CELULAR FUNCIONARIO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="NUMERO TELEFONO FIJO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="EN CASO DE EMERGENCIA LLAMAR A" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="PARENTEZCO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText
+							value="TELEFONO DE LA PERSONA A LA QUE HAY QUE LLAMAR EN CASO DE MERGENCIA" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="ESTADO CIVIL" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="ENFERMEDAD IMPORTANTE" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="DISCAPACIDAD" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="FAMILIAR CON DISCAPACIDAD" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="PARENTEZCO" />
+					</f:facet>
+					<h:outputText value="" />
+				</p:column>
+
+			</p:dataTable>
+			
+			<b:commandButton value="Buscar" look="info"
+				onclick="PF('statusDialog').show()"
+				oncomplete="PF('statusDialog').hide()"
+				actionListener="#{reporteFuncionariosBean.cargarFuncionarios()}"
+				update="frmReporteFuncionarios">
+			</b:commandButton>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>
