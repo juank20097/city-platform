@@ -25,8 +25,18 @@ public class ManagerReporteFuncionarios {
 	public List<Object[]> test() {
 		// ResultSet respuesta = mngDao.findMostPopularA();
 		DatosFuncionario dt = new DatosFuncionario();
-		dt.setFunCargo("Cargo sho que se");
 		Class ftClass = dt.getClass();
+		for (Field f : ftClass.getDeclaredFields()) {
+			try {
+				f.set(dt, "this is public");
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
 			Field f1 = ftClass.getDeclaredField("perDni");
 			f1.set(dt, "this is public");
