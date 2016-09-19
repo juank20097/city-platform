@@ -369,13 +369,7 @@ public class ExternosBean {
 //					.getCurrentInstance().getExternalContext().getContext();
 //			String contextPath = servletContext.getRealPath(File.separator
 //					+ "resources/doc/descargaDatosExcel_Externos.xls");
-			try {
-				Funciones.descargarExcel(url_doc+"/descarga/DatosExcel_Externos.xls");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Mensaje.crearMensajeERROR("El archivo no fue generado correctamente.");
-				e.printStackTrace();
-			}
+			Funciones.descargarExcel(url_doc+"/descarga/DatosExcel_Externos.xls");
 			}
 	}
 
@@ -387,12 +381,6 @@ public class ExternosBean {
 //				.getCurrentInstance().getExternalContext().getContext();
 //		String contextPath = servletContext.getRealPath(File.separator
 //				+ "resources/doc/Ejemplo_Base_Externos.xls");
-		try {
-			Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Externos.xls");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Mensaje.crearMensajeERROR("El archivo no fue encontrado para su descarga.");
-			e.printStackTrace();
-		}
+		Funciones.descargarExcel(url_doc+"/Ejemplo_Base_Externos.xls");
 	}
 }
