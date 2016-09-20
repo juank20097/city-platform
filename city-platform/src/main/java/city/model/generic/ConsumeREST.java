@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class ConsumeREST {
-	
 	/**
 	 * Consume un servicio web REST POST
 	 * @param urlServicio
@@ -30,7 +29,7 @@ public class ConsumeREST {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		//AGREGAR DATOS Y ENVIO
 		OutputStream os = conn.getOutputStream();
 		os.write(objetoJSON.toJSONString().getBytes());

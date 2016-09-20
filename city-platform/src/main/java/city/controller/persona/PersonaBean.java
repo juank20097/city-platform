@@ -343,7 +343,7 @@ public class PersonaBean {
 		nivelInstruccion = "S/N";
 		visualizarCampos = true;
 		// this.carga();
-		cargarPersona(session.validarPersona("npersona2.xhtml"));
+//		cargarSesion();
 	}
 
 	/**
@@ -4846,5 +4846,9 @@ public class PersonaBean {
 		} else {
 			setFechaFinEL(new Date());
 		}
+	}
+	
+	public void cargarSesion(){
+		cargarPersona(session.validarPersona("npersona2.xhtml"));
 	}
 }

@@ -7,6 +7,9 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{personaBean.cargarSesion()}" />
+	</f:metadata>
 	<ui:define name="titulo">
             Yachay City Platform
         </ui:define>
@@ -50,6 +53,10 @@
 							</b:commandButton>
 						</b:column>
 					</b:row>
+				</h:form>
+				<h:form>
+					<p:remoteCommand name="onload"
+						action="#{personaBean.cargarSesion()}" autoRun="true" />
 				</h:form>
 				<h:form id="frm">
 					<b:growl id="growl" delay="4000" placementFrom="top"
@@ -341,7 +348,8 @@
 								<br />
 								<h4>Datos Familiares con Quién Vive:</h4>
 								<p:separator />
-								<p:commandButton immediate="true" icon="ui-icon-plus" value="Ingresar Familiar"
+								<p:commandButton immediate="true" icon="ui-icon-plus"
+									value="Ingresar Familiar"
 									action="#{personaBean.mostrarIngresoFamiliar()}"
 									update=":frm2:dialog" />
 								<br />
@@ -1128,9 +1136,9 @@
 						<h:form id="frmlfa">
 							<b:row>
 								<b:column>
-									<b:growl delay="4000" placementFrom="top"
-										show-detail="false" global-only="false" show-summary="true"
-										allow-dismiss="true" animation-enter="animated bounceInDown"
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
 										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
@@ -1214,9 +1222,9 @@
 						<h:form id="frmlca">
 							<b:row>
 								<b:column>
-									<b:growl delay="4000" placementFrom="top"
-										show-detail="false" global-only="false" show-summary="true"
-										allow-dismiss="true" animation-enter="animated bounceInDown"
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
 										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
@@ -1280,9 +1288,9 @@
 						<h:form id="frmlel">
 							<b:row>
 								<b:column>
-									<b:growl delay="4000" placementFrom="top"
-										show-detail="false" global-only="false" show-summary="true"
-										allow-dismiss="true" animation-enter="animated bounceInDown"
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
 										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
