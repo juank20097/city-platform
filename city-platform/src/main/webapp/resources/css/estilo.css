@@ -2,3 +2,11 @@ body {
 	margin: 0;
 	background-image: url("../resources/img/f3.png");
 }
+
+.ui-datatable thead th, .ui-datatable tfoot td {
+	text-align: left !important;
+}
+
+#frmReporteFuncionarios table thead input[role="textbox"]{
+	display: none !important;
+}
