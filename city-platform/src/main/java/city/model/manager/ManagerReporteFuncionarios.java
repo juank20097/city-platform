@@ -25,23 +25,24 @@ public class ManagerReporteFuncionarios {
 	public ArrayList<DatosFuncionario> getAllDatosFuncionarios() {
 
 		ArrayList<DatosFuncionario> datosFuncionarios = new ArrayList<DatosFuncionario>();
-		String sql = "SELECT "
-				+ "gen_persona.per_nombres, gen_persona.per_apellidos, gen_persona.per_dni, gen_funcionarios_institucion.fun_cargo,"
-				+ "gen_funcionarios_institucion.fun_gerencia, gen_funcionarios_institucion.fun_direccion,"
-				+ "gen_funcionarios_institucion.fun_fecha_ingreso, gen_persona.per_correo,"
-				+ "( CASE WHEN (SELECT COUNT(foa_titulo) AS tiene_titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni)  > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_tercer_nivel, "
-				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni),"
-				+ "( CASE WHEN (SELECT  COUNT(foa_titulo) AS tiene_titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni) > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_cuarto_nivel, "
-				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni),"
-				+ "gen_persona.per_fecha_nacimiento,"
-				+ "(SELECT CONCAT(TO_CHAR(AGE(TIMESTAMP 'NOW()', DATE(gen_persona.per_fecha_nacimiento)), 'yy Año(s), MM Mes(es), dd'),' Día(s)') AS edad_completa),"
-				+ "(SELECT EXTRACT(YEAR FROM AGE(TIMESTAMP 'now()',DATE(gen_persona.per_fecha_nacimiento))) AS edad),"
-				+ "gen_persona.per_genero, gen_persona.per_correo2, gen_persona_detalle.pde_direccion, gen_persona.per_celular,"
-				+ "gen_persona.per_telefono, gen_persona_detalle.pde_emerg_contacto_nombres, gen_persona_detalle.pde_emerg_contacto_telefono,"
-				+ "gen_persona.per_estado_civil, gen_salud.sld_carnet_conadies" + " FROM "
-				+ "gen_persona, gen_funcionarios_institucion, gen_persona_detalle, gen_salud" + " WHERE "
-				+ "gen_persona.per_dni = gen_funcionarios_institucion.per_dni AND gen_persona.per_dni = gen_persona_detalle.pde_dni AND "
-				+ "gen_persona.per_dni = gen_salud.per_dni";
+		String sql = "SELECT  "
+				+ "gen_persona.per_nombres, gen_persona.per_apellidos, gen_persona.per_dni, gen_funcionarios_institucion.fun_cargo, "
+				+ "gen_funcionarios_institucion.fun_gerencia, gen_funcionarios_institucion.fun_direccion, "
+				+ "gen_funcionarios_institucion.fun_fecha_ingreso, gen_persona.per_correo, "
+				+ "( CASE WHEN (SELECT COUNT(foa_titulo) AS tiene_titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni)  > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_tercer_nivel,  "
+				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni), "
+				+ "( CASE WHEN (SELECT  COUNT(foa_titulo) AS tiene_titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni) > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_cuarto_nivel,  "
+				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni), "
+				+ "gen_persona.per_fecha_nacimiento, "
+				+ "(SELECT CONCAT(TO_CHAR(AGE(TIMESTAMP 'NOW()', DATE(gen_persona.per_fecha_nacimiento)), 'yy A, MM M, dd'),' D') AS edad_completa), "
+				+ "(SELECT EXTRACT(YEAR FROM AGE(TIMESTAMP 'now()',DATE(gen_persona.per_fecha_nacimiento))) AS edad), "
+				+ "gen_persona.per_genero, gen_persona.per_correo2, gen_persona_detalle.pde_direccion, gen_persona.per_celular, "
+				+ "gen_persona.per_telefono, gen_persona_detalle.pde_emerg_contacto_nombres, gen_persona_detalle.pde_emerg_contacto_telefono, "
+				+ "gen_persona.per_estado_civil, gen_salud.sld_carnet_conadies  " + "FROM  " + "gen_persona  "
+				+ "  LEFT JOIN gen_funcionarios_institucion  ON(gen_persona.per_dni = gen_funcionarios_institucion.per_dni )"
+				+ "  LEFT JOIN gen_persona_detalle  ON(gen_persona.per_dni = gen_persona_detalle.pde_dni) "
+				+ "  LEFT JOIN gen_salud ON (gen_persona.per_dni = gen_salud.per_dni)" + "WHERE  "
+				+ " gen_persona.per_estado = 'A' AND fun_estado ='A';";
 
 		List<Object[]> list = mngDao.findAllNativeSQL(sql);
 		for (Object it : list) {
