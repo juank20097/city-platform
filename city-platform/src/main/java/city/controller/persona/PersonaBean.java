@@ -343,7 +343,7 @@ public class PersonaBean {
 		nivelInstruccion = "S/N";
 		visualizarCampos = true;
 		// this.carga();
-//		cargarSesion();
+		cargarSesion();
 	}
 
 	/**
