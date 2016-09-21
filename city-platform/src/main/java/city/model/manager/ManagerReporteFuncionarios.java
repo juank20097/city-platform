@@ -22,87 +22,56 @@ public class ManagerReporteFuncionarios {
 	@EJB
 	private ManagerDAO mngDao;
 
-	public List<Object[]> test() {
-		// ResultSet respuesta = mngDao.findMostPopularA();
-		DatosFuncionario dt = new DatosFuncionario();
-		Class ftClass = dt.getClass();
-		for (Field f : ftClass.getDeclaredFields()) {
-			try {
-				f.set(dt, "this is public");
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		try {
-			Field f1 = ftClass.getDeclaredField("perDni");
-			f1.set(dt, "this is public");
-			
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public ArrayList<DatosFuncionario> getAllDatosFuncionarios() {
 
-		System.out.println(dt.toString());
-		List<Object[]> list = mngDao.findMostPopularA();
+		ArrayList<DatosFuncionario> datosFuncionarios = new ArrayList<DatosFuncionario>();
+		String sql = "SELECT "
+				+ "gen_persona.per_nombres, gen_persona.per_apellidos, gen_persona.per_dni, gen_funcionarios_institucion.fun_cargo,"
+				+ "gen_funcionarios_institucion.fun_gerencia, gen_funcionarios_institucion.fun_direccion,"
+				+ "gen_funcionarios_institucion.fun_fecha_ingreso, gen_persona.per_correo,"
+				+ "( CASE WHEN (SELECT COUNT(foa_titulo) AS tiene_titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni)  > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_tercer_nivel, "
+				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_tercer_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_6' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni),"
+				+ "( CASE WHEN (SELECT  COUNT(foa_titulo) AS tiene_titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni) > 0 THEN 'Si' ELSE 'No' END) AS tiene_titulos_cuarto_nivel, "
+				+ "(SELECT array_to_string(array_agg(foa_titulo), ', ') AS titulos_cuarto_nivel FROM gen_formacionacademica WHERE foa_nivel_instruccion='nvlIns_7' AND gen_formacionacademica.per_dni = gen_persona.per_dni GROUP BY gen_persona.per_dni),"
+				+ "gen_persona.per_fecha_nacimiento,"
+				+ "(SELECT CONCAT(TO_CHAR(AGE(TIMESTAMP 'NOW()', DATE(gen_persona.per_fecha_nacimiento)), 'yy Año(s), MM Mes(es), dd'),' Día(s)') AS edad_completa),"
+				+ "(SELECT EXTRACT(YEAR FROM AGE(TIMESTAMP 'now()',DATE(gen_persona.per_fecha_nacimiento))) AS edad),"
+				+ "gen_persona.per_genero, gen_persona.per_correo2, gen_persona_detalle.pde_direccion, gen_persona.per_celular,"
+				+ "gen_persona.per_telefono, gen_persona_detalle.pde_emerg_contacto_nombres, gen_persona_detalle.pde_emerg_contacto_telefono,"
+				+ "gen_persona.per_estado_civil, gen_salud.sld_carnet_conadies" + " FROM "
+				+ "gen_persona, gen_funcionarios_institucion, gen_persona_detalle, gen_salud" + " WHERE "
+				+ "gen_persona.per_dni = gen_funcionarios_institucion.per_dni AND gen_persona.per_dni = gen_persona_detalle.pde_dni AND "
+				+ "gen_persona.per_dni = gen_salud.per_dni";
+
+		List<Object[]> list = mngDao.findAllNativeSQL(sql);
 		for (Object it : list) {
 			// DatosFuncionario datosFuncionario = (DatosFuncionario) it;
+			DatosFuncionario dt = new DatosFuncionario();
+			Class ftClass = dt.getClass();
 			Object[] result = (Object[]) it;
-
-			for (Object object : result) {
-				System.out.println(object);
+			int i = 0;
+			for (Field f : ftClass.getDeclaredFields()) {
+				try {
+					// System.out.println(result[i]);
+					f.set(dt, getValueNotNull(result[i++]) + "");
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+
+			datosFuncionarios.add(dt);
+
 		}
-		// List<DatosFuncionario> list = mngDao.findMostPopularA();
-		// System.out.println(list.get(0).getPerApellidos());
-		// for (Object it : list) {
-		//
-		// Object[] result = (Object[]) it;
-		//
-		// for (Object object : result) {
-		// System.out.println(object);
-		// }
-		//
-		// System.out.println("----------------------------------");
-		// }
-		return null;
+
+		return datosFuncionarios;
 	}
 
-	public void testt() {
-		// ResultSet respuesta = mngDao.findMostPopularA();
-		String sql = "SELECT g FROM GenPersona g";
-		// + " IN "
-		// + "(SELECT a.appAplicacione.aplId FROM gen_persona a WHERE
-		// a.appUsuario.usuLogin='1')";
-		List<GenPersona> list = mngDao.findJPQL(sql);
-		System.out.println(list.get(0));
-		for (GenPersona a : list) {
-			System.out.println(a.getPerApellidos());
-		}
-		// Object[] result = (Object[]) list.get(0);
-		// for (Object object : result) {
-		// System.out.println(object);
-		// }
-		// for (Object it : list) {
-		// Object[] result = (Object[]) it;
-		// for (Object object : result) {
-		// System.out.println(object);
-		// }
-		//
-		// System.out.println("----------------------------------");
-		// }
+	private String getValueNotNull(Object value) {
+		return value != null ? value + "" : "";
 	}
 
 }
