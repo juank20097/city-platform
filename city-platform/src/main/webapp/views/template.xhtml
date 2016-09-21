@@ -25,15 +25,15 @@ and open the template in the editor.
 </h:head>
 <h:body
 	style="padding: 60px 0; background-image: url(&quot;../resources/img/f3.png&quot;);">
-	<b:navBar brand-img="../resources/img/ycp1.png" inverse="true"
+	<b:navBar id="bar" brand-img="../resources/img/ycp1.png" inverse="true"
 		brandHref="index.xhtml" fixed="top" role="navigation">
 		<b:navbarLinks>
 			<b:navbarLinks>
 				<c:forEach var="t" items="#{sesionBean.menu}">
 					<b:dropMenu value="#{t.nombre}" iconAwesome="fa fa-folder">
 						<c:forEach var="i" items="#{t.lstLinks}">
-							<b:navLink value="#{i.nombre}" href="#{i.link}"
-								iconAwesome="fa fa-location-arrow" />
+									<b:navLink value="#{i.nombre}" href="#{i.link}"
+										iconAwesome="fa fa-location-arrow" />
 						</c:forEach>
 					</b:dropMenu>
 				</c:forEach>

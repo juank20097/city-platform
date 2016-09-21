@@ -203,6 +203,7 @@ public class PersonaBean {
 	private boolean estabilidad;
 	private boolean edad_p;
 	private boolean edad_m;
+	private boolean salud;
 
 	// valor de ediciï¿½n e inserciï¿½n
 	private boolean edicion;
@@ -313,31 +314,10 @@ public class PersonaBean {
 	@PostConstruct
 	public void init() {
 		session.validarSesion();
-		edicion = false;
-		select_n = true;
-		select_r = true;
-		sld_madre = false;
-		sld_padre = false;
-		l_ciudad_n = new ArrayList<SelectItem>();
-		l_ciudad_r = new ArrayList<SelectItem>();
-		l_estado_civil = new ArrayList<SelectItem>();
-		l_estados = new ArrayList<SelectItem>();
-		l_genero = new ArrayList<SelectItem>();
-		l_pais = new ArrayList<SelectItem>();
-		l_provincia = new ArrayList<SelectItem>();
-		l_tipo_dni = new ArrayList<SelectItem>();
-		l_sangre = new ArrayList<SelectItem>();
-		l_residencia = new ArrayList<SelectItem>();
-		l_dias = new ArrayList<SelectItem>();
-		l_horas = new ArrayList<SelectItem>();
-		l_discapacidad = new ArrayList<SelectItem>();
-		l_fam_tipo = new ArrayList<SelectItem>();
-		l_fam_actividad = new ArrayList<SelectItem>();
-		l_fam_estabilidad = new ArrayList<SelectItem>();
+		setearBooleanInit();
+		cargarSelectItemsInit();
 		l_persona = new ArrayList<GenPersona>();
 		l_familiares = new ArrayList<GenFamiliare>();
-		familia = false;
-		estabilidad = false;
 		sms_validacion = "";
 
 		// Curriculums
@@ -364,7 +344,8 @@ public class PersonaBean {
 		nivelInstruccion = "S/N";
 		visualizarCampos = true;
 		// this.carga();
-		cargarPersona(session.validarPersona("npersona2.xhtml"));
+		cargarSesion();
+		mostrarPestaniaSalud();
 	}
 
 	/**
@@ -375,7 +356,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param estabilidad the estabilidad to set
+	 * @param estabilidad
+	 *            the estabilidad to set
 	 */
 	public void setEstabilidad(boolean estabilidad) {
 		this.estabilidad = estabilidad;
@@ -741,7 +723,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param edad_p the edad_p to set
+	 * @param edad_p
+	 *            the edad_p to set
 	 */
 	public void setEdad_p(boolean edad_p) {
 		this.edad_p = edad_p;
@@ -755,7 +738,8 @@ public class PersonaBean {
 	}
 
 	/**
-	 * @param edad_m the edad_m to set
+	 * @param edad_m
+	 *            the edad_m to set
 	 */
 	public void setEdad_m(boolean edad_m) {
 		this.edad_m = edad_m;
@@ -1620,7 +1604,7 @@ public class PersonaBean {
 	 * @param institucion
 	 *            the institucion to set
 	 */
-	public void setInstitucion(String institucion) {
+	public void FA(String institucion) {
 		this.institucion = institucion;
 	}
 
@@ -2346,19 +2330,6 @@ public class PersonaBean {
 		this.edicion = edicion;
 	}
 
-	/**
-	 * Redirecciona a la pagina de creacion de personas
-	 * 
-	 * @return vista
-	 */
-	public String nuevaPersona() {
-		setSelect_n(true);
-		setSelect_r(true);
-		cleanDatos();
-		this.carga();
-		return "npersona?faces-redirect=true";
-	}
-
 	// Getters y Setters de Curriculum
 
 	/**
@@ -3052,6 +3023,69 @@ public class PersonaBean {
 	}
 
 	/**
+	 * Redirecciona a la pagina de creacion de personas
+	 * 
+	 * @return vista
+	 */
+	public String nuevaPersona() {
+		setSelect_n(true);
+		setSelect_r(true);
+		setDinardap(false);
+		getL_familiares().clear();
+		cleanDatos();
+		this.carga();
+		return "npersona?faces-redirect=true";
+	}
+
+	/**
+	 * Método para inicializar valores booleanos en el init()
+	 */
+	public void setearBooleanInit() {
+		familia = false;
+		estabilidad = false;
+		edicion = false;
+		select_n = true;
+		select_r = true;
+		sld_madre = false;
+		sld_padre = false;
+		seguro = false;
+		ejercicio = false;
+		alcohol = false;
+		tabaco = false;
+		estupefacientes = false;
+		discapacidad = false;
+		embriaguez = false;
+		familia = false;
+		dinardap = false;
+		estabilidad = false;
+		edad_p = false;
+		edad_m = false;
+		salud = false;
+	}
+
+	/**
+	 * Método para inicializar las listas de todos los SelectItems
+	 */
+	public void cargarSelectItemsInit() {
+		l_ciudad_n = new ArrayList<SelectItem>();
+		l_ciudad_r = new ArrayList<SelectItem>();
+		l_estado_civil = new ArrayList<SelectItem>();
+		l_estados = new ArrayList<SelectItem>();
+		l_genero = new ArrayList<SelectItem>();
+		l_pais = new ArrayList<SelectItem>();
+		l_provincia = new ArrayList<SelectItem>();
+		l_tipo_dni = new ArrayList<SelectItem>();
+		l_sangre = new ArrayList<SelectItem>();
+		l_residencia = new ArrayList<SelectItem>();
+		l_dias = new ArrayList<SelectItem>();
+		l_horas = new ArrayList<SelectItem>();
+		l_discapacidad = new ArrayList<SelectItem>();
+		l_fam_tipo = new ArrayList<SelectItem>();
+		l_fam_actividad = new ArrayList<SelectItem>();
+		l_fam_estabilidad = new ArrayList<SelectItem>();
+	}
+
+	/**
 	 * Mï¿½todo para cargar todos los select
 	 */
 	public void carga() {
@@ -3227,9 +3261,9 @@ public class PersonaBean {
 		getL_persona().clear();
 		return "persona?faces-redirect=true";
 	}
-	
+
 	public String cancelarFicha() {
-		//this.cleanDatos();
+		// this.cleanDatos();
 		// this.cargarPersonas();
 		getL_persona().clear();
 		return "index?faces-redirect=true";
@@ -3472,8 +3506,8 @@ public class PersonaBean {
 			l_persona = manager.buscarPersona(datoBuscar);
 		}
 	}
-	
-	public void mostrarDialog(){
+
+	public void mostrarDialog() {
 		RequestContext.getCurrentInstance().execute("PF('dlgprincipal').show()");
 	}
 
@@ -3718,6 +3752,10 @@ public class PersonaBean {
 		setSldAlergiasCronicas3("");
 		setSldMedicamentosCronicos3("");
 		setEdicion(false);
+		//seteo de listas de CV
+		getLstExperienciaLab().clear();
+		getLstCapacitaciones().clear();
+		getLstFormAcademica().clear();
 	}
 
 	// ////////////////////////////////////////////////////////FAMILIAR/////////////////////////////////////////////////////////
@@ -3775,7 +3813,9 @@ public class PersonaBean {
 					res_familiar.setFamLugar(getFamLugar().toUpperCase());
 					res_familiar.setFamNombre(getFamNombre().toUpperCase());
 					res_familiar.setFamTipo(getFamTipo());
-					verificarConyugeEditar(res_familiar.getFamTipo(), res_familiar);
+					manager.editarFamiliar(res_familiar);
+					// verificarConyugeEditar(res_familiar.getFamTipo(),
+					// res_familiar);
 					setL_familiares(manager.familiarByDNI(getPerDni()));
 				}
 			}
@@ -3785,41 +3825,40 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 	}
-	
-	public void verificarConyugeEditar(String tipo,GenFamiliare familiar){
-			try {
-				if (tipo.equals("Conyuge")){
-				if (manager.FamiliarByConyuge(getPerDni())){
+
+	public void verificarConyugeEditar(String tipo, GenFamiliare familiar) {
+		try {
+			if (tipo.equals("Conyuge")) {
+				if (manager.FamiliarByConyuge(getPerDni())) {
 					Mensaje.crearMensajeERROR("La persona ya cuenta con un Conyuge");
-				}else{
+				} else {
 					manager.editarFamiliar(familiar);
 				}
-				}else
-					manager.editarFamiliar(familiar);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+			} else
+				manager.editarFamiliar(familiar);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
-	public void verificarConyugeInsertar(String tipo,GenFamiliare familiar){
+
+	public void verificarConyugeInsertar(String tipo, GenFamiliare familiar) {
 		try {
-			if (tipo.equals("Conyuge")){
-			if (manager.FamiliarByConyuge(getPerDni())){
-				Mensaje.crearMensajeERROR("La persona ya cuenta con un Conyuge");
-			}else{
-				manager.insertarFamiliar(familiar);
-			}
-			}else
+			if (tipo.equals("Conyuge")) {
+				if (manager.FamiliarByConyuge(getPerDni())) {
+					Mensaje.crearMensajeERROR("La persona ya cuenta con un Conyuge");
+				} else {
+					manager.insertarFamiliar(familiar);
+				}
+			} else
 				manager.insertarFamiliar(familiar);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-}
-	
+
+	}
 
 	public void mostrarIngresoFamiliar() {
 		this.setearFamiliares();
@@ -3946,16 +3985,16 @@ public class PersonaBean {
 	 */
 	public String cargarSalud(GenSalud salud) {
 		try {
-			if (salud.getSldDiscapacidad()==null){
+			if (salud.getSldDiscapacidad() == null) {
 				salud.setSldDiscapacidad(false);
 			}
-			if (salud.getSldSeguroPrivado()==null){
+			if (salud.getSldSeguroPrivado() == null) {
 				salud.setSldSeguroPrivado(false);
 			}
-			if (salud.getSldRealizaEjercicio()==null){
+			if (salud.getSldRealizaEjercicio() == null) {
 				salud.setSldRealizaEjercicio(false);
 			}
-			if (salud.getSldEmbriagar()==null){
+			if (salud.getSldEmbriagar() == null) {
 				salud.setSldEmbriagar(false);
 			}
 			setSldAlergias(salud.getSldAlergias());
@@ -3999,7 +4038,8 @@ public class PersonaBean {
 			setSldAlergiasCronicas3(salud.getSldAlergiasCronicas3());
 			setSldMedicamentosCronicos3(salud.getSldMedicamentosCronicos3());
 			this.llenarBooleanos(getSldSeguroPrivado(), getSldDiscapacidad(), getSldRealizaEjercicio(),
-					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco(), getSldPadreFallecio(),getSldMadreFallecio());
+					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco(), getSldPadreFallecio(),
+					getSldMadreFallecio());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -4008,8 +4048,10 @@ public class PersonaBean {
 	}
 
 	public void llenarBooleanos(boolean seguro_privado_switch, boolean discapacidad_switch, boolean ejercicio_switch,
-			String alcohol_switch, boolean embriago_switch, String tabaco_switch,boolean edad_padre,boolean edad_madre) {
-		System.out.println(seguro_privado_switch+" "+discapacidad_switch+ejercicio_switch+alcohol_switch+embriago_switch+tabaco_switch);
+			String alcohol_switch, boolean embriago_switch, String tabaco_switch, boolean edad_padre,
+			boolean edad_madre) {
+		System.out.println(seguro_privado_switch + " " + discapacidad_switch + ejercicio_switch + alcohol_switch
+				+ embriago_switch + tabaco_switch);
 		seguro = verificarSwitch(seguro_privado_switch);
 		ejercicio = verificarSwitch(ejercicio_switch);
 		alcohol = verificarSwitch(alcohol_switch);
@@ -4342,18 +4384,18 @@ public class PersonaBean {
 		if (getNivelInstruccion().equals("nvlIns_1")) {
 			cargarNivelesAprobadosEB();
 			setTitulo("--");
-			setInstitucion("--");
+			setInstitucionFA("--");
 			setVisualizarCampos(false);
 
 		} else if (getNivelInstruccion().equals("nvlIns_2")) {
 			cargarNivelesAprobadosBa();
 			setTitulo("--");
-			setInstitucion("--");
+			setInstitucionFA("--");
 			setVisualizarCampos(false);
 
 		} else {
 			setTitulo("");
-			setInstitucion("");
+			setInstitucionFA("");
 			setVisualizarCampos(true);
 			setNivelesAprobados("S/N");
 			setLstNivelesAprobados(new ArrayList<SelectItem>());
@@ -4411,7 +4453,7 @@ public class PersonaBean {
 				setVisualizarCampos(true);
 			}
 			setIdFormacion(fAca.getFoaId());
-			setInstitucion(fAca.getFoaInstitucion());
+			setInstitucionFA(fAca.getFoaInstitucion());
 			setTitulo(fAca.getFoaTitulo());
 			setPaisFA(fAca.getFoaPais());
 			setNivelInstruccion(fAca.getFoaNivelInstruccion());
@@ -4419,7 +4461,7 @@ public class PersonaBean {
 			setDuracion(fAca.getFoaDuracion());
 			setFechaIniFA(fAca.getFoaFechaInicio());
 			setFechaFinFA(fAca.getFoaFechaFin());
-			
+
 			RequestContext.getCurrentInstance().execute("PF('fADlg').show();");
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
@@ -4434,12 +4476,12 @@ public class PersonaBean {
 			if (validarSelectItemsFA()) {
 				if (validarFechaFinFA()) {
 					if (!isEdicionFA()) {
-						manager.ingresarFormacionAc(getPersona(), getTitulo().trim(), getInstitucion().trim(),
+						manager.ingresarFormacionAc(getPersona(), getTitulo().trim(), getInstitucionFA().trim(),
 								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
 								isRegistroSenescyt(), getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos guardados correctamente.");
 					} else {
-						manager.editarFormacionAc(getIdFormacion(), getTitulo().trim(), getInstitucion().trim(),
+						manager.editarFormacionAc(getIdFormacion(), getTitulo().trim(), getInstitucionFA().trim(),
 								getFechaIniFA(), getFechaFinFA(), getNivelInstruccion(), getPaisFA(), getDuracion(),
 								getNivelesAprobados());
 						Mensaje.crearMensajeINFO("Datos actualizados correctamente.");
@@ -4457,8 +4499,8 @@ public class PersonaBean {
 			Mensaje.crearMensajeERROR("Error al ingresar o editar la FormaciÃ³n AcadÃ©mica: " + e.getMessage());
 		}
 	}
-	
-	public void cancelarFA(){
+
+	public void cancelarFA() {
 		limpiarCamposFA();
 		RequestContext.getCurrentInstance().execute("PF('fADlg').hide();");
 	}
@@ -4466,7 +4508,7 @@ public class PersonaBean {
 	public void limpiarCamposFA() {
 		setIdFormacion(0);
 		setTitulo("");
-		setInstitucion("");
+		setInstitucionFA("");
 		setPaisFA("EC");
 		setDuracion(BigDecimal.ZERO);
 		setFechaIniFA(new Date());
@@ -4552,10 +4594,10 @@ public class PersonaBean {
 
 	}
 
-	public void mostrarDlgFormacionAca(){
+	public void mostrarDlgFormacionAca() {
 		RequestContext.getCurrentInstance().execute("PF('fADlg').show();");
 	}
-	
+
 	public String validarBoleano(boolean valor) {
 		String respuesta = "";
 		try {
@@ -4601,7 +4643,7 @@ public class PersonaBean {
 			setNumHoras(cap.getCapNumHoras());
 			setNombreInstitucion(cap.getCapInstitucionCapacitacion());
 			setRelacionPerfil(cap.getCapRelacionPerfilProfesional());
-			
+
 			RequestContext.getCurrentInstance().execute("PF('cADlg').show();");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4633,11 +4675,11 @@ public class PersonaBean {
 		}
 	}
 
-	public void cancelarCa(){
+	public void cancelarCa() {
 		limpiarCamposCa();
 		RequestContext.getCurrentInstance().execute("PF('cADlg').hide();");
 	}
-	
+
 	public void limpiarCamposCa() {
 		setIdCapacitacion(0);
 		setRelacionPerfil(false);
@@ -4668,10 +4710,10 @@ public class PersonaBean {
 		}
 	}
 
-	public void mostrarDlgCapacitacion(){
+	public void mostrarDlgCapacitacion() {
 		RequestContext.getCurrentInstance().execute("PF('cADlg').show();");
 	}
-	
+
 	public void findAllCapacitaciones() {
 		setLstCapacitaciones(manager.findCapacitacionesByCedula(getPersona().getPerDni()));
 	}
@@ -4735,11 +4777,11 @@ public class PersonaBean {
 		}
 	}
 
-	public void cancelarEL(){
+	public void cancelarEL() {
 		limpiarCamposEL();
 		RequestContext.getCurrentInstance().execute("PF('eLDlg').hide();");
 	}
-	
+
 	public void limpiarCamposEL() {
 		setIdExperiencia(0);
 		setAreaEL("S/N");
@@ -4773,10 +4815,10 @@ public class PersonaBean {
 		}
 	}
 
-	public void mostrarDlgExperienciaLa(){
+	public void mostrarDlgExperienciaLa() {
 		RequestContext.getCurrentInstance().execute("PF('eLDlg').show();");
 	}
-	
+
 	public void findAllExperianciaLaboral() {
 		setLstExperienciaLab(manager.findExperienciaLabByCedula(getPersona().getPerDni()));
 	}
@@ -4807,5 +4849,13 @@ public class PersonaBean {
 		} else {
 			setFechaFinEL(new Date());
 		}
+	}
+	
+	public void cargarSesion(){
+		cargarPersona(session.validarPersona("npersona2.xhtml"));
+	}
+	
+	private void mostrarPestaniaSalud(){
+		salud = manager.verificarUsuarioSalud(session.validarSesion());
 	}
 }

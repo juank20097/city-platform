@@ -47,7 +47,6 @@ public class SesionBean implements Serializable {
 	private String pass2;
 	private List<Menu> menu;
 	private String persona;
-	private byte[] texto_cifrado;
 
 	public SesionBean() {
 		menu = new ArrayList<Menu>();
@@ -355,6 +354,10 @@ public class SesionBean implements Serializable {
 	public void validarUsuarioSession() {
 		String usuario = validarSesion();
 		System.out.println("Usuario de session: " + usuario);
+	}
+	
+	public void validarVistasSesion(String usuario, String vista){
+		
 	}
 
 }

@@ -6,19 +6,19 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
 
-
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
             Yachay City Platform
         </ui:define>
 	<ui:define name="contenido">
 		<center>
-			<h1>Registro de Personas</h1>
+			<h1>Ficha de Persona</h1>
 		</center>
 		<br />
 		<b:tabView tabPosition="top" pills="true"
 			contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 			<b:tab title="Datos Personales">
+
 				<h:form id="frmcc">
 					<b:row>
 						<b:column span="2">
@@ -26,7 +26,7 @@
 								value="Documento Nacional de Identificación (DNI):*" />
 						</b:column>
 						<b:column span="3">
-							<h:selectOneMenu id="slt" disabled="#{personaBean.edicion}"
+							<h:selectOneMenu id="slt" 
 								styleClass="form-control" value="#{personaBean.perTipoDni}">
 								<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 								<f:selectItems value="#{personaBean.l_tipo_dni}">
@@ -37,13 +37,13 @@
 							<h:outputLabel value="N° Identificación:*" />
 						</b:column>
 						<b:column span="3">
-							<b:inputText disabled="#{personaBean.edicion}"
+							<b:inputText 
 								value="#{personaBean.perDni}">
 							</b:inputText>
 						</b:column>
 						<b:column span="2">
-							<b:commandButton value="Buscar (Dinardap)" look="info"
-								onclick="PF('statusDialog').show()"
+							<b:commandButton value="Buscar (Dinardap)"
+								look="info" onclick="PF('statusDialog').show()"
 								oncomplete="PF('statusDialog').hide()"
 								disabled="#{personaBean.edicion}"
 								actionListener="#{personaBean.loadWS()}" update="frmcc :frm">
@@ -52,25 +52,24 @@
 					</b:row>
 				</h:form>
 				<h:form id="frm">
-					<b:growl delay="4000" placementFrom="top" show-detail="false"
-						global-only="false" show-summary="true" allow-dismiss="true"
-						animation-enter="animated bounceInDown"
+					<b:growl id="growl" delay="4000" placementFrom="top"
+						show-detail="false" global-only="false" show-summary="true"
+						allow-dismiss="true" animation-enter="animated bounceInDown"
 						animation-exit="animated flipOutX" escape="true" />
-					<b:tabView orientation="left" pills="true" tabPosition="left"
+					<b:tabView disabled="true" orientation="left" pills="true" tabPosition="left"
 						contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-						<b:tab disabled="false" title="Generales">
+						<b:tab title="Generales">
 							<f:facet name="anchor">
 								<b:iconAwesome name="user" />
 							</f:facet>
 							<b:panel>
 								<br />
-
 								<b:row>
 									<b:column span="2">
 										<h:outputLabel value="Nombres:*" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+										<b:inputText
 											validatorMessage="Ingrese solo letras en el nombre"
 											value="#{personaBean.perNombres}">
 											<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
@@ -80,7 +79,7 @@
 										<h:outputLabel value="Apellidos:*" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+										<b:inputText 
 											validatorMessage="Ingrese solo letras en el apellido"
 											value="#{personaBean.perApellidos}">
 											<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
@@ -92,15 +91,17 @@
 										<h:outputLabel value="Fecha de Nacimiento:*" />
 									</b:column>
 									<b:column span="4">
-										<p:calendar value="#{personaBean.perFechaNacimiento}"
-											pattern="dd-MM-yyyy" mask="true" />
+										<p:calendar 
+											value="#{personaBean.perFechaNacimiento}"
+											pattern="dd-MM-yyyy" yearRange="c-80:c+0" navigator="true"
+											mask="true" />
 									</b:column>
 									<b:column span="2">
 										<h:outputLabel value="Sexo:*" />
 									</b:column>
 									<b:column span="4">
-										<h:selectOneMenu styleClass="form-control"
-											value="#{personaBean.perGenero}">
+										<h:selectOneMenu 
+											styleClass="form-control" value="#{personaBean.perGenero}">
 											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 											<f:selectItems value="#{personaBean.l_genero}">
 											</f:selectItems>
@@ -110,12 +111,13 @@
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono:*" />
+										<h:outputLabel value="Teléfono Convencional:*" />
 									</b:column>
 									<b:column span="4">
 										<p:inputMask size="34" value="#{personaBean.perTelefono}"
-											mask="(99) 9999-999" validatorMessage="Ingrese solo números">
-											<f:validateRegex pattern="^[0-9]+$" />
+											mask="(99) 9999-999"
+											validatorMessage="Ingrese solo números en el teléfono">
+											<f:validateRegex pattern="^[0-9-() ]+$" />
 										</p:inputMask>
 									</b:column>
 									<b:column span="2">
@@ -125,26 +127,24 @@
 										<p:inputMask size="34" value="#{personaBean.perCelular}"
 											mask="(099)9999999"
 											validatorMessage="Ingrese solo números en el celular">
-											<f:validateRegex pattern="^[0-9]+$" />
+											<f:validateRegex pattern="^[0-9()]+$" />
 										</p:inputMask>
 									</b:column>
 								</b:row>
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Correo Opción 1:*" />
+										<h:outputLabel value="Correo Institucional:*" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText 
-											value="#{personaBean.perCorreo}">
+										<b:inputText value="#{personaBean.perCorreo}">
 										</b:inputText>
 									</b:column>
-								<b:column span="2">
-										<h:outputLabel value="Correo Opción 2:*" />
+									<b:column span="2">
+										<h:outputLabel value="Correo Personal:*" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText
-											value="#{personaBean.perCorreo2}">
+										<b:inputText value="#{personaBean.perCorreo2}">
 										</b:inputText>
 									</b:column>
 								</b:row>
@@ -153,7 +153,8 @@
 										<h:outputLabel value="Estado Civil:*" />
 									</b:column>
 									<b:column span="4">
-										<h:selectOneMenu disabled="true" styleClass="form-control"
+										<h:selectOneMenu
+											styleClass="form-control"
 											value="#{personaBean.perEstadoCivil}">
 											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
 											<f:selectItems value="#{personaBean.l_estado_civil}">
@@ -161,13 +162,13 @@
 										</h:selectOneMenu>
 									</b:column>
 								</b:row>
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
-										<h:outputLabel rendered="#{personaBean.edicion}"
+										<h:outputLabel rendered="#{!personaBean.edicion}"
 											value="Estado:" />
 									</b:column>
 									<b:column span="10">
-										<b:selectOneMenu rendered="#{personaBean.edicion}"
+										<b:selectOneMenu rendered="#{!personaBean.edicion}"
 											styleClass="mar" value="#{personaBean.perEstado}">
 											<f:selectItem itemValue="S/N" itemLabel="--Seleccione--" />
 											<f:selectItems value="#{personaBean.l_estados}">
@@ -177,7 +178,7 @@
 								</b:row>
 							</b:panel>
 						</b:tab>
-						<b:tab disabled="true" title="Detalles">
+						<b:tab title="Detalles">
 							<f:facet name="anchor">
 								<b:iconAwesome name="male" />
 							</f:facet>
@@ -286,41 +287,125 @@
 										<h:outputLabel value="Lugar:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeLugarNacimiento}">
+										<b:inputText value="#{personaBean.pdeLugarNacimiento}">
 										</b:inputText>
 									</b:column>
 									<b:column offset="1" span="1">
 										<h:outputLabel value="Dirección:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeDireccion}">
+										<b:inputText value="#{personaBean.pdeDireccion}">
 										</b:inputText>
 									</b:column>
 								</b:row>
 								<br />
-								<h4>Núcleo Familiar</h4>
+								<b:row>
+									<b:column offset="3" span="3">
+										<h:outputLabel value="Tu vivienda es?:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeResidencia}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_residencia}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Tiempo de estancia (residencia - trabajo) en Yachay
+									Ciudad del Conocimiento:</h4>
 								<p:separator />
 								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Días al mes:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeEstadiaDias}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Horas al día:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeEstadiaHoras}">
+											<f:selectItems value="#{personaBean.l_horas}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Datos Familiares con Quién Vive:</h4>
+								<p:separator />
+								<p:commandButton immediate="true" icon="ui-icon-plus" value="Ingresar Familiar"
+									action="#{personaBean.mostrarIngresoFamiliar()}"
+									update=":frm2:dialog" />
+								<br />
+								<p:dataTable id="dtfam" var="fam" rows="5"
+									emptyMessage="No existen datos"
+									value="#{personaBean.l_familiares}" scrollable="true"
+									liveScroll="true" paginator="true"
+									paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+									<p:column headerText="Opciones">
+										<p:commandButton icon="ui-icon-pencil"
+											action="#{personaBean.cargarFamiliar(fam)}"
+											update=":frm2:dialog">
+										</p:commandButton>
+										<p:commandButton icon="ui-icon-trash"
+											action="#{personaBean.eliminarFamiliar(fam)}"
+											update=":frm:dtfam">
+											<p:confirm header="Confirmación"
+												message="Seguro quieres Eliminar el Familiar?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										&nbsp;&nbsp;&nbsp;
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+											<p:commandButton value="Si" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="No" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:column>
+									<p:column headerText="Tipo">
+										<h:outputText value="#{fam.famTipo}" />
+									</p:column>
+									<p:column headerText="Nombre">
+										<h:outputText value="#{fam.famNombre}" />
+									</p:column>
+									<p:column headerText="Fecha Nacimiento">
+										<h:outputText value="#{fam.famFechaNacimiento}" />
+									</p:column>
+									<p:column headerText="Actividad">
+										<h:outputText value="#{fam.famLabor}" />
+									</p:column>
+									<p:column headerText="Lugar">
+										<h:outputText value="#{fam.famLugar}" />
+									</p:column>
+									<p:column headerText="Estabilidad">
+										<h:outputText value="#{fam.famEstabilidad}" />
+									</p:column>
+								</p:dataTable>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Nombre Padre:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeNombrePadre}">
+										<b:inputText value="#{personaBean.pdeNombrePadre}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
 										<h:outputLabel value="Nombre Madre:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeNombreMadre}">
+										<b:inputText value="#{personaBean.pdeNombreMadre}">
 										</b:inputText>
 									</b:column>
 								</b:row>
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Nacionalidad Padre:" />
 									</b:column>
@@ -345,17 +430,16 @@
 									</b:column>
 								</b:row>
 								<br />
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Nombre Conyuge:" />
 									</b:column>
 									<b:column span="10">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeConyuge}">
+										<b:inputText value="#{personaBean.pdeConyuge}">
 										</b:inputText>
 									</b:column>
 								</b:row>
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Fecha Matrimonio:" />
 									</b:column>
@@ -371,28 +455,28 @@
 									</b:column>
 								</b:row>
 								<br />
+								<br />
 								<h4>Datos de Emergencia</h4>
 								<p:separator />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Nombre Contacto Emergencia:" />
+										<h:outputLabel value="Nombre Contacto:" />
 									</b:column>
 									<b:column span="10">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeEmergContactoNombres}">
+										<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
 										</b:inputText>
 									</b:column>
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Dni Contacto Emergencia:" />
+										<h:outputLabel value="C.I. Contacto:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoId}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="E-mail Contacto Emergencia:" />
+										<h:outputLabel value="E-mail Contacto:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoCorreo}">
@@ -401,30 +485,28 @@
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono Contacto Emergencia 1:" />
+										<h:outputLabel value="Teléfono Contacto 1:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Teléfono Contacto Emergencia: 2" />
+										<h:outputLabel value="Teléfono Contacto 2:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputText value="#{personaBean.pdeEmergContactoTelefono2}">
 										</b:inputText>
 									</b:column>
 								</b:row>
-								<br />
-								<h4>Datos de Defunción</h4>
-								<p:separator />
-								<b:row>
+								<b:row rendered="false">
+									<h4>Datos de Defunción</h4>
+									<p:separator />
 									<b:column span="2">
 										<h:outputLabel value="Inscripción Defunción:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.pdeInscripcionDefuncion}">
+										<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
 										</b:inputText>
 									</b:column>
 									<b:column span="2">
@@ -441,8 +523,7 @@
 								<b:row>
 									<b:column span="12">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											placeholder="Escribe observaciones de la persona en caso de tenerla....."
+											placeholder="Escribe observaciones de la persona en caso de tenerla."
 											value="#{personaBean.pdeObservacion}">
 										</b:inputTextarea>
 									</b:column>
@@ -455,25 +536,43 @@
 							</f:facet>
 							<b:panel>
 								<br />
-								<h4>Datos Generales</h4>
+								<h4>Salud</h4>
 								<p:separator />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Seguro Privado:" />
+										<h:outputLabel value="Seguro del IESS:" />
 									</b:column>
-									<b:column span="10">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldAsegurado}" />
+									<b:column span="4">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close" value="#{personaBean.sldSeguroIess}"
+											onLabel="Si" offLabel="No" style="width:60px">
+										</p:selectBooleanButton>
 									</b:column>
 								</b:row>
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Carnet:" />
+										<h:outputLabel value="Seguro Privado:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText value="#{personaBean.sldCarnetConadies}" />
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldSeguroPrivado}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_seguro()}"
+												update="frm:seguro"></p:ajax>
+										</p:selectBooleanButton>
 									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Nombre del Seguro:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText id="seguro" disabled="#{!personaBean.seguro}"
+											value="#{personaBean.sldAsegurado}" />
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
 									<b:column span="2">
 										<h:outputLabel value="Grupo Sanguineo:" />
 									</b:column>
@@ -489,10 +588,36 @@
 								<br />
 								<b:row>
 									<b:column span="2">
+										<h:outputLabel value="Discapacidad:" />
+									</b:column>
+									<b:column span="4">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldDiscapacidad}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_discapacidad()}"
+												update="frm:dis1 frm:dis2 frm:dis3 frm:dis4"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Carné Discapacidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText id="dis1" disabled="#{!personaBean.discapacidad}"
+											value="#{personaBean.sldCarnetConadies}" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
 										<h:outputLabel value="Discapacidad Tipo:" />
 									</b:column>
 									<b:column span="4">
-										<h:selectOneMenu styleClass="form-control"
+										<h:selectOneMenu id="dis2"
+											disabled="#{!personaBean.discapacidad}"
+											styleClass="form-control"
 											value="#{personaBean.sldDiscapacidadTipo}">
 											<f:selectItem itemLabel="Ninguna" itemValue="Ninguna"></f:selectItem>
 											<f:selectItems value="#{personaBean.l_discapacidad}">
@@ -504,15 +629,17 @@
 									</b:column>
 									<b:column span="4">
 										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-											<p:inputText style="width: 100%;" id="txt1"
+											<p:inputText id="dis3"
+												disabled="#{!personaBean.discapacidad}" style="width: 100%;"
 												value="#{personaBean.sldDiscapacidadGrado}" />
-											<p:slider for="txt1" />
+											<p:slider id="dis4" for="dis3"
+												disabled="#{!personaBean.discapacidad}" />
 										</h:panelGrid>
 
 									</b:column>
 								</b:row>
 								<br />
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Peso(KG):" />
 									</b:column>
@@ -526,8 +653,8 @@
 										<b:inputText value="#{personaBean.sldPresion}" />
 									</b:column>
 								</b:row>
-								<br />
-								<b:row>
+
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Altura(m):" />
 									</b:column>
@@ -543,14 +670,12 @@
 											onColor="primary" />
 									</b:column>
 								</b:row>
-								<br />
-								<b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Nivel Azúcar:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldNivelAzucar}" />
+										<b:inputText value="#{personaBean.sldNivelAzucar}" />
 									</b:column>
 								</b:row>
 								<br />
@@ -560,17 +685,38 @@
 									<b:column span="2">
 										<h:outputLabel value="¿Realiza Ejercicio?:" />
 									</b:column>
-									<b:column span="3">
-										<b:switch value="#{personaBean.sldRealizaEjercicio}"
-											onText="Si" on-text="Si" offText="No" off-text="No"
-											offColor="success" onColor="primary" />
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldRealizaEjercicio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_ejercicio()}"
+												update="frm:ejercicio1 frm:ejercicio2"></p:ajax>
+										</p:selectBooleanButton>
 									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Peridiocidad de Ejercicio al mes:" />
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
 									</b:column>
-									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldPeriodicidadEjercicio}" />
+									<b:column span="2">
+										<h:selectOneMenu id="ejercicio1"
+											disabled="#{!personaBean.ejercicio}"
+											styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadEjercicio}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Horas al día:" />
+									</b:column>
+									<b:column span="2">
+										<h:selectOneMenu id="ejercicio2"
+											disabled="#{!personaBean.ejercicio}"
+											styleClass="form-control"
+											value="#{personaBean.sldEjercicioHoras}">
+											<f:selectItems value="#{personaBean.l_horas}">
+											</f:selectItems>
+										</h:selectOneMenu>
 									</b:column>
 								</b:row>
 								<br />
@@ -578,35 +724,25 @@
 									<b:column span="2">
 										<h:outputLabel value="¿Consume Alcohol?:" />
 									</b:column>
-									<b:column span="3">
-										<b:switch value="#{personaBean.sldConsumeAlcohol}" onText="Si"
-											on-text="Si" offText="No" off-text="No" offColor="success"
-											onColor="primary" />
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldConsumeAlcohol}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_alcohol()}"
+												update="frm:alcohol1"></p:ajax>
+										</p:selectBooleanButton>
 									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Periodicidad de Alcohol al mes:" />
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
 									</b:column>
-									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldPeriodicidadAlcohol}" />
-									</b:column>
-								</b:row>
-								<br />
-								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="¿Consume Tabaco?:" />
-									</b:column>
-									<b:column span="3">
-										<b:switch value="#{personaBean.sldConsumeTabaco}" onText="Si"
-											on-text="Si" offText="No" off-text="No" offColor="success"
-											onColor="primary" />
-									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Peridiocidad de Tabaco al mes:" />
-									</b:column>
-									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldPeriodicidadTabaco}" />
+										<h:selectOneMenu id="alcohol1"
+											disabled="#{!personaBean.alcohol}" styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadAlcohol}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
 									</b:column>
 								</b:row>
 								<br />
@@ -614,21 +750,60 @@
 									<b:column span="2">
 										<h:outputLabel value="¿Se Embriaga?:" />
 									</b:column>
-									<b:column span="3">
-										<b:switch value="#{personaBean.sldEmbriagar}" onText="Si"
-											on-text="Si" offText="No" off-text="No" offColor="success"
-											onColor="primary" />
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close" value="#{personaBean.sldEmbriagar}"
+											onLabel="Si" offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_embriaguez()}"
+												update="frm:embriaguez"></p:ajax>
+										</p:selectBooleanButton>
 									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Peridiocidad de Embriagues al mes:" />
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
 									</b:column>
-									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldPeriodicidadEmbriagar}" />
+									<b:column span="2">
+										<h:selectOneMenu id="embriaguez"
+											disabled="#{!personaBean.embriaguez}"
+											styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadEmbriagar}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
 									</b:column>
 								</b:row>
 								<br />
 								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="¿Consume Tabaco?:" />
+									</b:column>
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldConsumeTabaco}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_tabaco()}"
+												update="frm:tabaco1 frm:tabaco2"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Tabacos al día:" />
+									</b:column>
+									<b:column span="2">
+										<p:spinner size="4" id="tabaco1"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldPeriodicidadTabaco}" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Tabacos a la Semana:" />
+									</b:column>
+									<b:column span="2">
+										<p:spinner size="4" id="tabaco2"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldTabacoSemana}" />
+									</b:column>
+								</b:row>
+								<br />
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="¿Consume Estupefacientes?:" />
 									</b:column>
@@ -641,149 +816,162 @@
 										<h:outputLabel value="Peridiocidad de Estupefacientes al mes:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+										<b:inputText
 											value="#{personaBean.sldPeriodicidadEstupefacientes}" />
 									</b:column>
 								</b:row>
-								<h4>Datos Familiares</h4>
+								<br />
+								<h4>Datos de Enfermedades Crónicas Diagnosticadas en
+									Familiares</h4>
 								<p:separator />
-								<b:row>
-									<b:column span="2">
-										<h:outputLabel value="¿Su Padre Falleció?:" />
-									</b:column>
-									<b:column span="3">
-										<b:switch onchange="ajax:personaBean.switch_padre()"
-											value="#{personaBean.sldPadreFallecio}" onText="Si"
-											on-text="Si" offText="No" off-text="No" offColor="success"
-											onColor="primary" update="frm" immediate="true" />
-									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Edad del Padre:" />
-									</b:column>
-									<b:column span="4">
-										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-											<p:inputText style="width: 100%;" id="txt2"
-												value="#{personaBean.sldPadreEdad}" />
-											<p:slider for="txt2" />
-										</h:panelGrid>
-									</b:column>
-								</b:row>
 								<b:row rendered="#{!personaBean.sld_padre}">
 									<b:column span="2">
-										<h:outputLabel value="Enfermedades Actuales del Padre:" />
+										<h:outputLabel value="Enfermedades del Padre:" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldPadreEnfermedadesActuales}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
-								<b:row rendered="#{personaBean.sld_padre}">
+								<b:row>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Padre fallecido a causa de la enfermedad crónica?:" />
+									</b:column>
+									<b:column span="3">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldPadreFallecio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_padre()}"
+												update="frm:txt2"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Qué edad tenía su padre al momento de fallecer?:" />
+									</b:column>
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_p}" size="5"
+											id="txt2" min="0" value="#{personaBean.sldPadreEdad}" />
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Causa de Muerte del Padre:" />
 									</b:column>
 									<b:column span="10">
-										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldPadreCausaMuerte}">
+										<b:inputTextarea value="#{personaBean.sldPadreCausaMuerte}">
 										</b:inputTextarea>
-									</b:column>
-								</b:row>
-								<b:row>
-									<b:column span="2">
-										<h:outputLabel value="¿Su Madre Falleció?:" />
-									</b:column>
-									<b:column span="3">
-										<b:switch onchange="ajax:personaBean.switch_madre()"
-											value="#{personaBean.sldMadreFallecio}" onText="Si"
-											on-text="Si" offText="No" off-text="No" offColor="success"
-											onColor="primary" update="frm" />
-									</b:column>
-									<b:column span="3">
-										<h:outputLabel value="Edad de la Madre:" />
-									</b:column>
-									<b:column span="4">
-										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
-											<p:inputText style="width: 100%;" id="txt3"
-												value="#{personaBean.sldMadreEdad}" />
-											<p:slider for="txt3" />
-										</h:panelGrid>
 									</b:column>
 								</b:row>
 								<b:row rendered="#{!personaBean.sld_madre}">
 									<b:column span="2">
-										<h:outputLabel value="Enfermedades Actuales de la Madre:" />
+										<h:outputLabel value="Enfermedades de la Madre:" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldMadreEnfermedadesActuales}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
-								<b:row rendered="#{personaBean.sld_madre}">
+								<b:row>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Madre fallecida a causa de la enfermedad crónica?:" />
+									</b:column>
+									<b:column span="3">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldMadreFallecio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_madre()}"
+												update="frm:txt3"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Qué edad tenía su madre al momento de fallecer?:" />
+									</b:column>
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_m}" size="5"
+											id="txt3" min="0" value="#{personaBean.sldMadreEdad}" />
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
 									<b:column span="2">
 										<h:outputLabel value="Causa de Muerte de la Madre:" />
 									</b:column>
 									<b:column span="10">
-										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldMadreCausaMuerte}">
+										<b:inputTextarea value="#{personaBean.sldMadreCausaMuerte}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
-								<h4>Medicación</h4>
+								<br />
+								<h4>Datos de sus principales Enfermedades y/o Medicación</h4>
 								<p:separator />
 								<br />
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Alergias o Enfermedades Crónicas 1:" />
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 1:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldAlergias}">
+										<b:inputTextarea value="#{personaBean.sldAlergias}">
 										</b:inputTextarea>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Consumo de Medicamentos Crónicos1:" />
+										<h:outputLabel
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldMedicamentosCronicos1}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
 								<b:row>
 									<b:column span="2">
-										<h:outputLabel value="Alergias o Enfermedades Crónicas 2:" />
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 2:" />
 									</b:column>
 									<b:column span="4">
-										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldAlergiasCronicas2}">
+										<b:inputTextarea value="#{personaBean.sldAlergiasCronicas2}">
 										</b:inputTextarea>
 									</b:column>
 									<b:column span="2">
-										<h:outputLabel value="Consumo de Medicamentos Crónicos2:" />
+										<h:outputLabel
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
 									</b:column>
 									<b:column span="4">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldMedicamentosCronicos2}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
 								<b:row>
 									<b:column span="2">
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 3:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea value="#{personaBean.sldAlergiasCronicas3}">
+										</b:inputTextarea>
+									</b:column>
+									<b:column span="2">
 										<h:outputLabel
-											value="Frecuencia de Consumo de Medicamentos Habituales (No Crónicas):" />
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea
+											value="#{personaBean.sldMedicamentosCronicos3}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Medicina y Periodicidad (No Crónicas):" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldFrecienciaConsumoMedicame}">
 										</b:inputTextarea>
 									</b:column>
@@ -792,11 +980,10 @@
 								<b:row>
 									<b:column span="2">
 										<h:outputLabel
-											value="Lugar y Centro Médico de Atención Frecuente:" />
+											value=" Lugar y/o Centro médico al que acude cuando se enferma (nombre y ciudad):" />
 									</b:column>
 									<b:column span="10">
 										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
 											value="#{personaBean.sldNombreLugarCentroMedico}">
 										</b:inputTextarea>
 									</b:column>
@@ -806,9 +993,7 @@
 										<h:outputLabel value="Observaciones:" />
 									</b:column>
 									<b:column span="10">
-										<b:inputTextarea
-											onkeyup="this.value=this.value.toUpperCase();"
-											value="#{personaBean.sldObservaciones}">
+										<b:inputTextarea value="#{personaBean.sldObservaciones}">
 										</b:inputTextarea>
 									</b:column>
 								</b:row>
@@ -817,127 +1002,146 @@
 					</b:tabView>
 					<br />
 					<center>
-						<b:commandButton value="Guardar"
+						<p:commandButton value="Guardar" styleClass="btn btn-info"
+							actionListener="#{personaBean.crearPersonaPersonal()}"
 							onclick="PF('statusDialog').show()"
-							oncomplete="PF('statusDialog').hide()"
-							action="#{personaBean.crearPersona}" update="frm" look="info"></b:commandButton>
+							oncomplete="PF('statusDialog').hide()" update="frm">
+							<p:confirm header="Confirmación"
+								message="Seguro desea guardar la información?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton value="Volver" action="#{personaBean.cancelar}"
+						<p:commandButton value="Volver" styleClass="btn btn-info"
+							action="#{personaBean.cancelar}"
 							onclick="PF('statusDialog').show()"
 							oncomplete="PF('statusDialog').hide()" immediate="true"
-							update="frm" look="info"></b:commandButton>
+							update="frm" look="info"></p:commandButton>
 						&nbsp;&nbsp;&nbsp;
 						<b:label
 							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
 							severity="success" />
 					</center>
 				</h:form>
+
+				<h:form id="frm2">
+					<p:dialog id="dialog" style="padding-top:50px;"
+						header="Datos del Familiar" widgetVar="dlgeditar" width="500"
+						modal="true" resizable="false" closable="true" position="top">
+						<p:messages closable="true"></p:messages>
+						<b:panel look="primary" collapsible="false">
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Tipo:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu value="#{personaBean.famTipo}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_tipo}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="2">
+									<h:outputLabel value="Fecha de Nacimiento:" />
+								</b:column>
+								<b:column span="4">
+									<p:calendar value="#{personaBean.famFechaNacimiento}"
+										pattern="dd-MM-yyyy" yearRange="c-80:c+0" navigator="true"
+										mask="true" size="13">
+									</p:calendar>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Nombre:" />
+								</b:column>
+								<b:column span="10">
+									<b:inputText value="#{personaBean.famNombre}">
+									</b:inputText>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Actividad:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu value="#{personaBean.famLabor}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItem itemLabel="Ninguno" itemValue="Ninguno"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_actividad}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="2">
+									<h:outputLabel value="Ciudad:" />
+								</b:column>
+								<b:column span="4">
+									<b:inputText value="#{personaBean.famLugar}">
+									</b:inputText>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Permanencia:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu disabled="#{personaBean.estabilidad}"
+										styleClass="form-control"
+										value="#{personaBean.famEstabilidad}">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_estabilidad}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="6">
+									<b:commandButton value="Guardar"
+										action="#{personaBean.crearEditarFamiliar()}" update="frm"
+										look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+									<b:commandButton value="Cancelar"
+										action="#{personaBean.cancelarFamiliar()}"
+										update="frm2:dialog" look="info"></b:commandButton>
+								</b:column>
+							</b:row>
+						</b:panel>
+					</p:dialog>
+				</h:form>
+
 			</b:tab>
 			<b:tab title="Información CV">
+				<f:facet name="anchor">
+					<b:iconAwesome name="fa fa-folder-open" />
+				</f:facet>
 				<b:tabView tabPosition="left" pills="true"
 					contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 					<b:tab title="Formaci&oacute;n Acad&eacute;mica">
 						<f:facet name="anchor">
 							<b:iconAwesome name="graduation-cap" />
 						</f:facet>
-						<h:form id="frmfa">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="T&iacute;tulo*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.titulo}" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Instituci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.institucionFA}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="&Aacute;rea Estudios*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.areaFA}">
-										<f:selectItems value="#{personaBean.lstAreasLE}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Pa&iacute;s*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.paisFA}">
-										<f:selectItems value="#{personaBean.l_pais}" />
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Inicio*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar value="#{personaBean.fechaIniFA}" size="15"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
-										navigator="true" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Fin" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar id="ff1" value="#{personaBean.fechaFinFA}"
-										size="15" navigator="true" pattern="dd-MM-yyyy" mask="true"
-										showOn="button">
-									</p:calendar>
-								</b:column>
-							</b:row>
-							<b:row>
-								<br />
-								<b:column col-xs="2">
-									<h:outputText value="Nivel Instrucci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;"
-										value="#{personaBean.nivelInstruccion}">
-										<f:selectItems value="#{personaBean.lstNivelesInstruccion}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Duraci&oacute;n (A&ntilde;os)*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:spinner value="#{personaBean.duracion}" min="0" max="70" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarFormAc()}"
-										styleClass="btn btn-info" style="padding:.4em;"
-										update="frmfa :frmlfa">
-									</p:commandButton>
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										actionListener="#{personaBean.limpiarCamposFA()}"
-										disabled="#{!personaBean.edicion}" styleClass="btn btn-info"
-										style="padding:.4em;" update="frmfa :frmlfa" process="@this">
-										<p:resetInput target="frmfa" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+						<h:form id="frmlfa">
 							<b:row>
 								<b:column>
-									<p:messages id="fa" closable="true" />
+									<b:growl delay="4000" placementFrom="top"
+										show-detail="false" global-only="false" show-summary="true"
+										allow-dismiss="true" animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlfa">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Formaci&oacute;n Acad&eacute;mica"
+										action="#{personaBean.mostrarDlgFormacionAca()}"
+										update=":frmfa" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtfa" var="faca" rows="8"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstFormAcademica}" scrollable="true"
@@ -955,7 +1159,7 @@
 									</p:commandButton>
 									<p:commandButton
 										actionListener="#{personaBean.dialogElFormAcademica(faca)}"
-										id="btnEl" icon="ui-icon-closethick"
+										id="btnEl" icon="ui-icon-trash"
 										disabled="#{personaBean.edicionFA or faca.foaRegistroSenescyt}">
 										<p:tooltip for="btnEl"
 											value="Eliminar Formaci&oacute;n Acad&eacute;mica"
@@ -966,19 +1170,29 @@
 									<h:outputText
 										value="#{personaBean.validarBoleano(faca.foaRegistroSenescyt)}" />
 								</p:column>
+								<p:column headerText="N&uacute;mero Registro SENESCYT">
+									<h:outputText value="#{faca.foaNumRegSenescyt}" />
+								</p:column>
+								<p:column headerText="Pa&iacute;s">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaPais)}" />
+								</p:column>
+								<p:column headerText="Instrucci&oacute;n">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaNivelInstruccion)}" />
+								</p:column>
+								<p:column headerText="Niveles Aprobados">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaNivelesAprobados)}" />
+								</p:column>
+								<p:column headerText="Duraci&oacute;n">
+									<h:outputText value="#{faca.foaDuracion}" />
+								</p:column>
 								<p:column headerText="T&iacute;tulo">
 									<h:outputText value="#{faca.foaTitulo}" />
 								</p:column>
 								<p:column headerText="Instituci&oacute;n">
 									<h:outputText value="#{faca.foaInstitucion}" />
-								</p:column>
-								<p:column headerText="&Aacute;rea Estudio">
-									<h:outputText
-										value="#{personaBean.validarItemCatalogo(faca.foaAreaLaboralEstudio)}" />
-								</p:column>
-								<p:column headerText="Pa&iacute;s">
-									<h:outputText
-										value="#{personaBean.validarItemCatalogo(faca.foaPais)}" />
 								</p:column>
 								<p:column headerText="Fecha inicio">
 									<h:outputText value="#{faca.foaFechaInicio}">
@@ -990,13 +1204,6 @@
 										<f:convertDateTime pattern="dd-MM-yyyy" />
 									</h:outputText>
 								</p:column>
-								<p:column headerText="Instrucci&oacute;n">
-									<h:outputText
-										value="#{personaBean.validarItemCatalogo(faca.foaNivelInstruccion)}" />
-								</p:column>
-								<p:column headerText="Duraci&oacute;n">
-									<h:outputText value="#{faca.foaDuracion}" />
-								</p:column>
 							</p:dataTable>
 						</h:form>
 					</b:tab>
@@ -1004,86 +1211,23 @@
 						<f:facet name="anchor">
 							<b:iconAwesome name="pencil-square-o" />
 						</f:facet>
-						<h:form id="frmca">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Relaci&oacute;n Perfil Profesional*" />
-								</b:column>
-								<b:column col-xs="10">
-									<p:selectBooleanButton 
-										value="#{personaBean.relacionPerfil}" onLabel="Si"
-										offLabel="No" style="width:60px" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Nombre Capacitaci&oacute;n*" />
-								</b:column>
-								<b:column col-xs="10">
-									<b:inputText value="#{personaBean.nombreCap}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Instituci&oacute;n Capacitacitadora*" />
-								</b:column>
-								<b:column col-xs="10">
-									<b:inputText value="#{personaBean.nombreInstitucion}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="&Aacute;rea Estudios*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.areaCa}">
-										<f:selectItems value="#{personaBean.lstAreasLE}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Tipo Evento*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.tipoEvento}">
-										<f:selectItems value="#{personaBean.lstTiposEventos}" />
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="N&uacute;mero Horas*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.numHoras}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarCapacitaciones()}"
-										styleClass="btn btn-info" update="ca frmca :frmlca"
-										style="padding:.4em;" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.limpiarCamposCa()}"
-										styleClass="btn btn-info" update="frmca :frmlca"
-										style="padding:.4em;" process="@this">
-										<p:resetInput target="frmca" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+						<h:form id="frmlca">
 							<b:row>
 								<b:column>
-									<p:messages id="ca" closable="true" />
+									<b:growl delay="4000" placementFrom="top"
+										show-detail="false" global-only="false" show-summary="true"
+										allow-dismiss="true" animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlca">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Capacitaci&oacute;n"
+										action="#{personaBean.mostrarDlgCapacitacion()}"
+										update=":frmca" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtca" var="cap" rows="5"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstCapacitaciones}" scrollable="true"
@@ -1098,7 +1242,7 @@
 									</p:commandButton>
 									<p:commandButton
 										actionListener="#{personaBean.dialogElCapacitacion(cap)}"
-										id="btnCE" icon="ui-icon-closethick"
+										id="btnCE" icon="ui-icon-trash"
 										disabled="#{personaBean.edicionCa}">
 										<p:tooltip for="btnCE" value="Eliminar Capacitaci&oacute;n"
 											trackMouse="true" />
@@ -1132,118 +1276,24 @@
 						<f:facet name="anchor">
 							<b:iconAwesome name="briefcase" />
 						</f:facet>
-						<h:form id="frmel">
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Actual*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:selectBooleanButton 
-										value="#{personaBean.actualEL}" onLabel="Si"
-										offLabel="No" style="width:60px" >
-										<p:ajax listener="#{personaBean.switch_actualEL()}"
-											update="ff2" />
-										</p:selectBooleanButton>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Sector P&uacute;blico*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:selectBooleanButton
-										value="#{personaBean.sectorPublico}" onLabel="Si"
-										offLabel="No" style="width:60px" />
-								</b:column>
-							</b:row>
-							<b:row style="margin-top=10px;">
-								<b:column col-xs="2">
-									<h:outputText value="Puesto*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.puesto}" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Empresa*" />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputText value="#{personaBean.empresa}" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="&Aacute;rea Laboral*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.areaEL}">
-										<f:selectItems value="#{personaBean.lstAreasLE}" />
-									</h:selectOneMenu>
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Pa&iacute;s*" />
-								</b:column>
-								<b:column col-xs="4">
-									<h:selectOneMenu styleClass="form-control"
-										style="margin-bottom: 10px;" value="#{personaBean.paisEL}">
-										<f:selectItems value="#{personaBean.l_pais}">
-										</f:selectItems>
-									</h:selectOneMenu>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Inicio*" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar value="#{personaBean.fechaIniEL}" size="15"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
-										navigator="true" />
-								</b:column>
-								<b:column col-xs="2">
-									<h:outputText value="Fecha Fin" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:calendar id="ff2" value="#{personaBean.fechaFinEL}"
-										size="15" navigator="true" pattern="dd-MM-yyyy" mask="true"
-										showOn="button" disabled="#{personaBean.actualEL}" />
-								</b:column>
-							</b:row>
-							<br />
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputText
-										value="Principales Actividades y Responsabilidades*" />
-								</b:column>
-								<b:column col-xs="10">
-									<p:inputTextarea rows="3" cols="55"
-										value="#{personaBean.responsabilidades}" />
-								</b:column>
-							</b:row>
-							<br />
-							<b:row>
-								<b:column col-xs="2">
-									<p:commandButton value="#{personaBean.nombreBoton()}"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.agregarEditarExperienciaLab()}"
-										styleClass="btn btn-info" update="el frmel :frmlel"
-										style="padding:.4em;" />
-								</b:column>
-								<b:column col-xs="4">
-									<p:commandButton value="Cancelar"
-										disabled="#{!personaBean.edicion}"
-										actionListener="#{personaBean.limpiarCamposEL()}"
-										styleClass="btn btn-info" update="frmel :frmlel"
-										style="padding:.4em;" process="@this">
-										<p:resetInput target="frmel" />
-									</p:commandButton>
-								</b:column>
-							</b:row>
+
+						<h:form id="frmlel">
 							<b:row>
 								<b:column>
-									<p:messages id="el" closable="true" />
+									<b:growl delay="4000" placementFrom="top"
+										show-detail="false" global-only="false" show-summary="true"
+										allow-dismiss="true" animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
 								</b:column>
 							</b:row>
-						</h:form>
-						<h:form id="frmlel">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Experiencia Laboral"
+										action="#{personaBean.mostrarDlgExperienciaLa()}"
+										update=":frmel" />
+								</b:column>
+							</b:row>
 							<p:dataTable id="dtel" var="exl" rows="5"
 								emptyMessage="No existen datos"
 								value="#{personaBean.lstExperienciaLab}" scrollable="true"
@@ -1259,7 +1309,7 @@
 									</p:commandButton>
 									<p:commandButton
 										actionListener="#{personaBean.dialogElExpeLaboral(exl)}"
-										id="btnEle" icon="ui-icon-closethick"
+										id="btnEle" icon="ui-icon-trash"
 										disabled="#{personaBean.edicionEL}">
 										<p:tooltip for="btnEle" value="Eliminar Experiencia Laboral"
 											trackMouse="true" />
@@ -1364,6 +1414,297 @@
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 			closable="false" resizable="false" showHeader="false">
 			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+		<p:dialog widgetVar="fADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmfa">
+				<b:row>
+					<b:column>
+						<p:messages id="fa" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nivel Instrucci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelInstruccion}">
+							<p:ajax listener="#{personaBean.cargaNivelesAp()}"
+								update=":frmfa"></p:ajax>
+							<f:selectItems value="#{personaBean.lstNivelesInstruccion}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2" rendered="#{!personaBean.visualizarCampos}">
+						<h:outputText value="Niveles Aprobados*" />
+					</b:column>
+					<b:column col-xs="4" rendered="#{!personaBean.visualizarCampos}">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelesAprobados}">
+							<f:selectItems value="#{personaBean.lstNivelesAprobados}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row rendered="#{personaBean.visualizarCampos}">
+					<b:column col-xs="2">
+						<h:outputText value="T&iacute;tulo*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.titulo}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.institucionFA}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisFA}">
+							<f:selectItems value="#{personaBean.l_pais}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Duraci&oacute;n (A&ntilde;os)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:spinner value="#{personaBean.duracion}" min="0" max="70" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniFA}" size="15"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-30:c+0" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff1" value="#{personaBean.fechaFinFA}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button">
+						</p:calendar>
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarFormAc()}" look="info"
+							style="padding:.4em;" update="frmfa :frmlfa">
+						</b:commandButton>
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{personaBean.cancelarFA()}"
+							disabled="#{!personaBean.edicion}" look="info"
+							style="padding:.4em;" update="frmfa :frmlfa" process="@this">
+							<p:resetInput target="frmfa" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="cADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmca">
+				<b:row>
+					<b:column>
+						<p:messages id="ca" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Relaci&oacute;n Perfil Profesional*" />
+					</b:column>
+					<b:column col-xs="10">
+						<p:selectBooleanButton value="#{personaBean.relacionPerfil}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nombre Capacitaci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreCap}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n Capacitacitadora*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreInstitucion}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Estudios*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaCa}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Tipo Evento*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.tipoEvento}">
+							<f:selectItems value="#{personaBean.lstTiposEventos}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="N&uacute;mero Horas (Mayor a 8 Horas)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.numHoras}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarCapacitaciones()}" look="info"
+							update="ca frmca :frmlca" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarCa()}" look="info"
+							update="frmca :frmlca" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmca" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="eLDlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmel">
+				<b:row>
+					<b:column>
+						<p:messages id="el" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Actual*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.actualEL}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px">
+							<p:ajax listener="#{personaBean.switch_actualEL()}" update="ff2" />
+						</p:selectBooleanButton>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Sector P&uacute;blico*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.sectorPublico}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<h:outputText value="Puesto*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.puesto}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Empresa*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.empresa}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Laboral*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaEL}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisEL}">
+							<f:selectItems value="#{personaBean.l_pais}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniEL}" size="15"
+							yearRange="c-30:c+0" pattern="dd-MM-yyyy" mask="true"
+							showOn="button" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff2" value="#{personaBean.fechaFinEL}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							disabled="#{personaBean.actualEL}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Principales Actividades y Responsabilidades*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputTextarea rows="3" value="#{personaBean.responsabilidades}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarExperienciaLab()}" look="info"
+							update="el frmel :frmlel" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarEL()}" look="info"
+							update="frmel :frmlel" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmel" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
 		</p:dialog>
 	</ui:define>
 </ui:composition>

@@ -17,6 +17,7 @@ import city.model.dao.entidades.GenFormacionacademica;
 import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
+import city.model.dao.entidades.SegIncidenciasAdmin;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -184,6 +185,17 @@ public class ManagerPersona {
 	public GenCatalogoCab CatalogoByID(String codigo) throws Exception {
 		return (GenCatalogoCab) mngDao.findById(GenCatalogoCab.class, codigo);
 	}// Cierre del metodo
+	
+	@SuppressWarnings("unchecked")
+	public boolean verificarUsuarioSalud(String usuario){
+		List<SegIncidenciasAdmin> lista_usu_admin= mngDao.findWhere(SegIncidenciasAdmin.class, "o.admUsuario = '"+usuario.trim()+"'", null);
+		if (lista_usu_admin==null || lista_usu_admin.size()==0){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
 
 	// ////////////////////////////////////////////////////////////(ITEM)///////////////////////////////////////////////////////////////////////
 
@@ -1007,11 +1019,12 @@ public class ManagerPersona {
 	}
 
 	public String catalogoItem(String idItem) throws Exception {
-		if (idItem.equals("")) {
+		System.out.println("valor Item-->"+idItem);
+		if (idItem ==null || idItem.equals("")) {
 			return "";
 		} else {
 			GenCatalogoItemsDet it = this.ItemByID(idItem);
-			if (it.equals("") || it.equals(null)) {
+			if (it==null || it.equals("")) {
 				return "";
 			} else
 				return it.getIteNombre();
