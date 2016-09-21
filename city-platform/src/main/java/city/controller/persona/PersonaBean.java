@@ -15,10 +15,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.BorderUIResource.EmptyBorderUIResource;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -29,7 +27,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.json.simple.JSONObject;
 import org.primefaces.context.RequestContext;
 
-import antlr.ParserSharedInputState;
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenCapacitacione;
 import city.model.dao.entidades.GenCatalogoItemsDet;
@@ -3197,7 +3194,7 @@ public class PersonaBean {
 	 * @param persona
 	 * @return
 	 */
-	public String cargarPersona(GenPersona persona) {
+	public String cargarPersona1(GenPersona persona) {
 		try {
 			this.carga();
 			if (persona.getPerDinardap() == null || persona.getPerDinardap() == false) {
@@ -3248,6 +3245,65 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 		return "npersona?faces-redirect=true";
+	}
+	
+	/**
+	 * Metodo para cargar una Persona para su edición
+	 * 
+	 * @param persona
+	 * @return
+	 */
+	public String cargarPersona2(GenPersona persona) {
+		try {
+			this.carga();
+			if (persona.getPerDinardap() == null || persona.getPerDinardap() == false) {
+				dinardap = false;
+			} else
+				dinardap = true;
+			setSelect_n(false);
+			setSelect_r(false);
+			cargarEstados();
+			setPerDni(persona.getPerDni());
+			setPerTipoDni(persona.getPerTipoDni());
+			setPerNombres(persona.getPerNombres());
+			setPerApellidos(persona.getPerApellidos());
+			setPerFechaNacimiento(persona.getPerFechaNacimiento());
+			setPerGenero(persona.getPerGenero());
+			setPerTelefono(persona.getPerTelefono());
+			setPerCelular(persona.getPerCelular());
+			setPerCorreo(persona.getPerCorreo());
+			setPerCorreo2(persona.getPerCorreo2());
+			setPerEstadoCivil(persona.getPerEstadoCivil());
+			setPerEstado(persona.getPerEstado());
+
+			// carga de persona detalle si existe
+			GenPersonaDetalle pd = manager.PersonaDetalleByID(persona.getPerDni());
+			if (pd != null)
+				this.cargarPersonaDetalle(pd);
+
+			// carga de Salud si existe
+			GenSalud sl = manager.SaludByID(persona.getPerDni());
+			if (sl != null)
+				this.cargarSalud(sl);
+
+			// setea la persona
+			setPersona(persona);
+
+			// carga de formaciÃ²n acadÃ¨mica
+			findAllFormacionAcademica();
+
+			// carga de capacitaciones
+			findAllCapacitaciones();
+
+			// cargar de experiencia laboral
+			findAllExperianciaLaboral();
+
+			setEdicion(true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "npersona3?faces-redirect=true";
 	}
 
 	/**
@@ -4852,10 +4908,20 @@ public class PersonaBean {
 	}
 	
 	public void cargarSesion(){
-		cargarPersona(session.validarPersona("npersona2.xhtml"));
+		cargarPersona1(session.validarPersona("npersona2.xhtml"));
 	}
 	
 	private void mostrarPestaniaSalud(){
 		salud = manager.verificarUsuarioSalud(session.validarSesion());
+	}
+	
+	public String cargarPersonaVista(GenPersona persona){
+		String retorno="";
+		if (salud==true){
+			retorno= cargarPersona1(persona);
+		}else{
+			retorno= cargarPersona2(persona);
+		}
+		return retorno;
 	}
 }

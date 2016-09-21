@@ -57,7 +57,21 @@ public class Test {
 //		
 //		System.out.println(l.size());
 		
-		
+			String nombreArchivo ="Maria.sql.txt";
+			String [] extension = nombreArchivo.split(".");
+			
+			Integer j=nombreArchivo.lastIndexOf('.');
+			String a = nombreArchivo.substring(j);
+			System.out.println(a);
+			System.out.println(extension[0]);
+			StringBuilder s = new StringBuilder();
+			for (int i = extension.length; i < 0; i--) {
+				if(!extension[i].equals(".")){
+					s.append(extension[i]);
+				}else {
+					break;
+				}
+			}
 		
 	}
 

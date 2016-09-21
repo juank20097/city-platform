@@ -34,11 +34,14 @@ public class GenBarrio implements Serializable {
 	@Column(name="bar_link_pdf")
 	private String barLinkPdf;
 
-	@Column(name="bar_metros_cuadrados")
-	private BigDecimal barMetrosCuadrados;
+	@Column(name="bar_kilometros")
+	private BigDecimal barKilometros;
 
 	@Column(name="bar_nombre")
 	private String barNombre;
+	
+	@Column(name="bar_observacion")
+	private String barObservacion;
 
 	//bi-directional many-to-one association to GenDistrito
 	@ManyToOne
@@ -96,18 +99,26 @@ public class GenBarrio implements Serializable {
 		this.barLinkPdf = barLinkPdf;
 	}
 
-	public BigDecimal getBarMetrosCuadrados() {
-		return this.barMetrosCuadrados;
+	public BigDecimal getBarKilometros() {
+		return this.barKilometros;
 	}
 
-	public void setBarMetrosCuadrados(BigDecimal barMetrosCuadrados) {
-		this.barMetrosCuadrados = barMetrosCuadrados;
+	public void setBarKilometros(BigDecimal barKilometros) {
+		this.barKilometros = barKilometros;
 	}
 
 	public String getBarNombre() {
 		return this.barNombre;
 	}
 
+	public String getBarObservacion() {
+		return this.barObservacion;
+	}
+
+	public void setBarObservacion(String barObservacion) {
+		this.barObservacion = barObservacion;
+	}
+	
 	public void setBarNombre(String barNombre) {
 		this.barNombre = barNombre;
 	}

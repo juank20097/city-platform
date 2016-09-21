@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Elemento 
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form id="frmpmsj">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+		</h:form>
+		<h:form id="frmcbc">
+			<b:panel title="Datos del Elemento" look="primary">
+				<b:row style="margin-bottom:10px;font-style: oblique;">
+					<b:column col-xs="2">
+						<h:outputLabel value="C&oacute;digo Elemento:" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="id" value="#{elementoBean.id}" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Nombre:*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{elementoBean.nombre}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Tipo Ubicaci&oacute;n:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{elementoBean.tipo}">
+							<f:selectItems value="#{elementoBean.slctTipos}" />
+						</b:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Unidad de Medida:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{elementoBean.unidadMedida}">
+							<f:selectItems value="#{elementoBean.slctUnidadesMedida}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row rendered="#{elementoBean.edicion}">
+					<b:column col-xs="2">
+						<h:outputLabel value="Estado*: " />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{elementoBean.estado}">
+							<f:selectItems value="#{elementoBean.slctEstados}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:commandButton value="Guardar"
+							onclick="PF('statusDialog').show();"
+							oncomplete="PF('statusDialog').hide();"
+							action="#{elementoBean.guardarEditarElemento()}"
+							update="frmcbc :frmpmsj" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+							<b:commandButton value="Cancelar"
+							action="#{elementoBean.cancelar()}"
+							onclick="PF('statusDialog').show();" process="@this"
+							oncomplete="PF('statusDialog').hide();" immediate="true"
+							update="frmcbc" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+						</b:column>
+				</b:row>
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
+

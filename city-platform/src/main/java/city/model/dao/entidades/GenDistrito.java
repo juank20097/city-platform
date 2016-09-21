@@ -35,11 +35,14 @@ public class GenDistrito implements Serializable {
 	@Column(name="dis_link_pdf")
 	private String disLinkPdf;
 
-	@Column(name="dis_metros_cuadrados")
-	private BigDecimal disMetrosCuadrados;
+	@Column(name="dis_kilometros")
+	private BigDecimal disKilometros;
 
 	@Column(name="dis_nombre")
 	private String disNombre;
+	
+	@Column(name="dis_observacion", columnDefinition = "text")
+	private String disObservacion;
 
 	//bi-directional many-to-one association to GenBarrio
 	@OneToMany(mappedBy="genDistrito")
@@ -101,12 +104,12 @@ public class GenDistrito implements Serializable {
 		this.disLinkPdf = disLinkPdf;
 	}
 
-	public BigDecimal getDisMetrosCuadrados() {
-		return this.disMetrosCuadrados;
+	public BigDecimal getDisKilometros() {
+		return this.disKilometros;
 	}
 
-	public void setDisMetrosCuadrados(BigDecimal disMetrosCuadrados) {
-		this.disMetrosCuadrados = disMetrosCuadrados;
+	public void setDisKilometros(BigDecimal disKilometros) {
+		this.disKilometros = disKilometros;
 	}
 
 	public String getDisNombre() {
@@ -117,6 +120,14 @@ public class GenDistrito implements Serializable {
 		this.disNombre = disNombre;
 	}
 
+	public String getDisObservacion() {
+		return this.disObservacion;
+	}
+
+	public void setDisObservacion(String disObservacion) {
+		this.disObservacion = disObservacion;
+	}
+	
 	public List<GenBarrio> getGenBarrios() {
 		return this.genBarrios;
 	}

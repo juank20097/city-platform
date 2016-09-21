@@ -10,10 +10,14 @@ import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
 import city.model.dao.entidades.GenDistrito;
+import city.model.dao.entidades.GenElemento;
 import city.model.dao.entidades.GenManzana;
 import city.model.dao.entidades.GenManzanaDetalle;
 import city.model.dao.entidades.GenManzanaPosicione;
+import city.model.dao.entidades.GenParametro;
 import city.model.dao.entidades.GenSectore;
+import city.model.dao.entidades.GenUbicacionelemento;
+import city.model.dao.entidades.GenUbicacionelementoPK;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
 import city.model.dao.entidades.GenZonasComunidadePK;
@@ -34,6 +38,11 @@ public class ManagerTerritorio {
 		return mngDAO.findAll(GenBarrio.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<GenBarrio> findAllBarriosA(){
+		return mngDAO.findWhere(GenBarrio.class, "o.barEstado = 'A' ", "o.barNombre");
+	}
+	
 	public void insertarBarrio(GenBarrio barrio) throws Exception {
 		mngDAO.insertar(barrio);
 	}
@@ -271,6 +280,115 @@ public class ManagerTerritorio {
 
 	public void modicarManzanaPosiciones(GenManzanaPosicione manzana) throws Exception {
 		mngDAO.actualizar(manzana);
+	}
+
+	////////////////////////////////////// (Generales)
+	////////////////////////////////////// /////////////////////////////////////
+
+	public String findParametroByID(String iParametro) throws Exception {
+		GenParametro p = (GenParametro) mngDAO.findById(GenParametro.class, iParametro);
+		return p.getParValor();
+	}
+
+	//////////////////////////// (Elementos) ////////////////////////////
+
+	public GenElemento findElementoByID(int idElemento) throws Exception {
+		return (GenElemento) mngDAO.findById(GenElemento.class, idElemento);
+	}
+
+	public Integer idElemento() {
+		Integer id = 0;
+		try {
+			List<GenElemento> ls = this.findAllElementos();
+			if (ls == null || ls.size() == 0) {
+				id = 1;
+			} else {
+				id = ls.size() + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenElemento> findAllElementos() {
+		return mngDAO.findAll(GenElemento.class);
+	}
+
+	public void insertarElemento(GenElemento elemento) throws Exception {
+		mngDAO.insertar(elemento);
+	}
+
+	public void modificarElemento(GenElemento elemento) throws Exception {
+		mngDAO.actualizar(elemento);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenUbicacionelemento> findAllUbicacionesByElemento(int idElemento) {
+		return mngDAO.findWhere(GenUbicacionelemento.class, "o.id.eleId = " + idElemento, "");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenUbicacionelemento> findUbicacionesByElementoActivas(int idElemento) {
+		return mngDAO.findWhere(GenUbicacionelemento.class, "o.velEstado = 'A' ", "o.genElemento.eleNombre");
+	}
+
+	public GenUbicacionelemento findUbicacionByID(GenUbicacionelementoPK id) throws Exception {
+		return (GenUbicacionelemento) mngDAO.findById(GenUbicacionelemento.class, id);
+	}
+
+	public void insertarUbicacionElemento(GenUbicacionelemento ubicacionElem) throws Exception {
+		mngDAO.insertar(ubicacionElem);
+	}
+
+	public void modificarUbicacionElemento(GenUbicacionelemento ubicacionElem) throws Exception {
+		mngDAO.actualizar(ubicacionElem);
+	}
+
+	public String catalogoItem(String idItem) throws Exception {
+		if (idItem == null || idItem.equals("")) {
+			return "";
+		} else {
+			GenCatalogoItemsDet it = this.ItemByID(idItem);
+			if (it == null || it.equals("")) {
+				return "";
+			} else
+				return it.getIteNombre();
+		}
+	}
+
+	public GenCatalogoItemsDet ItemByID(String dni) throws Exception {
+		return (GenCatalogoItemsDet) mngDAO.findById(GenCatalogoItemsDet.class, dni);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenBarrio> findBarriosByDistrito(String distrito) {
+		return mngDAO.findWhere(GenBarrio.class, "o.genDistrito.disId='" + distrito + "' ", null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenDistrito> findDistritosByZona(String zona) {
+		return mngDAO.findWhere(GenDistrito.class, "o.genZona.zonId = '" + zona + "'", null);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenBarrio> findBarriosByZona(String zona) {
+		return mngDAO.findWhere(GenBarrio.class, "o.genDistrito.genZona.zonId ='" + zona + "'", null);
+	}
+
+	public BigDecimal sumHectareasDistrito(String distrito) {
+		return (BigDecimal) mngDAO.ejectNativeSQL2(
+				"SELECT coalesce(sum(bar_hectareas),0) FROM gen_barrios WHERE bar_hectareas is not null and dis_id ='"
+						+ distrito + "';");
+	}
+
+	public BigDecimal sumHectareasZona(String zona) {
+		return (BigDecimal) mngDAO.ejectNativeSQL2(
+				"select  coalesce(sum(bar_hectareas),0) from gen_barrios where bar_hectareas is not null and dis_id in (select dis_id from gen_distritos where zon_id ='"
+						+ zona + "');");
+
 	}
 
 }

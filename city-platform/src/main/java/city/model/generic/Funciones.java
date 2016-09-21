@@ -555,5 +555,11 @@ public class Funciones {
         }
         return cifrado.toString();
     }
+    
+    public static String quitarEspacios(String parametro){
+    	if(parametro == null)
+    		parametro = "";
+    	return parametro.trim();
+    }
 
 }

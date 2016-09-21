@@ -35,11 +35,14 @@ public class GenZona implements Serializable {
 	@Column(name="zon_link_pdf")
 	private String zonLinkPdf;
 
-	@Column(name="zon_metros_cuadrados")
-	private BigDecimal zonMetrosCuadrados;
+	@Column(name="zon_kilometros")
+	private BigDecimal zonKilometros;
 
 	@Column(name="zon_nombre")
 	private String zonNombre;
+	
+	@Column(name="zon_observacion")
+	private String zonObservacion;
 
 	//bi-directional many-to-one association to GenDistrito
 	@OneToMany(mappedBy="genZona")
@@ -100,12 +103,12 @@ public class GenZona implements Serializable {
 		this.zonLinkPdf = zonLinkPdf;
 	}
 
-	public BigDecimal getZonMetrosCuadrados() {
-		return this.zonMetrosCuadrados;
+	public BigDecimal getZonKilometros() {
+		return this.zonKilometros;
 	}
 
-	public void setZonMetrosCuadrados(BigDecimal zonMetrosCuadrados) {
-		this.zonMetrosCuadrados = zonMetrosCuadrados;
+	public void setZonKilometros(BigDecimal zonKilometros) {
+		this.zonKilometros = zonKilometros;
 	}
 
 	public String getZonNombre() {
@@ -116,6 +119,14 @@ public class GenZona implements Serializable {
 		this.zonNombre = zonNombre;
 	}
 
+	public String getZonObservacion() {
+		return this.zonObservacion;
+	}
+
+	public void setZonObservacion(String zonObservacion) {
+		this.zonObservacion = zonObservacion;
+	}
+	
 	public List<GenDistrito> getGenDistritos() {
 		return this.genDistritos;
 	}

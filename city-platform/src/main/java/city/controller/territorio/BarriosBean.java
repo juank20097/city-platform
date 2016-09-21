@@ -1,5 +1,10 @@
 package city.controller.territorio;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,14 +16,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.validation.constraints.DecimalMin;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenDistrito;
+import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerTerritorio;
 
@@ -51,6 +60,7 @@ public class BarriosBean implements Serializable {
 
 	private String estado;
 
+	@DecimalMin("1")
 	private BigDecimal hectareas;
 
 	@NotEmpty(message = "MAPA LINK no debe estar vacío.")
@@ -63,16 +73,29 @@ public class BarriosBean implements Serializable {
 	@URL(message = "PDF LINK no es una url válida.")
 	private String linkPdf;
 
-	private BigDecimal metrosCuadrados;
+	@DecimalMin("1")
+	private BigDecimal kilometros;
 
 	@NotEmpty(message = "NOMBRE no debe estar vacío.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 
+	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
+	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
+	private String observacion;
+	
+	private UploadedFile fileMapa;
+	private UploadedFile filePdf;
+	
+	private String dirMapa; 
+	private String dirPdf;
+	private boolean guardado;
+	
 	private List<GenBarrio> lstBarrios;
 	private boolean edicion;
 	private List<SelectItem> slctEstados;
 	private String distritoId;
+	private GenDistrito distrito;
 	private List<SelectItem> slctDistritos;
 
 	@PostConstruct
@@ -137,12 +160,12 @@ public class BarriosBean implements Serializable {
 		this.linkPdf = linkPdf;
 	}
 
-	public BigDecimal getMetrosCuadrados() {
-		return metrosCuadrados;
+	public BigDecimal getKilometros() {
+		return kilometros;
 	}
 
-	public void setMetrosCuadrados(BigDecimal metrosCuadrados) {
-		this.metrosCuadrados = metrosCuadrados;
+	public void setKilometros(BigDecimal kilometros) {
+		this.kilometros = kilometros;
 	}
 
 	public String getNombre() {
@@ -151,6 +174,54 @@ public class BarriosBean implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getObservacion() {
+		return observacion;
+	}
+	
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	
+	public UploadedFile getFileMapa() {
+		return fileMapa;
+	}
+
+	public void setFileMapa(UploadedFile fileMapa) {
+		this.fileMapa = fileMapa;
+	}
+
+	public UploadedFile getFilePdf() {
+		return filePdf;
+	}
+
+	public void setFilePdf(UploadedFile filePdf) {
+		this.filePdf = filePdf;
+	}
+
+	public String getDirMapa() {
+		return dirMapa;
+	}
+
+	public void setDirMapa(String dirMapa) {
+		this.dirMapa = dirMapa;
+	}
+
+	public String getDirPdf() {
+		return dirPdf;
+	}
+
+	public void setDirPdf(String dirPdf) {
+		this.dirPdf = dirPdf;
+	}
+	
+	public boolean isGuardado() {
+		return guardado;
+	}
+	
+	public void setGuardado(boolean guardado) {
+		this.guardado = guardado;
 	}
 
 	public List<GenBarrio> getLstBarrios() {
@@ -185,6 +256,14 @@ public class BarriosBean implements Serializable {
 		this.distritoId = distritoId;
 	}
 
+	public GenDistrito getDistrito() {
+		return distrito;
+	}
+	
+	public void setDistrito(GenDistrito distrito) {
+		this.distrito = distrito;
+	}
+	
 	public List<SelectItem> getSlctDistritos() {
 		return slctDistritos;
 	}
@@ -218,42 +297,54 @@ public class BarriosBean implements Serializable {
 		setDescripcion(barrio.getBarDescripcion());
 		setEstado(barrio.getBarEstado());
 		setHectareas(barrio.getBarHectareas());
-		setMetrosCuadrados(barrio.getBarMetrosCuadrados());
-		setLinkMapa(barrio.getBarLinkMapa());
-		setLinkPdf(barrio.getBarLinkPdf());
+		setKilometros(barrio.getBarKilometros());
+		setObservacion(barrio.getBarObservacion());
 		setNombre(barrio.getBarNombre());
 		setDistritoId(barrio.getGenDistrito().getDisId());
+		setDistrito(barrio.getGenDistrito());
+		setObservacion(barrio.getBarObservacion());
 
 		return "nBarrio?faces-redirect=true";
 	}
 
 	public String guardarEditarBarrio() {
 		try {
+			String respuesta = "";
 			if (getDistritoId().equals(SELECT_DISTRITO)) {
 				Mensaje.crearMensajeWARN("Seleccione un distrito");
-				return "";
+				return respuesta;
 			} else if (!isEdicion() && manager.findBarrioById(getId()) != null) {
-				Mensaje.crearMensajeWARN("Ya existe un barrio con el mimo id, favor cámbielo.");
-				return "";
+				Mensaje.crearMensajeWARN("Ya existe un vecindario con el mimo id, favor cámbielo.");
+				return respuesta;
 			} else {
 				GenBarrio b = new GenBarrio();
-				b.setBarId(getId());
-				b.setBarDescripcion(getDescripcion());
+				b.setBarId(Funciones.quitarEspacios(getId()));
+				b.setBarDescripcion(Funciones.quitarEspacios(getDescripcion()));
 				b.setBarEstado(getEstado());
+				b.setBarKilometros(getKilometros());
+				b.setBarNombre(Funciones.quitarEspacios(getNombre()));
 				b.setBarHectareas(getHectareas());
-				b.setBarMetrosCuadrados(getMetrosCuadrados());
-				b.setBarLinkMapa(getLinkMapa());
-				b.setBarLinkPdf(getLinkPdf());
-				b.setBarNombre(getNombre());
+				b.setBarObservacion(Funciones.quitarEspacios(getObservacion()));
 				b.setGenDistrito(manager.findDistritoById(getDistritoId()));
 				if (isEdicion()) {
+					if(getDirMapa()!= null || getDirMapa() != ""){
+						b.setBarLinkMapa(getDirMapa());
+					}else {
+						b.setBarLinkMapa(manager.findBarrioById(getId()).getBarLinkMapa());
+					}
+					if(getDirPdf() != null || getDirPdf() != ""){
+						b.setBarLinkPdf(getDirPdf());
+					} else{
+						b.setBarLinkPdf(manager.findBarrioById(getId()).getBarLinkPdf());
+					}
 					manager.modicarBarrio(b);
+					Mensaje.crearMensajeINFO("Vecindario actualizado correctamente.");
 				} else {
-					manager.insertarBarrio(b);
+					manager.insertarBarrio(b); 
+					setEdicion(true);
+					Mensaje.crearMensajeINFO("Vecindario ingresado correctamente. ");
 				}
-				cargarBarrios();
-				limpiarDatos();
-				return "barrios?faces-redirect=true";
+				return respuesta;
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error: " + e.getMessage());
@@ -276,13 +367,146 @@ public class BarriosBean implements Serializable {
 		setId(null);
 		setDescripcion(null);
 		setEstado(ID_ACTIVO);
-		setHectareas(new BigDecimal(0));
-		setMetrosCuadrados(new BigDecimal(0));
-		setLinkMapa(null);
-		setLinkPdf(null);
+		setKilometros(new BigDecimal(0));
+		setDirMapa(null);
+		setDirPdf(null);
 		setNombre(null);
+		setObservacion(null);
 		setEdicion(false);
 		setDistritoId(SELECT_DISTRITO);
 	}
+	public void cargaMapa(FileUploadEvent event) throws IOException {
+		fileMapa = event.getFile();
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
 
+		if (fileMapa != null) {
+			try {
+				
+				String carpeta = manager.findParametroByID("direccion_mapa") + "/";
+					setDirMapa("Mapa_V_" +getId()+ extensionArchivo(fileMapa.getFileName()));
+					System.out.println("PAD------> " + carpeta);
+					System.out.println("name------> " + getDirMapa());
+					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
+					inputStream = fileMapa.getInputstream();
+
+					int read = 0;
+					byte[] bytes = new byte[1024];
+
+					while ((read = inputStream.read(bytes)) != -1) {
+						outputStream.write(bytes, 0, read);
+					}
+					Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+					editarBarrio();
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+		} else {
+			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+		}
+	}
+	
+	public void cargaPDF(FileUploadEvent event) throws IOException {
+		filePdf = event.getFile();
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+
+		if (filePdf != null) {
+			try {
+				
+				String carpeta = manager.findParametroByID("direccion_pdf") + "/";
+					setDirPdf("PDF_V_" +getId()+ extensionArchivo(filePdf.getFileName()));
+					System.out.println("PAD------> " + carpeta);
+					System.out.println("name------> " + getDirPdf());
+					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
+					inputStream = filePdf.getInputstream();
+
+					int read = 0;
+					byte[] bytes = new byte[1024];
+
+					while ((read = inputStream.read(bytes)) != -1) {
+						outputStream.write(bytes, 0, read);
+					}
+					Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+					editarBarrio();
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+		} else {
+			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+		}
+	}
+	
+	public String extensionArchivo(String nombreArchivo){
+		return nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+	}
+	
+	public void editarBarrio(){
+		try {
+			GenBarrio bar = new GenBarrio();
+			bar.setBarId(Funciones.quitarEspacios(getId()));
+			bar.setBarNombre(Funciones.quitarEspacios(getNombre()));
+			bar.setBarDescripcion(Funciones.quitarEspacios(getDescripcion()));
+			bar.setBarObservacion(Funciones.quitarEspacios(getObservacion()));
+			bar.setBarKilometros(getKilometros());
+			bar.setBarHectareas(getHectareas());
+			bar.setGenDistrito(getDistrito());
+			bar.setBarLinkMapa(getDirMapa());
+			bar.setBarLinkPdf(getDirPdf());
+			bar.setBarEstado(getEstado());
+			manager.modicarBarrio(bar);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void descargarMapa(String idBarrio) {
+		try {
+			GenBarrio barrio = manager.findBarrioById(idBarrio);
+			if (barrio.getBarLinkMapa() == null
+					|| barrio.getBarLinkMapa().isEmpty()) {
+				Mensaje.crearMensajeERROR("El Vecindario no cuenta con un archivo asignado.");
+			} else {
+				String contextPath = manager
+						.findParametroByID("direccion_mapa") + File.separatorChar
+						+ barrio.getBarLinkMapa() + "";
+				Funciones.descargarPDF(contextPath);
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error: "+e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	public void descargarPDF( String idBarrio) {
+		try {
+			GenBarrio barrio = manager.findBarrioById(idBarrio);
+			if (barrio.getBarLinkPdf() == null
+					|| barrio.getBarLinkPdf().isEmpty()) {
+				Mensaje.crearMensajeERROR("El Vecindario no cuenta con un archivo asignado.");
+			} else {
+				String contextPath = manager
+						.findParametroByID("direccion_pdf") + File.separatorChar
+						+ barrio.getBarLinkPdf() + "";
+				Funciones.descargarPDF(contextPath);
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error: "+e.getMessage());
+			e.printStackTrace();
+		}
+	}
 }

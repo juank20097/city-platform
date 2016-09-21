@@ -6,7 +6,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
 
-
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
             Distritos
@@ -64,21 +63,39 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="DESCRIPCIÓN" />
+							<h:outputText value="DESCRIPCI&Oacute;N" />
 						</f:facet>
 						<h:outputText value="#{d.disDescripcion}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
+							<h:outputText value="HECT&Aocute;REAS" />
+						</f:facet>
+						<h:outputText value="#{distritoBean.sumaHectareas(d)}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
 							<h:outputText value="MAPA" />
 						</f:facet>
-						<a href="#{d.disLinkMapa}" target="_blank">Visualizar</a>
+						<p:commandLink ajax="false" update="mensaje2"
+							action="#{distritoBean.descargarMapa(d.disId)}">
+							Descargar
+						</p:commandLink>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="PDF" />
 						</f:facet>
-						<a href="#{d.disLinkPdf}" target="_blank">Visualizar</a>
+						<p:commandLink ajax="false" update="mensaje2"
+							action="#{distritoBean.descargarPDF(d.disId)}">
+							Descargar
+						</p:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="OBSERVACI&Oacute;N" />
+						</f:facet>
+						<h:outputText value="#{d.disObservacion}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
