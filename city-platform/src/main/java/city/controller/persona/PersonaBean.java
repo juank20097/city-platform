@@ -203,6 +203,7 @@ public class PersonaBean {
 	private boolean estabilidad;
 	private boolean edad_p;
 	private boolean edad_m;
+	private boolean salud;
 
 	// valor de ediciï¿½n e inserciï¿½n
 	private boolean edicion;
@@ -344,6 +345,7 @@ public class PersonaBean {
 		visualizarCampos = true;
 		// this.carga();
 		cargarSesion();
+		mostrarPestaniaSalud();
 	}
 
 	/**
@@ -3058,6 +3060,7 @@ public class PersonaBean {
 		estabilidad = false;
 		edad_p = false;
 		edad_m = false;
+		salud = false;
 	}
 
 	/**
@@ -4850,5 +4853,9 @@ public class PersonaBean {
 	
 	public void cargarSesion(){
 		cargarPersona(session.validarPersona("npersona2.xhtml"));
+	}
+	
+	private void mostrarPestaniaSalud(){
+		salud = manager.verificarUsuarioSalud(session.validarSesion());
 	}
 }
