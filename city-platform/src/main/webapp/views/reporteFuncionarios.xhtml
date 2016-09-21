@@ -31,7 +31,7 @@
 						<p:outputPanel>
 							<h:outputText value="Buscar:" />
 							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
-								style="width:150px" placeholder="Enter keyword" />
+								style="width:150px" placeholder="Ingrese busquedas" />
 						</p:outputPanel>
 					</f:facet>
 
@@ -57,153 +57,174 @@
 					<p:column width="100" filterBy="#{funcionario.perDni}"
 						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="CEDULA" />
+							<h:outputText value="C&#201;DULA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perDni}" />
 					</p:column>
 
-					<p:column width="300">
+					<p:column width="300" filterBy="#{funcionario.funCargo}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="CARGO INSTITUCIONAL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.funCargo}" />
 					</p:column>
 
-					<p:column width="280">
+					<p:column width="280" filterBy="#{funcionario.funGerencia}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="GERENCIA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.funGerencia}" />
 					</p:column>
 
-					<p:column width="280">
+					<p:column width="280" filterBy="#{funcionario.funDireccion}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="DIRECCION" />
+							<h:outputText value="DIRECCI&#211;N" />
 						</f:facet>
 						<h:outputText value="#{funcionario.funDireccion}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.funFechaIngreso}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="FECHA DE INGRESO" />
 						</f:facet>
 						<h:outputText value="#{funcionario.funFechaIngreso}" />
 					</p:column>
 
-					<p:column width="220">
+					<p:column width="220" filterBy="#{funcionario.perCorreo}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="CORREO ELECTRONICO INSTITUCIONAL" />
+							<h:outputText value="CORREO INSTITUCIONAL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perCorreo}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.tieneTercerNivel}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="3° NIVEL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.tieneTercerNivel}" />
 					</p:column>
 
-					<p:column width="220">
+					<p:column width="220" filterBy="#{funcionario.titulosTercerNivel}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="INSTRUCCION FORMAL TITULO 3 NIVEL" />
+							<h:outputText value="INSTRUCCI&#211;N FORMAL T&#205;TULO 3 NIVEL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.titulosTercerNivel}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.tieneTitulosCuartoNivel}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="4° NIVEL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.tieneTitulosCuartoNivel}" />
 					</p:column>
 
-					<p:column width="220">
+					<p:column width="220" filterBy="#{funcionario.titulosCuartoNivel}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="TITULO 4to. NIVEL" />
+							<h:outputText value="T&#205;TULO 4to. NIVEL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.titulosCuartoNivel}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.perFechaNacimiento}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="FECHA DE NACIMIENTO" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perFechaNacimiento}" />
 					</p:column>
 
-					<p:column width="150">
+					<p:column width="150" filterBy="#{funcionario.edadCompleta}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="AÑOS, MESES, DIAS" />
 						</f:facet>
 						<h:outputText value="#{funcionario.edadCompleta}" />
 					</p:column>
 
-					<p:column width="60">
+					<p:column width="60" filterBy="#{funcionario.edad}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="EDAD" />
 						</f:facet>
 						<h:outputText value="#{funcionario.edad}" />
 					</p:column>
 
-					<p:column width="60">
+					<p:column width="60" filterBy="#{funcionario.perGenero}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="SEXO" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perGenero}" />
 					</p:column>
 
-					<p:column width="200">
+					<p:column width="200" filterBy="#{funcionario.perCorreo2}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="CORREO ELECTRONICO PERSONAL" />
+							<h:outputText value="CORREO ELECTR&#211;NICO PERSONAL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perCorreo2}" />
 					</p:column>
 
-					<p:column width="280">
+					<p:column width="280" filterBy="#{funcionario.pdeDireccion}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="DIRECCION DOMICILIARIA" />
+							<h:outputText value="DIRECCI&#211;N DOMICILIARIA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.pdeDireccion}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.perCelular}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="NUMERO CELULAR FUNCIONARIO" />
+							<h:outputText value="N&#218;MERO CELULAR FUNCIONARIO" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perCelular}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.perTelefono}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="NUMERO TELEFONO FIJO" />
+							<h:outputText value="N&#218;MERO TEL&#201;FONO FIJO" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perTelefono}" />
 					</p:column>
 
-					<p:column width="220">
+					<p:column width="220" filterBy="#{funcionario.pdeEmergContactoNombres}"
+						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="EN CASO DE EMERGENCIA LLAMAR A" />
+							<h:outputText value="CONTACTO EMERGENCIA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.pdeEmergContactoNombres}" />
 					</p:column>
 
-					<p:column width="100">
+					<p:column width="100" filterBy="#{funcionario.pdeEmergContactoTelefono}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText
-								value="TELEFONO DE LA PERSONA A LA QUE HAY QUE LLAMAR EN CASO DE MERGENCIA" />
+								value="TEL&#201;FONO EMERGENCIA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.pdeEmergContactoTelefono}" />
 					</p:column>
 
-					<p:column width="80">
+					<p:column width="80" filterBy="#{funcionario.perEstadoCivil}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="ESTADO CIVIL" />
 						</f:facet>
 						<h:outputText value="#{funcionario.perEstadoCivil}" />
 					</p:column>
 
-					<p:column width="80">
+					<p:column width="80" filterBy="#{funcionario.sldCarnetConadies}"
+						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="DISCAPACIDAD" />
 						</f:facet>
