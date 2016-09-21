@@ -301,7 +301,7 @@ public class Funciones {
 		// Se asigna la fecha recibida a la fecha de nacimiento.
 		fechaNacimiento.setTime(fecha);
 		// Se restan la fecha actual y la fecha de nacimiento
-		int anio = fechaActual.get(Calendar.YEAR)
+		int a�o = fechaActual.get(Calendar.YEAR)
 				- fechaNacimiento.get(Calendar.YEAR);
 		int mes = fechaActual.get(Calendar.MONTH)
 				- fechaNacimiento.get(Calendar.MONTH);
@@ -309,10 +309,10 @@ public class Funciones {
 				- fechaNacimiento.get(Calendar.DATE);
 		// Se ajusta el a�o dependiendo el mes y el d�a
 		if (mes < 0 || (mes == 0 && dia < 0)) {
-			anio--;
+			a�o--;
 		}
 		// Regresa la edad en base a la fecha de nacimiento
-		return anio;
+		return a�o;
 	}
 
 	/**
@@ -399,6 +399,53 @@ public class Funciones {
 			}
 
 			System.out.println("Descargado....!!!");
+			ctx.responseComplete();
+		}
+	}
+	
+	/**
+	 * M�todo para descargar archivos excel
+	 * 
+	 * @param url
+	 */
+	public static void descargarPDF(String url) {
+		System.out.println(url);
+		File ficheroXLS = new File(url);
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(ficheroXLS);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		byte[] bytes = new byte[1000];
+		int read = 0;
+
+		if (!ctx.getResponseComplete()) {
+			String fileName = ficheroXLS.getName();
+//			String contentType = "application/vnd.ms-excel";
+			 String contentType = "application/pdf";
+			HttpServletResponse response = (HttpServletResponse) ctx
+					.getExternalContext().getResponse();
+			response.setContentType(contentType);
+			response.setHeader("Content-Disposition", "attachment;filename=\""
+					+ fileName + "\"");
+			ServletOutputStream out = null;
+			try {
+				out = response.getOutputStream();
+				while ((read = fis.read(bytes)) != -1) {
+					out.write(bytes, 0, read);
+				}
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			System.out.println("Descargado PDF....!!!");
 			ctx.responseComplete();
 		}
 	}
@@ -507,6 +554,12 @@ public class Funciones {
                 }
         }
         return cifrado.toString();
+    }
+    
+    public static String quitarEspacios(String parametro){
+    	if(parametro == null)
+    		parametro = "";
+    	return parametro.trim();
     }
 
 }

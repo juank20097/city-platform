@@ -1,0 +1,1719 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{personaBean.cargarSesion()}" />
+	</f:metadata>
+	<ui:define name="titulo">
+            Yachay City Platform
+        </ui:define>
+	<ui:define name="contenido">
+		<center>
+			<h1>Ficha de Persona</h1>
+		</center>
+		<br />
+		<b:tabView tabPosition="top" pills="true"
+			contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+			<b:tab title="Datos Personales">
+
+				<h:form id="frmcc">
+					<b:row>
+						<b:column span="2">
+							<h:outputLabel
+								value="Documento Nacional de Identificación (DNI):*" />
+						</b:column>
+						<b:column span="3">
+							<h:selectOneMenu id="slt" disabled="#{personaBean.dinardap}"
+								styleClass="form-control" value="#{personaBean.perTipoDni}">
+								<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+								<f:selectItems value="#{personaBean.l_tipo_dni}">
+								</f:selectItems>
+							</h:selectOneMenu>
+						</b:column>
+						<b:column span="2">
+							<h:outputLabel value="N° Identificación:*" />
+						</b:column>
+						<b:column span="3">
+							<b:inputText disabled="#{personaBean.dinardap}"
+								value="#{personaBean.perDni}">
+							</b:inputText>
+						</b:column>
+						<b:column span="2">
+							<b:commandButton rendered="false" value="Buscar (Dinardap)"
+								look="info" onclick="PF('statusDialog').show()"
+								oncomplete="PF('statusDialog').hide()"
+								disabled="#{personaBean.edicion}"
+								actionListener="#{personaBean.loadWS()}" update="frmcc :frm">
+							</b:commandButton>
+						</b:column>
+					</b:row>
+				</h:form>
+				<h:form>
+					<p:remoteCommand name="onload"
+						action="#{personaBean.cargarSesion()}" autoRun="true" />
+				</h:form>
+				<h:form id="frm">
+					<b:growl id="growl" delay="4000" placementFrom="top"
+						show-detail="false" global-only="false" show-summary="true"
+						allow-dismiss="true" animation-enter="animated bounceInDown"
+						animation-exit="animated flipOutX" escape="true" />
+					<b:tabView orientation="left" pills="true" tabPosition="left"
+						contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+						<b:tab disabled="false" title="Generales">
+							<f:facet name="anchor">
+								<b:iconAwesome name="user" />
+							</f:facet>
+							<b:panel>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Nombres:*" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText disabled="#{personaBean.dinardap}"
+											validatorMessage="Ingrese solo letras en el nombre"
+											value="#{personaBean.perNombres}">
+											<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Apellidos:*" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText disabled="#{personaBean.dinardap}"
+											validatorMessage="Ingrese solo letras en el apellido"
+											value="#{personaBean.perApellidos}">
+											<f:validateRegex pattern="^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$" />
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Fecha de Nacimiento:*" />
+									</b:column>
+									<b:column span="4">
+										<p:calendar disabled="#{personaBean.dinardap}"
+											value="#{personaBean.perFechaNacimiento}"
+											pattern="dd-MM-yyyy" yearRange="c-80:c+0" navigator="true"
+											mask="true" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Sexo:*" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu disabled="#{personaBean.dinardap}"
+											styleClass="form-control" value="#{personaBean.perGenero}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_genero}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Teléfono Convencional:*" />
+									</b:column>
+									<b:column span="4">
+										<p:inputMask size="34" value="#{personaBean.perTelefono}"
+											mask="(99) 9999-999"
+											validatorMessage="Ingrese solo números en el teléfono">
+											<f:validateRegex pattern="^[0-9-() ]+$" />
+										</p:inputMask>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Celular:*" />
+									</b:column>
+									<b:column span="4">
+										<p:inputMask size="34" value="#{personaBean.perCelular}"
+											mask="(099)9999999"
+											validatorMessage="Ingrese solo números en el celular">
+											<f:validateRegex pattern="^[0-9()]+$" />
+										</p:inputMask>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Correo Institucional:*" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.perCorreo}">
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Correo Personal:*" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.perCorreo2}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Estado Civil:*" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu disabled="#{personaBean.dinardap}"
+											styleClass="form-control"
+											value="#{personaBean.perEstadoCivil}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_estado_civil}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel rendered="#{!personaBean.edicion}"
+											value="Estado:" />
+									</b:column>
+									<b:column span="10">
+										<b:selectOneMenu rendered="#{!personaBean.edicion}"
+											styleClass="mar" value="#{personaBean.perEstado}">
+											<f:selectItem itemValue="S/N" itemLabel="--Seleccione--" />
+											<f:selectItems value="#{personaBean.l_estados}">
+											</f:selectItems>
+										</b:selectOneMenu>
+									</b:column>
+								</b:row>
+							</b:panel>
+						</b:tab>
+						<b:tab disabled="true" title="Detalles">
+							<f:facet name="anchor">
+								<b:iconAwesome name="male" />
+							</f:facet>
+							<b:panel>
+								<h4>Datos de Ubicación</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="2">
+										<h4>Nacimiento:</h4>
+									</b:column>
+									<b:column offset="4" span="2">
+										<h4>Residencia:</h4>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="1">
+										<h:outputLabel value="País:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdePaisNacimiento}">
+											<p:ajax listener="#{personaBean.habilitarCamposNac}"
+												update=":frm:p1 :frm:c1"></p:ajax>
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_pais}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column offset="1" span="1">
+										<h:outputLabel value="País:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdePaisResidencia}">
+											<p:ajax listener="#{personaBean.habilitarCamposRer}"
+												update=":frm:p2 :frm:c2"></p:ajax>
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_pais}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="1">
+										<h:outputLabel value="Provincia:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu id="p1" disabled="#{personaBean.select_n}"
+											styleClass="form-control"
+											value="#{personaBean.pdeProvinciaNacimiento}">
+											<p:ajax
+												listener="#{personaBean.mostrarCiudadNac(personaBean.pdeProvinciaNacimiento)}"
+												update=":frm:c1"></p:ajax>
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_provincia}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column offset="1" span="1">
+										<h:outputLabel value="Provincia:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu id="p2" disabled="#{personaBean.select_r}"
+											styleClass="form-control"
+											value="#{personaBean.pdeProvinciaResidencia}">
+											<p:ajax
+												listener="#{personaBean.mostrarCiudadRes(personaBean.pdeProvinciaResidencia)}"
+												update=":frm:c2"></p:ajax>
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_provincia}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="1">
+										<h:outputLabel value="Ciudad:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu id="c1" disabled="#{personaBean.select_n}"
+											styleClass="form-control"
+											value="#{personaBean.pdeCiudadNacimiento}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_ciudad_n}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column offset="1" span="1">
+										<h:outputLabel value="Ciudad:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu id="c2" disabled="#{personaBean.select_r}"
+											styleClass="form-control"
+											value="#{personaBean.pdeCiudadResidencia}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_ciudad_r}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="1">
+										<h:outputLabel value="Lugar:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeLugarNacimiento}">
+										</b:inputText>
+									</b:column>
+									<b:column offset="1" span="1">
+										<h:outputLabel value="Dirección:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeDireccion}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column offset="3" span="3">
+										<h:outputLabel value="Tu vivienda es?:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeResidencia}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_residencia}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Tiempo de estancia (residencia - trabajo) en Yachay
+									Ciudad del Conocimiento:</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Días al mes:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeEstadiaDias}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Horas al día:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeEstadiaHoras}">
+											<f:selectItems value="#{personaBean.l_horas}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Datos Familiares con Quién Vive:</h4>
+								<p:separator />
+								<p:commandButton immediate="true" icon="ui-icon-plus"
+									value="Ingresar Familiar"
+									action="#{personaBean.mostrarIngresoFamiliar()}"
+									update=":frm2:dialog" />
+								<br />
+								<p:dataTable id="dtfam" var="fam" rows="5"
+									emptyMessage="No existen datos"
+									value="#{personaBean.l_familiares}" scrollable="true"
+									liveScroll="true" paginator="true"
+									paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+									<p:column headerText="Opciones">
+										<p:commandButton icon="ui-icon-pencil"
+											action="#{personaBean.cargarFamiliar(fam)}"
+											update=":frm2:dialog">
+										</p:commandButton>
+										<p:commandButton icon="ui-icon-trash"
+											action="#{personaBean.eliminarFamiliar(fam)}"
+											update=":frm:dtfam">
+											<p:confirm header="Confirmación"
+												message="Seguro quieres Eliminar el Familiar?"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+										&nbsp;&nbsp;&nbsp;
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+											<p:commandButton value="Si" type="button"
+												styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+											<p:commandButton value="No" type="button"
+												styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+										</p:confirmDialog>
+									</p:column>
+									<p:column headerText="Tipo">
+										<h:outputText value="#{fam.famTipo}" />
+									</p:column>
+									<p:column headerText="Nombre">
+										<h:outputText value="#{fam.famNombre}" />
+									</p:column>
+									<p:column headerText="Fecha Nacimiento">
+										<h:outputText value="#{fam.famFechaNacimiento}" />
+									</p:column>
+									<p:column headerText="Actividad">
+										<h:outputText value="#{fam.famLabor}" />
+									</p:column>
+									<p:column headerText="Lugar">
+										<h:outputText value="#{fam.famLugar}" />
+									</p:column>
+									<p:column headerText="Estabilidad">
+										<h:outputText value="#{fam.famEstabilidad}" />
+									</p:column>
+								</p:dataTable>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Nombre Padre:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeNombrePadre}">
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Nombre Madre:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeNombreMadre}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Nacionalidad Padre:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeNacionalidadPadre}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_pais}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Nacionalidad Madre:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.pdeNacionalidadMadre}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_pais}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Nombre Conyuge:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputText value="#{personaBean.pdeConyuge}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Fecha Matrimonio:" />
+									</b:column>
+									<b:column span="4">
+										<p:calendar value="#{personaBean.pdeFechaMatrimonio}"
+											pattern="dd-MM-yyyy" mask="true" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Número Hijos:" />
+									</b:column>
+									<b:column span="4">
+										<p:spinner value="#{personaBean.pdeNumHijos}" />
+									</b:column>
+								</b:row>
+								<br />
+								<br />
+								<h4>Datos de Emergencia</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Nombre Contacto:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputText value="#{personaBean.pdeEmergContactoNombres}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="C.I. Contacto:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeEmergContactoId}">
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="E-mail Contacto:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeEmergContactoCorreo}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Teléfono Contacto 1:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeEmergContactoTelefono}">
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Teléfono Contacto 2:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeEmergContactoTelefono2}">
+										</b:inputText>
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<h4>Datos de Defunción</h4>
+									<p:separator />
+									<b:column span="2">
+										<h:outputLabel value="Inscripción Defunción:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.pdeInscripcionDefuncion}">
+										</b:inputText>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Fecha Defunción:" />
+									</b:column>
+									<b:column span="4">
+										<p:calendar value="#{personaBean.pdeFechaDefuncion}"
+											pattern="dd-MM-yyyy" mask="true" />
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Observación</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="12">
+										<b:inputTextarea
+											placeholder="Escribe observaciones de la persona en caso de tenerla."
+											value="#{personaBean.pdeObservacion}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+							</b:panel>
+						</b:tab>
+						<p:tab disabled="true" title="Salud">
+							<f:facet name="anchor">
+								<b:iconAwesome name="heartbeat" />
+							</f:facet>
+							<b:panel>
+								<br />
+								<h4>Salud</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Seguro del IESS:" />
+									</b:column>
+									<b:column span="4">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close" value="#{personaBean.sldSeguroIess}"
+											onLabel="Si" offLabel="No" style="width:60px">
+										</p:selectBooleanButton>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Seguro Privado:" />
+									</b:column>
+									<b:column span="4">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldSeguroPrivado}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_seguro()}"
+												update="frm:seguro"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Nombre del Seguro:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText id="seguro" disabled="#{!personaBean.seguro}"
+											value="#{personaBean.sldAsegurado}" />
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Grupo Sanguineo:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu styleClass="form-control"
+											value="#{personaBean.sldGrupoSanguineo}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_sangre}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Discapacidad:" />
+									</b:column>
+									<b:column span="4">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldDiscapacidad}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_discapacidad()}"
+												update="frm:dis1 frm:dis2 frm:dis3 frm:dis4"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Carné Discapacidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText id="dis1" disabled="#{!personaBean.discapacidad}"
+											value="#{personaBean.sldCarnetConadies}" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Discapacidad Tipo:" />
+									</b:column>
+									<b:column span="4">
+										<h:selectOneMenu id="dis2"
+											disabled="#{!personaBean.discapacidad}"
+											styleClass="form-control"
+											value="#{personaBean.sldDiscapacidadTipo}">
+											<f:selectItem itemLabel="Ninguna" itemValue="Ninguna"></f:selectItem>
+											<f:selectItems value="#{personaBean.l_discapacidad}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Discapacidad Grado (%):" />
+									</b:column>
+									<b:column span="4">
+										<h:panelGrid style="margin-bottom: 10px; width: 100%;">
+											<p:inputText id="dis3"
+												disabled="#{!personaBean.discapacidad}" style="width: 100%;"
+												value="#{personaBean.sldDiscapacidadGrado}" />
+											<p:slider id="dis4" for="dis3"
+												disabled="#{!personaBean.discapacidad}" />
+										</h:panelGrid>
+
+									</b:column>
+								</b:row>
+								<br />
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Peso(KG):" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.sldPeso}" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Presión:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.sldPresion}" />
+									</b:column>
+								</b:row>
+
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Altura(m):" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.sldAltura}" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Vegetariano:" />
+									</b:column>
+									<b:column span="4">
+										<b:switch value="#{personaBean.sldVegetariano}" onText="Si"
+											on-text="Si" offText="No" off-text="No" offColor="success"
+											onColor="primary" />
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Nivel Azúcar:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText value="#{personaBean.sldNivelAzucar}" />
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Hábitos</h4>
+								<p:separator />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="¿Realiza Ejercicio?:" />
+									</b:column>
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldRealizaEjercicio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_ejercicio()}"
+												update="frm:ejercicio1 frm:ejercicio2"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
+									</b:column>
+									<b:column span="2">
+										<h:selectOneMenu id="ejercicio1"
+											disabled="#{!personaBean.ejercicio}"
+											styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadEjercicio}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Horas al día:" />
+									</b:column>
+									<b:column span="2">
+										<h:selectOneMenu id="ejercicio2"
+											disabled="#{!personaBean.ejercicio}"
+											styleClass="form-control"
+											value="#{personaBean.sldEjercicioHoras}">
+											<f:selectItems value="#{personaBean.l_horas}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="¿Consume Alcohol?:" />
+									</b:column>
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldConsumeAlcohol}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_alcohol()}"
+												update="frm:alcohol1"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
+									</b:column>
+									<b:column span="2">
+										<h:selectOneMenu id="alcohol1"
+											disabled="#{!personaBean.alcohol}" styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadAlcohol}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="¿Se Embriaga?:" />
+									</b:column>
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close" value="#{personaBean.sldEmbriagar}"
+											onLabel="Si" offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_embriaguez()}"
+												update="frm:embriaguez"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Días al mes:" />
+									</b:column>
+									<b:column span="2">
+										<h:selectOneMenu id="embriaguez"
+											disabled="#{!personaBean.embriaguez}"
+											styleClass="form-control"
+											value="#{personaBean.sldPeriodicidadEmbriagar}">
+											<f:selectItems value="#{personaBean.l_dias}">
+											</f:selectItems>
+										</h:selectOneMenu>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="¿Consume Tabaco?:" />
+									</b:column>
+									<b:column span="1">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldConsumeTabaco}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_tabaco()}"
+												update="frm:tabaco1 frm:tabaco2"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column offset="1" span="2">
+										<h:outputLabel value="Tabacos al día:" />
+									</b:column>
+									<b:column span="2">
+										<p:spinner size="4" id="tabaco1"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldPeriodicidadTabaco}" />
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel value="Tabacos a la Semana:" />
+									</b:column>
+									<b:column span="2">
+										<p:spinner size="4" id="tabaco2"
+											disabled="#{!personaBean.tabaco}"
+											value="#{personaBean.sldTabacoSemana}" />
+									</b:column>
+								</b:row>
+								<br />
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="¿Consume Estupefacientes?:" />
+									</b:column>
+									<b:column span="3">
+										<b:switch value="#{personaBean.sldEstupefacientes}"
+											onText="Si" on-text="Si" offText="No" off-text="No"
+											offColor="success" onColor="primary" />
+									</b:column>
+									<b:column span="3">
+										<h:outputLabel value="Peridiocidad de Estupefacientes al mes:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputText
+											value="#{personaBean.sldPeriodicidadEstupefacientes}" />
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Datos de Enfermedades Crónicas Diagnosticadas en
+									Familiares</h4>
+								<p:separator />
+								<b:row rendered="#{!personaBean.sld_padre}">
+									<b:column span="2">
+										<h:outputLabel value="Enfermedades del Padre:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea
+											value="#{personaBean.sldPadreEnfermedadesActuales}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Padre fallecido a causa de la enfermedad crónica?:" />
+									</b:column>
+									<b:column span="3">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldPadreFallecio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_padre()}"
+												update="frm:txt2"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Qué edad tenía su padre al momento de fallecer?:" />
+									</b:column>
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_p}" size="5"
+											id="txt2" min="0" value="#{personaBean.sldPadreEdad}" />
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Causa de Muerte del Padre:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea value="#{personaBean.sldPadreCausaMuerte}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row rendered="#{!personaBean.sld_madre}">
+									<b:column span="2">
+										<h:outputLabel value="Enfermedades de la Madre:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea
+											value="#{personaBean.sldMadreEnfermedadesActuales}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Madre fallecida a causa de la enfermedad crónica?:" />
+									</b:column>
+									<b:column span="3">
+										<p:selectBooleanButton onIcon="ui-icon-check"
+											offIcon="ui-icon-close"
+											value="#{personaBean.sldMadreFallecio}" onLabel="Si"
+											offLabel="No" style="width:60px">
+											<p:ajax listener="#{personaBean.switch_madre()}"
+												update="frm:txt3"></p:ajax>
+										</p:selectBooleanButton>
+									</b:column>
+									<b:column span="3">
+										<h:outputLabel
+											value="¿Qué edad tenía su madre al momento de fallecer?:" />
+									</b:column>
+									<b:column span="3">
+										<p:spinner disabled="#{!personaBean.edad_m}" size="5"
+											id="txt3" min="0" value="#{personaBean.sldMadreEdad}" />
+									</b:column>
+								</b:row>
+								<b:row rendered="false">
+									<b:column span="2">
+										<h:outputLabel value="Causa de Muerte de la Madre:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea value="#{personaBean.sldMadreCausaMuerte}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<br />
+								<h4>Datos de sus principales Enfermedades y/o Medicación</h4>
+								<p:separator />
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 1:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea value="#{personaBean.sldAlergias}">
+										</b:inputTextarea>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea
+											value="#{personaBean.sldMedicamentosCronicos1}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 2:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea value="#{personaBean.sldAlergiasCronicas2}">
+										</b:inputTextarea>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea
+											value="#{personaBean.sldMedicamentosCronicos2}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Enfermedad Diagnosticada Crónica 3:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea value="#{personaBean.sldAlergiasCronicas3}">
+										</b:inputTextarea>
+									</b:column>
+									<b:column span="2">
+										<h:outputLabel
+											value="Medicación Prescrita/ Presentación/ Periodicidad:" />
+									</b:column>
+									<b:column span="4">
+										<b:inputTextarea
+											value="#{personaBean.sldMedicamentosCronicos3}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Medicina y Periodicidad (No Crónicas):" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea
+											value="#{personaBean.sldFrecienciaConsumoMedicame}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<br />
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel
+											value=" Lugar y/o Centro médico al que acude cuando se enferma (nombre y ciudad):" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea
+											value="#{personaBean.sldNombreLugarCentroMedico}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column span="2">
+										<h:outputLabel value="Observaciones:" />
+									</b:column>
+									<b:column span="10">
+										<b:inputTextarea value="#{personaBean.sldObservaciones}">
+										</b:inputTextarea>
+									</b:column>
+								</b:row>
+							</b:panel>
+						</p:tab>
+					</b:tabView>
+					<br />
+					<center>
+						<p:commandButton value="Guardar" styleClass="btn btn-info"
+							actionListener="#{personaBean.crearPersonaPersonal()}"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()" update="frm">
+							<p:confirm header="Confirmación"
+								message="Seguro desea guardar la información?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						&nbsp;&nbsp;&nbsp;
+						<p:commandButton value="Volver" styleClass="btn btn-info"
+							action="#{personaBean.cancelar}"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()" immediate="true"
+							update="frm" look="info"></p:commandButton>
+						&nbsp;&nbsp;&nbsp;
+						<b:label
+							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
+							severity="success" />
+					</center>
+				</h:form>
+
+				<h:form id="frm2">
+					<p:dialog id="dialog" style="padding-top:50px;"
+						header="Datos del Familiar" widgetVar="dlgeditar" width="500"
+						modal="true" resizable="false" closable="true" position="top">
+						<p:messages closable="true"></p:messages>
+						<b:panel look="primary" collapsible="false">
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Tipo:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu value="#{personaBean.famTipo}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_tipo}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="2">
+									<h:outputLabel value="Fecha de Nacimiento:" />
+								</b:column>
+								<b:column span="4">
+									<p:calendar value="#{personaBean.famFechaNacimiento}"
+										pattern="dd-MM-yyyy" yearRange="c-80:c+0" navigator="true"
+										mask="true" size="13">
+									</p:calendar>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Nombre:" />
+								</b:column>
+								<b:column span="10">
+									<b:inputText value="#{personaBean.famNombre}">
+									</b:inputText>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Actividad:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu value="#{personaBean.famLabor}"
+										styleClass="form-control">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItem itemLabel="Ninguno" itemValue="Ninguno"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_actividad}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="2">
+									<h:outputLabel value="Ciudad:" />
+								</b:column>
+								<b:column span="4">
+									<b:inputText value="#{personaBean.famLugar}">
+									</b:inputText>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="Permanencia:" />
+								</b:column>
+								<b:column span="4">
+									<h:selectOneMenu disabled="#{personaBean.estabilidad}"
+										styleClass="form-control"
+										value="#{personaBean.famEstabilidad}">
+										<f:selectItem itemLabel="--Seleccione--" itemValue="S/N"></f:selectItem>
+										<f:selectItems value="#{personaBean.l_fam_estabilidad}">
+										</f:selectItems>
+									</h:selectOneMenu>
+								</b:column>
+								<b:column span="6">
+									<b:commandButton value="Guardar"
+										action="#{personaBean.crearEditarFamiliar()}" update="frm"
+										look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+									<b:commandButton value="Cancelar"
+										action="#{personaBean.cancelarFamiliar()}"
+										update="frm2:dialog" look="info"></b:commandButton>
+								</b:column>
+							</b:row>
+						</b:panel>
+					</p:dialog>
+				</h:form>
+
+			</b:tab>
+			<b:tab title="Información CV">
+				<f:facet name="anchor">
+					<b:iconAwesome name="fa fa-folder-open" />
+				</f:facet>
+				<b:tabView tabPosition="left" pills="true"
+					contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+					<b:tab title="Formaci&oacute;n Acad&eacute;mica">
+						<f:facet name="anchor">
+							<b:iconAwesome name="graduation-cap" />
+						</f:facet>
+						<h:form id="frmlfa">
+							<b:row>
+								<b:column>
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
+								</b:column>
+							</b:row>
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Formaci&oacute;n Acad&eacute;mica"
+										action="#{personaBean.mostrarDlgFormacionAca()}"
+										update=":frmfa" />
+								</b:column>
+							</b:row>
+							<p:dataTable id="dtfa" var="faca" rows="8"
+								emptyMessage="No existen datos"
+								value="#{personaBean.lstFormAcademica}" scrollable="true"
+								scrollRows="20" liveScroll="true" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								<p:column headerText="Opciones">
+									<p:commandButton
+										actionListener="#{personaBean.cargarFormacionAc(faca)}"
+										id="btnE" icon="ui-icon-pencil"
+										update="frmlfa :frmfa:fa :frmfa"
+										disabled="#{faca.foaRegistroSenescyt}">
+										<p:tooltip for="btnE"
+											value="Editar Formaci&oacute;n Acad&eacute;mica"
+											trackMouse="true" />
+									</p:commandButton>
+									<p:commandButton
+										actionListener="#{personaBean.dialogElFormAcademica(faca)}"
+										id="btnEl" icon="ui-icon-trash"
+										disabled="#{personaBean.edicionFA or faca.foaRegistroSenescyt}">
+										<p:tooltip for="btnEl"
+											value="Eliminar Formaci&oacute;n Acad&eacute;mica"
+											trackMouse="true" />
+									</p:commandButton>
+								</p:column>
+								<p:column headerText="Registro SENESCYT">
+									<h:outputText
+										value="#{personaBean.validarBoleano(faca.foaRegistroSenescyt)}" />
+								</p:column>
+								<p:column headerText="N&uacute;mero Registro SENESCYT">
+									<h:outputText value="#{faca.foaNumRegSenescyt}" />
+								</p:column>
+								<p:column headerText="Pa&iacute;s">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaPais)}" />
+								</p:column>
+								<p:column headerText="Instrucci&oacute;n">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaNivelInstruccion)}" />
+								</p:column>
+								<p:column headerText="Niveles Aprobados">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(faca.foaNivelesAprobados)}" />
+								</p:column>
+								<p:column headerText="Duraci&oacute;n">
+									<h:outputText value="#{faca.foaDuracion}" />
+								</p:column>
+								<p:column headerText="T&iacute;tulo">
+									<h:outputText value="#{faca.foaTitulo}" />
+								</p:column>
+								<p:column headerText="Instituci&oacute;n">
+									<h:outputText value="#{faca.foaInstitucion}" />
+								</p:column>
+								<p:column headerText="Fecha inicio">
+									<h:outputText value="#{faca.foaFechaInicio}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha fin">
+									<h:outputText value="#{faca.foaFechaFin}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</b:tab>
+					<b:tab title="Capacitaciones">
+						<f:facet name="anchor">
+							<b:iconAwesome name="pencil-square-o" />
+						</f:facet>
+						<h:form id="frmlca">
+							<b:row>
+								<b:column>
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
+								</b:column>
+							</b:row>
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Capacitaci&oacute;n"
+										action="#{personaBean.mostrarDlgCapacitacion()}"
+										update=":frmca" />
+								</b:column>
+							</b:row>
+							<p:dataTable id="dtca" var="cap" rows="5"
+								emptyMessage="No existen datos"
+								value="#{personaBean.lstCapacitaciones}" scrollable="true"
+								liveScroll="true" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								<p:column headerText="Opciones">
+									<p:commandButton
+										actionListener="#{personaBean.cargarCapacitacion(cap)}"
+										id="btnC" icon="ui-icon-pencil" update="frmlca :frmca">
+										<p:tooltip for="btnC" value="Editar Capacitaci&oacute;n"
+											trackMouse="true" />
+									</p:commandButton>
+									<p:commandButton
+										actionListener="#{personaBean.dialogElCapacitacion(cap)}"
+										id="btnCE" icon="ui-icon-trash"
+										disabled="#{personaBean.edicionCa}">
+										<p:tooltip for="btnCE" value="Eliminar Capacitaci&oacute;n"
+											trackMouse="true" />
+									</p:commandButton>
+								</p:column>
+								<p:column headerText="Relaci&oacute;n Perfil Profesional">
+									<h:outputText
+										value="#{personaBean.validarBoleano(cap.capRelacionPerfilProfesional)}" />
+								</p:column>
+								<p:column headerText="Nombre">
+									<h:outputText value="#{cap.capNombre}" />
+								</p:column>
+								<p:column headerText="Instituci&oacute;n">
+									<h:outputText value="#{cap.capInstitucionCapacitacion}" />
+								</p:column>
+								<p:column headerText="&Aacute;rea estudio">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(cap.capAreaLaboralEstudio)}" />
+								</p:column>
+								<p:column headerText="Evento">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(cap.capTipoEvento)}" />
+								</p:column>
+								<p:column headerText="Horas">
+									<h:outputText value="#{cap.capNumHoras}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</b:tab>
+					<b:tab title="Experiencia Laboral">
+						<f:facet name="anchor">
+							<b:iconAwesome name="briefcase" />
+						</f:facet>
+
+						<h:form id="frmlel">
+							<b:row>
+								<b:column>
+									<b:growl delay="4000" placementFrom="top" show-detail="false"
+										global-only="false" show-summary="true" allow-dismiss="true"
+										animation-enter="animated bounceInDown"
+										animation-exit="animated flipOutX" escape="true" />
+								</b:column>
+							</b:row>
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton icon="ui-icon-plus"
+										value="Ingresar Experiencia Laboral"
+										action="#{personaBean.mostrarDlgExperienciaLa()}"
+										update=":frmel" />
+								</b:column>
+							</b:row>
+							<p:dataTable id="dtel" var="exl" rows="5"
+								emptyMessage="No existen datos"
+								value="#{personaBean.lstExperienciaLab}" scrollable="true"
+								liveScroll="true" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								<p:column headerText="Opciones">
+									<p:commandButton
+										actionListener="#{personaBean.cargarExperienciaLab(exl)}"
+										id="btnEl" icon="ui-icon-pencil"
+										update="frmlel :frmel :frmel:">
+										<p:tooltip for="btnEl" value="Editar Experiencia Laboral"
+											trackMouse="true" />
+									</p:commandButton>
+									<p:commandButton
+										actionListener="#{personaBean.dialogElExpeLaboral(exl)}"
+										id="btnEle" icon="ui-icon-trash"
+										disabled="#{personaBean.edicionEL}">
+										<p:tooltip for="btnEle" value="Eliminar Experiencia Laboral"
+											trackMouse="true" />
+									</p:commandButton>
+								</p:column>
+								<p:column headerText="Puesto">
+									<h:outputText value="#{exl.exlPuesto}" />
+								</p:column>
+								<p:column headerText="Empresa">
+									<h:outputText value="#{exl.exlEmpresa}" />
+								</p:column>
+								<p:column headerText="&Aacute;rea laboral">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(exl.exlAreaLaboralEstudio)}" />
+								</p:column>
+								<p:column headerText="Pa&iacute;s">
+									<h:outputText
+										value="#{personaBean.validarItemCatalogo(exl.exlPais)}" />
+								</p:column>
+								<p:column headerText="Sector p&uacute;blico">
+									<h:outputText
+										value="#{personaBean.validarBoleano(exl.exlSectorPublico)}" />
+								</p:column>
+								<p:column headerText="Fecha inicio">
+									<h:outputText value="#{exl.exlFechaInicio}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha fin">
+									<h:outputText value="#{exl.exlFechaFin}">
+										<f:convertDateTime pattern="dd-MM-yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column
+									headerText="Principales Actividades y Responsabilidades"
+									style="font-size:11px">
+									<p:inputTextarea value="#{exl.exlResponsabilidades}"
+										readonly="true" style="width:100%" rows="2" cols="30"
+										autoResize="false" />
+								</p:column>
+								<p:column headerText="Actual">
+									<h:outputText
+										value="#{personaBean.validarBoleano(exl.exlActual)}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</b:tab>
+				</b:tabView>
+			</b:tab>
+		</b:tabView>
+		<p:confirmDialog id="deFa" header="Confirmaci&oacute;n"
+			message="¿Est&aacute; seguro de eliminar la Formaci&oacute;n Acad&eacute;mica?"
+			closable="false" showEffect="fade" hideEffect="explode"
+			widgetVar="dlgefa">
+			<h:form>
+				<center>
+					<p:commandButton
+						actionListener="#{personaBean.eliminarFormacionAca()}" value="Si"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						oncomplete="PF('dlgefa').hide();" update=":frmfa :frmlfa" />
+					&nbsp;&nbsp;&nbsp;
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+						onclick="PF('dlgefa').hide();" />
+				</center>
+			</h:form>
+		</p:confirmDialog>
+		<p:confirmDialog header="Confirmaci&oacute;n"
+			message="¿Est&aacute; seguro de eliminar la Capacitaci&oacute;n?"
+			closable="false" showEffect="fade" hideEffect="explode"
+			widgetVar="dlgeC">
+			<h:form>
+				<center>
+					<p:commandButton
+						actionListener="#{personaBean.eliminarCapacitaciones()}"
+						value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						oncomplete="PF('dlgeC').hide();" update=":frmlca :frmca" />
+					&nbsp;&nbsp;&nbsp;
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+						onclick="PF('dlgeC').hide();" />
+				</center>
+			</h:form>
+		</p:confirmDialog>
+		<p:confirmDialog header="Confirmaci&oacute;n"
+			message="¿Est&aacute; seguro de eliminar la Experiencia Laboral?"
+			closable="false" showEffect="fade" hideEffect="explode"
+			widgetVar="dlgeEl">
+			<h:form>
+				<center>
+					<p:commandButton
+						actionListener="#{personaBean.eliminarExperienciaLab()}"
+						value="Si" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						oncomplete="PF('dlgeEl').hide();" update=":frmlel :frmel" />
+					&nbsp;&nbsp;&nbsp;
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+						onclick="PF('dlgeEl').hide();" />
+				</center>
+			</h:form>
+		</p:confirmDialog>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+		<p:dialog widgetVar="fADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmfa">
+				<b:row>
+					<b:column>
+						<p:messages id="fa" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nivel Instrucci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelInstruccion}">
+							<p:ajax listener="#{personaBean.cargaNivelesAp()}"
+								update=":frmfa"></p:ajax>
+							<f:selectItems value="#{personaBean.lstNivelesInstruccion}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2" rendered="#{!personaBean.visualizarCampos}">
+						<h:outputText value="Niveles Aprobados*" />
+					</b:column>
+					<b:column col-xs="4" rendered="#{!personaBean.visualizarCampos}">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;"
+							value="#{personaBean.nivelesAprobados}">
+							<f:selectItems value="#{personaBean.lstNivelesAprobados}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row rendered="#{personaBean.visualizarCampos}">
+					<b:column col-xs="2">
+						<h:outputText value="T&iacute;tulo*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.titulo}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.institucionFA}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisFA}">
+							<f:selectItems value="#{personaBean.l_pais}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Duraci&oacute;n (A&ntilde;os)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:spinner value="#{personaBean.duracion}" min="0" max="70" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniFA}" size="15"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-30:c+0" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff1" value="#{personaBean.fechaFinFA}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button">
+						</p:calendar>
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarFormAc()}" look="info"
+							style="padding:.4em;" update="frmfa :frmlfa">
+						</b:commandButton>
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{personaBean.cancelarFA()}"
+							disabled="#{!personaBean.edicion}" look="info"
+							style="padding:.4em;" update="frmfa :frmlfa" process="@this">
+							<p:resetInput target="frmfa" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="cADlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmca">
+				<b:row>
+					<b:column>
+						<p:messages id="ca" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Relaci&oacute;n Perfil Profesional*" />
+					</b:column>
+					<b:column col-xs="10">
+						<p:selectBooleanButton value="#{personaBean.relacionPerfil}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Nombre Capacitaci&oacute;n*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreCap}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Instituci&oacute;n Capacitacitadora*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{personaBean.nombreInstitucion}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Estudios*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaCa}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Tipo Evento*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.tipoEvento}">
+							<f:selectItems value="#{personaBean.lstTiposEventos}" />
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="N&uacute;mero Horas (Mayor a 8 Horas)*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.numHoras}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarCapacitaciones()}" look="info"
+							update="ca frmca :frmlca" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarCa()}" look="info"
+							update="frmca :frmlca" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmca" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog widgetVar="eLDlg" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<h:form id="frmel">
+				<b:row>
+					<b:column>
+						<p:messages id="el" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Actual*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.actualEL}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px">
+							<p:ajax listener="#{personaBean.switch_actualEL()}" update="ff2" />
+						</p:selectBooleanButton>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Sector P&uacute;blico*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:selectBooleanButton value="#{personaBean.sectorPublico}"
+							onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+							offLabel="No" style="width:60px" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<h:outputText value="Puesto*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.puesto}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Empresa*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{personaBean.empresa}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="&Aacute;rea Laboral*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.areaEL}">
+							<f:selectItems value="#{personaBean.lstAreasLE}" />
+						</h:selectOneMenu>
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Pa&iacute;s*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:selectOneMenu styleClass="form-control"
+							style="margin-bottom: 10px;" value="#{personaBean.paisEL}">
+							<f:selectItems value="#{personaBean.l_pais}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Inicio*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar value="#{personaBean.fechaIniEL}" size="15"
+							yearRange="c-30:c+0" pattern="dd-MM-yyyy" mask="true"
+							showOn="button" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputText value="Fecha Fin" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="ff2" value="#{personaBean.fechaFinEL}"
+							yearRange="c-30:c+0" size="15" navigator="true"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							disabled="#{personaBean.actualEL}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputText value="Principales Actividades y Responsabilidades*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputTextarea rows="3" value="#{personaBean.responsabilidades}" />
+					</b:column>
+				</b:row>
+				<br />
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{personaBean.nombreBoton()}"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.agregarEditarExperienciaLab()}" look="info"
+							update="el frmel :frmlel" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							disabled="#{!personaBean.edicion}"
+							action="#{personaBean.cancelarEL()}" look="info"
+							update="frmel :frmlel" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmel" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

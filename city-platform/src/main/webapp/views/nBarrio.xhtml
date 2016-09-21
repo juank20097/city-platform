@@ -5,11 +5,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
-
-
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
-            Barrios
+            Vecindarios
         </ui:define>
 	<ui:define name="contenido">
 	<h:form id="frm">
@@ -17,87 +15,122 @@
 			show-detail="false" global-only="false" show-summary="true"
 			allow-dismiss="true" animation-enter="animated bounceInDown"
 			animation-exit="animated flipOutX" escape="true" />
-		<b:panel title="Registro de Barrios" collapsible="false"
+		<b:panel title="Registro de Vecindarios" collapsible="false"
 			look="primary">
 			<br />
 			<b:row>
-				<b:column span="2">
+				<b:column col-xs="2">
 					<h:outputLabel value="ID:*" />
 				</b:column>
-				<b:column span="4">
+				<b:column col-xs="4">
 					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 						value="#{barriosBean.id}" disabled="#{barriosBean.edicion}" />
 				</b:column>
-				<b:column span="2">
+				<b:column col-xs="2">
 					<h:outputLabel value="NOMBRE:*" />
 				</b:column>
-				<b:column span="4">
+				<b:column col-xs="4">
 					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
 						value="#{barriosBean.nombre}" />
 				</b:column>
 			</b:row>
 			<b:row>
-				<b:column span="2">
-					<h:outputLabel value="DESCRIPCIÓN:*" />
+				<b:column col-xs="2">
+					<h:outputLabel value="DESCRIPCI&Oacute;N:*" />
 				</b:column>
-				<b:column span="4">
+				<b:column col-xs="4">
 					<b:inputTextarea value="#{barriosBean.descripcion}" />
 				</b:column>
-				<b:column span="2">
+				<b:column col-xs="2">
 					<h:outputLabel value="DISTRITO:*" />
 				</b:column>
-				<b:column span="4">
+				<b:column col-xs="4">
 					<b:selectOneMenu id="zona" value="#{barriosBean.distritoId}">
 						<f:selectItems value="#{barriosBean.slctDistritos}" />
 					</b:selectOneMenu>
 				</b:column>
 			</b:row>
 			<b:row>
-				<b:column span="2">
-					<h:outputLabel value="MAPA LINK:*" />
-				</b:column>
-				<b:column span="4">
-					<b:inputText value="#{barriosBean.linkMapa}" />
-				</b:column>
-				<b:column span="2">
-					<h:outputLabel value="PDF LINK:*" />
-				</b:column>
-				<b:column span="4">
-					<b:inputText value="#{barriosBean.linkPdf}" />
-				</b:column>
-			</b:row>
-			<b:row>
-				<b:column span="2">
+				<b:column col-xs="2">
 					<h:outputLabel value="HECTÁREAS:*" />
 				</b:column>
-				<b:column span="4">
-					<b:inputText value="#{barriosBean.hectareas}" required="true"
-						requiredMessage="HECTÁREAS es requerido." />
+				<b:column col-xs="4">
+					<b:inputText value="#{barriosBean.hectareas}"  />
 				</b:column>
-				<b:column span="2">
-					<h:outputLabel value="METROS CUADRADOS:*" />
+				<b:column col-xs="2">
+					<h:outputLabel value="KIL&Oacute;METROS:*" />
 				</b:column>
-				<b:column span="4">
-					<b:inputText value="#{barriosBean.metrosCuadrados}"
-						required="true" requiredMessage="METROS CUADRADOS es requerido." />
+				<b:column col-xs="4">
+					<b:inputText value="#{barriosBean.kilometros}" />
 				</b:column>
 			</b:row>
 			<b:row>
-				<b:column span="2">
+				<b:column col-xs="2">
+					<h:outputLabel value="OBSERVACI&Oacute;N:*" />
+				</b:column>
+				<b:column col-xs="10">
+					<b:inputTextarea value="#{barriosBean.observacion}" />
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column col-xs="2">
 					<h:outputLabel value="ESTADO:*" rendered="#{barriosBean.edicion}" />
 				</b:column>
-				<b:column span="4">
+				<b:column col-xs="4">
 					<b:selectOneMenu value="#{barriosBean.estado}"
 						rendered="#{barriosBean.edicion}">
 						<f:selectItems value="#{barriosBean.slctEstados}" />
 					</b:selectOneMenu>
 				</b:column>
 			</b:row>
-			<b:commandButton value="Guardar" onclick="PF('statusDialog').show()"
-				oncomplete="PF('statusDialog').hide()"
+			<b:row>
+				<b:column col-xs="2">
+					<h:outputLabel value="MAPA:*" />
+				</b:column>
+				<b:column col-xs="8">
+					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!barriosBean.edicion}"
+						sizeLimit="1000000" multiple="false"
+						invalidSizeMessage="Archivo excede limite 10 MB "
+						fileLimitMessage="Solo un archivo"
+						cancelLabel="Cancelar"
+						uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+						fileUploadListener="#{barriosBean.cargaMapa}">
+					</p:fileUpload>
+				</b:column>
+				<b:column col-xs="2">
+					<p:commandLink ajax="false" immediate="true" update="growl" disabled="#{!barriosBean.edicion}"
+						action="#{barriosBean.descargarMapa(barriosBean.id)}">
+						Descargar
+					</p:commandLink>
+				</b:column>
+			</b:row>
+			<b:row>
+				<b:column col-xs="2">
+					<h:outputLabel value="PDF:*" />
+				</b:column>
+				<b:column col-xs="8">
+					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!barriosBean.edicion}"
+						sizeLimit="1000000" multiple="false"
+						invalidSizeMessage="Archivo excede limite 10 MB "
+						invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+						fileLimitMessage="Solo un archivo"
+						allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+						uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+						fileUploadListener="#{barriosBean.cargaPDF}">
+					</p:fileUpload>
+				</b:column>
+				<b:column col-xs="2">
+						<p:commandLink ajax="false" update="growl" disabled="#{!barriosBean.edicion}"
+							action="#{barriosBean.descargarPDF(barriosBean.id)}">
+							Descargar
+						</p:commandLink>
+					</b:column>
+			</b:row>
+			<b:commandButton value="Guardar" onclick="PF('statusDialog').show();"
+				oncomplete="PF('statusDialog').hide();"
 				action="#{barriosBean.guardarEditarBarrio()}" update="frm"
 				look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
-				<b:commandButton value="Cancelar" process="@this"
+				<b:commandButton value="Volver" process="@this"
 				action="#{barriosBean.cancelar()}"
 				onclick="PF('statusDialog').show()"
 				oncomplete="PF('statusDialog').hide()" immediate="true" update="frm"

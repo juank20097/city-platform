@@ -9,12 +9,12 @@
 
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
-            Barrios
+            Vecindarios
         </ui:define>
 	<ui:define name="contenido">
 	<h:form>
 			<center>
-				<h1>Barrios</h1>
+				<h1>Vecindarios</h1>
 			</center>
 			<b:row>
 				<b:column span="1">
@@ -68,13 +68,25 @@
 						<f:facet name="header">
 							<h:outputText value="MAPA" />
 						</f:facet>
-						<a href="#{b.barLinkMapa}" target="_blank">Visualizar</a>
+						<p:commandLink ajax="false" update="mensaje2"
+							action="#{barriosBean.descargarMapa(b.barId)}">
+							Descargar
+						</p:commandLink>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="PDF" />
 						</f:facet>
-						<a href="#{b.barLinkPdf}" target="_blank">Visualizar</a>
+						<p:commandLink ajax="false" update="mensaje2"
+							action="#{barriosBean.descargarPDF(b.barId)}">
+							Descargar
+						</p:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="OBSERVACI&Oacute;N" />
+						</f:facet>
+						<h:outputText value="#{b.barObservacion}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
