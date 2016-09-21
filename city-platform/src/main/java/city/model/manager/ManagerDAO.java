@@ -654,21 +654,8 @@ public class ManagerDAO {
     }
    
    @SuppressWarnings("unchecked")
-	public List findMostPopularA() {
-		String sql = "SELECT "
-				+ "gen_persona.per_nombres, gen_persona.per_apellidos, gen_persona.per_dni, gen_funcionarios_institucion.fun_cargo, "
-				+ "gen_funcionarios_institucion.fun_gerencia, gen_funcionarios_institucion.fun_direccion, "
-				+ "gen_funcionarios_institucion.fun_fecha_ingreso, gen_persona.per_correo,  gen_persona.per_fecha_nacimiento, "
-				+ "gen_persona.per_genero, gen_persona.per_correo2, gen_persona_detalle.pde_direccion, gen_persona.per_celular, "
-				+ "gen_persona.per_telefono, gen_persona_detalle.pde_emerg_contacto_nombres, gen_persona_detalle.pde_emerg_contacto_telefono, "
-				+ "gen_persona.per_estado_civil, gen_salud.sld_carnet_conadies FROM "
-				+ "public.gen_persona, public.gen_funcionarios_institucion, public.gen_persona_detalle, public.gen_salud "
-				+ "WHERE "
-				+ "gen_persona.per_dni = gen_funcionarios_institucion.per_dni AND gen_persona.per_dni = gen_persona_detalle.pde_dni AND "
-				+ "gen_persona.per_dni = gen_salud.per_dni LIMIT 10;";
-		System.out.println(sql);
+	public List findAllNativeSQL(String sql) {
 		return em.createNativeQuery(sql).getResultList();
-		
-		
+
 	}
 }
