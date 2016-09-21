@@ -24,7 +24,7 @@ public class ManagerEstadistica {
 	public List<GenPersona> personasPorInstitucion(String insCodigo){
 		return mngDao.findWhere(GenPersona.class, 
 				"o.perDni IN (SELECT ei.id.perDni FROM GenEstudianteInstitucion ei WHERE ei.genInstitucione.insCodigo = '"+insCodigo+"') "
-				+ "OR o.perDni IN (SELECT fi.id.perDni FROM GenFuncionariosInstitucion fi WHERE fi.genInstitucione.insCodigo = '"+insCodigo+"')", 
+				+ "OR o.perDni IN (SELECT fi.id.perDni FROM GenFuncionariosInstitucion fi WHERE fi.genInstitucione.insCodigo = '"+insCodigo+"' and fi.funEstado='A')", 
 				"o.perDni");
 	}
 	
@@ -48,7 +48,7 @@ public class ManagerEstadistica {
 	@SuppressWarnings("unchecked")
 	public List<GenPersona> funcionariosPorInstitucion(String insCodigo){
 		return mngDao.findWhere(GenPersona.class, 
-				"o.perDni IN (SELECT fi.id.perDni FROM GenFuncionariosInstitucion fi WHERE fi.genInstitucione.insCodigo = '"+insCodigo+"')", 
+				"o.perDni IN (SELECT fi.id.perDni FROM GenFuncionariosInstitucion fi WHERE fi.genInstitucione.insCodigo = '"+insCodigo+"' and fi.funEstado='A')", 
 				"o.perDni");
 	}
 
