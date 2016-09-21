@@ -15,273 +15,203 @@
 				show-detail="false" global-only="false" show-summary="true"
 				allow-dismiss="true" animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
-			<p:dataTable id="tbl" var="funcionario"
-				value="#{reporteFuncionariosBean.funcionarios}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-				paginator="true" rows="10" style="margin-bottom:20px">
-				<f:facet name="{Exporters}">
-					<h:commandLink>
-						<p:graphicImage name="../resources/img/excel.png" width="24" />
-						<p:dataExporter type="xls" target="tbl" fileName="cars" />
-					</h:commandLink>
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<p:dataTable id="tbl" var="funcionario"
+					value="#{reporteFuncionariosBean.funcionarios}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" scrollable="true" rowsPerPageTemplate="10,30,50"
+					scrollHeight="300" scrollWidth="auto" resizableColumns="true"
+					widgetVar="carsTable" emptyMessage="No hay datos"
+					filteredValue="#{reporteFuncionariosBean.filteredFuncionarios}"
+					style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
 
-					<h:commandLink>
-						<p:graphicImage name="../resources/img/pdf.png" width="24" />
-						<p:dataExporter type="pdf" target="tbl" fileName="cars" />
-					</h:commandLink>
 
-					<h:commandLink>
-						<p:graphicImage name="../resources/img/csv.png" width="24" />
-						<p:dataExporter type="csv" target="tbl" fileName="cars" />
-					</h:commandLink>
-
-					<h:commandLink>
-						<p:graphicImage name="../resources/img/xml.png" width="24" />
-						<p:dataExporter type="xml" target="tbl" fileName="cars" />
-					</h:commandLink>
-				</f:facet>
-				<p:column>
 					<f:facet name="header">
-						<h:outputText value="No." />
+						<p:outputPanel>
+							<h:outputText value="Buscar:" />
+							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
+								style="width:150px" placeholder="Enter keyword" />
+						</p:outputPanel>
 					</f:facet>
-					<h:outputText value="" />
-				</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="LUGAR DE TRABAJO" />
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage value="../resources/img/xls.png" width="20" />
+							<p:dataExporter type="xls" target="tbl" fileName="Funcionarios" />
+						</h:commandLink>
 					</f:facet>
-					<h:outputText value="" />
-				</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="NOMBRES Y APELLIDOS" />
-					</f:facet>
-					<h:outputText
-						value="#{funcionario.perApellidos} #{funcionario.perNombress}" />
-				</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="CEDULA" />
-					</f:facet>
-					<h:outputText value="#{funcionario.perDni}" />
-				</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="CARGO INSTITUCIONAL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="GERENCIA" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="DIRECCION" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="REMUNERACION" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="GRUPO OCUPACIONAL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="FECHA DE INGRESO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="FECHA NUEVO CARGO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="MODALIDAD" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="FECHA TERMINACION COMISION DE SERVICIOS" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="CORREO ELECTRONICO INSTITUCIONAL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="3° NIVEL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="INSTRUCCION FORMAL TITULO 3 NIVEL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="4° NIVEL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="TITULO 4to. NIVEL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="FECHA DE NACIMIENTO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="AÑOS, MESES, DIAS" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="EDAD" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="SEXO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="CORREO ELECTRONICO PERSONAL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="DIRECCION DOMICILIARIA" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="NUMERO CELULAR FUNCIONARIO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="NUMERO TELEFONO FIJO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="EN CASO DE EMERGENCIA LLAMAR A" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="PARENTEZCO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
+					<p:column width="240" resizable="true"
+						filterBy="#{funcionario.perApellidos} #{funcionario.perNombres}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRES Y APELLIDOS" />
+						</f:facet>
 						<h:outputText
-							value="TELEFONO DE LA PERSONA A LA QUE HAY QUE LLAMAR EN CASO DE MERGENCIA" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+							value="#{funcionario.perApellidos} #{funcionario.perNombres}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="ESTADO CIVIL" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+					<p:column width="100" filterBy="#{funcionario.perDni}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="CEDULA" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perDni}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="ENFERMEDAD IMPORTANTE" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+					<p:column width="300">
+						<f:facet name="header">
+							<h:outputText value="CARGO INSTITUCIONAL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.funCargo}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="DISCAPACIDAD" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+					<p:column width="280">
+						<f:facet name="header">
+							<h:outputText value="GERENCIA" />
+						</f:facet>
+						<h:outputText value="#{funcionario.funGerencia}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="FAMILIAR CON DISCAPACIDAD" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+					<p:column width="280">
+						<f:facet name="header">
+							<h:outputText value="DIRECCION" />
+						</f:facet>
+						<h:outputText value="#{funcionario.funDireccion}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="PARENTEZCO" />
-					</f:facet>
-					<h:outputText value="" />
-				</p:column>
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="FECHA DE INGRESO" />
+						</f:facet>
+						<h:outputText value="#{funcionario.funFechaIngreso}" />
+					</p:column>
 
-			</p:dataTable>
-			
+					<p:column width="220">
+						<f:facet name="header">
+							<h:outputText value="CORREO ELECTRONICO INSTITUCIONAL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perCorreo}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="3° NIVEL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.tieneTercerNivel}" />
+					</p:column>
+
+					<p:column width="220">
+						<f:facet name="header">
+							<h:outputText value="INSTRUCCION FORMAL TITULO 3 NIVEL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.titulosTercerNivel}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="4° NIVEL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.tieneTitulosCuartoNivel}" />
+					</p:column>
+
+					<p:column width="220">
+						<f:facet name="header">
+							<h:outputText value="TITULO 4to. NIVEL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.titulosCuartoNivel}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="FECHA DE NACIMIENTO" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perFechaNacimiento}" />
+					</p:column>
+
+					<p:column width="150">
+						<f:facet name="header">
+							<h:outputText value="AÑOS, MESES, DIAS" />
+						</f:facet>
+						<h:outputText value="#{funcionario.edadCompleta}" />
+					</p:column>
+
+					<p:column width="60">
+						<f:facet name="header">
+							<h:outputText value="EDAD" />
+						</f:facet>
+						<h:outputText value="#{funcionario.edad}" />
+					</p:column>
+
+					<p:column width="60">
+						<f:facet name="header">
+							<h:outputText value="SEXO" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perGenero}" />
+					</p:column>
+
+					<p:column width="200">
+						<f:facet name="header">
+							<h:outputText value="CORREO ELECTRONICO PERSONAL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perCorreo2}" />
+					</p:column>
+
+					<p:column width="280">
+						<f:facet name="header">
+							<h:outputText value="DIRECCION DOMICILIARIA" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeDireccion}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="NUMERO CELULAR FUNCIONARIO" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perCelular}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText value="NUMERO TELEFONO FIJO" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perTelefono}" />
+					</p:column>
+
+					<p:column width="220">
+						<f:facet name="header">
+							<h:outputText value="EN CASO DE EMERGENCIA LLAMAR A" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeEmergContactoNombres}" />
+					</p:column>
+
+					<p:column width="100">
+						<f:facet name="header">
+							<h:outputText
+								value="TELEFONO DE LA PERSONA A LA QUE HAY QUE LLAMAR EN CASO DE MERGENCIA" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeEmergContactoTelefono}" />
+					</p:column>
+
+					<p:column width="80">
+						<f:facet name="header">
+							<h:outputText value="ESTADO CIVIL" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perEstadoCivil}" />
+					</p:column>
+
+					<p:column width="80">
+						<f:facet name="header">
+							<h:outputText value="DISCAPACIDAD" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldCarnetConadies}" />
+					</p:column>
+
+				</p:dataTable>
+			</b:panel>
 			<b:commandButton value="Buscar" look="info"
 				onclick="PF('statusDialog').show()"
 				oncomplete="PF('statusDialog').hide()"
