@@ -10,6 +10,18 @@
             Lista funcionarios
         </ui:define>
 	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>LISTA DE FUNCIONARIOS</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
 		<h:form id="frmReporteFuncionarios">
 			<b:growl id="growl" delay="4000" placementFrom="top"
 				show-detail="false" global-only="false" show-summary="true"
@@ -29,9 +41,9 @@
 
 					<f:facet name="header">
 						<p:outputPanel>
-							<h:outputText value="Buscar:" />
+							<h:outputText value="Buscar: " />
 							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
-								style="width:150px" placeholder="Ingrese busquedas" />
+								style="width:150px" placeholder="Ingrese b&#250;squedas" />
 						</p:outputPanel>
 					</f:facet>
 
@@ -118,7 +130,8 @@
 						<h:outputText value="#{funcionario.titulosTercerNivel}" />
 					</p:column>
 
-					<p:column width="100" filterBy="#{funcionario.tieneTitulosCuartoNivel}"
+					<p:column width="100"
+						filterBy="#{funcionario.tieneTitulosCuartoNivel}"
 						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="4° NIVEL" />
@@ -198,7 +211,8 @@
 						<h:outputText value="#{funcionario.perTelefono}" />
 					</p:column>
 
-					<p:column width="220" filterBy="#{funcionario.pdeEmergContactoNombres}"
+					<p:column width="220"
+						filterBy="#{funcionario.pdeEmergContactoNombres}"
 						filterMatchMode="contains">
 						<f:facet name="header">
 							<h:outputText value="CONTACTO EMERGENCIA" />
@@ -206,11 +220,11 @@
 						<h:outputText value="#{funcionario.pdeEmergContactoNombres}" />
 					</p:column>
 
-					<p:column width="100" filterBy="#{funcionario.pdeEmergContactoTelefono}"
+					<p:column width="100"
+						filterBy="#{funcionario.pdeEmergContactoTelefono}"
 						filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText
-								value="TEL&#201;FONO EMERGENCIA" />
+							<h:outputText value="TEL&#201;FONO EMERGENCIA" />
 						</f:facet>
 						<h:outputText value="#{funcionario.pdeEmergContactoTelefono}" />
 					</p:column>
@@ -233,13 +247,11 @@
 
 				</p:dataTable>
 			</b:panel>
-			<b:commandButton value="Buscar" look="info"
-				onclick="PF('statusDialog').show()"
-				oncomplete="PF('statusDialog').hide()"
-				actionListener="#{reporteFuncionariosBean.cargarFuncionarios()}"
-				update="frmReporteFuncionarios">
-			</b:commandButton>
 		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 

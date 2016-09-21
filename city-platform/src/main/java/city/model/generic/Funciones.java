@@ -301,7 +301,7 @@ public class Funciones {
 		// Se asigna la fecha recibida a la fecha de nacimiento.
 		fechaNacimiento.setTime(fecha);
 		// Se restan la fecha actual y la fecha de nacimiento
-		int a�o = fechaActual.get(Calendar.YEAR)
+		int anio = fechaActual.get(Calendar.YEAR)
 				- fechaNacimiento.get(Calendar.YEAR);
 		int mes = fechaActual.get(Calendar.MONTH)
 				- fechaNacimiento.get(Calendar.MONTH);
@@ -309,10 +309,10 @@ public class Funciones {
 				- fechaNacimiento.get(Calendar.DATE);
 		// Se ajusta el a�o dependiendo el mes y el d�a
 		if (mes < 0 || (mes == 0 && dia < 0)) {
-			a�o--;
+			anio--;
 		}
 		// Regresa la edad en base a la fecha de nacimiento
-		return a�o;
+		return anio;
 	}
 
 	/**
