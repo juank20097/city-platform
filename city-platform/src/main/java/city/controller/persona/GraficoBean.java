@@ -227,5 +227,11 @@ public class GraficoBean {
 
 		return modelp;
 	}
+	
+	public void cargarDatos(){
+		llenarEnteros();
+		createBarModel();
+		createBarModelPorcentual();
+	}
 
 }
