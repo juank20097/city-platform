@@ -1,12 +1,14 @@
 package city.model.manager;
 
-import city.model.generic.Funciones;
-
 public class Test {
+	
+	
 
 	public static void main(String[] args) {
-		System.out.println("valor: "+Funciones.cifradoPropio("AZC1003422365", 3));
-		System.out.println("valor decifrado:"+ Funciones.descifradoPropio("D?F4336755698", 3) );
+		
+		
+//		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
+//		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));
 
 //		SingletonJDBC s = SingletonJDBC.getInstance();
 //		

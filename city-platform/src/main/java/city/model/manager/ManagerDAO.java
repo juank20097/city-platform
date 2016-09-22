@@ -295,6 +295,16 @@ public class ManagerDAO {
 
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public List  ejectNativeSQL3(String pClausulaSQL) {
+		mostrarLog("ejectNativeSQL3", pClausulaSQL);
+		Query q;
+		List listado;
+		q = em.createNativeQuery(pClausulaSQL);
+		listado = q.getResultList(); 
+		return listado;
+	}
+	
 	/**
 	 * Finder generico para buscar un objeto especifico.
 	 * 
@@ -658,4 +668,6 @@ public class ManagerDAO {
 		return em.createNativeQuery(sql).getResultList();
 
 	}
+   
+   
 }

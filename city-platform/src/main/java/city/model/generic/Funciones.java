@@ -157,7 +157,7 @@ public class Funciones {
 	 * @return String
 	 */
 	public static String dateToString(Date fecha) {
-		DateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 		if (fecha == null)
 			return "";
 		else
@@ -172,7 +172,7 @@ public class Funciones {
 	 * @throws ParseException
 	 */
 	public static Date stringToDate(String fecha) throws ParseException {
-		DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
 		if (fecha.isEmpty())
 			return null;
 		else
@@ -201,7 +201,7 @@ public class Funciones {
 	 * @throws ParseException
 	 */
 	public static Date stringToDateF(String fecha) throws ParseException {
-		DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 		if (fecha.isEmpty())
 			return null;
 		else
