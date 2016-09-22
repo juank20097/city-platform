@@ -1,8 +1,12 @@
 package city.model.manager;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -18,6 +22,8 @@ import city.model.dao.entidades.GenPersona;
 import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
 import city.model.dao.entidades.SegIncidenciasAdmin;
+import city.model.dao.entidades.extras.DatosFuncionario;
+import city.model.generic.Funciones;
 
 /**
  * Esta Clase permite manejar el ManagerDAO en conveniencia a la gestión
@@ -185,16 +191,17 @@ public class ManagerPersona {
 	public GenCatalogoCab CatalogoByID(String codigo) throws Exception {
 		return (GenCatalogoCab) mngDao.findById(GenCatalogoCab.class, codigo);
 	}// Cierre del metodo
-	
+
 	@SuppressWarnings("unchecked")
-	public boolean verificarUsuarioSalud(String usuario){
-		List<SegIncidenciasAdmin> lista_usu_admin= mngDao.findWhere(SegIncidenciasAdmin.class, "o.admUsuario = '"+usuario.trim()+"'", null);
-		if (lista_usu_admin==null || lista_usu_admin.size()==0){
+	public boolean verificarUsuarioSalud(String usuario) {
+		List<SegIncidenciasAdmin> lista_usu_admin = mngDao.findWhere(SegIncidenciasAdmin.class,
+				"o.admUsuario = '" + usuario.trim() + "'", null);
+		if (lista_usu_admin == null || lista_usu_admin.size() == 0) {
 			return false;
-		}else{
+		} else {
 			return true;
 		}
-		
+
 	}
 
 	// ////////////////////////////////////////////////////////////(ITEM)///////////////////////////////////////////////////////////////////////
@@ -1019,15 +1026,88 @@ public class ManagerPersona {
 	}
 
 	public String catalogoItem(String idItem) throws Exception {
-		System.out.println("valor Item-->"+idItem);
-		if (idItem ==null || idItem.equals("")) {
+		System.out.println("valor Item-->" + idItem);
+		if (idItem == null || idItem.equals("")) {
 			return "";
 		} else {
 			GenCatalogoItemsDet it = this.ItemByID(idItem);
-			if (it==null || it.equals("")) {
+			if (it == null || it.equals("")) {
 				return "";
 			} else
 				return it.getIteNombre();
 		}
 	}
+
+	/////////////////////////////////////////////////// (GRÁFICO)/////////////////////////////////////////////////////////
+
+	public Integer obtencionDatos(Integer edadi, Integer edadf, String genero) {
+		Integer valor = 0;
+		ArrayList<Integer> edades = new ArrayList<Integer>();
+		for (GenPersona persona : listaFuncionarios(genero)) {
+			edades.add(edadXFecha(persona.getPerFechaNacimiento()));
+		}
+		for (Integer edad : edades) {
+			if (edad >= edadi && edad <= edadf) {
+				valor += 1;
+			}
+		}
+		System.out.println(valor);
+		return valor;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenPersona> listaFuncionarios(String genero) {
+		List<GenPersona> lp = new ArrayList<GenPersona>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select * from gen_persona where per_genero='"+genero.trim()+"' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		lp=ObjectToGenPersona(lista);
+		return lp;
+	}
+
+	private List<GenPersona> ObjectToGenPersona(List<Object> lista) {
+		List<GenPersona> l_persona= new ArrayList<GenPersona>();
+		try {
+			Iterator it = lista.iterator();
+			while (it.hasNext()) {
+				GenPersona p = new GenPersona();
+				Object[] obj = (Object[]) it.next();
+				p.setPerDni(String.valueOf(obj[0]));
+				p.setPerGenero(String.valueOf(obj[5]));
+				Date d = Funciones.stringToDateF(String.valueOf(obj[4]).trim());
+				p.setPerFechaNacimiento(d);
+				l_persona.add(p);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return l_persona;
+	}
+
+	public Integer edadXFecha(Date fecha) {
+		Integer v=0;
+		String f = Funciones.dateToString(fecha);
+		v=edad(f);
+		return v;
+		
+	}
+
+	 public Integer edad(String fecha_nac) { //fecha_nac debe tener el formato dd/MM/yyyy
+	 Date fechaActual = new Date();
+	 SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+	 String hoy = formato.format(fechaActual);
+	 String[] dat1 = fecha_nac.split("-");
+	 String[] dat2 = hoy.split("-");
+	 int anos = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
+	 int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
+	 if (mes < 0) {
+	 anos = anos - 1;
+	 } else if (mes == 0) {
+	 int dia = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
+	 if (dia > 0) {
+	 anos = anos - 1;
+	 }
+	 }
+	 return anos;
+	 }
 }
