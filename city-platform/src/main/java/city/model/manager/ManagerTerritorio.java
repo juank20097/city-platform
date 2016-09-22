@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import city.model.dao.entidades.GenAsignacionSuelo;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
@@ -389,6 +390,30 @@ public class ManagerTerritorio {
 				"select  coalesce(sum(bar_hectareas),0) from gen_barrios where bar_hectareas is not null and dis_id in (select dis_id from gen_distritos where zon_id ='"
 						+ zona + "');");
 
+	}
+	
+	// //////////////////////////////////////////////////////////(AsignacionSuelo)/////////////////////////////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
+		return mngDAO.findAll(GenAsignacionSuelo.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GenAsignacionSuelo> findAllAsignacionSueloA() {
+		return mngDAO.findWhere(GenAsignacionSuelo.class, "o.zonEstado='A'", null);
+	}
+
+	public void insertarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
+		mngDAO.insertar(asignacionSuelo);
+	}
+
+	public void modicarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
+		mngDAO.actualizar(asignacionSuelo);
+	}
+	
+	public GenAsignacionSuelo findAsignacionSueloById(Integer idAsignacionSuelo) throws Exception {
+		return (GenAsignacionSuelo) mngDAO.findById(GenAsignacionSuelo.class, idAsignacionSuelo);
 	}
 
 }
