@@ -40,7 +40,7 @@
 						<h:outputLabel value="Ubicaci&oacute;n:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoUbicacionBean.ubicacion}">
+						<b:selectOneMenu value="#{elementoUbicacionBean.ubicacion}" disabled="#{elementoUbicacionBean.edicionBZ}">
 							<f:selectItems value="#{elementoUbicacionBean.slctUbicaciones}" />
 						</b:selectOneMenu>
 					</b:column>

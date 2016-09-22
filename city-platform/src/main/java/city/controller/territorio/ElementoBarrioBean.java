@@ -36,12 +36,12 @@ public class ElementoBarrioBean implements Serializable {
 	@EJB
 	private ManagerTerritorio manager;
 
-//	@Inject
-//	private SesionBean session;
+	@Inject
+	private SesionBean session;
 
 	private int id;
 
-	@NotEmpty(message = "NOMBRE no debe estar vacío.")
+	@NotEmpty(message = "NOMBRE no debe estar vacÃ­o.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 
@@ -61,7 +61,7 @@ public class ElementoBarrioBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-//		ssession.validarSesion();
+		session.validarSesion();
 		estado = ID_ACTIVO;
 		tipo = TIPO_UBICACION;
 		lstElementos = new ArrayList<GenElementosBarrio>();
@@ -192,7 +192,7 @@ public class ElementoBarrioBean implements Serializable {
 	public String validarItemCatalogo(String item) {
 		String respuesta = "";
 		try {
-			System.out.println("ïtem validar ----> "+item);
+			System.out.println("Ãtem validar ----> "+item);
 			respuesta = manager.catalogoItem(item);
 
 		} catch (Exception e) {
