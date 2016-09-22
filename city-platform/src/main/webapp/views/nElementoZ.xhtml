@@ -24,7 +24,7 @@
 						<h:outputLabel value="C&oacute;digo Elemento:" />
 					</b:column>
 					<b:column col-xs="4">
-						<h:outputText id="id" value="#{elementoBean.id}" />
+						<h:outputText id="id" value="#{elementoZonaBean.id}" />
 					</b:column>
 				</b:row>
 				<b:row style="margin-bottom:10px;">
@@ -32,7 +32,7 @@
 						<h:outputLabel value="Nombre:*" />
 					</b:column>
 					<b:column col-xs="10">
-						<b:inputText value="#{elementoBean.nombre}" />
+						<b:inputText value="#{elementoZonaBean.nombre}" />
 					</b:column>
 				</b:row>
 				<b:row>
@@ -40,26 +40,24 @@
 						<h:outputLabel value="Tipo Ubicaci&oacute;n:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.tipo}">
-							<f:selectItems value="#{elementoBean.slctTipos}" />
-						</b:selectOneMenu>
+						<h:outputText value="#{elementoZonaBean.validarItemCatalogo(elementoZonaBean.tipo)}" />
 					</b:column>
 					<b:column col-xs="2">
 						<h:outputLabel value="Unidad de Medida:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.unidadMedida}">
-							<f:selectItems value="#{elementoBean.slctUnidadesMedida}" />
+						<b:selectOneMenu value="#{elementoZonaBean.unidadMedida}">
+							<f:selectItems value="#{elementoZonaBean.slctUnidadesMedida}" />
 						</b:selectOneMenu>
 					</b:column>
 				</b:row>
-				<b:row rendered="#{elementoBean.edicion}">
+				<b:row rendered="#{elementoZonaBean.edicion}">
 					<b:column col-xs="2">
 						<h:outputLabel value="Estado*: " />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.estado}">
-							<f:selectItems value="#{elementoBean.slctEstados}" />
+						<b:selectOneMenu value="#{elementoZonaBean.estado}">
+							<f:selectItems value="#{elementoZonaBean.slctEstados}" />
 						</b:selectOneMenu>
 					</b:column>
 				</b:row>
@@ -68,10 +66,10 @@
 						<b:commandButton value="Guardar"
 							onclick="PF('statusDialog').show();"
 							oncomplete="PF('statusDialog').hide();"
-							action="#{elementoBean.guardarEditarElemento()}"
+							action="#{elementoZonaBean.guardarEditarElemento()}"
 							update="frmcbc :frmpmsj" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
 							<b:commandButton value="Cancelar"
-							action="#{elementoBean.cancelar()}"
+							action="#{elementoZonaBean.cancelar()}"
 							onclick="PF('statusDialog').show();" process="@this"
 							oncomplete="PF('statusDialog').hide();" immediate="true"
 							update="frmcbc" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;

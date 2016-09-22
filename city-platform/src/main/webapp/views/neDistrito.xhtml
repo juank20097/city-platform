@@ -90,7 +90,7 @@
 				<b:column col-xs="2">
 					<h:outputLabel value="MAPA:*" />
 				</b:column>
-				<b:column col-xs="8">
+				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!distritoBean.edicion}"
 						sizeLimit="1000000" multiple="false"
 						invalidSizeMessage="Archivo excede limite 10 MB "
@@ -100,10 +100,10 @@
 						fileUploadListener="#{distritoBean.cargaMapa}">
 					</p:fileUpload>
 				</b:column>
-				<b:column col-xs="2">
-					<p:commandLink ajax="false" update="growl" disabled="#{!distritoBean.edicion}"
+				<b:column col-xs="4">
+					<p:commandLink ajax="false" immediate="true" update="growl" disabled="#{!distritoBean.edicion}"
 						action="#{distritoBean.descargarMapa(distritoBean.id)}">
-						Descargar
+						#{distritoBean.dirMapa}
 					</p:commandLink>
 				</b:column>
 			</b:row>
@@ -111,7 +111,7 @@
 				<b:column col-xs="2">
 					<h:outputLabel value="PDF:*" />
 				</b:column>
-				<b:column col-xs="8">
+				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!distritoBean.edicion}"
 						sizeLimit="1000000" multiple="false"
 						invalidSizeMessage="Archivo excede limite 10 MB "
@@ -122,10 +122,10 @@
 						fileUploadListener="#{distritoBean.cargaPDF}">
 					</p:fileUpload>
 				</b:column>
-				<b:column col-xs="2">
-					<p:commandLink ajax="false" update="growl" disabled="#{!distritoBean.edicion}"
-						action="#{distritoBean.descargarPDF(distritoBean.id)}">
-						Descargar
+				<b:column col-xs="4">
+					<p:commandLink ajax="false" immediate="true" update="growl" disabled="#{!distritoBean.edicion}"
+						action="#{distritoBean.descargarPDF(distritoBean.id)}" >
+					#{distritoBean.dirPdf}
 					</p:commandLink>
 			</b:column>
 			</b:row>

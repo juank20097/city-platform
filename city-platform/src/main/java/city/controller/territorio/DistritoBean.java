@@ -50,33 +50,33 @@ public class DistritoBean implements Serializable{
 	private SesionBean session;
 
 	
-	@NotEmpty(message="ID no debe estar vacío.")
+	@NotEmpty(message="ID no debe estar vacÃ­o.")
 	@NotBlank(message="ID no debe ser solo espacios blancos.")
 	private String id;
-	@NotEmpty(message="DESCRIPCIÓN no debe estar vacío.")
-	@NotBlank(message="DESCRIPCIÓN no debe ser solo espacios blancos.")
+	@NotEmpty(message="DESCRIPCIÃ“N no debe estar vacÃ­o.")
+	@NotBlank(message="DESCRIPCIÃ“N no debe ser solo espacios blancos.")
 	private String descripcion;
 	
 	private String estado;
 	
 	private BigDecimal hectareas;
-	@NotEmpty(message="MAPA LINK no debe estar vacío.")
+	@NotEmpty(message="MAPA LINK no debe estar vacÃ­o.")
 	@NotBlank(message="MAPA LINK no debe ser solo espacios blancos.")
-	@URL(message="MAPA LINK no es una url válida.")
+	@URL(message="MAPA LINK no es una url vÃ¡lida.")
 	private String linkMapa;
-	@NotEmpty(message="PDF LINK no debe estar vacío.")
+	@NotEmpty(message="PDF LINK no debe estar vacÃ­o.")
 	@NotBlank(message="PDF LINK no debe ser solo espacios blancos.")
-	@URL(message="PDF LINK no es una url válida.")
+	@URL(message="PDF LINK no es una url vÃ¡lida.")
 	private String linkPdf;
 	
 	@DecimalMin("1")
 	private BigDecimal kilometros;
-	@NotEmpty(message="NOMBRE no debe estar vacío.")
+	@NotEmpty(message="NOMBRE no debe estar vacÃ­o.")
 	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 	
-	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
+	@NotEmpty(message="OBSERVACIÃ“N no debe estar vacio.")
+	@NotBlank(message="OBSERVACIÃ“N no debe ser solo espacios blancos.")
 	private String observacion;
 	
 	private UploadedFile fileMapa;
@@ -284,6 +284,9 @@ public class DistritoBean implements Serializable{
 		setEdicion(true);
 		setZonaId(distrito.getGenZona().getZonId());
 		setZona(distrito.getGenZona());
+		setDirMapa(distrito.getDisLinkMapa());
+		setDirPdf(distrito.getDisLinkPdf());
+		
 		return "neDistrito?faces-redirect=true";
 	}
 	
@@ -294,7 +297,7 @@ public class DistritoBean implements Serializable{
 				Mensaje.crearMensajeWARN("Seleccione una zona");
 				return respuesta;
 			}else if(!isEdicion() && manager.findDistritoById(getId())!=null){
-				Mensaje.crearMensajeWARN("Ya existe un distrito con el mismo id, favor cámbielo.");
+				Mensaje.crearMensajeWARN("Ya existe un distrito con el mismo id, favor cÃ¡mbielo.");
 				return respuesta;
 			}else{
 				GenDistrito d = new GenDistrito();

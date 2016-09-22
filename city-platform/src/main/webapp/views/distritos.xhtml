@@ -79,7 +79,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{distritoBean.descargarMapa(d.disId)}">
-							Descargar
+							#{d.disLinkMapa}
 						</p:commandLink>
 					</h:column>
 					<h:column>
@@ -88,7 +88,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{distritoBean.descargarPDF(d.disId)}">
-							Descargar
+							#{d.disLinkPdf}
 						</p:commandLink>
 					</h:column>
 					<h:column>
