@@ -12,6 +12,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
+import city.controller.access.SesionBean;
 import city.model.manager.ManagerPersona;
 
 /**
@@ -25,13 +26,14 @@ public class GraficoBean {
 	// Atributos de la Clase
 	@EJB
 	private ManagerPersona manager;
-//	@Inject
-	//private SesionBean session;
+	@Inject
+	private SesionBean session;
 
 	private BarChartModel barModel;
  
     @PostConstruct
     public void init() {
+    	session.validarSesion();
         createBarModel();
     }
  
