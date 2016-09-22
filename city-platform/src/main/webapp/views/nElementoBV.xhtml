@@ -24,13 +24,13 @@
 							<h:outputLabel value="Elemento:" />
 						</b:column>
 						<b:column  col-xs="4">
-							<h:outputText value="#{ubicacionElementoBean.elemento.eleNombre}"/>
+							<h:outputText value="#{elementoUbicacionBean.elementoBarrio.elbNombre}"/>
 						</b:column>
 						<b:column col-xs="2">
 							<h:outputLabel value="Unidad de Medida: " />
 						</b:column>
 						<b:column  col-xs="4">
-							<h:outputText value="#{ubicacionElementoBean.validarItemCatalogo(ubicacionElementoBean.elemento.eleUnidadMedida)}"/>
+							<h:outputText value="#{elementoUbicacionBean.validarItemCatalogo(elementoUbicacionBean.elementoBarrio.elbUnidadMedida)}"/>
 						</b:column>
 					</b:row>
 					<b:row style="margin-bottom:10px;">
@@ -38,24 +38,24 @@
 							<h:outputLabel value="Ubicaci&oacute;n:*" />
 						</b:column>
 						<b:column  col-xs="4">
-							<b:selectOneMenu value="#{ubicacionElementoBean.ubicacion}">
-								<f:selectItems value="#{ubicacionElementoBean.slctUbicaciones}"/>
+							<b:selectOneMenu value="#{elementoUbicacionBean.ubicacion}" disabled="#{elementoUbicacionBean.edicionBV}">
+								<f:selectItems value="#{elementoUbicacionBean.slctUbicaciones}"/>
 							</b:selectOneMenu>
 						</b:column>
 						<b:column col-xs="2">
 							<h:outputLabel value="Valor*:" />
 						</b:column>
 						<b:column col-xs="4">
-							<b:inputText id="valor" value="#{ubicacionElementoBean.valor}" />
+							<b:inputText id="valor" value="#{elementoUbicacionBean.valorBV}" />
 						</b:column>
 					</b:row>		
-					<b:row rendered="#{ubicacionElementoBean.edicion}">
+					<b:row rendered="#{elementoUbicacionBean.edicionBV}">
 						<b:column col-xs="2">
 							<h:outputLabel value="Estado*:" />
 						</b:column>
 						<b:column col-xs="4">
-							<b:selectOneMenu value="#{ubicacionElementoBean.estado}">
-								<f:selectItems value="#{ubicacionElementoBean.slctEstados}"/>
+							<b:selectOneMenu value="#{elementoUbicacionBean.estadoBV}">
+								<f:selectItems value="#{elementoUbicacionBean.slctEstados}"/>
 							</b:selectOneMenu>
 						</b:column>
 					</b:row>
@@ -64,11 +64,11 @@
 							<b:commandButton value="Guardar"
 								onclick="PF('statusDialog').show();"
 								oncomplete="PF('statusDialog').hide();"
-								action="#{ubicacionElementoBean.guardarEditarUbicacionElemento()}"
+								action="#{elementoUbicacionBean.guardarEditarElementoBarrioValor()}"
 								update="frmcbc :frmpmsj" look="info">
 							</b:commandButton>&nbsp;&nbsp;&nbsp;
 							<b:commandButton value="Cancelar"
-								action="#{ubicacionElementoBean.cancelar()}"
+								action="#{elementoUbicacionBean.cancelarBV()}"
 								onclick="PF('statusDialog').show();" process="@this"
 								oncomplete="PF('statusDialog').hide();" immediate="true"
 								update="frmcbc" look="info">

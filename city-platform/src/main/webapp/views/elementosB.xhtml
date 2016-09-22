@@ -7,17 +7,17 @@
 	xmlns:b="http://bootsfaces.net/ui">
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
-            Zonas
+            Elementos - Barrio
         </ui:define>
 	<ui:define name="contenido">
 	<h:form>
 			<center>
-				<h1>ZONAS</h1>
+				<h1>ELEMENTOS - BARRIO</h1>
 			</center>
 			<b:row>
 				<b:column span="1">
 					<b:commandButton value="Nuevo" iconAwesome="file-o"
-						action="#{zonaBean.nuevaZona()}" />
+						action="#{elementoBarrioBean.nuevoElemento()}" />
 				</b:column>
 				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -32,7 +32,7 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-			<b:dataTable id="dt_ins" value="#{zonaBean.listZonas}" var="z"
+			<b:dataTable id="dt_ins" value="#{elementoBarrioBean.lstElementos}" var="e"
 					styleClass="table table-striped table-bordered dt-responsive nowrap" 
 					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
 					<h:column width="100">
@@ -41,62 +41,32 @@
 						</f:facet>
 						&nbsp;&nbsp;&nbsp;
 						<b:commandButton iconAwesome="fa fa-pencil-square-o" style="padding: 0; border: none; background: none;color: #000"
-							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{zonaBean.cargarEditarZona(z)}">
+							onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();" action="#{elementoBarrioBean.cargarEditarElemento(e)}">
 						</b:commandButton>
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="ID" />
-						</f:facet>
-						<h:outputText value="#{z.zonId}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
 						</f:facet>
-						<h:outputText value="#{z.zonNombre}" />
+						<h:outputText value="#{e.elbNombre}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="DESCRIPCIÓN" />
+							<h:outputText value="TIPO UBICACI&Oacute;N" />
 						</f:facet>
-						<h:outputText value="#{z.zonDescripcion}" />
+						<h:outputText value="#{elementoBarrioBean.validarItemCatalogo(e.elbTipo)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="HECT&Aacute;REAS" />
+							<h:outputText value="UNIDAD DE MEDIDA" />
 						</f:facet>
-						<h:outputText value="#{zonaBean.sumaHectareas(z.zonId)}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="MAPA" />
-						</f:facet>
-						<p:commandLink ajax="false" update="mensaje2"
-							action="#{zonaBean.descargarMapa(z)}">
-							#{z.zonLinkMapa}
-						</p:commandLink>
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="PDF" />
-						</f:facet>
-						<p:commandLink ajax="false" update="mensaje2"
-							action="#{zonaBean.descargarPDF(z)}">
-							#{z.zonLinkPdf}
-						</p:commandLink>
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="OBSERVACI&Oacute;N" />
-						</f:facet>
-						<h:outputText value="#{z.zonObservacion}" />
+						<h:outputText value="#{elementoBarrioBean.validarItemCatalogo(e.elbUnidadMedida)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="ESTADO" />
 						</f:facet>
-						<h:outputText value="#{z.zonEstado}" />
+						<h:outputText value="#{elementoBarrioBean.validarItemCatalogo(e.elbEstado)}" />
 					</h:column>
 					</b:dataTable>
 			</b:panel>

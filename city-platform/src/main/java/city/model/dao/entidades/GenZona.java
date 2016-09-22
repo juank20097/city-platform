@@ -51,10 +51,15 @@ public class GenZona implements Serializable {
 	// bi-directional many-to-one association to GenZonasComunidade
 	@OneToMany(mappedBy = "genZona")
 	private List<GenZonasComunidade> genZonasComunidades;
+	//bi-directional many-to-one association to GenElementoZonaValor
+	@OneToMany(mappedBy="genZona")
+	private List<GenElementoZonaValor> genElementoZonaValors;
+		
 
 	// bi-directional many-to-one association to GenAsignacionSuelo
 	@OneToMany(mappedBy = "genZona")
 	private List<GenAsignacionSuelo> genAsignacionSuelos;
+
 
 	public GenZona() {
 	}
@@ -197,4 +202,25 @@ public class GenZona implements Serializable {
 		return genAsignacionSuelo;
 	}
 
+	public List<GenElementoZonaValor> getGenElementoZonaValors() {
+		return this.genElementoZonaValors;
+	}
+
+	public void setGenElementoZonaValors(List<GenElementoZonaValor> genElementoZonaValors) {
+		this.genElementoZonaValors = genElementoZonaValors;
+	}
+
+	public GenElementoZonaValor addGenElementoZonaValor(GenElementoZonaValor genElementoZonaValor) {
+		getGenElementoZonaValors().add(genElementoZonaValor);
+		genElementoZonaValor.setGenZona(this);
+
+		return genElementoZonaValor;
+	}
+
+	public GenElementoZonaValor removeGenElementoZonaValor(GenElementoZonaValor genElementoZonaValor) {
+		getGenElementoZonaValors().remove(genElementoZonaValor);
+		genElementoZonaValor.setGenZona(null);
+
+		return genElementoZonaValor;
+	}
 }
