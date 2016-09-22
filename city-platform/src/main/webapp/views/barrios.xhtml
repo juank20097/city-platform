@@ -70,7 +70,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{barriosBean.descargarMapa(b.barId)}">
-							Descargar
+							#{b.barLinkMapa}
 						</p:commandLink>
 					</h:column>
 					<h:column>
@@ -79,7 +79,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{barriosBean.descargarPDF(b.barId)}">
-							Descargar
+							#{b.barLinkPdf}
 						</p:commandLink>
 					</h:column>
 					<h:column>

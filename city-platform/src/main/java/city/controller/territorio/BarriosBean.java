@@ -303,6 +303,8 @@ public class BarriosBean implements Serializable {
 		setDistritoId(barrio.getGenDistrito().getDisId());
 		setDistrito(barrio.getGenDistrito());
 		setObservacion(barrio.getBarObservacion());
+		setDirMapa(barrio.getBarLinkMapa());
+		setDirPdf(barrio.getBarLinkPdf());
 
 		return "nBarrio?faces-redirect=true";
 	}

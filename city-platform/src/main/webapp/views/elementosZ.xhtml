@@ -7,17 +7,17 @@
 	xmlns:b="http://bootsfaces.net/ui">
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
-            Elementos
+            Elementos - Zona
         </ui:define>
 	<ui:define name="contenido">
 	<h:form>
 			<center>
-				<h1>ELEMENTOS</h1>
+				<h1>ELEMENTOS - ZONA</h1>
 			</center>
 			<b:row>
 				<b:column span="1">
 					<b:commandButton value="Nuevo" iconAwesome="file-o"
-						action="#{elementoBean.nuevoElemento()}" />
+						action="#{elementoZonaBean.nuevoElemento()}" />
 				</b:column>
 				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -32,7 +32,7 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-			<b:dataTable id="dt_ins" value="#{elementoBean.lstElementos}" var="e"
+			<b:dataTable id="dt_ins" value="#{elementoZonaBean.lstElementos}" var="e"
 					styleClass="table table-striped table-bordered dt-responsive nowrap" 
 					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
 					<h:column width="100">
@@ -41,32 +41,32 @@
 						</f:facet>
 						&nbsp;&nbsp;&nbsp;
 						<b:commandButton iconAwesome="fa fa-pencil-square-o" style="padding: 0; border: none; background: none;color: #000"
-							onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();" action="#{elementoBean.cargarEditarElemento(e)}">
+							onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();" action="#{elementoZonaBean.cargarEditarElemento(e)}">
 						</b:commandButton>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="NOMBRE" />
 						</f:facet>
-						<h:outputText value="#{e.eleNombre}" />
+						<h:outputText value="#{e.elzNombre}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="TIPO UBICACI&Oacute;N" />
 						</f:facet>
-						<h:outputText value="#{elementoBean.validarItemCatalogo(e.eleTipo)}" />
+						<h:outputText value="#{elementoZonaBean.validarItemCatalogo(e.elzTipo)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="UNIDAD DE MEDIDA" />
 						</f:facet>
-						<h:outputText value="#{elementoBean.validarItemCatalogo(e.eleUnidadMedida)}" />
+						<h:outputText value="#{elementoZonaBean.validarItemCatalogo(e.elzUnidadMedida)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="ESTADO" />
 						</f:facet>
-						<h:outputText value="#{elementoBean.validarItemCatalogo(e.eleEstado)}" />
+						<h:outputText value="#{elementoZonaBean.validarItemCatalogo(e.elzEstado)}" />
 					</h:column>
 					</b:dataTable>
 			</b:panel>

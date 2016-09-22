@@ -8,7 +8,7 @@
 
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
-            Elemento 
+            Ubicaci&oacute;n Elemento 
         </ui:define>
 	<ui:define name="contenido">
 		<h:form id="frmpmsj">
@@ -18,48 +18,46 @@
 				animation-exit="animated flipOutX" escape="true" />
 		</h:form>
 		<h:form id="frmcbc">
-			<b:panel title="Datos del Elemento" look="primary">
+			<b:panel title="Datos de la Ubicaci&oacute;n Elemento" look="primary">
 				<b:row style="margin-bottom:10px;font-style: oblique;">
 					<b:column col-xs="2">
-						<h:outputLabel value="C&oacute;digo Elemento:" />
+						<h:outputLabel value="Elemento:" />
 					</b:column>
 					<b:column col-xs="4">
-						<h:outputText id="id" value="#{elementoBean.id}" />
+						<h:outputText
+							value="#{elementoUbicacionBean.elementoZona.elzNombre}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Unidad de Medida: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText
+							value="#{elementoUbicacionBean.validarItemCatalogo(elementoUbicacionBean.elementoZona.elzUnidadMedida)}" />
 					</b:column>
 				</b:row>
 				<b:row style="margin-bottom:10px;">
 					<b:column col-xs="2">
-						<h:outputLabel value="Nombre:*" />
-					</b:column>
-					<b:column col-xs="10">
-						<b:inputText value="#{elementoBean.nombre}" />
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="Tipo Ubicaci&oacute;n:*" />
+						<h:outputLabel value="Ubicaci&oacute;n:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.tipo}">
-							<f:selectItems value="#{elementoBean.slctTipos}" />
+						<b:selectOneMenu value="#{elementoUbicacionBean.ubicacion}">
+							<f:selectItems value="#{elementoUbicacionBean.slctUbicaciones}" />
 						</b:selectOneMenu>
 					</b:column>
 					<b:column col-xs="2">
-						<h:outputLabel value="Unidad de Medida:*" />
+						<h:outputLabel value="Valor*:" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.unidadMedida}">
-							<f:selectItems value="#{elementoBean.slctUnidadesMedida}" />
-						</b:selectOneMenu>
+						<b:inputText id="valor" value="#{elementoUbicacionBean.valorBZ}" />
 					</b:column>
 				</b:row>
-				<b:row rendered="#{elementoBean.edicion}">
+				<b:row rendered="#{elementoUbicacionBean.edicionBZ}">
 					<b:column col-xs="2">
-						<h:outputLabel value="Estado*: " />
+						<h:outputLabel value="Estado*:" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:selectOneMenu value="#{elementoBean.estado}">
-							<f:selectItems value="#{elementoBean.slctEstados}" />
+						<b:selectOneMenu value="#{elementoUbicacionBean.estadoBZ}">
+							<f:selectItems value="#{elementoUbicacionBean.slctEstados}" />
 						</b:selectOneMenu>
 					</b:column>
 				</b:row>
@@ -68,14 +66,16 @@
 						<b:commandButton value="Guardar"
 							onclick="PF('statusDialog').show();"
 							oncomplete="PF('statusDialog').hide();"
-							action="#{elementoBean.guardarEditarElemento()}"
-							update="frmcbc :frmpmsj" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
+							action="#{elementoUbicacionBean.guardarEditarElementoZonaValor()}"
+							update="frmcbc :frmpmsj" look="info">
+						</b:commandButton>&nbsp;&nbsp;&nbsp;
 							<b:commandButton value="Cancelar"
-							action="#{elementoBean.cancelar()}"
+							action="#{elementoUbicacionBean.cancelarZV()}"
 							onclick="PF('statusDialog').show();" process="@this"
 							oncomplete="PF('statusDialog').hide();" immediate="true"
-							update="frmcbc" look="info"></b:commandButton>&nbsp;&nbsp;&nbsp;
-						</b:column>
+							update="frmcbc" look="info">
+						</b:commandButton>&nbsp;&nbsp;&nbsp;
+					</b:column>
 				</b:row>
 			</b:panel>
 		</h:form>

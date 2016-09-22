@@ -284,6 +284,9 @@ public class DistritoBean implements Serializable{
 		setEdicion(true);
 		setZonaId(distrito.getGenZona().getZonId());
 		setZona(distrito.getGenZona());
+		setDirMapa(distrito.getDisLinkMapa());
+		setDirPdf(distrito.getDisLinkPdf());
+		
 		return "neDistrito?faces-redirect=true";
 	}
 	
