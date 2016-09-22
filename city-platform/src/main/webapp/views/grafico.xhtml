@@ -16,11 +16,16 @@
 		<center>
 			<h1>Grupos del personal administrativo por sexo y edad</h1>
 		</center>
-				<center>
 					<b:column span="12">
 								<p:chart type="bar" model="#{graficoBean.barModel}" style="height:400px"/>
 					</b:column>
-				</center>
+					<br/>
+					<center>
+			<h1>Grupos del personal administrativo por sexo y edad Porcentual</h1>
+		</center>
+					<b:column span="12">
+								<p:chart type="bar" model="#{graficoBean.barModelP}" style="height:400px"/>
+					</b:column>
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">
 				<p:graphicImage value="resources/img/cargando.gif" />
