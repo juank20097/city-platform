@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Lista funcionarios
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>LISTA DE DATOS MEDICOS FUNCIONARIOS</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+		<h:form id="frmReporteFuncionarios">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<p:dataTable id="tbl" var="funcionario"
+					value="#{reporteMedicoBean.funcionarios}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" scrollable="true" rowsPerPageTemplate="10,30,50"
+					scrollHeight="300" scrollWidth="auto" resizableColumns="true"
+					widgetVar="carsTable" emptyMessage="No hay datos"
+					filteredValue="#{reporteMedicoBean.filteredFuncionarios}"
+					style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
+
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Buscar: " />
+							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
+								style="width:150px" placeholder="Ingrese b&#250;squedas" />
+						</p:outputPanel>
+					</f:facet>
+
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage value="../resources/img/xls.png" width="20" />
+							<p:dataExporter type="xls" target="tbl" fileName="Funcionarios" />
+						</h:commandLink>
+					</f:facet>
+
+
+
+					<p:column width="240" resizable="true"
+						filterBy="#{funcionario.perApellidos} #{funcionario.perNombres}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Nombres" />
+						</f:facet>
+						<h:outputText
+							value="#{funcionario.perApellidos} #{funcionario.perNombres}" />
+					</p:column>
+
+					<p:column width="100" filterBy="#{funcionario.perDni}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="C&#201;DULA" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perDni}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.perFechaNacimiento}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Nacimiento" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perFechaNacimiento}" />
+					</p:column>
+
+					<p:column width="70" resizable="true"
+						filterBy="#{funcionario.perGenero}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Sexo" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perGenero}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.perEstadoCivil}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Estado Civil" />
+						</f:facet>
+						<h:outputText value="#{funcionario.perEstadoCivil}" />
+					</p:column>
+
+					<p:column width="200" resizable="true"
+						filterBy="#{funcionario.residencia}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Residencia" />
+						</f:facet>
+						<h:outputText value="#{funcionario.residencia}" />
+					</p:column>
+
+					<p:column width="200" resizable="true"
+						filterBy="#{funcionario.pdeDireccion}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Dirección" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeDireccion}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.pdeResidencia}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tipo residencia" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeResidencia}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.pdeEstadiaDias}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Días de estadía" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeEstadiaDias}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.pdeEstadiaHoras}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Horas de estadía" />
+						</f:facet>
+						<h:outputText value="#{funcionario.pdeEstadiaHoras}" />
+					</p:column>
+
+					<p:column width="80" resizable="true"
+						filterBy="#{funcionario.sldDeguroIess}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tiene IESS" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldDeguroIess}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldSeguroPrivado}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tiene seguro privado" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldSeguroPrivado}" />
+					</p:column>
+
+					<p:column width="140" resizable="true"
+						filterBy="#{funcionario.nombreSeguroPrivado}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Nombre seguro privado" />
+						</f:facet>
+						<h:outputText value="#{funcionario.nombreSeguroPrivado}" />
+					</p:column>
+
+					<p:column width="90" resizable="true"
+						filterBy="#{funcionario.sldGrupoSanguineo}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tipo sangre" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldGrupoSanguineo}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldDiscapacidad}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tiene discapacidad" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldDiscapacidad}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldCarnetConadies}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Carné Conadies" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldCarnetConadies}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldDiscapacidadTipo}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tipo discapacidad" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldDiscapacidadTipo}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldDiscapacidadGrado}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Grado discapacidad" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldDiscapacidadGrado}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldRealizaEjercicio}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Realiza ejercicio" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldRealizaEjercicio}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPeriodicidadEjercicio}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tiempo ejercicio días" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPeriodicidadEjercicio}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldEjercicioHoras}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Tiempo ejercicio horas" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldEjercicioHoras}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldConsumeAlcohol}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Consume alcohol" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldConsumeAlcohol}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPeriodicidadAlcohol}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Días de consumo" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPeriodicidadAlcohol}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldEmbriagar}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Se embriaga" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldEmbriagar}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPeriodicidadEmbriagar}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Días de embriaguez" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPeriodicidadEmbriagar}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldConsumeTabaco}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Consume tabaco" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldConsumeTabaco}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPeriodicidadTabaco}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Días de consumo" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPeriodicidadTabaco}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldTabacoSemana}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Consumo semanal" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldTabacoSemana}" />
+					</p:column>
+
+					<p:column width="160" resizable="true"
+						filterBy="#{funcionario.sldPadreEnfermedadesActuales}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Enfermedades del padre" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPadreEnfermedadesActuales}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPadreFallecio}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Padre falleció" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPadreFallecio}" />
+					</p:column>
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldPadreEdad}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Edad fallecimiento padre" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldPadreEdad}" />
+					</p:column>
+
+
+					<p:column width="160" resizable="true"
+						filterBy="#{funcionario.sldMadreEnfermedadesActuales}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Enfermedades de la madre" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMadreEnfermedadesActuales}" />
+					</p:column>
+
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldMadreFallecio}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Madre falleció" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMadreFallecio}" />
+					</p:column>
+
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.sldMadreEdad}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Edad fallecimiento madre" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMadreEdad}" />
+					</p:column>
+
+
+					<p:column width="200" resizable="true"
+						filterBy="#{funcionario.sldAlergias}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Enfermedad crónica 1" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldAlergias}" />
+					</p:column>
+
+
+					<p:column width="180" resizable="true"
+						filterBy="#{funcionario.sldMedicamentos}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Medicamentos 1" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMedicamentos}" />
+					</p:column>
+
+					<p:column width="200" resizable="true"
+						filterBy="#{funcionario.sldAlergiasCronicas2}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Enfermedad crónica 2" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldAlergiasCronicas2}" />
+					</p:column>
+
+
+					<p:column width="180" resizable="true"
+						filterBy="#{funcionario.sldMedicamentosCronicos2}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Medicamentos 2" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMedicamentosCronicos2}" />
+					</p:column>
+
+					<p:column width="200" resizable="true"
+						filterBy="#{funcionario.sldAlergiasCronicas3}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Enfermedad crónica 3" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldAlergiasCronicas3}" />
+					</p:column>
+
+
+					<p:column width="180" resizable="true"
+						filterBy="#{funcionario.sldMedicamentosCronicos3}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Medicamentos 3" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldMedicamentosCronicos3}" />
+					</p:column>
+
+
+					<p:column width="140" resizable="true"
+						filterBy="#{funcionario.sldFrecuenciaConsumoMedicame}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Frecuencia consumo medicamentos" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldFrecuenciaConsumoMedicame}" />
+					</p:column>
+
+
+					<p:column width="180" resizable="true"
+						filterBy="#{funcionario.sldNombreLugarCentroMedico}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Nombre lugar centro medico" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldNombreLugarCentroMedico}" />
+					</p:column>
+
+
+					<p:column width="140" resizable="true"
+						filterBy="#{funcionario.sldObservaciones}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Observaciones" />
+						</f:facet>
+						<h:outputText value="#{funcionario.sldObservaciones}" />
+					</p:column>
+
+
+					<p:column width="100" resizable="true"
+						filterBy="#{funcionario.foaNivelInstruccion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Nivel de instrucción" />
+						</f:facet>
+						<h:outputText value="#{funcionario.foaNivelInstruccion}" />
+					</p:column>
+
+				</p:dataTable>
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>
