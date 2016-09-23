@@ -71,18 +71,22 @@
 					<b:column col-xs="2">
 						<h:outputLabel value="FECHA INICIO: " />
 					</b:column>
-					<b:column span="4">
+					<b:column col-xs="4">
 						<p:calendar value="#{asignacionSueloBean.fechaIncio}"
 							pattern="dd-MM-yyyy" navigator="true" mask="true" />
 					</b:column>
 					<b:column col-xs="2">
 						<h:outputLabel value="FECHA FIN: " />
 					</b:column>
-					<b:column span="4">
+					<b:column col-xs="4">
 						<p:calendar value="#{asignacionSueloBean.fechaFin}"
-							pattern="dd-MM-yyyy" navigator="true" mask="true" />
+							pattern="dd-MM-yyyy" navigator="true" mask="true"/>
+						  <n/><h:outputLabel value="AÑOS: " />
+						<h:outputLabel value="#{asignacionSueloBean.numanios}"/>	
 					</b:column>
+						
 				</b:row>
+				<br />
 				<b:row>
 					<b:column col-xs="2">
 						<h:outputLabel value="METROS CUADRADOS: " />

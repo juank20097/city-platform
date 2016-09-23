@@ -91,6 +91,8 @@ public class AsignacionSueloBean implements Serializable {
 	private String SueTipoCatalogo;
 
 	private Date date;
+	
+	private String numanios;
 
 	@EJB
 	private ManagerSitios msitios;
@@ -266,6 +268,14 @@ public class AsignacionSueloBean implements Serializable {
 		date = new Date();
 		return date;
 	}
+	
+	public String getNumanios() {
+		return numanios;
+	}
+	
+	public void setNumanios(String numanios) {
+		this.numanios = numanios;
+	}
 
 	public String nuevoSuelo() {
 		limpiarDatos();
@@ -286,6 +296,7 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaFin(asignacionSuelo.getSueFechaFin());
 		setZona(asignacionSuelo.getGenZona().getZonId());
 		setEdicion(true);
+		numanios=fechasaanios(asignacionSuelo.getSueFechaInicio(), asignacionSuelo.getSueFechaFin());
 		date = new Date();
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
@@ -503,5 +514,11 @@ public class AsignacionSueloBean implements Serializable {
 			Mensaje.crearMensajeERROR("Error al validar Item. " + e.getMessage());
 		}
 		return respuesta;
+	}
+	
+	public String fechasaanios(Date fechaInicio, Date fechaFin){
+		String aniosEntreFechas= mngAsignacionSuelo.fechasaAnios(getFechaIncio(), getFechaFin(), getId());
+		return  aniosEntreFechas;
+		
 	}
 }

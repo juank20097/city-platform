@@ -1,6 +1,7 @@
 package city.model.manager;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -43,10 +44,10 @@ public class ManagerTerritorio {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GenBarrio> findAllBarriosA(){
+	public List<GenBarrio> findAllBarriosA() {
 		return mngDAO.findWhere(GenBarrio.class, "o.barEstado = 'A' ", "o.barNombre");
 	}
-	
+
 	public void insertarBarrio(GenBarrio barrio) throws Exception {
 		mngDAO.insertar(barrio);
 	}
@@ -315,7 +316,7 @@ public class ManagerTerritorio {
 			return null;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<GenElementosBarrio> findAllElementosBarrio() {
 		return mngDAO.findAll(GenElementosBarrio.class);
@@ -333,6 +334,7 @@ public class ManagerTerritorio {
 	public List<GenElementoBarrioValor> findAllElementoBVByElemento(int idElemento) {
 		return mngDAO.findWhere(GenElementoBarrioValor.class, "o.id.elbId = " + idElemento, "");
 	}
+
 	/// ***
 	@SuppressWarnings("unchecked")
 	public List<GenElementoBarrioValor> findElementoBVByElementoActivas(int idElemento) {
@@ -351,8 +353,9 @@ public class ManagerTerritorio {
 		mngDAO.actualizar(barrioValor);
 	}
 
-	///////////////////////// (Elementos Zonas) /////////////////////////////////
-	
+	///////////////////////// (Elementos Zonas)
+	///////////////////////// /////////////////////////////////
+
 	public Integer idElementoZona() {
 		Integer id = 0;
 		try {
@@ -374,12 +377,11 @@ public class ManagerTerritorio {
 		return mngDAO.findAll(GenElementosZona.class);
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	public List<GenElementoZonaValor> findAllElementoZVByElemento(int idElemento) {
 		return mngDAO.findWhere(GenElementoZonaValor.class, "o.id.elzId = " + idElemento, "");
 	}
-	
+
 	public void insertarElementoZona(GenElementosZona elementoZ) throws Exception {
 		mngDAO.insertar(elementoZ);
 	}
@@ -387,15 +389,15 @@ public class ManagerTerritorio {
 	public void modificarElementoZona(GenElementosZona elementoZ) throws Exception {
 		mngDAO.actualizar(elementoZ);
 	}
-	
+
 	public GenElementosZona findElementosZonaByID(int idElemento) throws Exception {
 		return (GenElementosZona) mngDAO.findById(GenElementosZona.class, idElemento);
 	}
-	
+
 	public GenElementoZonaValor findElementoZonaValorByID(GenElementoZonaValorPK id) throws Exception {
 		return (GenElementoZonaValor) mngDAO.findById(GenElementoZonaValor.class, id);
 	}
-	
+
 	public void insertarElementoZonaValor(GenElementoZonaValor zonaValor) throws Exception {
 		mngDAO.insertar(zonaValor);
 	}
@@ -403,7 +405,7 @@ public class ManagerTerritorio {
 	public void modificarElementoZonaValor(GenElementoZonaValor zonaValor) throws Exception {
 		mngDAO.actualizar(zonaValor);
 	}
-	
+
 	public String catalogoItem(String idItem) throws Exception {
 		if (idItem == null || idItem.equals("")) {
 			return "";
@@ -447,7 +449,7 @@ public class ManagerTerritorio {
 						+ zona + "');");
 
 	}
-	
+
 	// //////////////////////////////////////////////////////////(AsignacionSuelo)/////////////////////////////////////////////////////////////////////
 
 	/**
@@ -459,7 +461,7 @@ public class ManagerTerritorio {
 		Integer id = 0;
 		try {
 			id = (Integer) mngDAO.ejectNativeSQL2("select max(are_id) from gen_areas limit 1;");
-			if (id == null || id==0) {
+			if (id == null || id == 0) {
 				id = 1;
 			} else {
 				id = id + 1;
@@ -471,8 +473,28 @@ public class ManagerTerritorio {
 			return null;
 		}
 	}
-	
-	
+
+	/**
+	 * Metodo para generar el id
+	 * 
+	 * @return
+	 */
+	public String fechasaAnios(Date fechaInicio, Date fechaFin, Integer idSuelo) {
+		String numero = "";
+		try {
+			numero = mngDAO.ejectNativeSQL2(
+					"SELECT EXTRACT(YEAR FROM AGE(DATE('"+fechaFin+"'),"
+					+ "DATE('"+fechaInicio+"'))) "
+					+ " from gen_asignacion_suelo where sue_id = "+idSuelo+" ;").toString();
+			System.out.println("------------->"+ numero);
+			return numero;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
 		return mngDAO.findAll(GenAsignacionSuelo.class);
@@ -490,7 +512,7 @@ public class ManagerTerritorio {
 	public void modicarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
 		mngDAO.actualizar(asignacionSuelo);
 	}
-	
+
 	public GenAsignacionSuelo findAsignacionSueloById(Integer idAsignacionSuelo) throws Exception {
 		return (GenAsignacionSuelo) mngDAO.findById(GenAsignacionSuelo.class, idAsignacionSuelo);
 	}
