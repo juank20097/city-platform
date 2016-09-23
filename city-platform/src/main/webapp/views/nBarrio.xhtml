@@ -87,7 +87,7 @@
 				<b:column col-xs="2">
 					<h:outputLabel value="MAPA:*" />
 				</b:column>
-				<b:column col-xs="8">
+				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!barriosBean.edicion}"
 						sizeLimit="1000000" multiple="false"
 						invalidSizeMessage="Archivo excede limite 10 MB "
@@ -97,10 +97,10 @@
 						fileUploadListener="#{barriosBean.cargaMapa}">
 					</p:fileUpload>
 				</b:column>
-				<b:column col-xs="2">
+				<b:column col-xs="4">
 					<p:commandLink ajax="false" immediate="true" update="growl" disabled="#{!barriosBean.edicion}"
 						action="#{barriosBean.descargarMapa(barriosBean.id)}">
-						Descargar
+						#{barriosBean.dirMapa}
 					</p:commandLink>
 				</b:column>
 			</b:row>
@@ -108,7 +108,7 @@
 				<b:column col-xs="2">
 					<h:outputLabel value="PDF:*" />
 				</b:column>
-				<b:column col-xs="8">
+				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!barriosBean.edicion}"
 						sizeLimit="1000000" multiple="false"
 						invalidSizeMessage="Archivo excede limite 10 MB "
@@ -119,10 +119,10 @@
 						fileUploadListener="#{barriosBean.cargaPDF}">
 					</p:fileUpload>
 				</b:column>
-				<b:column col-xs="2">
-						<p:commandLink ajax="false" update="growl" disabled="#{!barriosBean.edicion}"
+				<b:column col-xs="4">
+						<p:commandLink ajax="false" immediate="true" update="growl" disabled="#{!barriosBean.edicion}"
 							action="#{barriosBean.descargarPDF(barriosBean.id)}">
-							Descargar
+							#{barriosBean.dirPdf}
 						</p:commandLink>
 					</b:column>
 			</b:row>

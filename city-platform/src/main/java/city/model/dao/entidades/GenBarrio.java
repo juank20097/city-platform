@@ -3,6 +3,7 @@ package city.model.dao.entidades;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -47,6 +48,11 @@ public class GenBarrio implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="dis_id")
 	private GenDistrito genDistrito;
+	
+	//bi-directional many-to-one association to GenElementoBarrioValor
+	@OneToMany(mappedBy="genBarrio")
+	private List<GenElementoBarrioValor> genElementoBarrioValors;
+	
 
 	public GenBarrio() {
 	}
@@ -129,6 +135,27 @@ public class GenBarrio implements Serializable {
 
 	public void setGenDistrito(GenDistrito genDistrito) {
 		this.genDistrito = genDistrito;
+	}
+	public List<GenElementoBarrioValor> getGenElementoBarrioValors() {
+		return this.genElementoBarrioValors;
+	}
+
+	public void setGenElementoBarrioValors(List<GenElementoBarrioValor> genElementoBarrioValors) {
+		this.genElementoBarrioValors = genElementoBarrioValors;
+	}
+
+	public GenElementoBarrioValor addGenElementoBarrioValor(GenElementoBarrioValor genElementoBarrioValor) {
+		getGenElementoBarrioValors().add(genElementoBarrioValor);
+		genElementoBarrioValor.setGenBarrio(this);
+
+		return genElementoBarrioValor;
+	}
+
+	public GenElementoBarrioValor removeGenElementoBarrioValor(GenElementoBarrioValor genElementoBarrioValor) {
+		getGenElementoBarrioValors().remove(genElementoBarrioValor);
+		genElementoBarrioValor.setGenBarrio(null);
+
+		return genElementoBarrioValor;
 	}
 
 }

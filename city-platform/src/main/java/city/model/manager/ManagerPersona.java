@@ -1110,4 +1110,9 @@ public class ManagerPersona {
 	 }
 	 return anos;
 	 }
+	 
+	 public Integer porcentaje(Integer tope,Integer valor){
+		 return (valor*100)/tope;
+	 }
+	 
 }
