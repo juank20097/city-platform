@@ -26,7 +26,7 @@ public class ManagerReporteMedico {
 	public ArrayList<DatosMedicosFuncionario> getAllDatosFuncionarios() {
 
 		ArrayList<DatosMedicosFuncionario> datosFuncionarios = new ArrayList<DatosMedicosFuncionario>();
-		
+
 		String sql = "SELECT " + "gen_persona.per_apellidos, " + "gen_persona.per_nombres, gen_persona.per_dni, "
 				+ "gen_persona.per_fecha_nacimiento, " + "gen_persona.per_genero, " + "gen_persona.per_estado_civil, "
 				+ "CONCAT( "
@@ -61,8 +61,10 @@ public class ManagerReporteMedico {
 				+ "  (SELECT ite_nombre FROM gen_catalogo_items_det WHERE cat_codigo = 'cat_nivel_instruccion' AND ite_codigo = "
 				+ "(SELECT MAX(foa_nivel_instruccion) FROM gen_formacionacademica WHERE gen_formacionacademica.per_dni=gen_persona.per_dni GROUP BY gen_formacionacademica.per_dni)) AS foa_nivel_instruccion "
 				+ " FROM " + "gen_persona "
+				+ "  INNER JOIN gen_funcionarios_institucion  ON(gen_persona.per_dni = gen_funcionarios_institucion.per_dni )"
 				+ "  LEFT JOIN gen_persona_detalle ON (gen_persona.per_dni = gen_persona_detalle.pde_dni)"
-				+ "  LEFT JOIN gen_salud ON (gen_persona_detalle.pde_dni = gen_salud.per_dni)" + " WHERE " + " true;";
+				+ "  LEFT JOIN gen_salud ON (gen_persona_detalle.pde_dni = gen_salud.per_dni)" + " WHERE "
+				+ "  gen_persona.per_estado = 'A' AND fun_estado ='A';";
 
 		List<Object[]> list = mngDao.findAllNativeSQL(sql);
 		for (Object it : list) {
