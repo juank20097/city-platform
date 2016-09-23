@@ -61,7 +61,7 @@ public class ElementoUbicacionBean implements Serializable {
 	private int idElementoBV;
 
 	@NotNull(message = "VALOR no debe ser nulo.")
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal valorBV;
 	private GenElementosBarrio elementoBarrio;
 	private GenElementoBarrioValorPK pkBarrio;

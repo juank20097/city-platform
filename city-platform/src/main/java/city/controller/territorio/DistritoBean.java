@@ -69,7 +69,7 @@ public class DistritoBean implements Serializable{
 	@URL(message="PDF LINK no es una url válida.")
 	private String linkPdf;
 	
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal kilometros;
 	@NotEmpty(message="NOMBRE no debe estar vacío.")
 	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")

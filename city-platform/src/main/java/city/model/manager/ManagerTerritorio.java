@@ -486,7 +486,6 @@ public class ManagerTerritorio {
 					"SELECT EXTRACT(YEAR FROM AGE(DATE('"+fechaFin+"'),"
 					+ "DATE('"+fechaInicio+"'))) "
 					+ " from gen_asignacion_suelo where sue_id = "+idSuelo+" ;").toString();
-			System.out.println("------------->"+ numero);
 			return numero;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

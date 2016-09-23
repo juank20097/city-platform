@@ -66,6 +66,18 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
+							<h:outputText value="KIL&Oacute;METROS" />
+						</f:facet>
+						<h:outputText value="#{b.barKilometros}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="HECT&Aacute;REAS" />
+						</f:facet>
+						<h:outputText value="#{b.barHectareas}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
 							<h:outputText value="MAPA" />
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"

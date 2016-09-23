@@ -60,7 +60,7 @@ public class BarriosBean implements Serializable {
 
 	private String estado;
 
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal hectareas;
 
 	@NotEmpty(message = "MAPA LINK no debe estar vacío.")
