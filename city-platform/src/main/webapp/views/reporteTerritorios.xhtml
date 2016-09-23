@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Lista Territorial
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>LISTA DE DATOS TERRITORIALES</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+		<h:form id="frmReporteFuncionarios">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<p:dataTable id="tbl" var="territorio"
+					value="#{reporteTerritorioBean.territorios}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" scrollable="true" rowsPerPageTemplate="10,30,50"
+					scrollHeight="300" scrollWidth="auto" resizableColumns="true"
+					widgetVar="carsTable" emptyMessage="No hay datos"
+					filteredValue="#{reporteTerritorioBean.filteredTerritorios}"
+					style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
+
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Buscar: " />
+							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
+								style="width:150px" placeholder="Ingrese b&#250;squedas" />
+						</p:outputPanel>
+					</f:facet>
+
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage value="../resources/img/xls.png" width="20" />
+							<p:dataExporter type="xls" target="tbl" fileName="Zonas" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.zonNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ZONA" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.zonNombre}" />
+					</p:column>
+					
+					
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.zonDescripcion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ZONA DESCRIPCI&#211;N" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.zonDescripcion}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.zonKilometros}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ZONA KIL&#211;METROS" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.zonKilometros}" />
+					</p:column>
+										
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.zonObservacion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="OBSERVACIONES" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.zonObservacion}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.elzNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ELEMENTO ZONA" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elzNombre}" />
+					</p:column>
+										
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.elzTipo}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="TIPO ELEMENTO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elzTipo}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.elzUnidadMedida}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="UNIDAD MEDIDA" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elzUnidadMedida}" />
+					</p:column>
+										
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.ezvValor}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="VALOR" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.ezvValor}" />
+					</p:column>
+					
+															
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.disNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE DISTRITO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.disNombre}" />
+					</p:column>
+										
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.disDescripcion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="DESCRIPCI&#211;N DISTRITO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.disDescripcion}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.disKilometros}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="KIL&#211;METROS DISTRITO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.disKilometros}" />
+					</p:column>
+										
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.disObservacion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="OBSERVACIONES" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.disObservacion}" />
+					</p:column>
+					
+															
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.barNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="NOMBRE BARRIO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.barNombre}" />
+					</p:column>
+										
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.barDescripcion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="DESCRIPCI&#211;N BARRIO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.barDescripcion}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.barKilometros}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="KIL&#211;METROS BARRIO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.barKilometros}" />
+					</p:column>
+										
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.barHectareas}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="HECT&#193;REAS BARRIO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.barHectareas}" />
+					</p:column>
+					
+															
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.barObservacion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="OBSERVACIONES" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.barObservacion}" />
+					</p:column>
+										
+					<p:column width="240" resizable="true"
+						filterBy="#{territorio.elbNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ELEMENTO BARRIO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elbNombre}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.elbTipo}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="TIPO ELEMENTO" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elbTipo}" />
+					</p:column>
+										
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.elbUnidadMedida}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="UNIDAD MEDIDA" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.elbUnidadMedida}" />
+					</p:column>
+					
+															
+					<p:column width="100" resizable="true"
+						filterBy="#{territorio.ebvValor}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="VALOR" />
+						</f:facet>
+						<h:outputText
+							value="#{territorio.ebvValor}" />
+					</p:column>
+					
+									
+				</p:dataTable>
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>
