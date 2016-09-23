@@ -288,7 +288,7 @@ public class BarriosBean implements Serializable {
 
 	public String nuevoBarrio() {
 		limpiarDatos();
-		return "nBarrio?faces-redirect=true";
+		return "nVecindario?faces-redirect=true";
 	}
 
 	public String cargarBarrio(GenBarrio barrio) {
@@ -306,7 +306,7 @@ public class BarriosBean implements Serializable {
 		setDirMapa(barrio.getBarLinkMapa());
 		setDirPdf(barrio.getBarLinkPdf());
 
-		return "nBarrio?faces-redirect=true";
+		return "nVecindario?faces-redirect=true";
 	}
 
 	public String guardarEditarBarrio() {
@@ -357,7 +357,7 @@ public class BarriosBean implements Serializable {
 	public String cancelar() {
 		limpiarDatos();
 		cargarBarrios();
-		return "barrios?faces-redirect=true";
+		return "vecindarios?faces-redirect=true";
 	}
 
 	private void cargarBarrios() {
@@ -386,7 +386,7 @@ public class BarriosBean implements Serializable {
 			try {
 				
 				String carpeta = manager.findParametroByID("direccion_mapa") + "/";
-					setDirMapa("Mapa_V_" +getId()+ extensionArchivo(fileMapa.getFileName()));
+					setDirMapa("KMZ_V_" +getId()+ extensionArchivo(fileMapa.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirMapa());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
@@ -425,7 +425,7 @@ public class BarriosBean implements Serializable {
 			try {
 				
 				String carpeta = manager.findParametroByID("direccion_pdf") + "/";
-					setDirPdf("PDF_V_" +getId()+ extensionArchivo(filePdf.getFileName()));
+					setDirPdf("MAPA_V_" +getId()+ extensionArchivo(filePdf.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirPdf());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));

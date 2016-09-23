@@ -312,7 +312,7 @@ public class ZonaBean implements Serializable{
 		if (fileMapa != null) {
 			try {
 				String carpeta = mngZona.findParametroByID("direccion_mapa") + "/";
-					setDirMapa("Mapa_Z_" +getId()+ extensionArchivo(fileMapa.getFileName()));
+					setDirMapa("KMZ_Z_" +getId()+ extensionArchivo(fileMapa.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirMapa());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
@@ -351,7 +351,7 @@ public class ZonaBean implements Serializable{
 			try {
 				
 				String carpeta = mngZona.findParametroByID("direccion_pdf") + "/";
-					setDirPdf("PDF_Z_" +getId()+extensionArchivo(filePdf.getFileName()));
+					setDirPdf("MAPA_Z_" +getId()+extensionArchivo(filePdf.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirPdf());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));

@@ -363,7 +363,7 @@ public class DistritoBean implements Serializable{
 				
 				String carpeta = manager.findParametroByID("direccion_mapa") + "/";
 				System.out.println("nombre del archivo --> "+ fileMapa.getFileName());
-					setDirMapa("Mapa_D_"+getId()+extensionArchivo(fileMapa.getFileName()));
+					setDirMapa("KMZ_D_"+getId()+extensionArchivo(fileMapa.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirMapa());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
@@ -402,7 +402,7 @@ public class DistritoBean implements Serializable{
 			try {
 				
 				String carpeta = manager.findParametroByID("direccion_pdf") + "/";
-					setDirPdf("PDF_D_"+getId() + extensionArchivo(filePdf.getFileName()));
+					setDirPdf("MAPA_D_"+getId() + extensionArchivo(filePdf.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirPdf());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
