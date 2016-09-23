@@ -10,7 +10,7 @@
             Suelos
         </ui:define>
 	<ui:define name="contenido">
-	<h:form>
+		<h:form>
 			<center>
 				<h1>Asignación de Suelos</h1>
 			</center>
@@ -32,16 +32,20 @@
 				animation-enter="animated bounceInDown"
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
-			<b:dataTable id="dt_ins" value="#{asignacionSueloBean.listAsignacionSuelos}" var="s"
-					styleClass="table table-striped table-bordered dt-responsive nowrap" 
-					fixedHeader="true" responsive="true" lang="es" style="width:100%" >
+				<b:dataTable id="dt_ins"
+					value="#{asignacionSueloBean.listAsignacionSuelos}" var="s"
+					styleClass="table table-striped table-bordered dt-responsive nowrap"
+					fixedHeader="true" responsive="true" lang="es" style="width:100%">
 					<h:column width="100">
 						<f:facet name="header">
 							<h:outputText value="OPCIONES" />
 						</f:facet>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton iconAwesome="fa fa-pencil-square-o" style="padding: 0; border: none; background: none;color: #000"
-							onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" action="#{asignacionSueloBean.cargarEditarAsignacionSuelo(s)}">
+						<b:commandButton iconAwesome="fa fa-pencil-square-o"
+							style="padding: 0; border: none; background: none;color: #000"
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()"
+							action="#{asignacionSueloBean.cargarEditarAsignacionSuelo(s)}">
 						</b:commandButton>
 					</h:column>
 					<h:column>
@@ -52,9 +56,15 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
+							<h:outputText value="ZONA" />
+						</f:facet>
+						<h:outputText value="#{s.genZona.zonNombre}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
 							<h:outputText value="TIPO" />
 						</f:facet>
-						<h:outputText value="#{s.sueTipo}" />
+						<h:outputText value="#{asignacionSueloBean.validarItemCatalogo(s.sueTipo)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -70,14 +80,15 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="METROS 2" />
+							<h:outputText value="METROS CUADRADOS" />
 						</f:facet>
-						<h:outputText value="#{s.sueMetros}"/>
+						<h:outputText value="#{s.sueMetros}" />
 					</h:column>
-					<p:column headerText="FECHA INICIO/FIN" width="70">
-						<h:outputText value="#{s.sueFechaInicio} - #{s.sueFechaFin}">
-							<f:convertDateTime pattern="yyyy/MM/dd" />
-						</h:outputText>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="FECHA INICIO/FIN" />
+						</f:facet>
+						<h:outputText value="#{s.sueFechaInicio}" />
 					</p:column>
 					<h:column>
 						<f:facet name="header">
@@ -100,7 +111,7 @@
 							#{s.sueArchivo}
 						</p:commandLink>
 					</h:column>
-					</b:dataTable>
+				</b:dataTable>
 			</b:panel>
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">

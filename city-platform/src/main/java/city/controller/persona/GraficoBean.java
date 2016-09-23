@@ -91,9 +91,8 @@ public class GraficoBean {
 		xAxis.setTickAngle(75);
 
 		Axis yAxis = barModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Número");
+		yAxis.setLabel("Número de Personas");
 		yAxis.setMin(0);
-		yAxis.setMax(125);
 	}
 
 	private void createBarModelPorcentual() {
@@ -109,7 +108,6 @@ public class GraficoBean {
 		Axis yAxis = barModelP.getAxis(AxisType.Y);
 		yAxis.setLabel("Porcentaje (%)");
 		yAxis.setMin(0);
-		yAxis.setMax(30);
 	}
 	
 	public void llenarEnteros(){

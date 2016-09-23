@@ -30,20 +30,21 @@
 							rendered="#{asignacionSueloBean.edicion}"
 							disabled="#{asignacionSueloBean.edicion}" />
 					</b:column>
+				</b:row>
+				<b:row>
 					<b:column col-xs="2">
 						<h:outputLabel value="ZONA: " />
 					</b:column>
 					<b:column col-xs="4">
 						<b:selectOneMenu value="#{asignacionSueloBean.zona}">
+						<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
 							<f:selectItems value="#{asignacionSueloBean.l_zona}" />
 						</b:selectOneMenu>
 					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="1">
+					<b:column span="2">
 						<h:outputLabel value="TIPO: " />
 					</b:column>
-					<b:column span="3">
+					<b:column span="4">
 						<h:selectOneMenu styleClass="form-control"
 							value="#{asignacionSueloBean.sueTipoCatalogo}">
 							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
@@ -51,27 +52,19 @@
 							</f:selectItems>
 						</h:selectOneMenu>
 					</b:column>
+				</b:row>
+				<b:row>
 					<b:column col-xs="2">
 						<h:outputLabel value="ACTIVIDAD: " />
 					</b:column>
 					<b:column col-xs="4">
-						<b:inputText onkeyup="this.value=this.value.toUpperCase();"
-							value="#{asignacionSueloBean.actividad}" />
+						<b:inputText value="#{asignacionSueloBean.actividad}" />
 					</b:column>
-				</b:row>
-				<b:row>
 					<b:column col-xs="2">
 						<h:outputLabel value="ASIGNADO A: " />
 					</b:column>
-					<b:column col-xs="10">
-						<b:inputTextarea value="#{asignacionSueloBean.asignacion}" />
-					</b:column>
-					<b:column col-xs="2">
-						<h:outputLabel value="METROS CUADRADOS: " />
-					</b:column>
 					<b:column col-xs="4">
-						<b:inputText value="#{asignacionSueloBean.metros}" required="true"
-							requiredMessage="Metros cuadrados es requerido." />
+						<b:inputText value="#{asignacionSueloBean.asignacion}" />
 					</b:column>
 				</b:row>
 				<b:row>
@@ -79,79 +72,84 @@
 						<h:outputLabel value="FECHA INICIO: " />
 					</b:column>
 					<b:column span="4">
-						<p:calendar 
-							value="#{asignacionSueloBean.fechaIncio}" pattern="dd-MM-yyyy"
-							navigator="true" mask="true" />
+						<p:calendar value="#{asignacionSueloBean.fechaIncio}"
+							pattern="dd-MM-yyyy" navigator="true" mask="true" />
 					</b:column>
 					<b:column col-xs="2">
 						<h:outputLabel value="FECHA FIN: " />
 					</b:column>
 					<b:column span="4">
-						<p:calendar 
-							value="#{asignacionSueloBean.fechaFin}" pattern="dd-MM-yyyy"
-							navigator="true" mask="true" />
+						<p:calendar value="#{asignacionSueloBean.fechaFin}"
+							pattern="dd-MM-yyyy" navigator="true" mask="true" />
 					</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="OBSERVACI&Oacute;N: " />
-						</b:column>
-						<b:column col-xs="10">
-							<b:inputTextarea value="#{asignacionSueloBean.observacion}" />
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="ESTADO:*"
-								rendered="#{asignacionSueloBean.edicion}" />
-						</b:column>
-						<b:column col-xs="4">
-							<b:selectOneMenu value="#{asignacionSueloBean.estado}"
-								rendered="#{asignacionSueloBean.edicion}">
-								<f:selectItems value="#{asignacionSueloBean.slctEstados}" />
-							</b:selectOneMenu>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="PDF:*" />
-						</b:column>
-						<b:column col-xs="6">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
-								sizeLimit="1000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="4">
-							<p:commandLink ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicion}"
-								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="METROS CUADRADOS: " />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputText value="#{asignacionSueloBean.metros}" required="true"
+							requiredMessage="Metros cuadrados es requerido." />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="OBSERVACI&Oacute;N: " />
+					</b:column>
+					<b:column col-xs="4">
+						<b:inputTextarea value="#{asignacionSueloBean.observacion}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="ESTADO:*"
+							rendered="#{asignacionSueloBean.edicion}" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{asignacionSueloBean.estado}"
+							rendered="#{asignacionSueloBean.edicion}">
+							<f:selectItems value="#{asignacionSueloBean.slctEstados}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="PDF:*" />
+					</b:column>
+					<b:column col-xs="6">
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
+							disabled="#{!asignacionSueloBean.edicion}" sizeLimit="1000000"
+							multiple="false"
+							invalidSizeMessage="Archivo excede limite 10 MB "
+							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+							fileLimitMessage="Solo un archivo"
+							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+							fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+						</p:fileUpload>
+					</b:column>
+					<b:column col-xs="4">
+						<p:commandLink ajax="false" immediate="true" update="growl"
+							disabled="#{!asignacionSueloBean.edicion}"
+							action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
 							#{asignacionSueloBean.dirPdf}
 						</p:commandLink>
-						</b:column>
-					</b:row>
-					<b:row style="margin-bottom:10px;">
-						<b:column>
-							<b:commandButton value="Guardar"
-								onclick="PF('statusDialog').show();"
-								oncomplete="PF('statusDialog').hide();"
-								action="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
-								update="frm" look="info">
-							</b:commandButton>&nbsp;&nbsp;&nbsp;
-						<b:commandButton value="Volver"
-								action="#{asignacionSueloBean.cancelar()}"
-								onclick="PF('statusDialog').show();" process="@this"
-								oncomplete="PF('statusDialog').hide();" immediate="true"
-								update="frm" look="info">
-							</b:commandButton>&nbsp;&nbsp;&nbsp;
 					</b:column>
-					</b:row>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column>
+						<b:commandButton value="Guardar"
+							onclick="PF('statusDialog').show();"
+							oncomplete="PF('statusDialog').hide();"
+							action="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
+							update="frm" look="info">
+						</b:commandButton>&nbsp;&nbsp;&nbsp;
+						<b:commandButton value="Volver"
+							action="#{asignacionSueloBean.cancelar()}"
+							onclick="PF('statusDialog').show();" process="@this"
+							oncomplete="PF('statusDialog').hide();" immediate="true"
+							update="frm" look="info">
+						</b:commandButton>&nbsp;&nbsp;&nbsp;
+					</b:column>
+				</b:row>
 			</b:panel>
 		</h:form>
 
