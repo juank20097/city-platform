@@ -64,7 +64,7 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="HECT&Aocute;REAS" />
+							<h:outputText value="HECT&Aacute;REAS" />
 						</f:facet>
 						<h:outputText value="#{zonaBean.sumaHectareas(z.zonId)}" />
 					</h:column>
@@ -74,7 +74,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{zonaBean.descargarMapa(z)}">
-							Descargar
+							#{z.zonLinkMapa}
 						</p:commandLink>
 					</h:column>
 					<h:column>
@@ -83,7 +83,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{zonaBean.descargarPDF(z)}">
-							Descargar
+							#{z.zonLinkPdf}
 						</p:commandLink>
 					</h:column>
 					<h:column>

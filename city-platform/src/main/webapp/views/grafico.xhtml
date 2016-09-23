@@ -17,17 +17,17 @@
 	<ui:define name="contenido">
 		<b:container>
 		<center>
-			<h1>Grupos del personal administrativo por sexo y edad</h1>
+			<h1>Grupos del Personal Administrativo por Sexo y Edad</h1>
 		</center>
 					<b:column span="12">
-								<p:chart type="bar" model="#{graficoBean.barModel}" style="height:400px"/>
+								<p:chart type="bar" model="#{graficoBean.barModel}" style="height:400px" responsive="true"/>
 					</b:column>
 					<br/>
 					<center>
-			<h1>Grupos del personal administrativo por sexo y edad Porcentual</h1>
+			<h1>Grupos del Personal Administrativo por Sexo y Edad Porcentual</h1>
 		</center>
 					<b:column span="12">
-								<p:chart type="bar" model="#{graficoBean.barModelP}" style="height:400px"/>
+								<p:chart type="bar" model="#{graficoBean.barModelP}" style="height:400px" responsive="true"/>
 					</b:column>
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">

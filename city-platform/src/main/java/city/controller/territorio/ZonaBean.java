@@ -238,6 +238,9 @@ public class ZonaBean implements Serializable{
 		setKilometros(zona.getZonKilometros());
 		setNombre(zona.getZonNombre());
 		setObservacion(zona.getZonObservacion()); setEdicion(true);
+		setDirMapa(zona.getZonLinkMapa());
+		setDirPdf(zona.getZonLinkPdf());
+		
 		return "neZona?faces-redirect=true";
 	}
 	

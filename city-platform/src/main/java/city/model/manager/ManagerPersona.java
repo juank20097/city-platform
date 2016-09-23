@@ -1115,4 +1115,18 @@ public class ManagerPersona {
 		 return (valor*100)/tope;
 	 }
 	 
+	 @SuppressWarnings("unchecked")
+	public Integer totalHombres(){
+		 List<Object> lista = mngDao.ejectNativeSQL3(
+					"select * from gen_persona where per_genero='M' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		 return lista.size();
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+		public Integer totalMujeres(){
+			 List<Object> lista = mngDao.ejectNativeSQL3(
+						"select * from gen_persona where per_genero='F' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+			 return lista.size();
+		 }
+	 
 }

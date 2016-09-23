@@ -272,7 +272,7 @@ public class BarriosBean implements Serializable {
 		this.slctDistritos = slctDistritos;
 	}
 
-	// Métodos
+	// Mï¿½todos
 
 	private void cargarEstados() {
 		getSlctEstados().add(new SelectItem(ID_ACTIVO, "Activo"));
@@ -303,6 +303,8 @@ public class BarriosBean implements Serializable {
 		setDistritoId(barrio.getGenDistrito().getDisId());
 		setDistrito(barrio.getGenDistrito());
 		setObservacion(barrio.getBarObservacion());
+		setDirMapa(barrio.getBarLinkMapa());
+		setDirPdf(barrio.getBarLinkPdf());
 
 		return "nBarrio?faces-redirect=true";
 	}
@@ -314,7 +316,7 @@ public class BarriosBean implements Serializable {
 				Mensaje.crearMensajeWARN("Seleccione un distrito");
 				return respuesta;
 			} else if (!isEdicion() && manager.findBarrioById(getId()) != null) {
-				Mensaje.crearMensajeWARN("Ya existe un vecindario con el mimo id, favor cámbielo.");
+				Mensaje.crearMensajeWARN("Ya existe un vecindario con el mismo id, favor cámbielo.");
 				return respuesta;
 			} else {
 				GenBarrio b = new GenBarrio();
