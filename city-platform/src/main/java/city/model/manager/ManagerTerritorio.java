@@ -450,6 +450,29 @@ public class ManagerTerritorio {
 	
 	// //////////////////////////////////////////////////////////(AsignacionSuelo)/////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Metodo para generar el id
+	 * 
+	 * @return
+	 */
+	public Integer asignacionSueloId() {
+		Integer id = 0;
+		try {
+			id = (Integer) mngDAO.ejectNativeSQL2("select max(are_id) from gen_areas limit 1;");
+			if (id == null || id==0) {
+				id = 1;
+			} else {
+				id = id + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
 		return mngDAO.findAll(GenAsignacionSuelo.class);
