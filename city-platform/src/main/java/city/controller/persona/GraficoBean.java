@@ -84,6 +84,7 @@ public class GraficoBean {
 		barModel = initBarModel();
 
 		barModel.setLegendPosition("ne");
+		barModel.setAnimate(true);
 
 		Axis xAxis = barModel.getAxis(AxisType.X);
 		xAxis.setLabel("Años");
@@ -99,13 +100,14 @@ public class GraficoBean {
 		barModelP = initBarModelP();
 
 		barModelP.setLegendPosition("ne");
+		barModel.setAnimate(true);
 
 		Axis xAxis = barModelP.getAxis(AxisType.X);
 		xAxis.setLabel("Años");
 		xAxis.setTickAngle(75);
 
 		Axis yAxis = barModelP.getAxis(AxisType.Y);
-		yAxis.setLabel("Porcentaje");
+		yAxis.setLabel("Porcentaje (%)");
 		yAxis.setMin(0);
 		yAxis.setMax(30);
 	}
@@ -189,7 +191,7 @@ public class GraficoBean {
 		BarChartModel modelp = new BarChartModel();
 
 		ChartSeries hombresp = new ChartSeries();
-		hombresp.setLabel("HOMBRES = 497");
+		hombresp.setLabel("HOMBRES = "+manager.totalHombres()+"");
 		hombresp.set("18 a 19",manager.porcentaje(497, h1));
 		hombresp.set("20 a 24", manager.porcentaje(497, h2));
 		hombresp.set("25 a 29", manager.porcentaje(497, h3));
@@ -206,7 +208,7 @@ public class GraficoBean {
 		hombresp.set("80 a 84", manager.porcentaje(497, h14));
 
 		ChartSeries mujeresp = new ChartSeries();
-		mujeresp.setLabel("MUJERES = 240");
+		mujeresp.setLabel("MUJERES = "+manager.totalMujeres()+"");
 		mujeresp.set("18 a 19", manager.porcentaje(240, m1));
 		mujeresp.set("20 a 24", manager.porcentaje(240, m2));
 		mujeresp.set("25 a 29", manager.porcentaje(240, m3));

@@ -41,7 +41,7 @@ public class ElementoBarrioBean implements Serializable {
 
 	private int id;
 
-	@NotEmpty(message = "NOMBRE no debe estar vacío.")
+	@NotEmpty(message = "NOMBRE no debe estar vac�o.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 
@@ -192,7 +192,6 @@ public class ElementoBarrioBean implements Serializable {
 	public String validarItemCatalogo(String item) {
 		String respuesta = "";
 		try {
-			System.out.println("Ítem validar ----> "+item);
 			respuesta = manager.catalogoItem(item);
 
 		} catch (Exception e) {
@@ -243,9 +242,9 @@ public class ElementoBarrioBean implements Serializable {
 				return "elementosB?faces-redirect=true";
 			}
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error al almacenar elemento Barrio: "
+			Mensaje.crearMensajeERROR("Error al almacenar elemento Vecindario: "
 					+ e.getMessage());
-			System.out.println("Error al almacenar elemento Barrio: ");
+			System.out.println("Error al almacenar elemento Vecindario: ");
 			e.printStackTrace();
 			return "";
 		}
