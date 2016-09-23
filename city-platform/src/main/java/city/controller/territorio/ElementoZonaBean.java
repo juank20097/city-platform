@@ -40,7 +40,7 @@ public class ElementoZonaBean implements Serializable{
 	
 	private int id;
 	
-	@NotEmpty(message="NOMBRE no debe estar vacÃ­o.")
+	@NotEmpty(message="NOMBRE no debe estar vacío.")
 	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 	

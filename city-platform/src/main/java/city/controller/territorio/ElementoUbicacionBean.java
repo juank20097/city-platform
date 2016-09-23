@@ -48,7 +48,7 @@ public class ElementoUbicacionBean implements Serializable {
 	@Inject
 	private SesionBean session;
 
-	@NotEmpty(message = "NOMBRE no debe estar vac铆o.")
+	@NotEmpty(message = "NOMBRE no debe estar vac韔.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombreBV;
 
@@ -71,7 +71,7 @@ public class ElementoUbicacionBean implements Serializable {
 	private boolean elemBarrioSelecionado;
 	private boolean elemZonaSelecionado;
 	// //
-	@NotEmpty(message = "NOMBRE no debe estar vac铆o.")
+	@NotEmpty(message = "NOMBRE no debe estar vac韔.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombreBZ;
 
@@ -502,15 +502,15 @@ public class ElementoUbicacionBean implements Serializable {
 						limpiarDatosBV();
 						return "elementosUbicacion?faces-redirect=true";
 					} else {
-						Mensaje.crearMensajeERROR("Este elemento ya fue ingresado en la ubicaci贸n seleccionada.");
+						Mensaje.crearMensajeERROR("Este elemento ya fue ingresado en la ubicaci髇 seleccionada.");
 					}
 				}
 				return "";
 			}
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error al almacenar ubicaci贸n elemento: "
+			Mensaje.crearMensajeERROR("Error al almacenar ubicaci髇 elemento: "
 					+ e.getMessage());
-			System.out.println("Error al almacenar ubicaci贸n elemento: ");
+			System.out.println("Error al almacenar ubicaci髇 elemento: ");
 			e.printStackTrace();
 			return "";
 		}
@@ -604,15 +604,15 @@ public class ElementoUbicacionBean implements Serializable {
 						limpiarDatosBV();
 						return "elementosUbicacion?faces-redirect=true";
 					} else {
-						Mensaje.crearMensajeERROR("Este elemento ya fue ingresado en la ubicaci贸n seleccionada.");
+						Mensaje.crearMensajeERROR("Este elemento ya fue ingresado en la ubicaci髇 seleccionada.");
 					}
 				}
 				return "";
 			}
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error al almacenar ubicaci贸n elemento Zona: "
+			Mensaje.crearMensajeERROR("Error al almacenar ubicaci髇 elemento Zona: "
 					+ e.getMessage());
-			System.out.println("Error al almacenar ubicaci贸n elemento Zona: ");
+			System.out.println("Error al almacenar ubicaci髇 elemento Zona: ");
 			e.printStackTrace();
 			return "";
 		}
