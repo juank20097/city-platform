@@ -37,7 +37,7 @@
 					</b:column>
 					<b:column col-xs="4">
 						<b:selectOneMenu value="#{asignacionSueloBean.zona}">
-						<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
 							<f:selectItems value="#{asignacionSueloBean.l_zona}" />
 						</b:selectOneMenu>
 					</b:column>
@@ -68,23 +68,39 @@
 					</b:column>
 				</b:row>
 				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="FECHA INICIO: " />
+					<b:column span="2">
+						<h:outputLabel value="TEMPORALIDAD: " />
 					</b:column>
-					<b:column col-xs="4">
-						<p:calendar value="#{asignacionSueloBean.fechaIncio}"
-							pattern="dd-MM-yyyy" navigator="true" mask="true" />
+					<b:column span="4">
+						<p:spinner id="basic"
+							value="#{asignacionSueloBean.sueNumeroanios}" size="3" />
 					</b:column>
-					<b:column col-xs="2">
-						<h:outputLabel value="FECHA FIN: " />
+
+				</b:row>
+				<b:row>
+					<b:column span="12">
+						<b:panel tooltip="CONTRATO">
+							<h4>CONTRATO</h4>
+							<b:row>
+								<b:column span="2">
+									<h:outputLabel value="FECHA INICIO: " />
+								</b:column>
+								<b:column span="4">
+									<p:calendar value="#{asignacionSueloBean.fechaIncio}"
+										pattern="dd-MM-yyyy" navigator="true" showOn="button"
+										size="10" />
+								</b:column>
+								<b:column span="2">
+									<h:outputLabel value="FECHA FIN: " />
+								</b:column>
+								<b:column span="4">
+									<p:calendar value="#{asignacionSueloBean.fechaFin}"
+										pattern="dd-MM-yyyy" navigator="true" showOn="button"
+										size="10" />
+								</b:column>
+							</b:row>
+						</b:panel>
 					</b:column>
-					<b:column col-xs="4">
-						<p:calendar value="#{asignacionSueloBean.fechaFin}"
-							pattern="dd-MM-yyyy" navigator="true" mask="true"/>
-						  <n/><h:outputLabel value="AÑOS: " />
-						<h:outputLabel value="#{asignacionSueloBean.numanios}"/>	
-					</b:column>
-						
 				</b:row>
 				<br />
 				<b:row>

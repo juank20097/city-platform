@@ -48,6 +48,9 @@ public class GenAsignacionSuelo implements Serializable {
 
 	@Column(name="sue_tipo")
 	private String sueTipo;
+	
+	@Column(name="sue_numeroanios")
+	private Integer sueNumeroAnios;
 
 	//bi-directional many-to-one association to GenZona
 	@ManyToOne
@@ -135,6 +138,14 @@ public class GenAsignacionSuelo implements Serializable {
 
 	public void setSueTipo(String sueTipo) {
 		this.sueTipo = sueTipo;
+	}
+	
+	public Integer getSueNumeroAnios() {
+		return sueNumeroAnios;
+	}
+	
+	public void setSueNumeroAnios(Integer sueNumeroAnios) {
+		this.sueNumeroAnios = sueNumeroAnios;
 	}
 
 	public GenZona getGenZona() {
