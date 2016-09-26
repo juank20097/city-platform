@@ -73,15 +73,13 @@ public class BarriosBean implements Serializable {
 	@URL(message = "PDF LINK no es una url válida.")
 	private String linkPdf;
 
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal kilometros;
 
 	@NotEmpty(message = "NOMBRE no debe estar vacío.")
 	@NotBlank(message = "NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 
-	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
 	private String observacion;
 	
 	private UploadedFile fileMapa;
@@ -320,11 +318,11 @@ public class BarriosBean implements Serializable {
 				return respuesta;
 			} else {
 				GenBarrio b = new GenBarrio();
-				b.setBarId(Funciones.quitarEspacios(getId()));
-				b.setBarDescripcion(Funciones.quitarEspacios(getDescripcion()));
+				b.setBarId(Funciones.quitarEspacios(getId().toUpperCase()));
+				b.setBarDescripcion(Funciones.quitarEspacios(getDescripcion().toLowerCase()));
 				b.setBarEstado(getEstado());
 				b.setBarKilometros(getKilometros());
-				b.setBarNombre(Funciones.quitarEspacios(getNombre()));
+				b.setBarNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
 				b.setBarHectareas(getHectareas());
 				b.setBarObservacion(Funciones.quitarEspacios(getObservacion()));
 				b.setGenDistrito(manager.findDistritoById(getDistritoId()));
@@ -462,10 +460,10 @@ public class BarriosBean implements Serializable {
 	public void editarBarrio(){
 		try {
 			GenBarrio bar = new GenBarrio();
-			bar.setBarId(Funciones.quitarEspacios(getId()));
-			bar.setBarNombre(Funciones.quitarEspacios(getNombre()));
-			bar.setBarDescripcion(Funciones.quitarEspacios(getDescripcion()));
-			bar.setBarObservacion(Funciones.quitarEspacios(getObservacion()));
+			bar.setBarId(Funciones.quitarEspacios(getId().toUpperCase()));
+			bar.setBarNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+			bar.setBarDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
+			bar.setBarObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
 			bar.setBarKilometros(getKilometros());
 			bar.setBarHectareas(getHectareas());
 			bar.setGenDistrito(getDistrito());

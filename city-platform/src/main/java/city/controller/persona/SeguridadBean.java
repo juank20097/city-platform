@@ -70,6 +70,8 @@ public class SeguridadBean {
 	private String segArchivo;
 	private String usuario;
 	private String segDocumento;
+	private String utmX;
+	private String utmY;
 
 	private Boolean control;
 
@@ -159,6 +161,36 @@ public class SeguridadBean {
 		}
 		comprobaradmin();
 		cargarIncidentes();
+	}
+
+	/**
+	 * @return the utmX
+	 */
+	public String getUtmX() {
+		return utmX;
+	}
+
+	/**
+	 * @param utmX
+	 *            the utmX to set
+	 */
+	public void setUtmX(String utmX) {
+		this.utmX = utmX;
+	}
+
+	/**
+	 * @return the utmY
+	 */
+	public String getUtmY() {
+		return utmY;
+	}
+
+	/**
+	 * @param utmY
+	 *            the utmY to set
+	 */
+	public void setUtmY(String utmY) {
+		this.utmY = utmY;
 	}
 
 	/**
@@ -738,7 +770,7 @@ public class SeguridadBean {
 	 */
 	public String nuevoIncidente() {
 		this.carga();
-		//setControl(true);
+		// setControl(true);
 		setSegFecha(new Date());
 		setEdicion(true);
 		return "nseguridad?faces-redirect=true";
@@ -768,17 +800,17 @@ public class SeguridadBean {
 					Integer id = manager.seguridadId();
 					manager.insertarSeguridad(id, getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo(), usuario, getSegDocumento());
+							getSegArchivo(), usuario, getSegDocumento(), getUtmX(), getUtmY());
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
 					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
-							getSegArchivo(), usuario, getSegDocumento());
+							getSegArchivo(), usuario, getSegDocumento(), getUtmX(), getUtmY());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
 				}
 				r = "seguridad?faces-redirect=true";
-				//setControl(false);
+				// setControl(false);
 				this.cleanDatos();
 				this.cargarIncidentes();
 			}
@@ -867,7 +899,7 @@ public class SeguridadBean {
 	 * @return
 	 */
 	public String cancelar() {
-		//setControl(false);
+		// setControl(false);
 		this.cleanDatos();
 		this.cargarIncidentes();
 		return "seguridad?faces-redirect=true";
@@ -942,7 +974,125 @@ public class SeguridadBean {
 		marker = event.getMarker();
 		setSegLatitud(marker.getLatlng().getLat());
 		setSegLongitud(marker.getLatlng().getLng());
-		Mensaje.crearMensajeINFO("Punto Seleccionado:" + getSegLatitud() + " " + getSegLongitud());
+		String r = obtenerUTM(getSegLatitud(), getSegLongitud());
+		String [] parts= r.split(" ");
+		setUtmX(parts[0].trim());
+		setUtmY(parts[1].trim());
+		Mensaje.crearMensajeINFO("Punto Seleccionado: 17 N "+r+" ");
+	}
+
+	private String obtenerUTM(double lat, double lon) {
+		String utm="";
+		utm=Deg2UTM(lat, lon);
+		return utm;
+	}
+
+	private String Deg2UTM(double Lat, double Lon) {
+		double Easting;
+		double Northing;
+		int Zone;
+		char Letter;
+		Zone = (int) Math.floor(Lon / 6 + 31);
+		if (Lat < -72)
+			Letter = 'C';
+		else if (Lat < -64)
+			Letter = 'D';
+		else if (Lat < -56)
+			Letter = 'E';
+		else if (Lat < -48)
+			Letter = 'F';
+		else if (Lat < -40)
+			Letter = 'G';
+		else if (Lat < -32)
+			Letter = 'H';
+		else if (Lat < -24)
+			Letter = 'J';
+		else if (Lat < -16)
+			Letter = 'K';
+		else if (Lat < -8)
+			Letter = 'L';
+		else if (Lat < 0)
+			Letter = 'M';
+		else if (Lat < 8)
+			Letter = 'N';
+		else if (Lat < 16)
+			Letter = 'P';
+		else if (Lat < 24)
+			Letter = 'Q';
+		else if (Lat < 32)
+			Letter = 'R';
+		else if (Lat < 40)
+			Letter = 'S';
+		else if (Lat < 48)
+			Letter = 'T';
+		else if (Lat < 56)
+			Letter = 'U';
+		else if (Lat < 64)
+			Letter = 'V';
+		else if (Lat < 72)
+			Letter = 'W';
+		else
+			Letter = 'X';
+		Easting = 0.5
+				* Math.log((1 + Math.cos(Lat * Math.PI / 180)
+						* Math.sin(Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180))
+						/ (1 - Math.cos(Lat * Math.PI / 180) * Math.sin(
+								Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180)))
+				* 0.9996 * 6399593.62
+				/ Math.pow(
+						(1 + Math
+								.pow(0.0820944379,
+										2)
+								* Math.pow(Math.cos(Lat * Math.PI / 180), 2)),
+						0.5)
+				* (1 + Math.pow(0.0820944379, 2) / 2
+						* Math.pow(
+								(0.5 * Math.log((1
+										+ Math.cos(Lat * Math.PI / 180)
+												* Math.sin(Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180))
+										/ (1 - Math.cos(Lat * Math.PI / 180)
+												* Math.sin(Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180)))),
+								2)
+						* Math.pow(Math.cos(Lat * Math.PI / 180), 2) / 3)
+				+ 500000;
+		Easting = Math.round(Easting * 100) * 0.01;
+		Northing = (Math
+				.atan(Math.tan(Lat * Math.PI / 180)
+						/ Math.cos((Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180)))
+				- Lat * Math.PI
+						/ 180)
+				* 0.9996 * 6399593.625
+				/ Math.sqrt(
+						1 + 0.006739496742
+								* Math.pow(
+										Math.cos(
+												Lat * Math.PI
+														/ 180),
+										2))
+				* (1 + 0.006739496742 / 2
+						* Math.pow(
+								0.5 * Math.log((1 + Math.cos(Lat * Math.PI / 180)
+										* Math.sin((Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180)))
+										/ (1 - Math.cos(Lat * Math.PI / 180) * Math.sin(
+												(Lon * Math.PI / 180 - (6 * Zone - 183) * Math.PI / 180)))),
+								2)
+						* Math.pow(Math.cos(Lat * Math.PI / 180), 2))
+				+ 0.9996 * 6399593.625 * (Lat * Math.PI / 180
+						- 0.005054622556 * (Lat * Math.PI / 180 + Math.sin(2 * Lat * Math.PI / 180) / 2)
+						+ 4.258201531e-05 * (3 * (Lat * Math.PI / 180 + Math.sin(2 * Lat * Math.PI / 180) / 2)
+								+ Math.sin(2 * Lat * Math.PI / 180) * Math.pow(Math.cos(Lat * Math.PI / 180), 2)) / 4
+						- 1.674057895e-07 * (5
+								* (3 * (Lat * Math.PI / 180 + Math.sin(2 * Lat * Math.PI / 180) / 2)
+										+ Math.sin(2 * Lat * Math.PI / 180)
+												* Math.pow(Math.cos(Lat * Math.PI / 180), 2))
+								/ 4
+								+ Math.sin(2 * Lat * Math.PI / 180) * Math.pow(Math.cos(Lat * Math.PI / 180), 2)
+										* Math.pow(Math.cos(Lat * Math.PI / 180), 2))
+								/ 3);
+		if (Letter < 'M')
+			Northing = Northing + 10000000;
+		Northing = Math.round(Northing * 100) * 0.01;
+		return Easting + " " + Northing;
 	}
 
 	// ////////////////////////////////////////////ESTADISTICAS///////////////////////////////////////////
@@ -1362,10 +1512,12 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-//						.getContext();
-//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
-				 String carpeta = url_doc + "/doc_incidencias/";
+				// ServletContext servletContext = (ServletContext)
+				// FacesContext.getCurrentInstance().getExternalContext()
+				// .getContext();
+				// String carpeta = servletContext.getRealPath(File.separator +
+				// "resources/doc/doc_incidencias/");
+				String carpeta = url_doc + "/doc_incidencias/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
@@ -1427,15 +1579,17 @@ public class SeguridadBean {
 	 * Método para descargar un archivo excel
 	 */
 	public void descargarArchivo(SegRegistroEmergencia emergencia) {
-//		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-//				.getContext();
-//		String contextPath = servletContext
-//				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegArchivo()+"");
-//		System.out.println(contextPath);
+		// ServletContext servletContext = (ServletContext)
+		// FacesContext.getCurrentInstance().getExternalContext()
+		// .getContext();
+		// String contextPath = servletContext
+		// .getRealPath(File.separator + "resources/doc/doc_incidencias/" +
+		// emergencia.getSegArchivo()+"");
+		// System.out.println(contextPath);
 		if (emergencia.getSegArchivo() == null || emergencia.getSegArchivo().isEmpty()) {
 			Mensaje.crearMensajeERROR("La incidencia no cuenta con un archivo asignado.");
 		} else {
-			String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegArchivo()+"";
+			String contextPath = url_doc + "/doc_incidencias/" + emergencia.getSegArchivo() + "";
 			Funciones.descargarPDF(contextPath);
 		}
 	}
@@ -1451,10 +1605,12 @@ public class SeguridadBean {
 		if (file != null) {
 			try {
 				// Tomar PAD REAL
-//				ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-//						.getContext();
-//				String carpeta = servletContext.getRealPath(File.separator + "resources/doc/doc_incidencias/");
-				 String carpeta = url_doc + "/doc_incidencias/";
+				// ServletContext servletContext = (ServletContext)
+				// FacesContext.getCurrentInstance().getExternalContext()
+				// .getContext();
+				// String carpeta = servletContext.getRealPath(File.separator +
+				// "resources/doc/doc_incidencias/");
+				String carpeta = url_doc + "/doc_incidencias/";
 				if (getPerDni() == null || getPerDni().isEmpty()) {
 					Mensaje.crearMensajeWARN(
 							"No se pudo cargar el archivo, persona no asignada. Por favor seleccione una.");
@@ -1489,13 +1645,13 @@ public class SeguridadBean {
 			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
 		}
 	}
-	
-	private String idImagen(){
+
+	private String idImagen() {
 		String retorno;
-		if (getSegId()==null){
-			retorno= manager.seguridadId().toString();
-		}else{
-			retorno=getSegId().toString();
+		if (getSegId() == null) {
+			retorno = manager.seguridadId().toString();
+		} else {
+			retorno = getSegId().toString();
 		}
 		return retorno;
 	}
@@ -1504,15 +1660,17 @@ public class SeguridadBean {
 	 * Método para descargar un archivo excel
 	 */
 	public void descargarDocumento(SegRegistroEmergencia emergencia) {
-//		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
-//				.getContext();
-//		String contextPath = servletContext
-//				.getRealPath(File.separator + "resources/doc/doc_incidencias/" + emergencia.getSegDocumento()+"");
-//		System.out.println(contextPath);
+		// ServletContext servletContext = (ServletContext)
+		// FacesContext.getCurrentInstance().getExternalContext()
+		// .getContext();
+		// String contextPath = servletContext
+		// .getRealPath(File.separator + "resources/doc/doc_incidencias/" +
+		// emergencia.getSegDocumento()+"");
+		// System.out.println(contextPath);
 		if (emergencia.getSegDocumento() == null || emergencia.getSegDocumento().isEmpty()) {
-		Mensaje.crearMensajeERROR("La incidencia no cuenta con un documento de respaldo.");
+			Mensaje.crearMensajeERROR("La incidencia no cuenta con un documento de respaldo.");
 		} else {
-			String contextPath=url_doc+"/doc_incidencias/"+emergencia.getSegDocumento()+"";
+			String contextPath = url_doc + "/doc_incidencias/" + emergencia.getSegDocumento() + "";
 			Funciones.descargarPDF(contextPath);
 		}
 	}
