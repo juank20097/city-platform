@@ -45,7 +45,8 @@ public class Funciones {
 	public static String hostWS = "http://app-permisos.yachay.gob.ec/";
 
 	public static Boolean validacionCedula(String cedula) {
-		// verifica que los dos primeros d�gitos correspondan a un valor entre 1
+		// verifica que los dos primeros d�gitos correspondan a un valor entre
+		// 1
 		// y NUMERO_DE_PROVINCIAS
 		int prov = Integer.parseInt(cedula.substring(0, 2));
 		if (!((prov > 0) && (prov <= num_provincias) || prov == 30)) {
@@ -73,9 +74,7 @@ public class Funciones {
 		// Sumamos los dos resultados
 		int suma = imp + par;
 		// Restamos de la decena superior
-		int d10 = Integer.parseInt(String.valueOf(suma + 10).substring(0, 1)
-				+ "0")
-				- suma;
+		int d10 = Integer.parseInt(String.valueOf(suma + 10).substring(0, 1) + "0") - suma;
 		// Si es diez el d�cimo d�gito es cero
 		d10 = (d10 == 10) ? 0 : d10;
 		// si el d�cimo d�gito calculado es igual al digitado la c�dula es
@@ -113,9 +112,8 @@ public class Funciones {
 	public static boolean validarEmail(String email) {
 
 		// Definicion de pattern con la expresion regular
-		Pattern pattern = Pattern
-				.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Pattern pattern = Pattern.compile(
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
 		// COmprobacion del correo ingresado
 		Matcher matcher = pattern.matcher(email);
@@ -139,8 +137,7 @@ public class Funciones {
 			byte[] passHash = sha256.digest(passBytes);
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < passHash.length; i++) {
-				sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16)
-						.substring(1));
+				sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16).substring(1));
 			}
 			String generatedPassword = sb.toString();
 			return generatedPassword;
@@ -257,8 +254,7 @@ public class Funciones {
 	public static String genPass() {
 		String pass = "";
 		for (int i = 0; i < 4; i++) {
-			pass += (char) (Math.random() * 25 + 97) + ""
-					+ (int) (Math.random() * 9 + 1);
+			pass += (char) (Math.random() * 25 + 97) + "" + (int) (Math.random() * 9 + 1);
 		}
 		return pass;
 	}
@@ -301,12 +297,9 @@ public class Funciones {
 		// Se asigna la fecha recibida a la fecha de nacimiento.
 		fechaNacimiento.setTime(fecha);
 		// Se restan la fecha actual y la fecha de nacimiento
-		int anio = fechaActual.get(Calendar.YEAR)
-				- fechaNacimiento.get(Calendar.YEAR);
-		int mes = fechaActual.get(Calendar.MONTH)
-				- fechaNacimiento.get(Calendar.MONTH);
-		int dia = fechaActual.get(Calendar.DATE)
-				- fechaNacimiento.get(Calendar.DATE);
+		int anio = fechaActual.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
+		int mes = fechaActual.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
+		int dia = fechaActual.get(Calendar.DATE) - fechaNacimiento.get(Calendar.DATE);
 		// Se ajusta el a�o dependiendo el mes y el d�a
 		if (mes < 0 || (mes == 0 && dia < 0)) {
 			anio--;
@@ -380,11 +373,9 @@ public class Funciones {
 			String fileName = ficheroXLS.getName();
 			String contentType = "application/vnd.ms-excel";
 			// String contentType = "application/pdf";
-			HttpServletResponse response = (HttpServletResponse) ctx
-					.getExternalContext().getResponse();
+			HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
 			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ fileName + "\"");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
 			ServletOutputStream out = null;
 			try {
 				out = response.getOutputStream();
@@ -402,7 +393,7 @@ public class Funciones {
 			ctx.responseComplete();
 		}
 	}
-	
+
 	/**
 	 * M�todo para descargar archivos excel
 	 * 
@@ -425,13 +416,11 @@ public class Funciones {
 
 		if (!ctx.getResponseComplete()) {
 			String fileName = ficheroXLS.getName();
-//			String contentType = "application/vnd.ms-excel";
-			 String contentType = "application/pdf";
-			HttpServletResponse response = (HttpServletResponse) ctx
-					.getExternalContext().getResponse();
+			// String contentType = "application/vnd.ms-excel";
+			String contentType = "application/pdf";
+			HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
 			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ fileName + "\"");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
 			ServletOutputStream out = null;
 			try {
 				out = response.getOutputStream();
@@ -449,117 +438,175 @@ public class Funciones {
 			ctx.responseComplete();
 		}
 	}
-	
-	//M�todo Cifrado
-	
-	 //m�todo para cifrar el texto
-    public static String cifradoCesar(String texto, int codigo) {
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-                if ((texto.charAt(i) + codigo) > 'z') {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-                if ((texto.charAt(i) + codigo) > 'Z') {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-            }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para cifrar el texto
-    public static String cifradoCesarInteger(String texto, int codigo) {
-    	String valor="0123456789";
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 9;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 9));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-        }
-        return cifrado.toString();
-    }
 
-    //m�todo para descifrar el texto
-    public static String descifradoCesar(String texto, int codigo) {
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-                if ((texto.charAt(i) - codigo) < 'a') {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-                if ((texto.charAt(i) - codigo) < 'A') {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-            }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para descifrar el texto
-    public static String descifradoCesarInteger(String texto, int codigo) {
-    	String valor="0123456789";
-    	StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 9;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 9));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para cifrar el texto
-    public static String cifradoPropio(String texto, int codigo) {
-    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 30));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para descifrar el texto
-    public static String descifradoPropio(String texto, int codigo) {
-    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    	StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    public static String quitarEspacios(String parametro){
-    	if(parametro == null)
-    		parametro = "";
-    	return parametro.trim();
-    }
+	// M�todo Cifrado
 
+	// m�todo para cifrar el texto
+	public static String cifradoCesar(String texto, int codigo) {
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+				if ((texto.charAt(i) + codigo) > 'z') {
+					cifrado.append((char) (texto.charAt(i) + codigo - 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) + codigo));
+				}
+			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+				if ((texto.charAt(i) + codigo) > 'Z') {
+					cifrado.append((char) (texto.charAt(i) + codigo - 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) + codigo));
+				}
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para cifrar el texto
+	public static String cifradoCesarInteger(String texto, int codigo) {
+		String valor = "0123456789";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 9;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
+				cifrado.append((char) (texto.charAt(i) + codigo - 9));
+			} else {
+				cifrado.append((char) (texto.charAt(i) + codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoCesar(String texto, int codigo) {
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+				if ((texto.charAt(i) - codigo) < 'a') {
+					cifrado.append((char) (texto.charAt(i) - codigo + 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) - codigo));
+				}
+			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+				if ((texto.charAt(i) - codigo) < 'A') {
+					cifrado.append((char) (texto.charAt(i) - codigo + 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) - codigo));
+				}
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoCesarInteger(String texto, int codigo) {
+		String valor = "0123456789";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 9;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+				cifrado.append((char) (texto.charAt(i) - codigo + 9));
+			} else {
+				cifrado.append((char) (texto.charAt(i) - codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para cifrar el texto
+	public static String cifradoPropio(String texto, int codigo) {
+		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
+				cifrado.append((char) (texto.charAt(i) + codigo - 30));
+			} else {
+				cifrado.append((char) (texto.charAt(i) + codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoPropio(String texto, int codigo) {
+		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+				cifrado.append((char) (texto.charAt(i) - codigo + 26));
+			} else {
+				cifrado.append((char) (texto.charAt(i) - codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	public static String quitarEspacios(String parametro) {
+		if (parametro == null)
+			parametro = "";
+		return parametro.trim();
+	}
+
+	public static void Deg2UTM(double Lat,double Lon)
+    {
+    	double Easting;
+    	double Northing;
+    	int Zone;
+    	char Letter;
+        Zone= (int) Math.floor(Lon/6+31);
+        if (Lat<-72) 
+            Letter='C';
+        else if (Lat<-64) 
+            Letter='D';
+        else if (Lat<-56)
+            Letter='E';
+        else if (Lat<-48)
+            Letter='F';
+        else if (Lat<-40)
+            Letter='G';
+        else if (Lat<-32)
+            Letter='H';
+        else if (Lat<-24)
+            Letter='J';
+        else if (Lat<-16)
+            Letter='K';
+        else if (Lat<-8) 
+            Letter='L';
+        else if (Lat<0)
+            Letter='M';
+        else if (Lat<8)  
+            Letter='N';
+        else if (Lat<16) 
+            Letter='P';
+        else if (Lat<24) 
+            Letter='Q';
+        else if (Lat<32) 
+            Letter='R';
+        else if (Lat<40) 
+            Letter='S';
+        else if (Lat<48) 
+            Letter='T';
+        else if (Lat<56) 
+            Letter='U';
+        else if (Lat<64) 
+            Letter='V';
+        else if (Lat<72) 
+            Letter='W';
+        else
+            Letter='X';
+        Easting=0.5*Math.log((1+Math.cos(Lat*Math.PI/180)*Math.sin(Lon*Math.PI/180-(6*Zone-183)*Math.PI/180))/(1-Math.cos(Lat*Math.PI/180)*Math.sin(Lon*Math.PI/180-(6*Zone-183)*Math.PI/180)))*0.9996*6399593.62/Math.pow((1+Math.pow(0.0820944379, 2)*Math.pow(Math.cos(Lat*Math.PI/180), 2)), 0.5)*(1+ Math.pow(0.0820944379,2)/2*Math.pow((0.5*Math.log((1+Math.cos(Lat*Math.PI/180)*Math.sin(Lon*Math.PI/180-(6*Zone-183)*Math.PI/180))/(1-Math.cos(Lat*Math.PI/180)*Math.sin(Lon*Math.PI/180-(6*Zone-183)*Math.PI/180)))),2)*Math.pow(Math.cos(Lat*Math.PI/180),2)/3)+500000;
+        Easting=Math.round(Easting*100)*0.01;
+        Northing = (Math.atan(Math.tan(Lat*Math.PI/180)/Math.cos((Lon*Math.PI/180-(6*Zone -183)*Math.PI/180)))-Lat*Math.PI/180)*0.9996*6399593.625/Math.sqrt(1+0.006739496742*Math.pow(Math.cos(Lat*Math.PI/180),2))*(1+0.006739496742/2*Math.pow(0.5*Math.log((1+Math.cos(Lat*Math.PI/180)*Math.sin((Lon*Math.PI/180-(6*Zone -183)*Math.PI/180)))/(1-Math.cos(Lat*Math.PI/180)*Math.sin((Lon*Math.PI/180-(6*Zone -183)*Math.PI/180)))),2)*Math.pow(Math.cos(Lat*Math.PI/180),2))+0.9996*6399593.625*(Lat*Math.PI/180-0.005054622556*(Lat*Math.PI/180+Math.sin(2*Lat*Math.PI/180)/2)+4.258201531e-05*(3*(Lat*Math.PI/180+Math.sin(2*Lat*Math.PI/180)/2)+Math.sin(2*Lat*Math.PI/180)*Math.pow(Math.cos(Lat*Math.PI/180),2))/4-1.674057895e-07*(5*(3*(Lat*Math.PI/180+Math.sin(2*Lat*Math.PI/180)/2)+Math.sin(2*Lat*Math.PI/180)*Math.pow(Math.cos(Lat*Math.PI/180),2))/4+Math.sin(2*Lat*Math.PI/180)*Math.pow(Math.cos(Lat*Math.PI/180),2)*Math.pow(Math.cos(Lat*Math.PI/180),2))/3);
+        if (Letter<'M')
+            Northing = Northing + 10000000;
+        Northing=Math.round(Northing*100)*0.01;
+        System.out.println(Northing);
+        System.out.println(Easting);
+        System.out.println(Zone);
+        System.out.println(Letter);
+    }
 }

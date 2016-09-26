@@ -75,8 +75,6 @@ public class DistritoBean implements Serializable{
 	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 	
-	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
 	private String observacion;
 	
 	private UploadedFile fileMapa;
@@ -301,12 +299,12 @@ public class DistritoBean implements Serializable{
 				return respuesta;
 			}else{
 				GenDistrito d = new GenDistrito();
-				d.setDisId(Funciones.quitarEspacios(getId()));
-				d.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()));
+				d.setDisId(Funciones.quitarEspacios(getId().toUpperCase()));
+				d.setDisDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
 				d.setDisEstado(getEstado());
 				d.setDisKilometros(getKilometros());
-				d.setDisNombre(Funciones.quitarEspacios(getNombre()));
-				d.setDisObservacion(Funciones.quitarEspacios(getObservacion()));
+				d.setDisNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+				d.setDisObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
 				d.setGenZona(manager.findZonaById(getZonaId()));
 				if(isEdicion()){
 					if(getDirMapa()!= null || getDirMapa() != ""){
@@ -439,10 +437,10 @@ public class DistritoBean implements Serializable{
 	public void editarDistrito(){
 		try {	
 			GenDistrito dis= new GenDistrito();
-			dis.setDisId(Funciones.quitarEspacios(getId()));
-			dis.setDisNombre(Funciones.quitarEspacios(getNombre()));
-			dis.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()));
-			dis.setDisObservacion(Funciones.quitarEspacios(getObservacion()));
+			dis.setDisId(Funciones.quitarEspacios(getId().toUpperCase()));
+			dis.setDisNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+			dis.setDisDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
+			dis.setDisObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
 			dis.setDisKilometros(getKilometros());
 			dis.setDisLinkMapa(getDirMapa());
 			dis.setDisLinkPdf(getDirPdf());

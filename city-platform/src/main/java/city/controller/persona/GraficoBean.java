@@ -1,5 +1,7 @@
 package city.controller.persona;
 
+import java.math.BigDecimal;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -85,6 +87,7 @@ public class GraficoBean {
 
 		barModel.setLegendPosition("ne");
 		barModel.setAnimate(true);
+		barModel.setShowPointLabels(true);
 
 		Axis xAxis = barModel.getAxis(AxisType.X);
 		xAxis.setLabel("Años");
@@ -99,7 +102,8 @@ public class GraficoBean {
 		barModelP = initBarModelP();
 
 		barModelP.setLegendPosition("ne");
-		barModel.setAnimate(true);
+		barModelP.setAnimate(true);
+		barModelP.setShowPointLabels(true);
 
 		Axis xAxis = barModelP.getAxis(AxisType.X);
 		xAxis.setLabel("Años");

@@ -1,11 +1,16 @@
 package city.model.manager;
 
+import city.model.generic.Funciones;
+
 public class Test {
 	
 	
 
 	public static void main(String[] args) {
 		
+		Funciones f = new Funciones();
+		
+		f.Deg2UTM(0.407508427224032, -78.1825731085206);
 		
 //		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
 //		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));
@@ -59,22 +64,22 @@ public class Test {
 //		
 //		System.out.println(l.size());
 		
-			String nombreArchivo ="Maria.sql.txt";
-			String [] extension = nombreArchivo.split(".");
-			
-			Integer j=nombreArchivo.lastIndexOf('.');
-			String a = nombreArchivo.substring(j);
-			System.out.println(a);
-			System.out.println(extension[0]);
-			StringBuilder s = new StringBuilder();
-			for (int i = extension.length; i < 0; i--) {
-				if(!extension[i].equals(".")){
-					s.append(extension[i]);
-				}else {
-					break;
-				}
-			}
-		
+//			String nombreArchivo ="Maria.sql.txt";
+//			String [] extension = nombreArchivo.split(".");
+//			
+//			Integer j=nombreArchivo.lastIndexOf('.');
+//			String a = nombreArchivo.substring(j);
+//			System.out.println(a);
+//			System.out.println(extension[0]);
+//			StringBuilder s = new StringBuilder();
+//			for (int i = extension.length; i < 0; i--) {
+//				if(!extension[i].equals(".")){
+//					s.append(extension[i]);
+//				}else {
+//					break;
+//				}
+//			}
+//		
 	}
 
 }
