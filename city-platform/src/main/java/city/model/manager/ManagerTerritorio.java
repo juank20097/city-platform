@@ -460,7 +460,7 @@ public class ManagerTerritorio {
 	public Integer asignacionSueloId() {
 		Integer id = 0;
 		try {
-			id = (Integer) mngDAO.ejectNativeSQL2("select max(are_id) from gen_areas limit 1;");
+			id = (Integer) mngDAO.ejectNativeSQL2("select max(sue_id) from gen_asignacion_suelo limit 1;");
 			if (id == null || id == 0) {
 				id = 1;
 			} else {
