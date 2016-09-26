@@ -10,7 +10,8 @@ public class Test {
 		
 		Funciones f = new Funciones();
 		
-		f.Deg2UTM(0.407508427224032, -78.1825731085206);
+		System.out.println();
+		f.UTM2Deg("17 N 813628.4500000001 45096.81");
 		
 //		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
 //		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));
