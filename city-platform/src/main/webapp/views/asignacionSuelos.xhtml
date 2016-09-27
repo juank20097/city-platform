@@ -51,6 +51,10 @@
 							oncomplete="PF('statusDialog').hide()"
 							action="#{asignacionSueloBean.cargarEditarAsignacionSuelo(s)}">
 						</b:commandButton>
+						<b:commandButton iconAwesome="fa fa-eye"
+							style="padding: 0; border: none; background: none;color: #000"
+							action="PF('dlgSeg').show()">
+						</b:commandButton>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -112,6 +116,31 @@
 					</h:column>
 				</b:dataTable>
 			</b:panel>
+
+			<p:dialog widgetVar="dlgSeg" modal="true" draggable="false"
+				closable="true" resizable="false" showHeader="false">
+				<p:dataTable var="seg" value="#{asignacionSueloBean.listAsignacionSuelos}">
+					<p:column headerText="Fecha">
+
+					</p:column>
+
+					<p:column headerText="Responsable">
+
+					</p:column>
+
+					<p:column headerText="Novedades">
+
+					</p:column>
+
+					<p:column headerText="Documento">
+
+					</p:column>
+					<p:column headerText="Fotos">
+
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 				closable="false" resizable="false" showHeader="false">
 				<p:graphicImage value="../resources/img/cargando.gif" />
