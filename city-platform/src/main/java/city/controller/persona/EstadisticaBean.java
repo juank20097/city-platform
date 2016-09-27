@@ -66,7 +66,6 @@ public class EstadisticaBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		session.validarSesion();
 		personasEP = new ArrayList<GenPersona>();
 		personasIST = new ArrayList<GenPersona>();
 		personasTECH = new ArrayList<GenPersona>();
@@ -539,7 +538,6 @@ public class EstadisticaBean implements Serializable{
 			setAbrirEstudiantes(false);
 			setAbrirFuncionarios(true);
 		}
-		
 	}
 		
 }

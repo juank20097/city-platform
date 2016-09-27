@@ -24,22 +24,6 @@ import city.model.dao.entidades.GenSectore;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSitios;
 
-/**
- * @author jestevez
- * 
- */
-/**
- * @author jestevez
- *
- */
-/**
- * @author jestevez
- *
- */
-/**
- * @author jestevez
- * 
- */
 @SessionScoped
 @ManagedBean
 public class AreaBean {
@@ -170,6 +154,10 @@ public class AreaBean {
 	 */
 	public void setAreDescripcion(String areDescripcion) {
 		this.areDescripcion = areDescripcion;
+	}
+	
+	public void validarSesion(){
+		session.validarPersona("area.xhtml");
 	}
 
 	/**

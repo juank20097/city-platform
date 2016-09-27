@@ -9,6 +9,7 @@
 
 <ui:composition template="template.xhtml">
 	<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('grafico.xhtml')}" />
 		<f:viewAction action="#{graficoBean.cargarDatos()}" />
 	</f:metadata>
 	<ui:define name="titulo">

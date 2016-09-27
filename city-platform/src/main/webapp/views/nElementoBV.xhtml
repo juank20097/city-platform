@@ -7,6 +7,9 @@
       xmlns:b="http://bootsfaces.net/ui">
 
 	<ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('elementosUbicacion.xhtml')}" />
+	</f:metadata>
 		<ui:define name="titulo">
             Ubicaci&oacute;n Elemento 
         </ui:define>

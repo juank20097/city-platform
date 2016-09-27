@@ -7,6 +7,10 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction
+			action="#{sesionBean.validarPersona('cargaEstudiantes.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
            Yachay City Platform
         </ui:define>
@@ -14,7 +18,7 @@
 		<h:form id="frm">
 			<b:tabView pills="true"
 				contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-				 <p:ajax event="click" update="frm:tbb frm:tbb_total" />
+				<p:ajax event="click" update="frm:tbb frm:tbb_total" />
 				<b:tab disabled="false" title="Carga de Datos" update="tbb">
 					<f:facet name="anchor">
 						<b:iconAwesome name="fa-file-excel-o" />
