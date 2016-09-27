@@ -47,7 +47,7 @@ public class AsignacionSueloBean implements Serializable {
 	@Inject
 	private SesionBean session;
 
-	@NotEmpty(message = "ID no debe estar vacï¿½o.")
+	@NotEmpty(message = "ID no debe estar vacío.")
 	@NotBlank(message = "ID no debe ser solo espacios blancos.")
 	private Integer id;
 
@@ -56,20 +56,20 @@ public class AsignacionSueloBean implements Serializable {
 	private Date fechaIncio;
 	private Date fechaFin;
 
-	@NotEmpty(message = "PDF LINK no debe estar vacï¿½o.")
+	@NotEmpty(message = "PDF LINK no debe estar vacío.")
 	@NotBlank(message = "PDF LINK no debe ser solo espacios blancos.")
-	@URL(message = "PDF LINK no es una url vï¿½lida.")
+	@URL(message = "PDF LINK no es una url válida.")
 	private String linkPdf;
 
 	@DecimalMin("0")
 	private BigDecimal metros;
 
-	@NotEmpty(message = "ACTIVIDAD no debe estar vacï¿½o.")
+	@NotEmpty(message = "ACTIVIDAD no debe estar vacío.")
 	@NotBlank(message = "ACTIVIDAD no debe ser solo espacios blancos.")
 	private String actividad;
 
-	@NotEmpty(message = "ASIGNACIï¿½N no debe estar vacï¿½o.")
-	@NotBlank(message = "ASIGNACIï¿½N no debe ser solo espacios blancos.")
+	@NotEmpty(message = "ASIGNACIÓN no debe estar vacío.")
+	@NotBlank(message = "ASIGNACIÓN no debe ser solo espacios blancos.")
 	private String asignacion;
 
 	private List<GenAsignacionSuelo> listAsignacionSuelos;
@@ -83,12 +83,12 @@ public class AsignacionSueloBean implements Serializable {
 
 	List<SelectItem> l_zona;
 
-	@NotEmpty(message = "ZONA no debe estar vacï¿½o.")
+	@NotEmpty(message = "ZONA no debe estar vacío.")
 	private String zona;
 
 	List<SelectItem> l_tipo_catalogo;
 
-	@NotEmpty(message = "TIPO no debe estar vacï¿½o.")
+	@NotEmpty(message = "TIPO no debe estar vacío.")
 	private String SueTipoCatalogo;
 
 	private Date date;

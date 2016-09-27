@@ -355,9 +355,5 @@ public class SesionBean implements Serializable {
 		String usuario = validarSesion();
 		System.out.println("Usuario de session: " + usuario);
 	}
-	
-	public void validarVistasSesion(String usuario, String vista){
-		
-	}
 
 }

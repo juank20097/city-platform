@@ -318,11 +318,11 @@ public class BarriosBean implements Serializable {
 				return respuesta;
 			} else {
 				GenBarrio b = new GenBarrio();
-				b.setBarId(Funciones.quitarEspacios(getId().toUpperCase()));
+				b.setBarId(Funciones.quitarEspacios(getId()).toUpperCase());
 				b.setBarDescripcion(Funciones.quitarEspacios(getDescripcion().toLowerCase()));
 				b.setBarEstado(getEstado());
 				b.setBarKilometros(getKilometros());
-				b.setBarNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+				b.setBarNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
 				b.setBarHectareas(getHectareas());
 				b.setBarObservacion(Funciones.quitarEspacios(getObservacion()));
 				b.setGenDistrito(manager.findDistritoById(getDistritoId()));
@@ -460,10 +460,10 @@ public class BarriosBean implements Serializable {
 	public void editarBarrio(){
 		try {
 			GenBarrio bar = new GenBarrio();
-			bar.setBarId(Funciones.quitarEspacios(getId().toUpperCase()));
-			bar.setBarNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
-			bar.setBarDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
-			bar.setBarObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
+			bar.setBarId(Funciones.quitarEspacios(getId()).toUpperCase());
+			bar.setBarNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
+			bar.setBarDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
+			bar.setBarObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 			bar.setBarKilometros(getKilometros());
 			bar.setBarHectareas(getHectareas());
 			bar.setGenDistrito(getDistrito());

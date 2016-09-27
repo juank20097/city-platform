@@ -225,7 +225,7 @@ public class ElementoBarrioBean implements Serializable {
 				return "";
 			} else {
 				GenElementosBarrio e = new GenElementosBarrio();
-				e.setElbNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+				e.setElbNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
 				e.setElbTipo(getTipo());
 				e.setElbUnidadMedida(getUnidadMedida());
 				e.setElbEstado(getEstado());

@@ -250,12 +250,12 @@ public class ZonaBean implements Serializable{
 				return respuesta;
 			} else {
 					GenZona z = new GenZona();
-					z.setZonId(Funciones.quitarEspacios(getId().toUpperCase()));
-					z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
+					z.setZonId(Funciones.quitarEspacios(getId()).toUpperCase());
+					z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
 					z.setZonEstado(getEstado());
 					z.setZonKilometros(getKilometros());
-					z.setZonNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
-					z.setZonObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
+					z.setZonNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
+					z.setZonObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 					if (isEdicion()) {
 						if(getDirMapa()!= null || getDirMapa() != ""){
 							z.setZonLinkMapa(getDirMapa());
@@ -387,11 +387,11 @@ public class ZonaBean implements Serializable{
 	public void editarZona(){
 		try {
 			GenZona z = new GenZona();
-			z.setZonId(Funciones.quitarEspacios(getId().toUpperCase()));
-			z.setZonNombre(Funciones.quitarEspacios(getNombre().toUpperCase()));
+			z.setZonId(Funciones.quitarEspacios(getId()).toUpperCase());
+			z.setZonNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
 			z.setZonKilometros(getKilometros());
-			z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion().toUpperCase()));
-			z.setZonObservacion(Funciones.quitarEspacios(getObservacion().toUpperCase()));
+			z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
+			z.setZonObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 			z.setZonEstado(getEstado());
 			if(getDirMapa()!= null || getDirMapa() != ""){
 				z.setZonLinkMapa(getDirMapa());
