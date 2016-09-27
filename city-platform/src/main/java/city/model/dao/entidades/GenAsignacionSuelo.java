@@ -2,60 +2,66 @@ package city.model.dao.entidades;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+
 import java.math.BigDecimal;
 import java.util.Date;
-
+import java.util.List;
 
 /**
  * The persistent class for the gen_asignacion_suelo database table.
  * 
  */
 @Entity
-@Table(name="gen_asignacion_suelo")
-@NamedQuery(name="GenAsignacionSuelo.findAll", query="SELECT g FROM GenAsignacionSuelo g")
+@Table(name = "gen_asignacion_suelo")
+@NamedQuery(name = "GenAsignacionSuelo.findAll", query = "SELECT g FROM GenAsignacionSuelo g")
 public class GenAsignacionSuelo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="sue_id")
+	@Column(name = "sue_id")
 	private Integer sueId;
 
-	@Column(name="sue_actividad")
+	@Column(name = "sue_actividad")
 	private String sueActividad;
 
-	@Column(name="sue_archivo")
+	@Column(name = "sue_archivo")
 	private String sueArchivo;
 
-	@Column(name="sue_asignacion")
+	@Column(name = "sue_asignacion")
 	private String sueAsignacion;
 
-	@Column(name="sue_estado", columnDefinition = "bpchar")
+	@Column(name = "sue_estado", columnDefinition = "bpchar")
 	private String sueEstado;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="sue_fecha_fin")
+	@Column(name = "sue_fecha_fin")
 	private Date sueFechaFin;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="sue_fecha_inicio")
+	@Column(name = "sue_fecha_inicio")
 	private Date sueFechaInicio;
 
-	@Column(name="sue_metros")
+	@Column(name = "sue_metros")
 	private BigDecimal sueMetros;
 
-	@Column(name="sue_observacion")
+	@Column(name = "sue_observacion")
 	private String sueObservacion;
 
-	@Column(name="sue_tipo")
+	@Column(name = "sue_tipo")
 	private String sueTipo;
-	
-	@Column(name="sue_numeroanios")
+
+	@Column(name = "sue_numeroanios")
 	private Integer sueNumeroAnios;
 
-	//bi-directional many-to-one association to GenZona
+	// bi-directional many-to-one association to GenZona
 	@ManyToOne
-	@JoinColumn(name="zon_id")
+	@JoinColumn(name = "zon_id")
 	private GenZona genZona;
+
+	// bi-directional many-to-one association to GenHistorialSeguimiento
+	@OneToMany(mappedBy = "genAsignacionSuelo")
+	private List<GenHistorialSeguimiento> genHistorialSeguimientos;
 
 	public GenAsignacionSuelo() {
 	}
@@ -139,11 +145,11 @@ public class GenAsignacionSuelo implements Serializable {
 	public void setSueTipo(String sueTipo) {
 		this.sueTipo = sueTipo;
 	}
-	
+
 	public Integer getSueNumeroAnios() {
 		return sueNumeroAnios;
 	}
-	
+
 	public void setSueNumeroAnios(Integer sueNumeroAnios) {
 		this.sueNumeroAnios = sueNumeroAnios;
 	}
@@ -154,6 +160,28 @@ public class GenAsignacionSuelo implements Serializable {
 
 	public void setGenZona(GenZona genZona) {
 		this.genZona = genZona;
+	}
+	
+	public List<GenHistorialSeguimiento> getGenHistorialSeguimientos() {
+		return this.genHistorialSeguimientos;
+	}
+
+	public void setGenHistorialSeguimientos(List<GenHistorialSeguimiento> genHistorialSeguimientos) {
+		this.genHistorialSeguimientos = genHistorialSeguimientos;
+	}
+
+	public GenHistorialSeguimiento addGenHistorialSeguimiento(GenHistorialSeguimiento genHistorialSeguimiento) {
+		getGenHistorialSeguimientos().add(genHistorialSeguimiento);
+		genHistorialSeguimiento.setGenAsignacionSuelo(this);
+
+		return genHistorialSeguimiento;
+	}
+
+	public GenHistorialSeguimiento removeGenHistorialSeguimiento(GenHistorialSeguimiento genHistorialSeguimiento) {
+		getGenHistorialSeguimientos().remove(genHistorialSeguimiento);
+		genHistorialSeguimiento.setGenAsignacionSuelo(null);
+
+		return genHistorialSeguimiento;
 	}
 
 }
