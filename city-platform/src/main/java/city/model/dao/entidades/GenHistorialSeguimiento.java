@@ -40,6 +40,9 @@ public class GenHistorialSeguimiento implements Serializable {
 
 	@Column(name="hse_usuario")
 	private String hseUsuario;
+	
+	@Column(name="hse_estado", columnDefinition="bpchar")
+	private String hseEstado;
 
 	//bi-directional many-to-one association to GenAsignacionSuelo
 	@ManyToOne
