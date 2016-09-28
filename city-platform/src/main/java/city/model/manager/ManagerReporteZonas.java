@@ -17,12 +17,18 @@ public class ManagerReporteZonas {
 	public ArrayList<DatosReporteTree> getAllElementosZonas() {
 
 		String sql = "SELECT gen_zonas.zon_id, gen_zonas.zon_nombre, gen_zonas.zon_descripcion,"
-				+ " gen_zonas.zon_kilometros," + "gen_zonas.zon_observacion, gen_elementos_zona.elz_nombre,"
+				+ " (SELECT SUM(gen_barrios.bar_kilometros) FROM gen_zonas AS zonas,"
+				+ " gen_distritos, gen_barrios WHERE zonas.zon_id = gen_distritos.zon_id AND"
+				+ " gen_distritos.dis_id = gen_barrios.dis_id AND zonas.zon_id = gen_zonas.zon_id) AS kilometros," 
+				+ " (SELECT SUM(gen_barrios.bar_hectareas) FROM gen_zonas AS zonas,gen_distritos, gen_barrios "
+				+ " WHERE zonas.zon_id = gen_distritos.zon_id AND gen_distritos.dis_id = gen_barrios.dis_id"
+				+ " AND zonas.zon_id = gen_zonas.zon_id) AS hectareas,"
+				+ " gen_zonas.zon_observacion, gen_elementos_zona.elz_nombre,"
 				+ " gen_elementos_zona.elz_tipo," + "gen_elementos_zona.elz_unidad_medida,"
 				+ " gen_elemento_zona_valor.ezv_valor " 
 				+ " FROM gen_zonas "
-				+ " LEFT JOIN gen_elemento_zona_valor  ON (gen_zonas.zon_id = gen_elemento_zona_valor.zon_id)"
-				+ " LEFT JOIN gen_elementos_zona ON (gen_elementos_zona.elz_id = gen_elemento_zona_valor.elz_id)"
+				+ " INNER JOIN gen_elemento_zona_valor  ON (gen_zonas.zon_id = gen_elemento_zona_valor.zon_id)"
+				+ " INNER JOIN gen_elementos_zona ON (gen_elementos_zona.elz_id = gen_elemento_zona_valor.elz_id)"
 				+ " ORDER BY gen_zonas.zon_id;";
 
 		List<Object[]> list = mngDao.findAllNativeSQL(sql);
@@ -65,12 +71,13 @@ public class ManagerReporteZonas {
 			datosReporte.setId(getValueNotNull(result[0]));
 			datosReporte.setNombre(getValueNotNull(result[1]));
 			datosReporte.setDescripcion(getValueNotNull(result[2]));
-			datosReporte.setKilometros(getValueNotNull(result[3]));
-			datosReporte.setObservacion(getValueNotNull(result[4]));
-			datosReporte.setElementoNombre(getValueNotNull(result[5]));
-			datosReporte.setElementoTipo(getValueNotNull(result[6]));
-			datosReporte.setElementoUnidadMedida(getValueNotNull(result[7]));
-			datosReporte.setElementoValor(getValueNotNull(result[8]));
+			datosReporte.setVecindarioKilometros(getValueNotNull(result[3]));
+			datosReporte.setVecindarioHectareas(getValueNotNull(result[4]));
+			datosReporte.setObservacion(getValueNotNull(result[5]));
+			datosReporte.setElementoNombre(getValueNotNull(result[6]));
+			datosReporte.setElementoTipo(getValueNotNull(result[7]));
+			datosReporte.setElementoUnidadMedida(getValueNotNull(result[8]));
+			datosReporte.setElementoValor(getValueNotNull(result[9]));
 
 			datosZonas.add(datosReporte);
 
