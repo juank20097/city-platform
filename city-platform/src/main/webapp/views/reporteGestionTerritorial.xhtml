@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:l="http://www.lapis.com/jsf/exporter">
+<ui:composition template="template.xhtml">
+	<ui:define name="titulo">
+            Lista territorios
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>LISTA DE TERRITORIOS</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+
+		<h:form id="formTerritorial">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<p:treeTable id="tbl" value="#{reporteZonasBean.root}" var="document"
+				scrollable="true" scrollHeight="300"
+				scrollWidth="auto" emptyMessage="No hay datos"
+				style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
+				<f:facet name="header">
+                 REPORTE TERRITORIAL
+               </f:facet>
+
+				<f:facet name="header">
+					<h:commandLink action="#{reporteZonasBean.generateExcel()}" update="formTerritorial">
+						<p:graphicImage value="../resources/img/xls.png" width="20" />
+					</h:commandLink>				
+				</f:facet>
+
+	
+				<p:column style="width:400px" resizable="true" headerText="NOMBRE"
+					sortBy="#{document.nombre}">
+					<h:outputText value="#{document.nombre}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.vecindarioKilometros}" headerText="KIL&#211;METROS">
+					<h:outputText value="#{document.vecindarioKilometros}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.vecindarioHectareas}" headerText="HECT&#193;REAS">
+					<h:outputText value="#{document.vecindarioHectareas}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoNombre}" headerText="ELEMENTO">
+					<h:outputText value="#{document.elementoNombre}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoTipo}" headerText="TIPO ELEMENTO">
+					<h:outputText value="#{document.elementoTipo}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoUnidadMedida}"
+					headerText="UNIDAD MEDIDA">
+					<h:outputText value="#{document.elementoUnidadMedida}" />
+				</p:column>
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoValor}" headerText="VALOR">
+					<h:outputText value="#{document.elementoValor}" />
+				</p:column>
+
+			</p:treeTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

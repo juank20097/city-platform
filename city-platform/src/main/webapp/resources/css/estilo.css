@@ -7,6 +7,10 @@ body {
 	text-align: left !important;
 }
 
-#frmReporteFuncionarios table thead input[role="textbox"]{
+#frmReporteFuncionarios table thead input[role="textbox"] {
+	display: none !important;
+}
+
+#formTerritorial table .ui-treetable-scrollable-theadclone {
 	display: none !important;
 }
