@@ -132,13 +132,13 @@
 					</p:column>
 					<p:column headerText="Documento" >
 						<p:commandLink ajax="false" update="mensaje2"
-							action="#{asignacionSueloBean.descargarPDF(seg)}">
+							action="#{asignacionSueloBean.descargarDocumento(seg)}">
 							#{seg.hseAdjuntoDoc}
 						</p:commandLink>
 					</p:column>
 					<p:column headerText="Fotos" >
 					<p:commandLink ajax="false" update="mensaje2"
-							action="#{asignacionSueloBean.descargarPDF(seg)}">
+							action="#{asignacionSueloBean.descargarFoto(seg)}">
 							#{seg.hseAdjuntoFot}
 						</p:commandLink>
 					</p:column>
