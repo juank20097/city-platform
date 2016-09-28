@@ -120,21 +120,59 @@
 
 			<p:dialog widgetVar="dlgSeg" modal="true" draggable="false"
 				closable="true" showEffect="explode" resizable="false" header="Historial de Seguimiento" showHeader="true" width="1200px">
-				<p:dataTable reflow="true" var="seg" scrollable="true" scrollHeight="150" emptyMessage="Sin Datos" value="#{asignacionSueloBean.l_seguimiento}" >
-					<p:column headerText="Fecha" >
+				<b:dataTable 
+					value="#{asignacionSueloBean.l_seguimiento}" var="seg"
+					styleClass="table table-striped table-bordered dt-responsive nowrap"
+					fixedHeader="true" responsive="true" lang="es" style="width:100%">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="FECHA" />
+						</f:facet>
 						<h:outputText value="#{seg.hseFecha}" />
-					</p:column>
-					<p:column headerText="Responsable" >
-						<h:outputText value="#{seg.hseResponsable}" />
-					</p:column>
-					<p:column headerText="Novedades" >
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="RESPONSABLE" />
+						</f:facet>
+					<h:outputText value="#{seg.hseResponsable}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="NOVEDADES" />
+						</f:facet>
 						<h:outputText value="#{seg.hseNovedades}" />
-					</p:column>
-					<p:column headerText="Documento" >
-					</p:column>
-					<p:column headerText="Fotos" >
-					</p:column>
-				</p:dataTable>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="DOCUMENTO" />
+						</f:facet>
+						<p:commandLink style="color:#6EB9EB;" ajax="false" update="mensaje2"
+							action="#{asignacionSueloBean.descargarDocumento(seg)}">
+							#{seg.hseAdjuntoDoc}
+						</p:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="FOTO" />
+						</f:facet>
+						<p:commandLink style="color:#6EB9EB;" ajax="false" update="mensaje2"
+							action="#{asignacionSueloBean.descargarFoto(seg)}">
+							#{seg.hseAdjuntoFot}
+						</p:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="USUARIO" />
+						</f:facet>
+						<h:outputText value="#{seg.hseUsuario}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="FECHA REGISTRO" />
+						</f:facet>
+						<h:outputText value="#{seg.hseFechaRegistro}" />
+					</h:column>
+				</b:dataTable>
 			</p:dialog>
 
 			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"

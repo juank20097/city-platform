@@ -570,6 +570,40 @@ public class AsignacionSueloBean implements Serializable {
 		RequestContext.getCurrentInstance().execute("PF('dlgSeg').show()");
 	}
 	
+	public void descargarDocumento(GenHistorialSeguimiento seguimiento) {
+		  try {
+		   if (seguimiento.getHseAdjuntoDoc() == null
+		     || seguimiento.getHseAdjuntoDoc().isEmpty()) {
+		    Mensaje.crearMensajeERROR("No existe un archivo asignado.");
+		   } else {
+		    String contextPath = mngAsignacionSuelo
+		      .findParametroByID("direccion_ad_doc") + File.separatorChar 
+		      + seguimiento.getHseAdjuntoDoc() + "";
+		    Funciones.descargarPDF(contextPath);
+		   }
+		  } catch (Exception e) {
+		   Mensaje.crearMensajeERROR("Error: "+e.getMessage());
+		   e.printStackTrace();
+		  }
+		 }
+		 
+		 public void descargarFoto(GenHistorialSeguimiento seguimiento) {
+		  try {
+		   if (seguimiento.getHseAdjuntoFot() == null
+		     || seguimiento.getHseAdjuntoFot().isEmpty()) {
+		    Mensaje.crearMensajeERROR("No existe un archivo asignado.");
+		   } else {
+		    String contextPath = mngAsignacionSuelo
+		      .findParametroByID("direccion_ad_foto") + File.separatorChar
+		      + seguimiento.getHseAdjuntoFot() + "";
+		    Funciones.descargarPDF(contextPath);
+		   }
+		  } catch (Exception e) {
+		   Mensaje.crearMensajeERROR("Error: "+e.getMessage());
+		   e.printStackTrace();
+		  }
+		 }
+	
 	public String cambiarNombre(String param){
 		if(param.equals(EN_PROGRESO)){
 			return "En progreso";
