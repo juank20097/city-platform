@@ -18,7 +18,9 @@ import city.model.dao.entidades.GenElementoZonaValor;
 import city.model.dao.entidades.GenElementoZonaValorPK;
 import city.model.dao.entidades.GenElementosBarrio;
 import city.model.dao.entidades.GenElementosZona;
+import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenHistorialSeguimiento;
+import city.model.dao.entidades.GenHistorialSeguimientoPK;
 import city.model.dao.entidades.GenManzana;
 import city.model.dao.entidades.GenManzanaDetalle;
 import city.model.dao.entidades.GenManzanaPosicione;
@@ -522,4 +524,55 @@ public class ManagerTerritorio {
 		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsigSuelo+" and o.hseEstado='A'", "o.hseFecha desc");
 	}
 
+	///////////////////////////// (Seguimiento Asignación Suelo) ////////////////////////////
+	
+	/**
+	 * Método para generar el id de seguimiento asignación
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Integer idSeguimientoAsignacion(int idAsignacion) {
+		Integer id = 0;
+		try {
+			List<GenHistorialSeguimiento> lst= mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId = "+idAsignacion, null);
+			if (lst.isEmpty()) {
+				id = 1;
+			} else {
+				id =  lst.size()+ 1;
+			}
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public GenFuncionariosInstitucion findFuncionarioXDni(String per_dni) throws Exception {
+		List<GenFuncionariosInstitucion> l = mngDAO.findWhere(GenFuncionariosInstitucion.class,
+				"o.id.perDni='" + per_dni + "'", null);
+		if (l == null || l.size() == 0) {
+			return null;
+		} else {
+			return l.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GenHistorialSeguimiento> findSeguimientoByIDAsignacion(int idAsignacion){
+		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsignacion, "o.hseFechaRegistro");
+	}
+	
+	public GenHistorialSeguimiento findSeguimientoByID(GenHistorialSeguimientoPK idSeguimiento) throws Exception{
+		return (GenHistorialSeguimiento) mngDAO.findById(GenHistorialSeguimiento.class, idSeguimiento);
+	}
+	
+	public void insertarSeguimiento(GenHistorialSeguimiento seguimiento) throws Exception{
+		mngDAO.insertar(seguimiento);
+	}
+	
+	public void modificarSeguimiento(GenHistorialSeguimiento seguimiento) throws Exception{
+		mngDAO.actualizar(seguimiento);
+	}
 }
