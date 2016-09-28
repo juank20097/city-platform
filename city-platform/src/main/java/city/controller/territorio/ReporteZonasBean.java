@@ -4,10 +4,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
@@ -28,12 +28,9 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import city.controller.access.SesionBean;
-import city.model.dao.entidades.extras.DatosBarrios;
-import city.model.dao.entidades.extras.DatosDistrito;
-import city.model.dao.entidades.extras.DatosFuncionario;
+
 import city.model.dao.entidades.extras.DatosReporteTree;
-import city.model.dao.entidades.extras.DatosZona;
-import city.model.dao.entidades.extras.Externo;
+
 import city.model.generic.Funciones;
 import city.model.manager.ManagerCarga;
 import city.model.manager.ManagerReporteZonas;
@@ -76,7 +73,7 @@ public class ReporteZonasBean implements Serializable {
 
 	}
 
-	public List<DatosZona> cargarDatos() throws CloneNotSupportedException {
+	public void cargarDatos() throws CloneNotSupportedException {
 
 		zonas = manager.getAllElementosZonas();
 		vecindarios = manager.getAllDatosVecindarios();
@@ -248,7 +245,6 @@ public class ReporteZonasBean implements Serializable {
 					vecindario, listaZonas.get(vecindario.getDistritoId() + vecindario.getElementoUnidadMedida())));
 		}
 
-		return null;
 	}
 
 	public ManagerReporteZonas getManager() {

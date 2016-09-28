@@ -1,35 +1,18 @@
 package city.model.manager;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import city.model.dao.entidades.extras.DatosBarrios;
-import city.model.dao.entidades.extras.DatosDistrito;
 import city.model.dao.entidades.extras.DatosReporteTree;
-import city.model.dao.entidades.extras.DatosZona;
 
 @Stateless
 public class ManagerReporteZonas {
 	@EJB
 	private ManagerDAO mngDao;
 
-//	public ArrayList<DatosReporteTree> getAllDatosZonas() {
-//
-//		String sql = "SELECT gen_zonas.zon_id, gen_zonas.zon_nombre," + "gen_zonas.zon_descripcion,"
-//				+ " gen_zonas.zon_kilometros," + "gen_zonas.zon_observacion FROM " 
-//				+ " gen_zonas "
-//				+ " LEFT JOIN gen_elemento_zona_valor  ON (gen_zonas.zon_id = gen_elemento_zona_valor.zon_id)"
-//				+ " LEFT JOIN gen_elementos_zona ON (gen_elementos_zona.elz_id = gen_elemento_zona_valor.elz_id);";
-//
-//		List<Object[]> list = mngDao.findAllNativeSQL(sql);
-//
-//		return this.parseZonas(list);
-//	}
-	
 	
 	public ArrayList<DatosReporteTree> getAllElementosZonas() {
 
@@ -67,20 +50,6 @@ public class ManagerReporteZonas {
 		return this.parseVecindarios(list);
 	}
 
-//	public ArrayList<DatosReporteTree> getAllDatosBarrios() {
-//
-//		String sql = "SELECT gen_barrios.dis_id, gen_barrios.bar_id, gen_barrios.bar_nombre," + "gen_barrios.bar_descripcion," + "gen_barrios.bar_kilometros,"
-//				+ "gen_barrios.bar_hectareas," + "gen_barrios.bar_observacion," + "gen_elementos_barrio.elb_nombre,"
-//				+ "gen_elementos_barrio.elb_tipo," + "gen_elementos_barrio.elb_unidad_medida,"
-//				+ "gen_elemento_barrio_valor.ebv_valor" + " FROM " + "  gen_barrios "
-//				+ "    LEFT JOIN gen_elemento_barrio_valor  ON (gen_barrios.bar_id = gen_elemento_barrio_valor.bar_id)"
-//				+ "    LEFT JOIN gen_elementos_barrio  ON (gen_barrios.bar_id = gen_elemento_barrio_valor.bar_id);";
-//
-//		List<Object[]> list = mngDao.findAllNativeSQL(sql);
-//
-//		return this.parseBarrios(list);
-//	}
-
 	private String getValueNotNull(Object value) {
 		return value != null ? value + "" : "";
 	}
@@ -110,42 +79,9 @@ public class ManagerReporteZonas {
 
 	}
 
-//	private ArrayList<DatosReporteTree> parseDistritos(List<Object[]> list) {
-//		ArrayList<DatosReporteTree> datosDistritos = new ArrayList<DatosReporteTree>();
-//
-//		for (Object it : list) {
-//			
-//			DatosReporteTree datosReporte = new DatosReporteTree();
-//			Object[] result = (Object[]) it;
-//			datosReporte.setParentId(getValueNotNull(result[0]));
-//			datosReporte.setId(getValueNotNull(result[1]));
-//			datosReporte.setNombre(getValueNotNull(result[2]));
-//			datosReporte.setDescripcion(getValueNotNull(result[3]));
-//			datosReporte.setKilometros(getValueNotNull(result[4]));
-//			datosReporte.setObservacion(getValueNotNull(result[5]));
-//
-//			datosDistritos.add(datosReporte);
-//
-//		}
-//		return datosDistritos;
-//
-//	}
 
 	private ArrayList<DatosReporteTree> parseVecindarios(List<Object[]> list) {
 		
-//		"SELECT gen_zonas.zon_id, gen_zonas.zon_nombre, gen_zonas.zon_descripcion, gen_zonas.zon_hectareas,"
-//				+ " gen_zonas.zon_kilometros, gen_zonas.zon_observacion, gen_distritos.dis_id, gen_distritos.dis_nombre,"
-//				+ " gen_distritos.dis_descripcion, gen_distritos.dis_hectareas, gen_distritos.dis_kilometros, "
-//				+ " gen_distritos.dis_observacion, gen_barrios.bar_id, gen_barrios.bar_nombre, gen_barrios.bar_descripcion,"
-//				+ " gen_barrios.bar_hectareas, gen_barrios.bar_kilometros, gen_barrios.bar_observacion, gen_elementos_barrio.elb_nombre,"
-//				+ " gen_elementos_barrio.elb_tipo, gen_elementos_barrio.elb_unidad_medida, gen_elemento_barrio_valor.ebv_valor"
-//				+ " FROM gen_zonas"
-//				+ " LEFT JOIN gen_distritos ON (gen_zonas.zon_id = gen_distritos.zon_id)"
-//				+ " LEFT JOIN gen_barrios ON (gen_distritos.dis_id = gen_barrios.dis_id)"
-//				+ " LEFT JOIN gen_elemento_barrio_valor ON (gen_barrios.bar_id = gen_elemento_barrio_valor.bar_id)"
-//				+ " LEFT JOIN gen_elementos_barrio ON (gen_elemento_barrio_valor.elb_id = gen_elementos_barrio.elb_id)"
-//				+ " ORDER BY gen_zonas.zon_id, gen_distritos.dis_id, gen_barrios.bar_id;"
-
 		ArrayList<DatosReporteTree> datosBarrios = new ArrayList<DatosReporteTree>();
 
 		for (Object it : list) {
