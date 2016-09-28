@@ -41,44 +41,43 @@
 				<f:facet name="header">
 					<h:commandLink action="#{reporteZonasBean.generateExcel()}" update="formTerritorial">
 						<p:graphicImage value="../resources/img/xls.png" width="20" />
-					</h:commandLink>
+					</h:commandLink>				
 				</f:facet>
-				      
-				
-				
-				<p:column style="width:400px" resizable="true" headerText="Nombre"
+
+	
+				<p:column style="width:400px" resizable="true" headerText="NOMBRE"
 					sortBy="#{document.nombre}">
 					<h:outputText value="#{document.nombre}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
-					sortBy="#{document.vecindarioKilometros}" headerText="Kilometros">
+					sortBy="#{document.vecindarioKilometros}" headerText="KIL&#211;METROS">
 					<h:outputText value="#{document.vecindarioKilometros}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
-					sortBy="#{document.vecindarioHectareas}" headerText="Hectareas">
+					sortBy="#{document.vecindarioHectareas}" headerText="HECT&#193;REAS">
 					<h:outputText value="#{document.vecindarioHectareas}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
-					sortBy="#{document.elementoNombre}" headerText="Elemento">
+					sortBy="#{document.elementoNombre}" headerText="ELEMENTO">
 					<h:outputText value="#{document.elementoNombre}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
-					sortBy="#{document.elementoTipo}" headerText="Tipo Elemento">
+					sortBy="#{document.elementoTipo}" headerText="TIPO ELEMENTO">
 					<h:outputText value="#{document.elementoTipo}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
 					sortBy="#{document.elementoUnidadMedida}"
-					headerText="Unidad Medida">
+					headerText="UNIDAD MEDIDA">
 					<h:outputText value="#{document.elementoUnidadMedida}" />
 				</p:column>
 
 				<p:column width="100" resizable="true"
-					sortBy="#{document.elementoValor}" headerText="Valor">
+					sortBy="#{document.elementoValor}" headerText="VALOR">
 					<h:outputText value="#{document.elementoValor}" />
 				</p:column>
 
