@@ -18,15 +18,19 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.extras.DatosBarrios;
 import city.model.dao.entidades.extras.DatosDistrito;
+import city.model.dao.entidades.extras.DatosFuncionario;
 import city.model.dao.entidades.extras.DatosReporteTree;
 import city.model.dao.entidades.extras.DatosZona;
 import city.model.dao.entidades.extras.Externo;
@@ -55,6 +59,7 @@ public class ReporteZonasBean implements Serializable {
 	private DatosReporteTree selectedDocument;
 
 	private String url_doc;
+	
 
 	@PostConstruct
 	public void ini() throws CloneNotSupportedException {
@@ -305,17 +310,27 @@ public class ReporteZonasBean implements Serializable {
 
 			HSSFWorkbook libro = new HSSFWorkbook();
 			HSSFSheet hoja = libro.createSheet("Datos");
+			HSSFCellStyle styleZona = libro.createCellStyle();
+
 			
 			int i = 0;
 			for (; i <= datosReporteTree.size() - 1; i++) {
 				HSSFRow row = hoja.createRow(i);
-				llenarFila(datosReporteTree.get(i), row);
+				styleZona.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+				styleZona.setFillPattern(CellStyle.SOLID_FOREGROUND);
+				
+				llenarFila(datosReporteTree.get(i), row, styleZona);
 			}
 
 			for (Entry<String, DatosReporteTree> zona : zonas.entrySet()) {
 				HSSFRow row = hoja.createRow(i++);
 				DatosReporteTree value = zona.getValue();
-				llenarFila(zona.getValue(), row);
+				HSSFCellStyle styleDisitrito = libro.createCellStyle();
+				styleDisitrito.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+				styleDisitrito.setFillPattern(CellStyle.SOLID_FOREGROUND);
+				
+				llenarFila(zona.getValue(), row, styleDisitrito);
+				
 				String zonaId = value.getParentId() + value.getElementoUnidadMedida();
 				for (Entry<String, DatosReporteTree> distrito : listaDistritosM.entrySet()) {
 					DatosReporteTree valueDistrito = distrito.getValue();
@@ -324,7 +339,11 @@ public class ReporteZonasBean implements Serializable {
 
 					if (distritoParentId.equals(zonaId)) {
 						HSSFRow rowDistrito = hoja.createRow(i++);
-						llenarFila(distrito.getValue(), rowDistrito);
+						HSSFCellStyle style = libro.createCellStyle();
+						style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.getIndex());
+					    style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+					    
+						llenarFila(distrito.getValue(), rowDistrito, style);
 					}
 					String distritoId = zonaId + valueDistrito.getDistritoId()
 							+ valueDistrito.getElementoUnidadMedida();
@@ -334,9 +353,12 @@ public class ReporteZonasBean implements Serializable {
 								+ vecindario.getDistritoId() + vecindario.getElementoUnidadMedida();
 	
 						if (vecindarioParentId.equals(distritoId)) {
+							HSSFCellStyle styleVecindario = libro.createCellStyle();
+							styleVecindario.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+							styleVecindario.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
 							HSSFRow rowVecindario = hoja.createRow(i++);
-							llenarFila(vecindario, rowVecindario);
+							llenarFila(vecindario, rowVecindario, styleVecindario);
 						}
 
 					}
@@ -348,13 +370,14 @@ public class ReporteZonasBean implements Serializable {
 			OutputStream out = new FileOutputStream(url + "DatosExcel_Territorios.xls");
 			libro.write(out);
 			libro.close();
+			Funciones.descargarExcel(url+"DatosExcel_Territorios.xls");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void llenarFila(DatosReporteTree datosReporteTree, HSSFRow row) {
+	public void llenarFila(DatosReporteTree datosReporteTree, HSSFRow row, HSSFCellStyle style) {
 		if (row.getRowNum() == 0) {
 			HSSFCell celda0 = row.createCell(0);
 			celda0.setCellValue("NOMBRE");
@@ -371,16 +394,22 @@ public class ReporteZonasBean implements Serializable {
 		} else {
 			HSSFCell celda0 = row.createCell(0);
 			celda0.setCellValue(datosReporteTree.getNombre());
+			celda0.setCellStyle(style);
 			HSSFCell celda1 = row.createCell(1);
 			celda1.setCellValue(datosReporteTree.getVecindarioKilometros());
+			celda1.setCellStyle(style);
 			HSSFCell celda2 = row.createCell(2);
 			celda2.setCellValue(datosReporteTree.getVecindarioHectareas());
+			celda2.setCellStyle(style);
 			HSSFCell celda3 = row.createCell(3);
 			celda3.setCellValue(datosReporteTree.getElementoNombre());
+			celda3.setCellStyle(style);
 			HSSFCell celda4 = row.createCell(4);
 			celda4.setCellValue(datosReporteTree.getElementoTipo());
+			celda4.setCellStyle(style);
 			HSSFCell celda5 = row.createCell(5);
 			celda5.setCellValue(datosReporteTree.getElementoValor());
+			celda5.setCellStyle(style);
 		}
 	}
 
