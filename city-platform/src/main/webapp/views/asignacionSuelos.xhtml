@@ -131,8 +131,16 @@
 						<h:outputText value="#{seg.hseNovedades}" />
 					</p:column>
 					<p:column headerText="Documento" >
+						<p:commandLink ajax="false" update="mensaje2"
+							action="#{asignacionSueloBean.descargarPDF(seg)}">
+							#{seg.hseAdjuntoDoc}
+						</p:commandLink>
 					</p:column>
 					<p:column headerText="Fotos" >
+					<p:commandLink ajax="false" update="mensaje2"
+							action="#{asignacionSueloBean.descargarPDF(seg)}">
+							#{seg.hseAdjuntoFot}
+						</p:commandLink>
 					</p:column>
 				</p:dataTable>
 			</p:dialog>
