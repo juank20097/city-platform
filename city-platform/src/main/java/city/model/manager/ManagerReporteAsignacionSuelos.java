@@ -27,7 +27,10 @@ public class ManagerReporteAsignacionSuelos {
 
 		ArrayList<DatosAsignacionSuelo> datosAsignacionSuelo = new ArrayList<DatosAsignacionSuelo>();
 		String sql = "SELECT  zon_nombre, sue_actividad, sue_asignacion, sue_metros, sue_fecha_inicio,"
-				+ " sue_fecha_fin, sue_observacion, sue_archivo, sue_tipo FROM gen_zonas, gen_asignacion_suelo "
+				+ " sue_fecha_fin, sue_observacion, sue_archivo, (SELECT ite_nombre"
+				+ " FROM gen_catalogo_items_det "
+				+ " WHERE  cat_codigo = 'cat_tipo_asignacionsuelo' AND ite_codigo = sue_tipo) AS sue_tipo  "
+				+ " FROM gen_zonas, gen_asignacion_suelo "
 				+ " WHERE  gen_zonas.zon_id = gen_asignacion_suelo.zon_id";
 
 		List<Object[]> list = mngDao.findAllNativeSQL(sql);
