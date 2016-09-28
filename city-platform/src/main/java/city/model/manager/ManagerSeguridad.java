@@ -189,7 +189,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void insertarSeguridad(Integer id, String per_dni, String accion, String emergencia, Date fecha, String tipo,
-			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento) throws Exception {
+			double latitud, double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento,String utm_x,String utm_y) throws Exception {
 		try {
 			SegRegistroEmergencia seg = new SegRegistroEmergencia();
 			seg.setSegId(id);
@@ -206,6 +206,8 @@ public class ManagerSeguridad {
 			seg.setSegDocumento(documento);
 			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
 			seg.setSegUsuarioAplicacion(usuario);
+			seg.setSegUtmX(utm_x);
+			seg.setSegUtmY(utm_y);
 			mngDao.insertar(seg);
 			System.out.println("Bien_insertar_seguridad");
 		} catch (Exception e) {
@@ -225,7 +227,7 @@ public class ManagerSeguridad {
 	 * @throws Exception
 	 */
 	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo, double latitud,
-			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento) throws Exception {
+			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento,String utm_x,String utm_y) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
@@ -240,6 +242,8 @@ public class ManagerSeguridad {
 			seg.setSegDocumento(documento);
 			seg.setSegFechaRegistro(new Timestamp(new Date().getTime()));
 			seg.setSegUsuarioAplicacion(usuario);
+			seg.setSegUtmX(utm_x);
+			seg.setSegUtmY(utm_y);
 			mngDao.actualizar(seg);
 			System.out.println("Bien_mod_seguridad");
 		} catch (Exception e) {

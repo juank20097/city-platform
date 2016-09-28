@@ -8,7 +8,8 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
-<f:metadata>
+	<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('grafico.xhtml')}" />
 		<f:viewAction action="#{graficoBean.cargarDatos()}" />
 	</f:metadata>
 	<ui:define name="titulo">
@@ -16,22 +17,70 @@
         </ui:define>
 	<ui:define name="contenido">
 		<b:container>
-		<center>
-			<h1>Grupos del Personal Administrativo por Sexo y Edad</h1>
-		</center>
-					<b:column span="12">
-								<p:chart type="bar" model="#{graficoBean.barModel}" style="height:400px" responsive="true"/>
-					</b:column>
-					<br/>
-					<center>
-			<h1>Grupos del Personal Administrativo por Sexo y Edad Porcentual</h1>
-		</center>
-					<b:column span="12">
-								<p:chart type="bar" model="#{graficoBean.barModelP}" style="height:400px" responsive="true"/>
-					</b:column>
-			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-				closable="false" resizable="false" showHeader="false">
-				<p:graphicImage value="resources/img/cargando.gif" />
+			<h:form>
+				<center>
+					<h1>Grupos del Personal por Sexo y Edad</h1>
+				</center>
+				<b:row>
+				<b:column span="12">
+					<p:chart type="bar" model="#{graficoBean.barModel}"
+						style="height:400px" responsive="true" widgetVar="chart1" />
+				</b:column>
+				</b:row>
+				<b:row>
+				<b:column offset="10" span="1" style="margin-bottom:10px;">
+					<p:commandButton type="button" styleClass="btn btn-info"
+						value="Exportar a Imagen" onclick="exportChart()" />
+				</b:column>
+				</b:row>
+				<b:row>
+				<p:separator/>
+				</b:row>
+				<script type="text/javascript">
+function exportChart() {
+    //export image
+    $('#output').empty().append(PF('chart1').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+				<center>
+					<h1>Grupos del Personal por Sexo y Edad Porcentual</h1>
+				</center>
+				<b:row>
+				<b:column span="12">
+					<p:chart type="bar" model="#{graficoBean.barModelP}"
+						style="height:400px" responsive="true" widgetVar="chart2" />
+				</b:column>
+				</b:row>
+				<b:row>
+				<b:column offset="10" span="1" style="margin-bottom:10px;">
+					<p:commandButton type="button" styleClass="btn btn-info"
+						value="Exportar a Imagen" onclick="exportChart2()" />
+				</b:column>
+				</b:row>
+				<b:row>
+				<b:column>
+				<p:separator/>
+				</b:column>
+				</b:row>
+				
+
+				<script type="text/javascript">
+function exportChart2() {
+    //export image
+    $('#output').empty().append(PF('chart2').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+			</h:form>
+
+			<p:dialog widgetVar="dlg" showEffect="fade" modal="true"
+				resizable="false">
+				<p:outputPanel id="output" layout="block" />
 			</p:dialog>
 		</b:container>
 	</ui:define>

@@ -7,6 +7,9 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
+<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('distritos.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
             Distrito
         </ui:define>
@@ -25,14 +28,14 @@
 					<h:outputLabel value="ID:*" />
 				</b:column>
 				<b:column col-xs="4">
-					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+					<b:inputText 
 						value="#{distritoBean.id}" disabled="#{distritoBean.edicion}" />
 				</b:column>
 				<b:column col-xs="2">
 					<h:outputLabel value="NOMBRE:*" />
 				</b:column>
 				<b:column col-xs="4">
-					<b:inputText onkeyup="this.value=this.value.toUpperCase();"
+					<b:inputText 
 						value="#{distritoBean.nombre}" />
 				</b:column>
 			</b:row>
@@ -88,12 +91,12 @@
 			</b:row>
 			<b:row>
 				<b:column col-xs="2">
-					<h:outputLabel value="MAPA:*" />
+					<h:outputLabel value="ARCHIVO KMZ:*" />
 				</b:column>
 				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!distritoBean.edicion}"
-						sizeLimit="1000000" multiple="false"
-						invalidSizeMessage="Archivo excede limite 10 MB "
+						sizeLimit="6000000" multiple="false"
+						invalidSizeMessage="Archivo excede limite 5 MB "
 						fileLimitMessage="Solo un archivo"
 						cancelLabel="Cancelar"
 						uploadLabel="Subir" label="Seleccionar" fileLimit="1"
@@ -109,12 +112,12 @@
 			</b:row>
 			<b:row>
 				<b:column col-xs="2">
-					<h:outputLabel value="PDF:*" />
+					<h:outputLabel value="MAPA:*" />
 				</b:column>
 				<b:column col-xs="6">
 					<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!distritoBean.edicion}"
-						sizeLimit="1000000" multiple="false"
-						invalidSizeMessage="Archivo excede limite 10 MB "
+						sizeLimit="6000000" multiple="false"
+						invalidSizeMessage="Archivo excede limite 5 MB "
 						invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
 						fileLimitMessage="Solo un archivo"
 						allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"

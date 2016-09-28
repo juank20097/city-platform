@@ -6,6 +6,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
 <ui:composition template="template.xhtml">
+<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('zonas.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
             Zonas
         </ui:define>
@@ -64,13 +67,19 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
+							<h:outputText value="KIL&Oacute;METROS" />
+						</f:facet>
+						<h:outputText value="#{z.zonKilometros}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
 							<h:outputText value="HECT&Aacute;REAS" />
 						</f:facet>
 						<h:outputText value="#{zonaBean.sumaHectareas(z.zonId)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="MAPA" />
+							<h:outputText value="ARCHIVO KMZ" />
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{zonaBean.descargarMapa(z)}">
@@ -79,7 +88,7 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="PDF" />
+							<h:outputText value="MAPA" />
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 							action="#{zonaBean.descargarPDF(z)}">

@@ -212,7 +212,7 @@ public class ElementoZonaBean implements Serializable{
 				return "";
 			}else{
 				GenElementosZona e = new GenElementosZona();
-				e.setElzNombre(Funciones.quitarEspacios(getNombre()));
+				e.setElzNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
 				e.setElzTipo(getTipo());
 				e.setElzUnidadMedida(getUnidadMedida());
 				e.setElzEstado(getEstado());

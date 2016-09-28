@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+<ui:composition template="template.xhtml">
+<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('reporteAsignacionSuelos.xhtml')}" />
+	</f:metadata>
+	<ui:define name="titulo">
+           Asignaci&#243;n Suelos
+        </ui:define>
+	<ui:define name="contenido">
+		<h:form>
+			<center>
+				<h1>Lista de Asignaci&#243;n de Suelos</h1>
+			</center>
+			<b:row>
+				<b:column span="1">
+					<b:commandButton value="Volver" iconAwesome="angle-left"
+						action="index?faces-redirect=true" />
+				</b:column>
+			</b:row>
+		</h:form>
+		<br />
+		<h:form id="frmReporteFuncionarios">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<b:panel title="Listado" look="primary" collapsible="false">
+				<p:dataTable id="tbl" var="asignacionSuelos"
+					value="#{reporteAsignacionSuelosBean.datosAsignacionSuelo}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" scrollable="true" rowsPerPageTemplate="10,30,50"
+					scrollHeight="300" scrollWidth="auto" resizableColumns="true"
+					widgetVar="carsTable" emptyMessage="No hay datos"
+					filteredValue="#{reporteAsignacionSuelosBean.filteredDatosAsignacionSuelo}"
+					style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Buscar: " />
+							<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
+								style="width:150px" placeholder="Ingrese b&#250;squedas" />
+						</p:outputPanel>
+					</f:facet>
+
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage value="../resources/img/xls.png" width="20" />
+							<p:dataExporter type="xls" target="tbl" fileName="Funcionarios" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column width="240" filterBy="#{asignacionSuelos.zonNombre}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ZONA" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.zonNombre}" />
+					</p:column>
+
+					<p:column width="120" filterBy="#{asignacionSuelos.sueActividad}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ACTIVIDAD" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueActividad}" />
+					</p:column>
+					
+					<p:column width="120" filterBy="#{asignacionSuelos.sueAsignacion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="ASIGNADO A" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueAsignacion}" />
+					</p:column>
+					
+					<p:column width="100" filterBy="#{asignacionSuelos.sueMetros}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="METROS CUADRADOS" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueMetros}" />
+					</p:column>
+					
+					<p:column width="100" filterBy="#{asignacionSuelos.sueFechaInicio}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="FECHA INICIO" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueFechaInicio}" />
+					</p:column>
+					
+					<p:column width="100" filterBy="#{asignacionSuelos.sueFechaFin}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="FECHA FIN" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueFechaFin}" />
+					</p:column>
+					
+					<p:column width="200" filterBy="#{asignacionSuelos.sueObservacion}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="OBSERVACI&#211;N" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueObservacion}" />
+					</p:column>
+					
+					<p:column width="100" filterBy="#{asignacionSuelos.sueTipo}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="TIPO" />
+						</f:facet>
+						<h:outputText value="#{asignacionSuelos.sueTipo}" />
+					</p:column>
+
+				</p:dataTable>
+			</b:panel>
+		</h:form>
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<p:graphicImage value="../resources/img/cargando.gif" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+
+</html>

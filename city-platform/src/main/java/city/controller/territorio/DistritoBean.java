@@ -69,14 +69,12 @@ public class DistritoBean implements Serializable{
 	@URL(message="PDF LINK no es una url válida.")
 	private String linkPdf;
 	
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal kilometros;
 	@NotEmpty(message="NOMBRE no debe estar vacío.")
 	@NotBlank(message="NOMBRE no debe ser solo espacios blancos.")
 	private String nombre;
 	
-	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
 	private String observacion;
 	
 	private UploadedFile fileMapa;
@@ -301,12 +299,12 @@ public class DistritoBean implements Serializable{
 				return respuesta;
 			}else{
 				GenDistrito d = new GenDistrito();
-				d.setDisId(Funciones.quitarEspacios(getId()));
-				d.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()));
+				d.setDisId(Funciones.quitarEspacios(getId()).toUpperCase());
+				d.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
 				d.setDisEstado(getEstado());
 				d.setDisKilometros(getKilometros());
-				d.setDisNombre(Funciones.quitarEspacios(getNombre()));
-				d.setDisObservacion(Funciones.quitarEspacios(getObservacion()));
+				d.setDisNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
+				d.setDisObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 				d.setGenZona(manager.findZonaById(getZonaId()));
 				if(isEdicion()){
 					if(getDirMapa()!= null || getDirMapa() != ""){
@@ -363,7 +361,7 @@ public class DistritoBean implements Serializable{
 				
 				String carpeta = manager.findParametroByID("direccion_mapa") + "/";
 				System.out.println("nombre del archivo --> "+ fileMapa.getFileName());
-					setDirMapa("Mapa_D_"+getId()+extensionArchivo(fileMapa.getFileName()));
+					setDirMapa("KMZ_D_"+getId()+extensionArchivo(fileMapa.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirMapa());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
@@ -402,7 +400,7 @@ public class DistritoBean implements Serializable{
 			try {
 				
 				String carpeta = manager.findParametroByID("direccion_pdf") + "/";
-					setDirPdf("PDF_D_"+getId() + extensionArchivo(filePdf.getFileName()));
+					setDirPdf("MAPA_D_"+getId() + extensionArchivo(filePdf.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirPdf());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
@@ -439,10 +437,10 @@ public class DistritoBean implements Serializable{
 	public void editarDistrito(){
 		try {	
 			GenDistrito dis= new GenDistrito();
-			dis.setDisId(Funciones.quitarEspacios(getId()));
-			dis.setDisNombre(Funciones.quitarEspacios(getNombre()));
-			dis.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()));
-			dis.setDisObservacion(Funciones.quitarEspacios(getObservacion()));
+			dis.setDisId(Funciones.quitarEspacios(getId()).toUpperCase());
+			dis.setDisNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
+			dis.setDisDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
+			dis.setDisObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 			dis.setDisKilometros(getKilometros());
 			dis.setDisLinkMapa(getDirMapa());
 			dis.setDisLinkPdf(getDirPdf());

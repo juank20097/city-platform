@@ -28,8 +28,8 @@ public class SegRegistroEmergencia implements Serializable {
 
 	@Column(name = "seg_fecha")
 	private Timestamp segFecha;
-	
-	@Column(name="seg_documento")
+
+	@Column(name = "seg_documento")
 	private String segDocumento;
 
 	@Column(name = "seg_tipo_emergencia")
@@ -49,12 +49,18 @@ public class SegRegistroEmergencia implements Serializable {
 
 	@Column(name = "seg_archivo")
 	private String segArchivo;
-	
-	@Column(name="seg_fecha_registro")
+
+	@Column(name = "seg_fecha_registro")
 	private Timestamp segFechaRegistro;
-	
-	@Column(name="seg_usuario_aplicacion")
+
+	@Column(name = "seg_usuario_aplicacion")
 	private String segUsuarioAplicacion;
+
+	@Column(name = "seg_utm_x")
+	private String segUtmX;
+
+	@Column(name = "seg_utm_y")
+	private String segUtmY;
 
 	// bi-directional many-to-one association to GenFuncionariosInstitucion
 	@ManyToOne
@@ -152,7 +158,7 @@ public class SegRegistroEmergencia implements Serializable {
 	public void setSegArchivo(String segArchivo) {
 		this.segArchivo = segArchivo;
 	}
-	
+
 	public String getSegUsuarioAplicacion() {
 		return this.segUsuarioAplicacion;
 	}
@@ -160,7 +166,7 @@ public class SegRegistroEmergencia implements Serializable {
 	public void setSegUsuarioAplicacion(String segUsuarioAplicacion) {
 		this.segUsuarioAplicacion = segUsuarioAplicacion;
 	}
-	
+
 	public Timestamp getSegFechaRegistro() {
 		return this.segFechaRegistro;
 	}
@@ -168,13 +174,29 @@ public class SegRegistroEmergencia implements Serializable {
 	public void setSegFechaRegistro(Timestamp segFechaRegistro) {
 		this.segFechaRegistro = segFechaRegistro;
 	}
-	
+
 	public String getSegDocumento() {
 		return this.segDocumento;
 	}
 
 	public void setSegDocumento(String segDocumento) {
 		this.segDocumento = segDocumento;
+	}
+
+	public String getSegUtmX() {
+		return this.segUtmX;
+	}
+
+	public void setSegUtmX(String segUtmX) {
+		this.segUtmX = segUtmX;
+	}
+
+	public String getSegUtmY() {
+		return this.segUtmY;
+	}
+
+	public void setSegUtmY(String segUtmY) {
+		this.segUtmY = segUtmY;
 	}
 
 }

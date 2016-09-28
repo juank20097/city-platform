@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +46,8 @@ public class Funciones {
 	public static String hostWS = "http://app-permisos.yachay.gob.ec/";
 
 	public static Boolean validacionCedula(String cedula) {
-		// verifica que los dos primeros d�gitos correspondan a un valor entre 1
+		// verifica que los dos primeros d�gitos correspondan a un valor entre
+		// 1
 		// y NUMERO_DE_PROVINCIAS
 		int prov = Integer.parseInt(cedula.substring(0, 2));
 		if (!((prov > 0) && (prov <= num_provincias) || prov == 30)) {
@@ -73,9 +75,7 @@ public class Funciones {
 		// Sumamos los dos resultados
 		int suma = imp + par;
 		// Restamos de la decena superior
-		int d10 = Integer.parseInt(String.valueOf(suma + 10).substring(0, 1)
-				+ "0")
-				- suma;
+		int d10 = Integer.parseInt(String.valueOf(suma + 10).substring(0, 1) + "0") - suma;
 		// Si es diez el d�cimo d�gito es cero
 		d10 = (d10 == 10) ? 0 : d10;
 		// si el d�cimo d�gito calculado es igual al digitado la c�dula es
@@ -113,9 +113,8 @@ public class Funciones {
 	public static boolean validarEmail(String email) {
 
 		// Definicion de pattern con la expresion regular
-		Pattern pattern = Pattern
-				.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Pattern pattern = Pattern.compile(
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
 		// COmprobacion del correo ingresado
 		Matcher matcher = pattern.matcher(email);
@@ -139,8 +138,7 @@ public class Funciones {
 			byte[] passHash = sha256.digest(passBytes);
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < passHash.length; i++) {
-				sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16)
-						.substring(1));
+				sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16).substring(1));
 			}
 			String generatedPassword = sb.toString();
 			return generatedPassword;
@@ -257,8 +255,7 @@ public class Funciones {
 	public static String genPass() {
 		String pass = "";
 		for (int i = 0; i < 4; i++) {
-			pass += (char) (Math.random() * 25 + 97) + ""
-					+ (int) (Math.random() * 9 + 1);
+			pass += (char) (Math.random() * 25 + 97) + "" + (int) (Math.random() * 9 + 1);
 		}
 		return pass;
 	}
@@ -301,12 +298,9 @@ public class Funciones {
 		// Se asigna la fecha recibida a la fecha de nacimiento.
 		fechaNacimiento.setTime(fecha);
 		// Se restan la fecha actual y la fecha de nacimiento
-		int anio = fechaActual.get(Calendar.YEAR)
-				- fechaNacimiento.get(Calendar.YEAR);
-		int mes = fechaActual.get(Calendar.MONTH)
-				- fechaNacimiento.get(Calendar.MONTH);
-		int dia = fechaActual.get(Calendar.DATE)
-				- fechaNacimiento.get(Calendar.DATE);
+		int anio = fechaActual.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
+		int mes = fechaActual.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH);
+		int dia = fechaActual.get(Calendar.DATE) - fechaNacimiento.get(Calendar.DATE);
 		// Se ajusta el a�o dependiendo el mes y el d�a
 		if (mes < 0 || (mes == 0 && dia < 0)) {
 			anio--;
@@ -380,11 +374,9 @@ public class Funciones {
 			String fileName = ficheroXLS.getName();
 			String contentType = "application/vnd.ms-excel";
 			// String contentType = "application/pdf";
-			HttpServletResponse response = (HttpServletResponse) ctx
-					.getExternalContext().getResponse();
+			HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
 			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ fileName + "\"");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
 			ServletOutputStream out = null;
 			try {
 				out = response.getOutputStream();
@@ -402,7 +394,7 @@ public class Funciones {
 			ctx.responseComplete();
 		}
 	}
-	
+
 	/**
 	 * M�todo para descargar archivos excel
 	 * 
@@ -425,13 +417,11 @@ public class Funciones {
 
 		if (!ctx.getResponseComplete()) {
 			String fileName = ficheroXLS.getName();
-//			String contentType = "application/vnd.ms-excel";
-			 String contentType = "application/pdf";
-			HttpServletResponse response = (HttpServletResponse) ctx
-					.getExternalContext().getResponse();
+			// String contentType = "application/vnd.ms-excel";
+			String contentType = "application/pdf";
+			HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
 			response.setContentType(contentType);
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ fileName + "\"");
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
 			ServletOutputStream out = null;
 			try {
 				out = response.getOutputStream();
@@ -449,117 +439,519 @@ public class Funciones {
 			ctx.responseComplete();
 		}
 	}
-	
-	//M�todo Cifrado
-	
-	 //m�todo para cifrar el texto
-    public static String cifradoCesar(String texto, int codigo) {
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-                if ((texto.charAt(i) + codigo) > 'z') {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-                if ((texto.charAt(i) + codigo) > 'Z') {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-            }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para cifrar el texto
-    public static String cifradoCesarInteger(String texto, int codigo) {
-    	String valor="0123456789";
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 9;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 9));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-        }
-        return cifrado.toString();
-    }
 
-    //m�todo para descifrar el texto
-    public static String descifradoCesar(String texto, int codigo) {
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-            if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-                if ((texto.charAt(i) - codigo) < 'a') {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-            } else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-                if ((texto.charAt(i) - codigo) < 'A') {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-            }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para descifrar el texto
-    public static String descifradoCesarInteger(String texto, int codigo) {
-    	String valor="0123456789";
-    	StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 9;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 9));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para cifrar el texto
-    public static String cifradoPropio(String texto, int codigo) {
-    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
-                    cifrado.append((char) (texto.charAt(i) + codigo - 30));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) + codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    //m�todo para descifrar el texto
-    public static String descifradoPropio(String texto, int codigo) {
-    	String valor="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    	StringBuilder cifrado = new StringBuilder();
-        codigo = codigo % 26;
-        for (int i = 0; i < texto.length(); i++) {
-                if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-                    cifrado.append((char) (texto.charAt(i) - codigo + 26));
-                } else {
-                    cifrado.append((char) (texto.charAt(i) - codigo));
-                }
-        }
-        return cifrado.toString();
-    }
-    
-    public static String quitarEspacios(String parametro){
-    	if(parametro == null)
-    		parametro = "";
-    	return parametro.trim();
-    }
+	// M�todo Cifrado
 
+	// m�todo para cifrar el texto
+	public static String cifradoCesar(String texto, int codigo) {
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+				if ((texto.charAt(i) + codigo) > 'z') {
+					cifrado.append((char) (texto.charAt(i) + codigo - 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) + codigo));
+				}
+			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+				if ((texto.charAt(i) + codigo) > 'Z') {
+					cifrado.append((char) (texto.charAt(i) + codigo - 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) + codigo));
+				}
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para cifrar el texto
+	public static String cifradoCesarInteger(String texto, int codigo) {
+		String valor = "0123456789";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 9;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
+				cifrado.append((char) (texto.charAt(i) + codigo - 9));
+			} else {
+				cifrado.append((char) (texto.charAt(i) + codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoCesar(String texto, int codigo) {
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
+				if ((texto.charAt(i) - codigo) < 'a') {
+					cifrado.append((char) (texto.charAt(i) - codigo + 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) - codigo));
+				}
+			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
+				if ((texto.charAt(i) - codigo) < 'A') {
+					cifrado.append((char) (texto.charAt(i) - codigo + 26));
+				} else {
+					cifrado.append((char) (texto.charAt(i) - codigo));
+				}
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoCesarInteger(String texto, int codigo) {
+		String valor = "0123456789";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 9;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+				cifrado.append((char) (texto.charAt(i) - codigo + 9));
+			} else {
+				cifrado.append((char) (texto.charAt(i) - codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para cifrar el texto
+	public static String cifradoPropio(String texto, int codigo) {
+		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
+				cifrado.append((char) (texto.charAt(i) + codigo - 30));
+			} else {
+				cifrado.append((char) (texto.charAt(i) + codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	// m�todo para descifrar el texto
+	public static String descifradoPropio(String texto, int codigo) {
+		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		StringBuilder cifrado = new StringBuilder();
+		codigo = codigo % 26;
+		for (int i = 0; i < texto.length(); i++) {
+			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
+				cifrado.append((char) (texto.charAt(i) - codigo + 26));
+			} else {
+				cifrado.append((char) (texto.charAt(i) - codigo));
+			}
+		}
+		return cifrado.toString();
+	}
+
+	public static String quitarEspacios(String parametro) {
+		if (parametro == null)
+			parametro = "";
+		return parametro.trim();
+	}
+
+	
+
+	public static void UTM2Deg(String UTM) {
+		double latitude;
+	    double longitude;
+		String[] parts = UTM.split(" ");
+		int Zone = Integer.parseInt(parts[0]);
+		char Letter = parts[1].toUpperCase(Locale.ENGLISH).charAt(0);
+		double Easting = Double.parseDouble(parts[2]);
+		double Northing = Double.parseDouble(parts[3]);
+		double Hem;
+		if (Letter > 'M')
+			Hem = 'N';
+		else
+			Hem = 'S';
+		double north;
+		if (Hem == 'S')
+			north = Northing - 10000000;
+		else
+			north = Northing;
+		latitude = (north / 6366197.724 / 0.9996
+				+ (1 + 0.006739496742 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+						- 0.006739496742 * Math.sin(north / 6366197.724 / 0.9996)
+								* Math.cos(north / 6366197.724
+										/ 0.9996)
+								* (Math.atan(Math
+										.cos(Math
+												.atan((Math
+														.exp((Easting - 500000)
+																/ (0.9996 * 6399593.625
+																		/ Math.sqrt((1
+																				+ 0.006739496742
+																						* Math.pow(
+																								Math.cos(north
+																										/ 6366197.724
+																										/ 0.9996),
+																								2))))
+																* (1 - 0.006739496742
+																		* Math.pow(
+																				(Easting - 500000) / (0.9996
+																						* 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																				2)
+																		/ 2
+																		* Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2)
+																		/ 3))
+														- Math.exp(-(Easting - 500000)
+																/ (0.9996 * 6399593.625
+																		/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2))))
+																* (1 - 0.006739496742
+																		* Math.pow(
+																				(Easting - 500000) / (0.9996
+																						* 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																				2)
+																		/ 2
+																		* Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2)
+																		/ 3)))
+														/ 2
+														/ Math.cos((north - 0.9996 * 6399593.625
+																* (north / 6366197.724 / 0.9996
+																		- 0.006739496742 * 3 / 4
+																				* (north / 6366197.724 / 0.9996 + Math
+																						.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																						/ 2)
+																		+ Math.pow(0.006739496742 * 3 / 4, 2) * 5
+																				/ 3 * (3
+																						* (north / 6366197.724
+																								/ 0.9996
+																								+ Math
+																										.sin(2 * north
+																												/ 6366197.724
+																												/ 0.9996)
+																										/ 2)
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																				/ 4
+																		- Math.pow(0.006739496742 * 3 / 4, 3) * 35 / 27
+																				* (5 * (3
+																						* (north / 6366197.724 / 0.9996
+																								+ Math.sin(2 * north
+																										/ 6366197.724
+																										/ 0.9996) / 2)
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																						/ 4
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																				/ 3))
+																/ (0.9996 * 6399593.625
+																		/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2))))
+																* (1 - 0.006739496742
+																		* Math.pow(
+																				(Easting - 500000) / (0.9996
+																						* 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																				2)
+																		/ 2
+																		* Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2))
+																+ north / 6366197.724 / 0.9996)))
+										* Math.tan((north - 0.9996 * 6399593.625 * (north / 6366197.724 / 0.9996
+												- 0.006739496742 * 3 / 4
+														* (north / 6366197.724 / 0.9996
+																+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+												+ Math.pow(0.006739496742 * 3 / 4, 2) * 5 / 3 * (3
+														* (north / 6366197.724 / 0.9996
+																+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+														/ 4
+												- Math.pow(0.006739496742 * 3 / 4, 3) * 35 / 27 * (5 * (3
+														* (north / 6366197.724 / 0.9996
+																+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+														/ 4
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+														/ 3))
+												/ (0.9996 * 6399593.625 / Math.sqrt((1 + 0.006739496742
+														* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+												* (1 - 0.006739496742
+														* Math.pow((Easting - 500000) / (0.9996 * 6399593.625
+																/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																		Math.cos(north / 6366197.724 / 0.9996), 2)))),
+																2)
+														/ 2 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+												+ north / 6366197.724 / 0.9996))
+										- north / 6366197.724
+												/ 0.9996)
+								* 3 / 2)
+						* (Math.atan(Math
+								.cos(Math
+										.atan((Math
+												.exp((Easting - 500000) / (0.9996 * 6399593.625
+														/ Math.sqrt((1 + 0.006739496742 * Math
+																.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+														* (1 - 0.006739496742
+																* Math.pow(
+																		(Easting - 500000)
+																				/ (0.9996 * 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																		2)
+																/ 2
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+																/ 3))
+												- Math.exp(
+														-(Easting - 500000)
+																/ (0.9996 * 6399593.625
+																		/ Math.sqrt(
+																				(1 + 0.006739496742
+																						* Math.pow(
+																								Math.cos(north
+																										/ 6366197.724
+																										/ 0.9996),
+																								2))))
+																* (1 - 0.006739496742
+																		* Math.pow(
+																				(Easting - 500000) / (0.9996
+																						* 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																				2)
+																		/ 2
+																		* Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2)
+																		/ 3)))
+												/ 2
+												/ Math.cos(
+														(north - 0.9996 * 6399593.625
+																* (north / 6366197.724 / 0.9996
+																		- 0.006739496742 * 3 / 4 * (north / 6366197.724
+																				/ 0.9996
+																				+ Math
+																						.sin(2 * north / 6366197.724
+																								/ 0.9996)
+																						/ 2)
+																		+ Math.pow(0.006739496742 * 3 / 4, 2) * 5
+																				/ 3 * (3
+																						* (north / 6366197.724
+																								/ 0.9996
+																								+ Math
+																										.sin(2 * north
+																												/ 6366197.724
+																												/ 0.9996)
+																										/ 2)
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																				/ 4
+																		- Math.pow(0.006739496742 * 3 / 4, 3) * 35 / 27
+																				* (5 * (3
+																						* (north / 6366197.724 / 0.9996
+																								+ Math.sin(2 * north
+																										/ 6366197.724
+																										/ 0.9996) / 2)
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																						/ 4
+																						+ Math.sin(2 * north
+																								/ 6366197.724 / 0.9996)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2))
+																				/ 3))
+																/ (0.9996 * 6399593.625
+																		/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2))))
+																* (1 - 0.006739496742
+																		* Math.pow(
+																				(Easting - 500000) / (0.9996
+																						* 6399593.625
+																						/ Math.sqrt((1 + 0.006739496742
+																								* Math.pow(
+																										Math.cos(
+																												north / 6366197.724
+																														/ 0.9996),
+																										2)))),
+																				2)
+																		/ 2
+																		* Math.pow(
+																				Math.cos(north / 6366197.724 / 0.9996),
+																				2))
+																+ north / 6366197.724 / 0.9996)))
+								* Math.tan((north - 0.9996 * 6399593.625 * (north / 6366197.724 / 0.9996
+										- 0.006739496742 * 3 / 4
+												* (north / 6366197.724 / 0.9996
+														+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+										+ Math.pow(0.006739496742 * 3 / 4, 2) * 5 / 3
+												* (3 * (north / 6366197.724 / 0.9996
+														+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+												/ 4
+										- Math.pow(0.006739496742 * 3 / 4, 3) * 35 / 27
+												* (5 * (3
+														* (north / 6366197.724 / 0.9996
+																+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+														/ 4
+														+ Math.sin(2 * north / 6366197.724 / 0.9996)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+																* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+												/ 3))
+										/ (0.9996 * 6399593.625
+												/ Math.sqrt((1 + 0.006739496742
+														* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+										* (1 - 0.006739496742
+												* Math.pow(
+														(Easting - 500000) / (0.9996 * 6399593.625
+																/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																		Math.cos(north / 6366197.724 / 0.9996), 2)))),
+														2)
+												/ 2 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+										+ north / 6366197.724 / 0.9996))
+								- north / 6366197.724 / 0.9996))
+				* 180 / Math.PI;
+		latitude = Math.round(latitude * 10000000);
+		latitude = latitude / 10000000;
+		longitude = Math
+				.atan((Math
+						.exp((Easting - 500000)
+								/ (0.9996 * 6399593.625
+										/ Math.sqrt((1 + 0.006739496742
+												* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+								* (1 - 0.006739496742
+										* Math.pow(
+												(Easting - 500000)
+														/ (0.9996 * 6399593.625
+																/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																		Math.cos(north / 6366197.724 / 0.9996), 2)))),
+												2)
+										/ 2 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2) / 3))
+						- Math.exp(-(Easting - 500000) / (0.9996 * 6399593.625 / Math
+								.sqrt((1 + 0.006739496742 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+								* (1
+										- 0.006739496742
+												* Math.pow((Easting - 500000) / (0.9996 * 6399593.625
+														/ Math.sqrt((1 + 0.006739496742 * Math
+																.pow(Math.cos(north / 6366197.724 / 0.9996), 2)))),
+														2)
+												/ 2 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+												/ 3)))
+						/ 2
+						/ Math.cos((north - 0.9996 * 6399593.625 * (north / 6366197.724 / 0.9996
+								- 0.006739496742 * 3 / 4
+										* (north / 6366197.724 / 0.9996
+												+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+								+ Math.pow(0.006739496742 * 3 / 4, 2) * 5 / 3
+										* (3 * (north / 6366197.724 / 0.9996
+												+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+												+ Math
+														.sin(2 * north / 6366197.724 / 0.9996)
+														* Math
+																.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+										/ 4
+								- Math.pow(0.006739496742 * 3 / 4, 3) * 35 / 27
+										* (5 * (3
+												* (north / 6366197.724 / 0.9996
+														+ Math.sin(2 * north / 6366197.724 / 0.9996) / 2)
+												+ Math.sin(2 * north / 6366197.724 / 0.9996)
+														* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+												/ 4
+												+ Math.sin(2 * north / 6366197.724 / 0.9996)
+														* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2)
+														* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+										/ 3))
+								/ (0.9996 * 6399593.625
+										/ Math.sqrt((1 + 0.006739496742
+												* Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))))
+								* (1 - 0.006739496742
+										* Math.pow(
+												(Easting - 500000)
+														/ (0.9996 * 6399593.625
+																/ Math.sqrt((1 + 0.006739496742 * Math.pow(
+																		Math.cos(north / 6366197.724 / 0.9996), 2)))),
+												2)
+										/ 2 * Math.pow(Math.cos(north / 6366197.724 / 0.9996), 2))
+								+ north / 6366197.724 / 0.9996))
+				* 180 / Math.PI + Zone * 6 - 183;
+		longitude = Math.round(longitude * 10000000);
+		longitude = longitude / 10000000;
+		
+		System.out.println("Latitud: "+latitude);
+		System.out.println("Longitud: "+longitude);
+		
+	}
 }

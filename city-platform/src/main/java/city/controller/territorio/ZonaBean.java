@@ -63,7 +63,7 @@ public class ZonaBean implements Serializable{
 	@URL(message="PDF LINK no es una url válida.")
 	private String linkPdf;
 	
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal kilometros;
 	
 	@NotEmpty(message="NOMBRE no debe estar vacío.")
@@ -73,8 +73,6 @@ public class ZonaBean implements Serializable{
 	private boolean edicion;
 	private List<SelectItem> slctEstados;
 	
-	@NotEmpty(message="OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message="OBSERVACIÓN no debe ser solo espacios blancos.")
 	private String observacion;
 	
 	private UploadedFile fileMapa;
@@ -252,12 +250,12 @@ public class ZonaBean implements Serializable{
 				return respuesta;
 			} else {
 					GenZona z = new GenZona();
-					z.setZonId(Funciones.quitarEspacios(getId()));
-					z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()));
+					z.setZonId(Funciones.quitarEspacios(getId()).toUpperCase());
+					z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
 					z.setZonEstado(getEstado());
 					z.setZonKilometros(getKilometros());
-					z.setZonNombre(Funciones.quitarEspacios(getNombre()));
-					z.setZonObservacion(Funciones.quitarEspacios(getObservacion()));
+					z.setZonNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
+					z.setZonObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 					if (isEdicion()) {
 						if(getDirMapa()!= null || getDirMapa() != ""){
 							z.setZonLinkMapa(getDirMapa());
@@ -312,7 +310,7 @@ public class ZonaBean implements Serializable{
 		if (fileMapa != null) {
 			try {
 				String carpeta = mngZona.findParametroByID("direccion_mapa") + "/";
-					setDirMapa("Mapa_Z_" +getId()+ extensionArchivo(fileMapa.getFileName()));
+					setDirMapa("KMZ_Z_" +getId()+ extensionArchivo(fileMapa.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirMapa());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirMapa()));
@@ -351,7 +349,7 @@ public class ZonaBean implements Serializable{
 			try {
 				
 				String carpeta = mngZona.findParametroByID("direccion_pdf") + "/";
-					setDirPdf("PDF_Z_" +getId()+extensionArchivo(filePdf.getFileName()));
+					setDirPdf("MAPA_Z_" +getId()+extensionArchivo(filePdf.getFileName()));
 					System.out.println("PAD------> " + carpeta);
 					System.out.println("name------> " + getDirPdf());
 					outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
@@ -389,11 +387,11 @@ public class ZonaBean implements Serializable{
 	public void editarZona(){
 		try {
 			GenZona z = new GenZona();
-			z.setZonId(Funciones.quitarEspacios(getId()));
-			z.setZonNombre(Funciones.quitarEspacios(getNombre()));
+			z.setZonId(Funciones.quitarEspacios(getId()).toUpperCase());
+			z.setZonNombre(Funciones.quitarEspacios(getNombre()).toUpperCase());
 			z.setZonKilometros(getKilometros());
-			z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()));
-			z.setZonObservacion(Funciones.quitarEspacios(getObservacion()));
+			z.setZonDescripcion(Funciones.quitarEspacios(getDescripcion()).toUpperCase());
+			z.setZonObservacion(Funciones.quitarEspacios(getObservacion()).toUpperCase());
 			z.setZonEstado(getEstado());
 			if(getDirMapa()!= null || getDirMapa() != ""){
 				z.setZonLinkMapa(getDirMapa());

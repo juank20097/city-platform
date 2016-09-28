@@ -7,6 +7,10 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction
+			action="#{sesionBean.validarPersona('cargaExternos.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
            Yachay City Platform
         </ui:define>
@@ -31,7 +35,7 @@
 								<p:fileUpload
 									fileUploadListener="#{externosBean.handleFileUpload}"
 									mode="advanced" dragDropSupport="false" multiple="false"
-									sizeLimit="300000" allowTypes="/(\.|\/)(xls)$/"
+									sizeLimit="600000" allowTypes="/(\.|\/)(xls)$/"
 									update="frm:dialog frm:mensaje tbb" cancelLabel="Cancelar"
 									uploadLabel="Subir" label="Seleccionar"
 									onstart="PF('statusDialog').show()"

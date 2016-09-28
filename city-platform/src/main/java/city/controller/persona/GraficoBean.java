@@ -1,5 +1,7 @@
 package city.controller.persona;
 
+import java.math.BigDecimal;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -85,22 +87,23 @@ public class GraficoBean {
 
 		barModel.setLegendPosition("ne");
 		barModel.setAnimate(true);
+		barModel.setShowPointLabels(true);
 
 		Axis xAxis = barModel.getAxis(AxisType.X);
 		xAxis.setLabel("Años");
 		xAxis.setTickAngle(75);
 
 		Axis yAxis = barModel.getAxis(AxisType.Y);
-		yAxis.setLabel("Número");
+		yAxis.setLabel("Número de Personas");
 		yAxis.setMin(0);
-		yAxis.setMax(125);
 	}
 
 	private void createBarModelPorcentual() {
 		barModelP = initBarModelP();
 
 		barModelP.setLegendPosition("ne");
-		barModel.setAnimate(true);
+		barModelP.setAnimate(true);
+		barModelP.setShowPointLabels(true);
 
 		Axis xAxis = barModelP.getAxis(AxisType.X);
 		xAxis.setLabel("Años");
@@ -109,7 +112,6 @@ public class GraficoBean {
 		Axis yAxis = barModelP.getAxis(AxisType.Y);
 		yAxis.setLabel("Porcentaje (%)");
 		yAxis.setMin(0);
-		yAxis.setMax(30);
 	}
 	
 	public void llenarEnteros(){

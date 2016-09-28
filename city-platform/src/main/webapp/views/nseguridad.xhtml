@@ -8,6 +8,9 @@
 
 
 <ui:composition template="template.xhtml">
+<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('seguridad.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
             Yachay City Platform
         </ui:define>
@@ -149,17 +152,18 @@
 						<p:commandButton value="Ver Mapa" immediate="true" look="info"
 							action="#{seguridadBean.abrirDialog}"></p:commandButton>
 					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Latitud:*" />
+					<b:column col-xs="3">
+						<h:outputLabel value="Coordenadas UTM:* 17 N  X=" />
 					</b:column>
-					<b:column span="2">
-						<b:inputText id="lat" value="#{seguridadBean.segLatitud}" />
+					
+					<b:column col-xs="2">
+						<b:inputText id="lat" value="#{seguridadBean.utmX}" />
 					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="Longitud:*" />
+					<b:column col-xs="1">
+						<h:outputLabel value="    , Y=" />
 					</b:column>
-					<b:column span="2">
-						<b:inputText id="lon" value="#{seguridadBean.segLongitud}" />
+					<b:column col-xs="2">
+						<b:inputText id="lon" value="#{seguridadBean.utmY}" />
 					</b:column>
 				</b:row>
 				<b:row>
@@ -175,9 +179,9 @@
 						<h:outputLabel value="Informe:" />
 					</b:column>
 					<b:column span="6">
-						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
-							sizeLimit="1000000" multiple="false"
-							invalidSizeMessage="Archivo excede limite 10 MB "
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl"
+							sizeLimit="6000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 5 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
 							fileLimitMessage="Solo una un archivo"
 							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
@@ -191,9 +195,9 @@
 						<h:outputLabel value="Documento Respaldo:" />
 					</b:column>
 					<b:column span="6">
-						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
-							sizeLimit="1000000" multiple="false"
-							invalidSizeMessage="Archivo excede limite 10 MB "
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl"
+							sizeLimit="6000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 5 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
 							fileLimitMessage="Solo una un archivo"
 							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"

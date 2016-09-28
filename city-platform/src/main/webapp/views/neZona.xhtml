@@ -8,6 +8,9 @@
 
 
 <ui:composition template="template.xhtml">
+<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('zonas.xhtml')}" />
+	</f:metadata>
 	<ui:define name="titulo">
             Zona
         </ui:define>
@@ -26,13 +29,13 @@
 						<h:outputLabel value="ID:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{zonaBean.id}" disabled="#{zonaBean.edicion}"/>
+						<b:inputText value="#{zonaBean.id}" disabled="#{zonaBean.edicion}"/>
 					</b:column>
 					<b:column col-xs="2">
 						<h:outputLabel value="NOMBRE:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:inputText onkeyup="this.value=this.value.toUpperCase();" value="#{zonaBean.nombre}" />
+						<b:inputText value="#{zonaBean.nombre}" />
 					</b:column>
 				</b:row>
 				<b:row>
@@ -77,12 +80,12 @@
 				</b:row>
 				<b:row>
 					<b:column col-xs="2">
-						<h:outputLabel value="MAPA:*" />
+						<h:outputLabel value="ARCHIVO KMZ:*" />
 					</b:column>
 					<b:column col-xs="6">
 						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!zonaBean.edicion}"
-							sizeLimit="1000000" multiple="false"
-							invalidSizeMessage="Archivo excede limite 10 MB "
+							sizeLimit="6000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 5 MB "
 							fileLimitMessage="Solo un archivo"
 							cancelLabel="Cancelar"
 							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
@@ -98,12 +101,12 @@
 				</b:row>
 				<b:row>
 					<b:column col-xs="2">
-						<h:outputLabel value="PDF:*" />
+						<h:outputLabel value="MAPA:*" />
 					</b:column>
 					<b:column col-xs="6">
 						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm" disabled="#{!zonaBean.edicion}"
-							sizeLimit="1000000" multiple="false"
-							invalidSizeMessage="Archivo excede limite 10 MB "
+							sizeLimit="6000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 5 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
 							fileLimitMessage="Solo un archivo"
 							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"

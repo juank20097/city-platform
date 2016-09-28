@@ -9,16 +9,30 @@
 		<class>city.model.dao.entidades.AudActividadInterna</class>
 		<class>city.model.dao.entidades.AudWsDinardap</class>
 		<class>city.model.dao.entidades.GenArea</class>
+		<class>city.model.dao.entidades.GenAsignacionSuelo</class>
 		<class>city.model.dao.entidades.GenBarrio</class>
+		<class>city.model.dao.entidades.GenCapacitacione</class>
 		<class>city.model.dao.entidades.GenCatalogoCab</class>
 		<class>city.model.dao.entidades.GenCatalogoItemsDet</class>
 		<class>city.model.dao.entidades.GenComunidade</class>
 		<class>city.model.dao.entidades.GenDistrito</class>
+		<class>city.model.dao.entidades.GenElementoBarrioValor</class>
+		<class>city.model.dao.entidades.GenElementoBarrioValorPK</class>
+		<class>city.model.dao.entidades.GenElementoZonaValor</class>
+		<class>city.model.dao.entidades.GenElementoZonaValorPK</class>
+		<class>city.model.dao.entidades.GenElementosBarrio</class>
+		<class>city.model.dao.entidades.GenElementosZona</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucion</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucionPK</class>
+		<class>city.model.dao.entidades.GenExperiencialaboral</class>
 		<class>city.model.dao.entidades.GenExterno</class>
+		<class>city.model.dao.entidades.GenFamiliare</class>
+		<class>city.model.dao.entidades.GenFamiliarePK</class>
+		<class>city.model.dao.entidades.GenFormacionacademica</class>
 		<class>city.model.dao.entidades.GenFuncionariosInstitucion</class>
 		<class>city.model.dao.entidades.GenFuncionariosInstitucionPK</class>
+		<class>city.model.dao.entidades.GenHistorialSeguimiento</class>
+		<class>city.model.dao.entidades.GenHistorialSeguimientoPK</class>
 		<class>city.model.dao.entidades.GenInstitucione</class>
 		<class>city.model.dao.entidades.GenManzana</class>
 		<class>city.model.dao.entidades.GenManzanaDetalle</class>
@@ -32,6 +46,8 @@
 		<class>city.model.dao.entidades.GenSitFoto</class>
 		<class>city.model.dao.entidades.GenSitio</class>
 		<class>city.model.dao.entidades.GenTipoSitio</class>
+		<class>city.model.dao.entidades.GenVisitante</class>
+		<class>city.model.dao.entidades.GenVisitantePK</class>
 		<class>city.model.dao.entidades.GenZona</class>
 		<class>city.model.dao.entidades.GenZonasComunidade</class>
 		<class>city.model.dao.entidades.GenZonasComunidadePK</class>

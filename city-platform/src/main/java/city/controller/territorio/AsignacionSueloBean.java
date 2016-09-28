@@ -22,12 +22,14 @@ import javax.validation.constraints.DecimalMin;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenAsignacionSuelo;
 import city.model.dao.entidades.GenCatalogoItemsDet;
+import city.model.dao.entidades.GenHistorialSeguimiento;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
@@ -39,8 +41,8 @@ import city.model.manager.ManagerTerritorio;
 public class AsignacionSueloBean implements Serializable {
 
 	private static final long serialVersionUID = -3198725647396964268L;
-	private static String ID_ACTIVO = "A";
-	private static String ID_INACTIVO = "I";
+	private static String EN_PROGRESO = "P";
+	private static String APROBADO = "A";
 
 	@EJB
 	private ManagerTerritorio mngAsignacionSuelo;
@@ -50,6 +52,7 @@ public class AsignacionSueloBean implements Serializable {
 	@NotEmpty(message = "ID no debe estar vacío.")
 	@NotBlank(message = "ID no debe ser solo espacios blancos.")
 	private Integer id;
+
 	private String estado;
 
 	private Date fechaIncio;
@@ -60,7 +63,7 @@ public class AsignacionSueloBean implements Serializable {
 	@URL(message = "PDF LINK no es una url válida.")
 	private String linkPdf;
 
-	@DecimalMin("1")
+	@DecimalMin("0")
 	private BigDecimal metros;
 
 	@NotEmpty(message = "ACTIVIDAD no debe estar vacío.")
@@ -75,39 +78,64 @@ public class AsignacionSueloBean implements Serializable {
 	private boolean edicion;
 	private List<SelectItem> slctEstados;
 
-	@NotEmpty(message = "OBSERVACIÓN no debe estar vacío.")
-	@NotBlank(message = "OBSERVACIÓN no debe ser solo espacios blancos.")
 	private String observacion;
 
 	private UploadedFile filePdf;
 	private String dirPdf;
 
 	List<SelectItem> l_zona;
+
+	@NotEmpty(message = "ZONA no debe estar vacío.")
 	private String zona;
-	
+
 	List<SelectItem> l_tipo_catalogo;
-	
+
 	@NotEmpty(message = "TIPO no debe estar vacío.")
 	private String SueTipoCatalogo;
 
 	private Date date;
-	
+
+	private Integer sueNumeroanios;
+
 	@EJB
 	private ManagerSitios msitios;
+
+	// lista de seguimientos
+	List<GenHistorialSeguimiento> l_seguimiento;
 
 	@PostConstruct
 	public void init() {
 		session.validarSesion();
-		estado = ID_ACTIVO;
+		estado = EN_PROGRESO;
 		slctEstados = new ArrayList<SelectItem>();
 		listAsignacionSuelos = new ArrayList<GenAsignacionSuelo>();
+		l_seguimiento = new ArrayList<GenHistorialSeguimiento>();
 		l_tipo_catalogo = new ArrayList<SelectItem>();
 		l_zona = new ArrayList<SelectItem>();
 		metros = new BigDecimal(0);
+		sueNumeroanios = 0;
+		cargarZona();
+		edicion = false;
 		cargarAsignacionSuelo();
-		fechaIncio = new Date();
-		fechaFin = new Date();
+		cargarTiposCatalogo();
+		fechaIncio = null;
+		fechaFin = null;
 		cargarEstados();
+	}
+
+	/**
+	 * @return the l_seguimiento
+	 */
+	public List<GenHistorialSeguimiento> getL_seguimiento() {
+		return l_seguimiento;
+	}
+
+	/**
+	 * @param l_seguimiento
+	 *            the l_seguimiento to set
+	 */
+	public void setL_seguimiento(List<GenHistorialSeguimiento> l_seguimiento) {
+		this.l_seguimiento = l_seguimiento;
 	}
 
 	public Integer getId() {
@@ -178,19 +206,18 @@ public class AsignacionSueloBean implements Serializable {
 		return listAsignacionSuelos;
 	}
 
-	public void setListAsignacionSuelos(
-			List<GenAsignacionSuelo> listAsignacionSuelos) {
+	public void setListAsignacionSuelos(List<GenAsignacionSuelo> listAsignacionSuelos) {
 		this.listAsignacionSuelos = listAsignacionSuelos;
 	}
 
 	public List<SelectItem> getL_tipo_catalogo() {
 		return l_tipo_catalogo;
 	}
-	
+
 	public void setL_tipo_catalogo(List<SelectItem> l_tipo_catalogo) {
 		this.l_tipo_catalogo = l_tipo_catalogo;
 	}
-	
+
 	public boolean isEdicion() {
 		return edicion;
 	}
@@ -230,18 +257,18 @@ public class AsignacionSueloBean implements Serializable {
 	public void setZona(String zona) {
 		this.zona = zona;
 	}
-	
+
 	public String getSueTipoCatalogo() {
 		return SueTipoCatalogo;
 	}
-	
+
 	public void setSueTipoCatalogo(String sueTipoCatalogo) {
 		SueTipoCatalogo = sueTipoCatalogo;
 	}
 
 	private void cargarEstados() {
-		getSlctEstados().add(new SelectItem(ID_ACTIVO, "Activo"));
-		getSlctEstados().add(new SelectItem(ID_INACTIVO, "Inactivo"));
+		getSlctEstados().add(new SelectItem(EN_PROGRESO, "En progreso"));
+		getSlctEstados().add(new SelectItem(APROBADO, "Aprobado"));
 	}
 
 	public UploadedFile getFilePdf() {
@@ -259,14 +286,22 @@ public class AsignacionSueloBean implements Serializable {
 	public void setDirPdf(String dirPdf) {
 		this.dirPdf = dirPdf;
 	}
-	
+
 	public Date getDate() {
-		date = new Date();
 		return date;
+	}
+
+	public Integer getSueNumeroanios() {
+		return sueNumeroanios;
+	}
+
+	public void setSueNumeroanios(Integer sueNumeroanios) {
+		this.sueNumeroanios = sueNumeroanios;
 	}
 
 	public String nuevoSuelo() {
 		limpiarDatos();
+
 		date = new Date();
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
@@ -278,12 +313,14 @@ public class AsignacionSueloBean implements Serializable {
 		setMetros(asignacionSuelo.getSueMetros());
 		setSueTipoCatalogo(asignacionSuelo.getSueTipo());
 		setAsignacion(asignacionSuelo.getSueAsignacion());
+		setSueNumeroanios(asignacionSuelo.getSueNumeroAnios());
 		setObservacion(asignacionSuelo.getSueObservacion());
 		setFechaIncio(asignacionSuelo.getSueFechaInicio());
 		setFechaFin(asignacionSuelo.getSueFechaFin());
 		setZona(asignacionSuelo.getGenZona().getZonId());
 		setEdicion(true);
-		date = new Date();
+		// fechasaanios(asignacionSuelo.getSueFechaInicio(),
+		// asignacionSuelo.getSueFechaFin());
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
 
@@ -291,10 +328,25 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			String respuesta = "";
 			if (!validarCampos()) {
-				if (!isEdicion()
-						&& mngAsignacionSuelo.findAsignacionSueloById(getId()) != null) {
-					Mensaje.crearMensajeWARN("Ya existe una asignación de suelo con el mismo id, favor cámbielo.");
-					return respuesta;
+				if (isEdicion()) {
+					GenAsignacionSuelo a = mngAsignacionSuelo.findAsignacionSueloById(getId());
+					a.setSueActividad(Funciones.quitarEspacios(getActividad()));
+					a.setGenZona(mngAsignacionSuelo.findZonaById(zona));
+					a.setSueEstado(getEstado());
+					a.setSueTipo(getSueTipoCatalogo());
+					a.setSueMetros(getMetros());
+					a.setSueFechaInicio(fechaIncio);
+					a.setSueNumeroAnios(sueNumeroanios);
+					a.setSueFechaFin(fechaFin);
+					a.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
+					a.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
+					if (getDirPdf() != null || getDirPdf() != "") {
+						a.setSueArchivo(getDirPdf());
+					} else {
+						a.setSueArchivo(mngAsignacionSuelo.findAsignacionSueloById(getId()).getSueArchivo());
+					}
+					mngAsignacionSuelo.modicarAsignacionSuelo(a);
+					Mensaje.crearMensajeINFO("AsignaciÃ²n de Suelo actualizada correctamente.");
 				} else {
 					GenAsignacionSuelo z = new GenAsignacionSuelo();
 					z.setSueId(mngAsignacionSuelo.asignacionSueloId());
@@ -304,31 +356,18 @@ public class AsignacionSueloBean implements Serializable {
 					z.setSueTipo(getSueTipoCatalogo());
 					z.setSueMetros(getMetros());
 					z.setSueFechaInicio(fechaIncio);
+					z.setSueNumeroAnios(sueNumeroanios);
 					z.setSueFechaFin(fechaFin);
 					z.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
 					z.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
-					if (isEdicion()) {
-						if (getDirPdf() != null || getDirPdf() != "") {
-							z.setSueArchivo(getDirPdf());
-						} else {
-							z.setSueArchivo(mngAsignacionSuelo
-									.findAsignacionSueloById(getId())
-									.getSueArchivo());
-						}
-						mngAsignacionSuelo.modicarAsignacionSuelo(z);
-						Mensaje.crearMensajeINFO("Asignacion Suelo actualizada correctamente.");
-					} else {
-						mngAsignacionSuelo.insertarAsignacionSuelo(z);
-						setEdicion(true);
-						Mensaje.crearMensajeINFO("Asignacion Suelo ingresada correctamente.");
-					}
-
+					mngAsignacionSuelo.insertarAsignacionSuelo(z);
+					setEdicion(false);
+					Mensaje.crearMensajeINFO("AsignaciÃ²n de Suelo ingresada correctamente.");
 				}
 			}
 			return respuesta;
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error al almacenar suelo: "
-					+ e.getMessage());
+			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
 			System.out.println("Error al almacenar suelo: ");
 			e.printStackTrace();
 			return "";
@@ -336,12 +375,14 @@ public class AsignacionSueloBean implements Serializable {
 	}
 
 	public boolean validarCampos() {
-		if (getZona() == null || getZona() == "") {
+		if (getZona().equals("-1")) {
 			Mensaje.crearMensajeERROR("Campo zona requerido");
 			return true;
+		} else if (getSueTipoCatalogo().equals("-1")) {
+			Mensaje.crearMensajeERROR("Campo tipo requerido");
+			return true;
 		} else {
-			if ((edicion == true && getEstado() == null)
-					|| (edicion == true && getEstado().equals("-1"))) {
+			if ((edicion == true && getEstado() == null) || (edicion == true && getEstado().equals("-1"))) {
 				Mensaje.crearMensajeERROR("Campo estado requerido");
 				return true;
 			}
@@ -353,28 +394,27 @@ public class AsignacionSueloBean implements Serializable {
 	public String cancelar() {
 		limpiarDatos();
 		cargarAsignacionSuelo();
-		date = new Date();
 		return "asignacionSuelos?faces-redirect=true";
 	}
 
 	private void cargarAsignacionSuelo() {
 		getListAsignacionSuelos().clear();
-		getListAsignacionSuelos().addAll(
-				mngAsignacionSuelo.findAllAsignacionSuelo());
+		getListAsignacionSuelos().addAll(mngAsignacionSuelo.findAllAsignacionSuelo());
 	}
 
 	private void limpiarDatos() {
 		setId(null);
 		setActividad("");
-		setEstado(ID_ACTIVO);
+		setEstado(EN_PROGRESO);
 		setMetros(new BigDecimal(0));
 		setAsignacion("");
-		setZona("");
-		setSueTipoCatalogo("");
+		setSueNumeroanios(0);
+		setZona("-1");
+		setSueTipoCatalogo("-1");
+		setSueNumeroanios(0);
 		setObservacion("");
-		setFechaIncio(new Date());
-		setFechaFin(new Date());
-		date = new Date();
+		setFechaIncio(null);
+		setFechaFin(null);
 		setEdicion(false);
 	}
 
@@ -385,14 +425,11 @@ public class AsignacionSueloBean implements Serializable {
 
 		if (filePdf != null) {
 			try {
-				String carpeta = mngAsignacionSuelo
-						.findParametroByID("direccion_pdf") + "/";
-				setDirPdf("PDF_Z_" + getId()
-						+ extensionArchivo(filePdf.getFileName()));
+				String carpeta = mngAsignacionSuelo.findParametroByID("direccion_pdf") + "/";
+				setDirPdf("PDF_S_" + getId() + extensionArchivo(filePdf.getFileName()));
 				System.out.println("PAD------> " + carpeta);
 				System.out.println("name------> " + getDirPdf());
-				outputStream = new FileOutputStream(new File(carpeta
-						+ File.separatorChar + getDirPdf()));
+				outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
 				inputStream = filePdf.getInputstream();
 
 				int read = 0;
@@ -425,24 +462,28 @@ public class AsignacionSueloBean implements Serializable {
 
 	public void editarAsignacionSuelo() {
 		try {
-			GenAsignacionSuelo z = new GenAsignacionSuelo();
-			z.setSueId(getId());
-			z.setSueActividad(Funciones.quitarEspacios(getActividad()));
-			z.setSueMetros(getMetros());
-			z.setGenZona(mngAsignacionSuelo.findZonaById(zona));
-			z.setSueFechaInicio(fechaIncio);
-			z.setSueTipo(getSueTipoCatalogo());
-			z.setSueFechaFin(fechaFin);
-			z.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
-			z.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
-			z.setSueEstado(getEstado());
-			if (getDirPdf() != null || getDirPdf() != "") {
-				z.setSueArchivo(getDirPdf());
+			if (!validarCampos()) {
+				GenAsignacionSuelo z = new GenAsignacionSuelo();
+				z.setSueId(getId());
+				z.setSueActividad(Funciones.quitarEspacios(getActividad()));
+				z.setSueMetros(getMetros());
+				z.setGenZona(mngAsignacionSuelo.findZonaById(zona));
+				z.setSueFechaInicio(fechaIncio);
+				z.setSueNumeroAnios(sueNumeroanios);
+				z.setSueTipo(getSueTipoCatalogo());
+				z.setSueFechaFin(fechaFin);
+				z.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
+				z.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
+				z.setSueEstado(getEstado());
+				if (getDirPdf() != null || getDirPdf() != "") {
+					z.setSueArchivo(getDirPdf());
+				} else {
+					z.setSueArchivo(mngAsignacionSuelo.findAsignacionSueloById(getId()).getSueArchivo());
+				}
+				mngAsignacionSuelo.modicarAsignacionSuelo(z);
 			} else {
-				z.setSueArchivo(mngAsignacionSuelo.findAsignacionSueloById(
-						getId()).getSueArchivo());
+
 			}
-			mngAsignacionSuelo.modicarAsignacionSuelo(z);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -450,15 +491,11 @@ public class AsignacionSueloBean implements Serializable {
 
 	public void descargarPDF(GenAsignacionSuelo asignacionSuelo) {
 		try {
-			if (asignacionSuelo.getSueArchivo() == null
-					|| asignacionSuelo.getSueArchivo().isEmpty()) {
+			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
 				Mensaje.crearMensajeERROR("La asignacion de suelo no cuenta con un archivo asignado.");
 			} else {
-				String contextPath = mngAsignacionSuelo
-						.findParametroByID("direccion_pdf")
-						+ File.separatorChar
-						+ asignacionSuelo.getSueArchivo()
-						+ "";
+				String contextPath = mngAsignacionSuelo.findParametroByID("direccion_pdf") + File.separatorChar
+						+ asignacionSuelo.getSueArchivo() + "";
 				Funciones.descargarPDF(contextPath);
 			}
 		} catch (Exception e) {
@@ -469,17 +506,12 @@ public class AsignacionSueloBean implements Serializable {
 
 	public void descargarPDF(Integer idasignacionSuelo) {
 		try {
-			GenAsignacionSuelo asignacionSuelo = mngAsignacionSuelo
-					.findAsignacionSueloById(idasignacionSuelo);
-			if (asignacionSuelo.getSueArchivo() == null
-					|| asignacionSuelo.getSueArchivo().isEmpty()) {
-				Mensaje.crearMensajeERROR("La asignacion de suelo no cuenta con un archivo asignado.");
+			GenAsignacionSuelo asignacionSuelo = mngAsignacionSuelo.findAsignacionSueloById(idasignacionSuelo);
+			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
+				Mensaje.crearMensajeERROR("La asignaciÃ²n de suelo no cuenta con un archivo asignado.");
 			} else {
-				String contextPath = mngAsignacionSuelo
-						.findParametroByID("direccion_pdf")
-						+ File.separatorChar
-						+ asignacionSuelo.getSueArchivo()
-						+ "";
+				String contextPath = mngAsignacionSuelo.findParametroByID("direccion_pdf") + File.separatorChar
+						+ asignacionSuelo.getSueArchivo() + "";
 				Funciones.descargarPDF(contextPath);
 			}
 		} catch (Exception e) {
@@ -497,11 +529,11 @@ public class AsignacionSueloBean implements Serializable {
 			getL_zona().add(new SelectItem(i.getZonId(), i.getZonNombre()));
 		}
 	}
-	
+
 	/**
 	 * Lista de TiposCatalogo
 	 */
-	public void cargarTiposDni() {
+	public void cargarTiposCatalogo() {
 		getL_tipo_catalogo().clear();
 		List<GenCatalogoItemsDet> completo = mngAsignacionSuelo.AllofItems("cat_tipo_asignacionsuelo");
 		for (GenCatalogoItemsDet i : completo) {
@@ -509,4 +541,41 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Validar campos
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public String validarItemCatalogo(String item) {
+		String respuesta = "";
+		try {
+			respuesta = mngAsignacionSuelo.catalogoItem(item);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Mensaje.crearMensajeERROR("Error al validar Item. " + e.getMessage());
+		}
+		return respuesta;
+	}
+
+	public String fechasaanios(Date fechaInicio, Date fechaFin) {
+		String aniosEntreFechas = mngAsignacionSuelo.fechasaAnios(getFechaIncio(), getFechaFin(), getId());
+		return aniosEntreFechas;
+	}
+
+	public void tablaSeguimiento(GenAsignacionSuelo asignacion) {
+		getL_seguimiento().clear();
+		setL_seguimiento(mngAsignacionSuelo.listaSeguimientoFiltrado(asignacion.getSueId()));
+		RequestContext.getCurrentInstance().execute("PF('dlgSeg').show()");
+	}
+	
+	public String cambiarNombre(String param){
+		if(param.equals(EN_PROGRESO)){
+			return "En progreso";
+		}else{
+			return "Actualizado";
+		}
+		
+	}
 }
