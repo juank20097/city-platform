@@ -22,12 +22,14 @@ import javax.validation.constraints.DecimalMin;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenAsignacionSuelo;
 import city.model.dao.entidades.GenCatalogoItemsDet;
+import city.model.dao.entidades.GenHistorialSeguimiento;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
@@ -98,12 +100,16 @@ public class AsignacionSueloBean implements Serializable {
 	@EJB
 	private ManagerSitios msitios;
 
+	// lista de seguimientos
+	List<GenHistorialSeguimiento> l_seguimiento;
+
 	@PostConstruct
 	public void init() {
 		session.validarSesion();
 		estado = EN_PROGRESO;
 		slctEstados = new ArrayList<SelectItem>();
 		listAsignacionSuelos = new ArrayList<GenAsignacionSuelo>();
+		l_seguimiento = new ArrayList<GenHistorialSeguimiento>();
 		l_tipo_catalogo = new ArrayList<SelectItem>();
 		l_zona = new ArrayList<SelectItem>();
 		metros = new BigDecimal(0);
@@ -115,6 +121,21 @@ public class AsignacionSueloBean implements Serializable {
 		fechaIncio = null;
 		fechaFin = null;
 		cargarEstados();
+	}
+
+	/**
+	 * @return the l_seguimiento
+	 */
+	public List<GenHistorialSeguimiento> getL_seguimiento() {
+		return l_seguimiento;
+	}
+
+	/**
+	 * @param l_seguimiento
+	 *            the l_seguimiento to set
+	 */
+	public void setL_seguimiento(List<GenHistorialSeguimiento> l_seguimiento) {
+		this.l_seguimiento = l_seguimiento;
 	}
 
 	public Integer getId() {
@@ -541,6 +562,20 @@ public class AsignacionSueloBean implements Serializable {
 	public String fechasaanios(Date fechaInicio, Date fechaFin) {
 		String aniosEntreFechas = mngAsignacionSuelo.fechasaAnios(getFechaIncio(), getFechaFin(), getId());
 		return aniosEntreFechas;
+	}
 
+	public void tablaSeguimiento(GenAsignacionSuelo asignacion) {
+		getL_seguimiento().clear();
+		setL_seguimiento(mngAsignacionSuelo.listaSeguimientoFiltrado(asignacion.getSueId()));
+		RequestContext.getCurrentInstance().execute("PF('dlgSeg').show()");
+	}
+	
+	public String cambiarNombre(String param){
+		if(param.equals(EN_PROGRESO)){
+			return "En progreso";
+		}else{
+			return "Actualizado";
+		}
+		
 	}
 }

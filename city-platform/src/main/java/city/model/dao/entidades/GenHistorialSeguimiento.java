@@ -5,48 +5,47 @@ import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the gen_historial_seguimiento database table.
  * 
  */
 @Entity
-@Table(name="gen_historial_seguimiento")
-@NamedQuery(name="GenHistorialSeguimiento.findAll", query="SELECT g FROM GenHistorialSeguimiento g")
+@Table(name = "gen_historial_seguimiento")
+@NamedQuery(name = "GenHistorialSeguimiento.findAll", query = "SELECT g FROM GenHistorialSeguimiento g")
 public class GenHistorialSeguimiento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private GenHistorialSeguimientoPK id;
 
-	@Column(name="hse_adjunto_doc")
+	@Column(name = "hse_adjunto_doc")
 	private String hseAdjuntoDoc;
 
-	@Column(name="hse_adjunto_fot")
+	@Column(name = "hse_adjunto_fot")
 	private String hseAdjuntoFot;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="hse_fecha")
+	@Column(name = "hse_fecha")
 	private Date hseFecha;
 
-	@Column(name="hse_fecha_registro")
+	@Column(name = "hse_fecha_registro")
 	private Timestamp hseFechaRegistro;
 
-	@Column(name="hse_novedades")
+	@Column(name = "hse_novedades")
 	private String hseNovedades;
 
-	@Column(name="hse_responsable")
+	@Column(name = "hse_responsable")
 	private String hseResponsable;
 
-	@Column(name="hse_usuario")
+	@Column(name = "hse_usuario")
 	private String hseUsuario;
-	
-	@Column(name="hse_estado", columnDefinition="bpchar")
+
+	@Column(name = "hse_estado", columnDefinition = "bpchar")
 	private String hseEstado;
 
-	//bi-directional many-to-one association to GenAsignacionSuelo
+	// bi-directional many-to-one association to GenAsignacionSuelo
 	@ManyToOne
-	@JoinColumn(name="sue_id", insertable=false, updatable=false)
+	@JoinColumn(name = "sue_id", insertable = false, updatable = false)
 	private GenAsignacionSuelo genAsignacionSuelo;
 
 	public GenHistorialSeguimiento() {
@@ -58,6 +57,14 @@ public class GenHistorialSeguimiento implements Serializable {
 
 	public void setId(GenHistorialSeguimientoPK id) {
 		this.id = id;
+	}
+
+	public String getHseEstado() {
+		return hseEstado;
+	}
+
+	public void setHseEstado(String hseEstado) {
+		this.hseEstado = hseEstado;
 	}
 
 	public String getHseAdjuntoDoc() {

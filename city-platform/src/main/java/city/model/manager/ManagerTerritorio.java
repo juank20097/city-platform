@@ -18,6 +18,7 @@ import city.model.dao.entidades.GenElementoZonaValor;
 import city.model.dao.entidades.GenElementoZonaValorPK;
 import city.model.dao.entidades.GenElementosBarrio;
 import city.model.dao.entidades.GenElementosZona;
+import city.model.dao.entidades.GenHistorialSeguimiento;
 import city.model.dao.entidades.GenManzana;
 import city.model.dao.entidades.GenManzanaDetalle;
 import city.model.dao.entidades.GenManzanaPosicione;
@@ -514,6 +515,11 @@ public class ManagerTerritorio {
 
 	public GenAsignacionSuelo findAsignacionSueloById(Integer idAsignacionSuelo) throws Exception {
 		return (GenAsignacionSuelo) mngDAO.findById(GenAsignacionSuelo.class, idAsignacionSuelo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GenHistorialSeguimiento> listaSeguimientoFiltrado(Integer idAsigSuelo){
+		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsigSuelo+" and o.hseEstado='A'", "o.hseFecha desc");
 	}
 
 }
