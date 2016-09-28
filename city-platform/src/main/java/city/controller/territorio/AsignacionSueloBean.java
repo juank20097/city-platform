@@ -96,6 +96,8 @@ public class AsignacionSueloBean implements Serializable {
 	private Date date;
 
 	private Integer sueNumeroanios;
+	
+	private boolean ocultarGuardar;
 
 	@EJB
 	private ManagerSitios msitios;
@@ -116,6 +118,7 @@ public class AsignacionSueloBean implements Serializable {
 		sueNumeroanios = 0;
 		cargarZona();
 		edicion = false;
+		ocultarGuardar=false;
 		cargarAsignacionSuelo();
 		cargarTiposCatalogo();
 		fechaIncio = null;
@@ -265,6 +268,14 @@ public class AsignacionSueloBean implements Serializable {
 	public void setSueTipoCatalogo(String sueTipoCatalogo) {
 		SueTipoCatalogo = sueTipoCatalogo;
 	}
+	
+	public boolean isOcultarGuardar() {
+		return ocultarGuardar;
+	}
+	
+	public void setOcultarGuardar(boolean ocultarGuardar) {
+		this.ocultarGuardar = ocultarGuardar;
+	}
 
 	private void cargarEstados() {
 		getSlctEstados().add(new SelectItem(EN_PROGRESO, "En progreso"));
@@ -300,6 +311,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 
 	public String nuevoSuelo() {
+		setOcultarGuardar(false);
 		limpiarDatos();
 
 		date = new Date();
@@ -319,6 +331,7 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaFin(asignacionSuelo.getSueFechaFin());
 		setZona(asignacionSuelo.getGenZona().getZonId());
 		setEdicion(true);
+		ocultarGuardar = false;
 		// fechasaanios(asignacionSuelo.getSueFechaInicio(),
 		// asignacionSuelo.getSueFechaFin());
 		return "neAsignacionSuelo?faces-redirect=true";
@@ -346,7 +359,7 @@ public class AsignacionSueloBean implements Serializable {
 						a.setSueArchivo(mngAsignacionSuelo.findAsignacionSueloById(getId()).getSueArchivo());
 					}
 					mngAsignacionSuelo.modicarAsignacionSuelo(a);
-					Mensaje.crearMensajeINFO("AsignaciÃ²n de Suelo actualizada correctamente.");
+					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
 				} else {
 					GenAsignacionSuelo z = new GenAsignacionSuelo();
 					z.setSueId(mngAsignacionSuelo.asignacionSueloId());
@@ -362,7 +375,8 @@ public class AsignacionSueloBean implements Serializable {
 					z.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
 					mngAsignacionSuelo.insertarAsignacionSuelo(z);
 					setEdicion(false);
-					Mensaje.crearMensajeINFO("AsignaciÃ²n de Suelo ingresada correctamente.");
+					setOcultarGuardar(true);
+					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
 				}
 			}
 			return respuesta;
@@ -414,6 +428,7 @@ public class AsignacionSueloBean implements Serializable {
 		setSueNumeroanios(0);
 		setObservacion("");
 		setFechaIncio(null);
+		setOcultarGuardar(false);
 		setFechaFin(null);
 		setEdicion(false);
 	}
@@ -492,7 +507,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void descargarPDF(GenAsignacionSuelo asignacionSuelo) {
 		try {
 			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
-				Mensaje.crearMensajeERROR("La asignacion de suelo no cuenta con un archivo asignado.");
+				Mensaje.crearMensajeERROR("La asignación de suelo no cuenta con un archivo asignado.");
 			} else {
 				String contextPath = mngAsignacionSuelo.findParametroByID("direccion_pdf") + File.separatorChar
 						+ asignacionSuelo.getSueArchivo() + "";
@@ -508,7 +523,7 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			GenAsignacionSuelo asignacionSuelo = mngAsignacionSuelo.findAsignacionSueloById(idasignacionSuelo);
 			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
-				Mensaje.crearMensajeERROR("La asignaciÃ²n de suelo no cuenta con un archivo asignado.");
+				Mensaje.crearMensajeERROR("La asignación de suelo no cuenta con un archivo asignado.");
 			} else {
 				String contextPath = mngAsignacionSuelo.findParametroByID("direccion_pdf") + File.separatorChar
 						+ asignacionSuelo.getSueArchivo() + "";

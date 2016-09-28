@@ -41,12 +41,12 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenBarrio> findAllBarrios() {
-		return mngDAO.findAll(GenBarrio.class);
+		return mngDAO.findAll(GenBarrio.class,"o.barId");
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<GenBarrio> findAllBarriosA() {
-		return mngDAO.findWhere(GenBarrio.class, "o.barEstado = 'A' ", "o.barNombre");
+		return mngDAO.findWhere(GenBarrio.class, "o.barEstado = 'A' ", "o.barId");
 	}
 
 	public void insertarBarrio(GenBarrio barrio) throws Exception {
@@ -66,7 +66,7 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenComunidade> findAllcomunidades() throws Exception {
-		return mngDAO.findAll(GenComunidade.class);
+		return mngDAO.findAll(GenComunidade.class,"o.comNombre");
 	}// Cierre del metodo
 
 	@SuppressWarnings("unchecked")
@@ -203,7 +203,7 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenDistrito> findAllDistritos() {
-		return mngDAO.findAll(GenDistrito.class);
+		return mngDAO.findAll(GenDistrito.class, "o.disId");
 	}
 
 	public void insertarDistrito(GenDistrito zona) throws Exception {
@@ -222,12 +222,12 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenZona> findAllZonas() {
-		return mngDAO.findAll(GenZona.class);
+		return mngDAO.findAll(GenZona.class,"o.zonId");
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<GenZona> findAllZonasA() {
-		return mngDAO.findWhere(GenZona.class, "o.zonEstado='A'", null);
+		return mngDAO.findWhere(GenZona.class, "o.zonEstado='A'", "o.zonId");
 	}
 
 	public void insertarZona(GenZona zona) throws Exception {
@@ -242,12 +242,12 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenManzana> findAllManzanas() {
-		return mngDAO.findAll(GenManzana.class);
+		return mngDAO.findAll(GenManzana.class,"o.manNombre");
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<GenManzana> findAllManzanasA() {
-		return mngDAO.findWhere(GenManzana.class, "o.manEstado='A'", null);
+		return mngDAO.findWhere(GenManzana.class, "o.manEstado='A'", "o.manNombre");
 	}
 
 	public void insertarManzana(GenManzana manzana) throws Exception {
@@ -497,7 +497,7 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
-		return mngDAO.findAll(GenAsignacionSuelo.class);
+		return mngDAO.findAll(GenAsignacionSuelo.class, " o.sueId ");
 	}
 
 	@SuppressWarnings("unchecked")
