@@ -4,7 +4,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:b="http://bootsfaces.net/ui">
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:l="http://www.lapis.com/jsf/exporter">
 <ui:composition template="template.xhtml">
 	<ui:define name="titulo">
             Lista territorios
@@ -23,91 +24,67 @@
 		</h:form>
 		<br />
 
-		<h:form id="form">
-			<p:treeTable value="#{reporteZonasBean.root}" var="document">
+		<h:form id="formTerritorial">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+				show-detail="false" global-only="false" show-summary="true"
+				allow-dismiss="true" animation-enter="animated bounceInDown"
+				animation-exit="animated flipOutX" escape="true" />
+			<p:messages id="mensaje2" closable="true"></p:messages>
+			<p:treeTable id="tbl" value="#{reporteZonasBean.root}" var="document"
+				resizableColumns="true" scrollable="true" scrollHeight="300"
+				scrollWidth="auto" emptyMessage="No hay datos"
+				style="margin-bottom:20px; overflow: auto; height: 100%; width: 100%">
 				<f:facet name="header">
-            REPORTE TERRITORIAL
-        </f:facet>
-				<p:column style="width:400px" resizable="true"  headerText="Nombre">
+                 REPORTE TERRITORIAL
+               </f:facet>
+
+				<f:facet name="header">
+					<h:commandLink action="#{reporteZonasBean.generateExcel()}" update="formTerritorial">
+						<p:graphicImage value="../resources/img/xls.png" width="20" />
+					</h:commandLink>
+				</f:facet>
+				      
+				
+				
+				<p:column style="width:400px" resizable="true" headerText="Nombre"
+					sortBy="#{document.nombre}">
 					<h:outputText value="#{document.nombre}" />
 				</p:column>
 
-				<p:column width="200" resizable="true" headerText="Descripcion">
-					<h:outputText value="#{document.descripcion}" />
+				<p:column width="100" resizable="true"
+					sortBy="#{document.vecindarioKilometros}" headerText="Kilometros">
+					<h:outputText value="#{document.vecindarioKilometros}" />
 				</p:column>
 
-				<p:column width="100" resizable="true"  headerText="Kilometros">
-					<h:outputText value="#{document.kilometros}" />
+				<p:column width="100" resizable="true"
+					sortBy="#{document.vecindarioHectareas}" headerText="Hectareas">
+					<h:outputText value="#{document.vecindarioHectareas}" />
 				</p:column>
-				
-				<p:column width="100" resizable="true"  headerText="Hectareas">
-					<h:outputText value="#{document.hectareas}" />
-				</p:column>
-				
-				<p:column width="200" resizable="true" headerText="Observaciones">
-					<h:outputText value="#{document.observacion}" />
-				</p:column>
-				
-				<p:column width="100" resizable="true"  headerText="Elemento">
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoNombre}" headerText="Elemento">
 					<h:outputText value="#{document.elementoNombre}" />
 				</p:column>
-				
-				<p:column width="100" resizable="true" headerText="Tipo Elemento">
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoTipo}" headerText="Tipo Elemento">
 					<h:outputText value="#{document.elementoTipo}" />
 				</p:column>
-				
-				<p:column width="100" resizable="true"  headerText="Unidad Medida">
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoUnidadMedida}"
+					headerText="Unidad Medida">
 					<h:outputText value="#{document.elementoUnidadMedida}" />
 				</p:column>
-				
-				<p:column width="100" resizable="true" headerText="Valor">
+
+				<p:column width="100" resizable="true"
+					sortBy="#{document.elementoValor}" headerText="Valor">
 					<h:outputText value="#{document.elementoValor}" />
 				</p:column>
 
-				<p:column style="width:24px">
-					<p:commandLink update=":form:documentPanel"
-						oncomplete="PF('documentDialog').show()" title="View Detail"
-						styleClass="ui-icon ui-icon-search">
-						<f:setPropertyActionListener value="#{document}"
-							target="#{ttBasicView.selectedDocument}" />
-					</p:commandLink>
-				</p:column>
 			</p:treeTable>
 
-			<p:dialog id="dialog" header="Document Detail" showEffect="fade"
-				widgetVar="documentDialog" modal="true" resizable="false">
-				<p:outputPanel id="documentPanel">
-					<p:panelGrid columns="2" columnClasses="label,value"
-						rendered="#{not empty ttBasicView.selectedDocument}">
-						<h:outputLabel for="name" value="Name: " />
-						<h:outputText id="name"
-							value="#{ttBasicView.selectedDocument.name}"
-							style="font-weight:bold" />
-
-						<h:outputLabel for="size" value="Size: " />
-						<h:outputText id="size"
-							value="#{ttBasicView.selectedDocument.size}"
-							style="font-weight:bold" />
-
-						<h:outputLabel for="type" value="Type " />
-						<h:outputText id="type"
-							value="#{ttBasicView.selectedDocument.type}"
-							style="font-weight:bold" />
-
-						<h:outputLabel for="type1" value="Type1 " />
-						<h:outputText id="type1"
-							value="#{ttBasicView.selectedDocument.type1}"
-							style="font-weight:bold" />
-					</p:panelGrid>
-				</p:outputPanel>
-			</p:dialog>
 		</h:form>
-
-
-		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-			closable="false" resizable="false" showHeader="false">
-			<p:graphicImage value="../resources/img/cargando.gif" />
-		</p:dialog>
 	</ui:define>
 </ui:composition>
 
