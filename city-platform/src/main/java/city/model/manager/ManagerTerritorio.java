@@ -499,12 +499,7 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
-		return mngDAO.findAll(GenAsignacionSuelo.class, " o.sueId ");
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<GenAsignacionSuelo> findAllAsignacionSueloA() {
-		return mngDAO.findWhere(GenAsignacionSuelo.class, "o.zonEstado='A'", null);
+		return mngDAO.findAll(GenAsignacionSuelo.class, "o.sueId");
 	}
 
 	public void insertarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
@@ -561,7 +556,7 @@ public class ManagerTerritorio {
 	
 	@SuppressWarnings("unchecked")
 	public List<GenHistorialSeguimiento> findSeguimientoByIDAsignacion(int idAsignacion){
-		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsignacion, "o.hseFechaRegistro");
+		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsignacion, "o.hseFecha");
 	}
 	
 	public GenHistorialSeguimiento findSeguimientoByID(GenHistorialSeguimientoPK idSeguimiento) throws Exception{

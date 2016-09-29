@@ -43,6 +43,8 @@ public class SeguimientoAsignacionBean implements Serializable {
 	private static String ID_INACTIVO = "I";
 	private static String SELECCIONAR = "S/N";
 	private static int ID_INICIAL = 0;
+	private static String EN_PROGRESO = "P";
+	
 
 	@EJB
 	private ManagerTerritorio manager;
@@ -667,6 +669,14 @@ public class SeguimientoAsignacionBean implements Serializable {
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error: "+e.getMessage());
 			e.printStackTrace();
+		}
+	}
+	
+	public String cambiarNombre(String param){
+		if(param.equals(EN_PROGRESO)){
+			return "En progreso";
+		}else{
+			return "Actualizado";
 		}
 	}
 }

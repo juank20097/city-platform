@@ -59,7 +59,7 @@ public class ManagerSeguridad {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findAllseguridad() throws Exception {
-		return mngDao.findAll(SegRegistroEmergencia.class,"o.segFecha asc");
+		return mngDao.findAll(SegRegistroEmergencia.class,"o.genFuncionariosInstitucion.genPersona.perNombres");
 	}// Cierre del metodo
 	
 	/**
@@ -70,7 +70,7 @@ public class ManagerSeguridad {
 	@SuppressWarnings("unchecked")
 	public List<SegRegistroEmergencia> findAllseguridad(String usuario) throws Exception {
 		List<SegRegistroEmergencia> l = mngDao.findWhere(SegRegistroEmergencia.class,
-				"o.segUsuarioAplicacion='" + usuario + "'", "o.segFecha asc");
+				"o.segUsuarioAplicacion='" + usuario + "'", "o.genFuncionariosInstitucion.genPersona.perNombres");
 		if (l == null || l.size() == 0) {
 			l=new ArrayList<SegRegistroEmergencia>();
 			return l;

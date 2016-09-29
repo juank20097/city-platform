@@ -8,6 +8,10 @@
 
 
 <ui:composition template="template.xhtml">
+	<f:metadata>
+		<f:viewAction action="#{sesionBean.validarPersona('seguimientoAsignacion.xhtml')}" />
+	</f:metadata>
+
 	<ui:define name="titulo">
             Seguimiento de Asignaci&oacute;n 
         </ui:define>
@@ -80,7 +84,7 @@
 						</b:column>
 						<b:column col-xs="4">
 							<h:outputText
-								value="#{seguimientoAsignacionBean.validarItemCatalogo(seguimientoAsignacionBean.asignacionSuelo.sueEstado)}" />
+								value="#{seguimientoAsignacionBean.cambiarNombre(seguimientoAsignacionBean.asignacionSuelo.sueEstado)}" />
 						</b:column>
 					</b:row>
 				</b:panel>
@@ -191,7 +195,7 @@
 			closable="true" resizable="false" showHeader="false" width="850" height="500">
 			<h:form id="frmNSe">
 				
-				<b:panel title="Responsable" collapsible="false"
+				<b:panel title="Registro de Seguimiento" collapsible="false"
 					look="primary">
 					<b:row style="margin-bottom:20px;">
 						<b:column col-xs="2">
@@ -222,10 +226,7 @@
 							<h:outputText value="#{seguimientoAsignacionBean.nombreResponsable}"/>
 						</b:column>
 					</b:row>
-				</b:panel>
-				<b:panel title="Registro de Seguimiento" collapsible="false"
-					look="primary">
-					<br />
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
 							<h:outputLabel value="Fecha:*" />
@@ -248,7 +249,7 @@
 							<h:outputLabel value="Estado:*" />
 						</b:column>
 						<b:column col-xs="4">
-							<b:selectOneMenu value="#{seguimientoAsignacionBean.estado}">
+							<b:selectOneMenu value="#{seguimientoAsignacionBean.estado}" id="est">
 								<f:selectItems value="#{seguimientoAsignacionBean.slctEstados}" />
 							</b:selectOneMenu>
 						</b:column>
@@ -307,7 +308,7 @@
 								onclick="PF('statusDialog').show();"
 								oncomplete="PF('statusDialog').hide();"
 								action="#{seguimientoAsignacionBean.guardarEditarSeguimientoAsignacion()}" 
-								update="frmNSe:fuD frmNSe:fuF :frm">
+								update="frmNSe:fuD frmNSe:fuF :frm frmNSe:est">
 							</p:commandButton>&nbsp;&nbsp;&nbsp;
 						<p:commandButton value="Cancelar" action="#{seguimientoAsignacionBean.cancelar()}"
 								onclick="PF('statusDialog').show();" process="@this" style="btn btn-info"
