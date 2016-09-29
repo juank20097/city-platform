@@ -21,7 +21,7 @@
 			<b:row>
 				<b:column span="1">
 					<b:commandButton value="Nuevo" iconAwesome="file-o"
-						action="#{asignacionSueloBean.nuevoSuelo()}" />
+						action="#{asignacionSueloBean.nuevoSuelo()}"/>
 				</b:column>
 				<b:column span="1">
 					<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -119,7 +119,7 @@
 				</b:dataTable>
 			</b:panel>
 
-			<p:dialog style="padding-top:3%;" widgetVar="dlgSeg" modal="true"
+			<p:dialog id="dlgH" style="padding-top:3%;" widgetVar="dlgSeg" modal="true"
 				draggable="false" closable="true" showEffect="explode"
 				resizable="false" header="Historial de Seguimiento"
 				showHeader="true" width="1200px">

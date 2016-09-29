@@ -90,9 +90,11 @@
 				</b:panel>
 				<b:row style="margin-bottom:10px;">
 					<b:column span="2">
-						<b:commandButton value="Nuevo Seguimiento"
-							iconAwesome="file-o"
-							action="#{seguimientoAsignacionBean.nuevoSeguimiento()}" />
+						<p:commandButton value="Nuevo Seguimiento"
+							styleClass="btn btn-default" onclick="PF('statusDialog').show();"
+							oncomplete="PF('statusDialog').hide();"
+							action="#{seguimientoAsignacionBean.nuevoSeguimiento()}"
+							update=":dlgS" />
 					</b:column>
 					<b:column col-xs="6">
 						<b:commandButton value="Volver" iconAwesome="angle-left"
@@ -191,7 +193,7 @@
 				<p:graphicImage value="../resources/img/cargando.gif" />
 			</p:dialog>
 		</h:form>
-		<p:dialog widgetVar="nSDlg" modal="true" draggable="false"
+		<p:dialog id="dlgS" style="padding-top:3%;" widgetVar="nSDlg" modal="true" draggable="false"
 			closable="true" resizable="false" showHeader="false" width="850" height="500">
 			<h:form id="frmNSe">
 				
