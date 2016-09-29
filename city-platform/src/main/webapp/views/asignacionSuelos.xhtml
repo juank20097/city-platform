@@ -98,7 +98,8 @@
 						<f:facet name="header">
 							<h:outputText value="ESTADO" />
 						</f:facet>
-						<h:outputText value="#{asignacionSueloBean.cambiarNombre(s.sueEstado)}" />
+						<h:outputText
+							value="#{asignacionSueloBean.cambiarNombre(s.sueEstado)}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -118,10 +119,11 @@
 				</b:dataTable>
 			</b:panel>
 
-			<p:dialog widgetVar="dlgSeg" modal="true" draggable="false"
-				closable="true" showEffect="explode" resizable="false" header="Historial de Seguimiento" showHeader="true" width="1200px">
-				<b:dataTable 
-					value="#{asignacionSueloBean.l_seguimiento}" var="seg"
+			<p:dialog style="padding-top:3%;" widgetVar="dlgSeg" modal="true"
+				draggable="false" closable="true" showEffect="explode"
+				resizable="false" header="Historial de Seguimiento"
+				showHeader="true" width="1200px">
+				<b:dataTable value="#{asignacionSueloBean.l_seguimiento}" var="seg"
 					styleClass="table table-striped table-bordered dt-responsive nowrap"
 					fixedHeader="true" responsive="true" lang="es" style="width:100%">
 					<h:column>
@@ -134,7 +136,7 @@
 						<f:facet name="header">
 							<h:outputText value="RESPONSABLE" />
 						</f:facet>
-					<h:outputText value="#{seg.hseResponsable}" />
+						<h:outputText value="#{seg.hseResponsable}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -146,7 +148,8 @@
 						<f:facet name="header">
 							<h:outputText value="DOCUMENTO" />
 						</f:facet>
-						<p:commandLink style="color:#6EB9EB;" ajax="false" update="mensaje2"
+						<p:commandLink style="color:#6EB9EB;" ajax="false"
+							update="mensaje2"
 							action="#{asignacionSueloBean.descargarDocumento(seg)}">
 							#{seg.hseAdjuntoDoc}
 						</p:commandLink>
@@ -155,7 +158,8 @@
 						<f:facet name="header">
 							<h:outputText value="FOTO" />
 						</f:facet>
-						<p:commandLink style="color:#6EB9EB;" ajax="false" update="mensaje2"
+						<p:commandLink style="color:#6EB9EB;" ajax="false"
+							update="mensaje2"
 							action="#{asignacionSueloBean.descargarFoto(seg)}">
 							#{seg.hseAdjuntoFot}
 						</p:commandLink>
