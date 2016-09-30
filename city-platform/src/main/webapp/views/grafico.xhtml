@@ -22,19 +22,19 @@
 					<h1>Grupos del Personal por Sexo y Edad</h1>
 				</center>
 				<b:row>
-				<b:column span="12">
-					<p:chart type="bar" model="#{graficoBean.barModel}"
-						style="height:400px" responsive="true" widgetVar="chart1" />
-				</b:column>
+					<b:column span="12">
+						<p:chart type="bar" model="#{graficoBean.barModel}"
+							style="height:400px" responsive="true" widgetVar="chart1" />
+					</b:column>
 				</b:row>
 				<b:row>
-				<b:column offset="10" span="1" style="margin-bottom:10px;">
-					<p:commandButton type="button" styleClass="btn btn-info"
-						value="Exportar a Imagen" onclick="exportChart()" />
-				</b:column>
+					<b:column offset="10" span="1" style="margin-bottom:10px;">
+						<p:commandButton type="button" styleClass="btn btn-info"
+							value="Exportar a Imagen" onclick="exportChart()" />
+					</b:column>
 				</b:row>
 				<b:row>
-				<p:separator/>
+					<p:separator />
 				</b:row>
 				<script type="text/javascript">
 function exportChart() {
@@ -49,28 +49,60 @@ function exportChart() {
 					<h1>Grupos del Personal por Sexo y Edad Porcentual</h1>
 				</center>
 				<b:row>
-				<b:column span="12">
-					<p:chart type="bar" model="#{graficoBean.barModelP}"
-						style="height:400px" responsive="true" widgetVar="chart2" />
-				</b:column>
+					<b:column span="12">
+						<p:chart type="bar" model="#{graficoBean.barModelP}"
+							style="height:400px" responsive="true" widgetVar="chart2" />
+					</b:column>
 				</b:row>
 				<b:row>
-				<b:column offset="10" span="1" style="margin-bottom:10px;">
-					<p:commandButton type="button" styleClass="btn btn-info"
-						value="Exportar a Imagen" onclick="exportChart2()" />
-				</b:column>
+					<b:column offset="10" span="1" style="margin-bottom:10px;">
+						<p:commandButton type="button" styleClass="btn btn-info"
+							value="Exportar a Imagen" onclick="exportChart2()" />
+					</b:column>
 				</b:row>
 				<b:row>
-				<b:column>
-				<p:separator/>
-				</b:column>
+					<b:column>
+						<p:separator />
+					</b:column>
 				</b:row>
-				
+
 
 				<script type="text/javascript">
 function exportChart2() {
     //export image
     $('#output').empty().append(PF('chart2').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+
+				<center>
+					<h1>Personas por grupos Sanguineos</h1>
+				</center>
+				<b:row>
+					<b:column span="12">
+						<p:chart type="bar" model="#{graficoBean.barModelSanguineo}"
+							style="height:400px" responsive="true" widgetVar="chart3" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column offset="10" span="1" style="margin-bottom:10px;">
+						<p:commandButton type="button" styleClass="btn btn-info"
+							value="Exportar a Imagen" onclick="exportChart3()" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<p:separator />
+					</b:column>
+				</b:row>
+
+
+				<script type="text/javascript">
+function exportChart3() {
+    //export image
+    $('#output').empty().append(PF('chart3').exportAsImage());
  
     //show the dialog
     PF('dlg').show();

@@ -14,6 +14,7 @@ import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
 import city.controller.access.SesionBean;
+import city.model.dao.entidades.extras.Sangre;
 import city.model.manager.ManagerPersona;
 
 /**
@@ -32,6 +33,7 @@ public class GraficoBean {
 
 	private BarChartModel barModel;
 	private BarChartModel barModelP;
+	private BarChartModel barModelSanguineo;
 	
 	//datos obtenidos
 	private Integer h1=0;
@@ -72,6 +74,7 @@ public class GraficoBean {
 		llenarEnteros();
 		createBarModel();
 		createBarModelPorcentual();
+		createBarModelSanguineo();
 	}
 
 	public BarChartModel getBarModelP() {
@@ -80,6 +83,10 @@ public class GraficoBean {
 
 	public BarChartModel getBarModel() {
 		return barModel;
+	}
+	
+	public BarChartModel getBarModelSanguineo() {
+		return barModelSanguineo;
 	}
 
 	private void createBarModel() {
@@ -114,37 +121,22 @@ public class GraficoBean {
 		yAxis.setMin(0);
 	}
 	
-	public void llenarEnteros(){
-		h1 = manager.obtencionDatos(18, 19, "M");
-		h2 = manager.obtencionDatos(20, 24, "M");
-		h3 = manager.obtencionDatos(25, 29, "M");
-		h4 =manager.obtencionDatos(30, 34, "M");
-		h5 = manager.obtencionDatos(35, 39, "M");
-		h6 = manager.obtencionDatos(40, 44, "M");
-		h7 = manager.obtencionDatos(45, 49, "M");
-		h8 = manager.obtencionDatos(50, 54, "M");
-		h9 = manager.obtencionDatos(55, 59, "M");
-		h10 = manager.obtencionDatos(60, 64, "M");
-		h11 = manager.obtencionDatos(65, 69, "M");
-		h12 = manager.obtencionDatos(70, 74, "M");
-		h13 = manager.obtencionDatos(75, 80, "M");
-		h14 = manager.obtencionDatos(80, 84, "M");
-		
-		m1 = manager.obtencionDatos(18, 19, "F");
-		m2 = manager.obtencionDatos(20, 24, "F");
-		m3 = manager.obtencionDatos(25, 29, "F");
-		m4 =manager.obtencionDatos(30, 34, "F");
-		m5 = manager.obtencionDatos(35, 39, "F");
-		m6 = manager.obtencionDatos(40, 44, "F");
-		m7 = manager.obtencionDatos(45, 49, "F");
-		m8 = manager.obtencionDatos(50, 54, "F");
-		m9 = manager.obtencionDatos(55, 59, "F");
-		m10 = manager.obtencionDatos(60, 64, "F");
-		m11 = manager.obtencionDatos(65, 69, "F");
-		m12 = manager.obtencionDatos(70, 74, "F");
-		m13 = manager.obtencionDatos(75, 80, "F");
-		m14 = manager.obtencionDatos(80, 84, "F");
+	private void createBarModelSanguineo() {
+		barModelSanguineo = initBarModelSanguineo();
+
+		barModelSanguineo.setLegendPosition("ne");
+		barModelSanguineo.setAnimate(true);
+		barModelSanguineo.setShowPointLabels(true);
+
+		Axis xAxis = barModelSanguineo.getAxis(AxisType.X);
+		xAxis.setLabel("Tipos des Sangre");
+
+		Axis yAxis = barModelSanguineo.getAxis(AxisType.Y);
+		yAxis.setLabel("Número de Personas");
+		yAxis.setMin(0);
 	}
+	
+	//gráfico_numérico
 
 	private BarChartModel initBarModel() {
 		BarChartModel model = new BarChartModel();
@@ -189,6 +181,8 @@ public class GraficoBean {
 		return model;
 	}
 	
+	//gráfico_porcentual
+	
 	private BarChartModel initBarModelP() {
 		BarChartModel modelp = new BarChartModel();
 
@@ -232,10 +226,99 @@ public class GraficoBean {
 		return modelp;
 	}
 	
+	public void llenarEnteros(){
+		h1 = manager.obtencionDatos(18, 19, "M");
+		h2 = manager.obtencionDatos(20, 24, "M");
+		h3 = manager.obtencionDatos(25, 29, "M");
+		h4 =manager.obtencionDatos(30, 34, "M");
+		h5 = manager.obtencionDatos(35, 39, "M");
+		h6 = manager.obtencionDatos(40, 44, "M");
+		h7 = manager.obtencionDatos(45, 49, "M");
+		h8 = manager.obtencionDatos(50, 54, "M");
+		h9 = manager.obtencionDatos(55, 59, "M");
+		h10 = manager.obtencionDatos(60, 64, "M");
+		h11 = manager.obtencionDatos(65, 69, "M");
+		h12 = manager.obtencionDatos(70, 74, "M");
+		h13 = manager.obtencionDatos(75, 80, "M");
+		h14 = manager.obtencionDatos(80, 84, "M");
+		
+		m1 = manager.obtencionDatos(18, 19, "F");
+		m2 = manager.obtencionDatos(20, 24, "F");
+		m3 = manager.obtencionDatos(25, 29, "F");
+		m4 =manager.obtencionDatos(30, 34, "F");
+		m5 = manager.obtencionDatos(35, 39, "F");
+		m6 = manager.obtencionDatos(40, 44, "F");
+		m7 = manager.obtencionDatos(45, 49, "F");
+		m8 = manager.obtencionDatos(50, 54, "F");
+		m9 = manager.obtencionDatos(55, 59, "F");
+		m10 = manager.obtencionDatos(60, 64, "F");
+		m11 = manager.obtencionDatos(65, 69, "F");
+		m12 = manager.obtencionDatos(70, 74, "F");
+		m13 = manager.obtencionDatos(75, 80, "F");
+		m14 = manager.obtencionDatos(80, 84, "F");
+	}
+	
+	//gráfico_sanguineo
+	
+	private BarChartModel initBarModelSanguineo() {
+		BarChartModel models = new BarChartModel();
+
+		ChartSeries hombresp = new ChartSeries();
+		hombresp.setLabel("HOMBRES");
+		hombresp.set("O-",recuperarDatosSanguineos("O-", "M"));
+		hombresp.set("O+",recuperarDatosSanguineos("O+", "M"));
+		hombresp.set("A-",recuperarDatosSanguineos("A-", "M"));
+		hombresp.set("A+",recuperarDatosSanguineos("A+", "M"));
+		hombresp.set("AB-",recuperarDatosSanguineos("AB-", "M"));
+		hombresp.set("AB+",recuperarDatosSanguineos("AB+", "M"));
+		hombresp.set("B+",recuperarDatosSanguineos("B+", "M"));
+		hombresp.set("B-", recuperarDatosSanguineos("B-", "M"));
+		hombresp.set("Vacios",recuperarDatosSanguineosNulos("M"));
+
+		ChartSeries mujeresp = new ChartSeries();
+		mujeresp.setLabel("MUJERES");
+		mujeresp.set("O-", recuperarDatosSanguineos("O-", "F"));
+		mujeresp.set("O+", recuperarDatosSanguineos("O+", "F"));
+		mujeresp.set("A-", recuperarDatosSanguineos("A-", "F"));
+		mujeresp.set("A+", recuperarDatosSanguineos("A+", "F"));
+		mujeresp.set("AB-", recuperarDatosSanguineos("AB-", "F"));
+		mujeresp.set("AB+", recuperarDatosSanguineos("AB+", "F"));
+		mujeresp.set("B+", recuperarDatosSanguineos("B+", "F"));
+		mujeresp.set("B-", recuperarDatosSanguineos("B-", "F"));
+		mujeresp.set("Vacios", recuperarDatosSanguineosNulos("F"));
+
+		models.addSeries(hombresp);
+		models.addSeries(mujeresp);
+
+		return models;
+	}
+	
+	private Integer recuperarDatosSanguineos(String tipo,String genero){
+		Integer r=0;
+		for (Sangre s : manager.listaSanguinea()){
+			if (s!=null && s.getSan_tipo().equals(tipo) && s.getSan_genero().equals(genero)){
+				r=s.getSan_cantidad();
+				break;
+			}
+		}
+		return r;
+	}
+	
+	private Integer recuperarDatosSanguineosNulos(String genero){
+		Integer r=0;
+		for (Sangre s : manager.listaSanguinea()){
+			if ((s.getSan_tipo().equals("null") || s.getSan_tipo().equals("S/N")) && s.getSan_genero().equals(genero)){
+				r += s.getSan_cantidad();
+			}
+		}
+		return r;
+	}
+	
 	public void cargarDatos(){
 		llenarEnteros();
 		createBarModel();
 		createBarModelPorcentual();
+		createBarModelSanguineo();
 	}
 
 }

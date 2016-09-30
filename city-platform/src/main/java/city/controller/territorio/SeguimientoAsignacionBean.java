@@ -327,7 +327,6 @@ public class SeguimientoAsignacionBean implements Serializable {
 	}
 	
 	public void nuevoSeguimiento(){
-		cargarBusqueda();
 		RequestContext.getCurrentInstance().execute("PF('nSDlg').show();");
 	}
 	
@@ -336,7 +335,6 @@ public class SeguimientoAsignacionBean implements Serializable {
 		if(!getUsuarioSesion().equals(getUsuario())){
 			Mensaje.crearMensajeWARN("El Seguimiento puede ser editado unicamente por el usuario de creación.");
 		}else{
-			cargarBusqueda();
 			setIdSeguimiento(seguimiento.getId().getHseId());
 			setIdAsignacion(seguimiento.getId().getSueId());
 			setFechaSeguimiento(seguimiento.getHseFecha());

@@ -23,6 +23,7 @@ import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
 import city.model.dao.entidades.SegIncidenciasAdmin;
 import city.model.dao.entidades.extras.DatosFuncionario;
+import city.model.dao.entidades.extras.Sangre;
 import city.model.generic.Funciones;
 
 /**
@@ -709,8 +710,8 @@ public class ManagerPersona {
 		salud.setSldSeguroIess(seg_iess);
 		salud.setSldSeguroPrivado(seg_privado);
 		salud.setSldDiscapacidad(discapacidad);
-		salud.setSldEjercicioHoras(Integer.parseInt(ejercicio_horas));
-		salud.setSldTabacoSemana(Integer.parseInt(tabaco_semana));
+		salud.setSldEjercicioHoras(Integer.parseInt(cambiarNulosInteger(ejercicio_horas)));
+		salud.setSldTabacoSemana(Integer.parseInt(cambiarNulosInteger(tabaco_semana)));
 		salud.setSldAlergiasCronicas3(cambiarAMayusculas(enfermedades_cronicas3));
 		salud.setSldMedicamentosCronicos3(cambiarAMayusculas(medicamentos_cronicos3));
 	}
@@ -750,10 +751,10 @@ public class ManagerPersona {
 			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
-			if (ejercicio_horas.equals("null")) {
+			if (ejercicio_horas==null || ejercicio_horas.equals("null")) {
 				ejercicio_horas = "0";
 			}
-			if (tabaco_semana.equals("null")) {
+			if (tabaco_semana==null || tabaco_semana.equals("null")) {
 				tabaco_semana = "0";
 			}
 			setearCamposSalud(dni, alergias, altura, asegurado, carnet, con_alcohol, con_tabaco, dis_tipo, dis_grado,
@@ -775,6 +776,12 @@ public class ManagerPersona {
 		if (campo == null)
 			campo = "";
 		return campo.toUpperCase();
+	}
+	
+	private String cambiarNulosInteger(String campo){
+		if (campo==null)
+			campo="0";
+		return campo;
 	}
 
 	/********** Metodos para manejo de información de CV's **********/
@@ -1058,14 +1065,14 @@ public class ManagerPersona {
 	@SuppressWarnings("unchecked")
 	public List<GenPersona> listaFuncionarios(String genero) {
 		List<GenPersona> lp = new ArrayList<GenPersona>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select * from gen_persona where per_genero='"+genero.trim()+"' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-		lp=ObjectToGenPersona(lista);
+		List<Object> lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+				+ "' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		lp = ObjectToGenPersona(lista);
 		return lp;
 	}
 
 	private List<GenPersona> ObjectToGenPersona(List<Object> lista) {
-		List<GenPersona> l_persona= new ArrayList<GenPersona>();
+		List<GenPersona> l_persona = new ArrayList<GenPersona>();
 		try {
 			Iterator it = lista.iterator();
 			while (it.hasNext()) {
@@ -1085,48 +1092,74 @@ public class ManagerPersona {
 	}
 
 	public Integer edadXFecha(Date fecha) {
-		Integer v=0;
+		Integer v = 0;
 		String f = Funciones.dateToString(fecha);
-		v=edad(f);
+		v = edad(f);
 		return v;
-		
+
 	}
 
-	 public Integer edad(String fecha_nac) { //fecha_nac debe tener el formato dd/MM/yyyy
-	 Date fechaActual = new Date();
-	 SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-	 String hoy = formato.format(fechaActual);
-	 String[] dat1 = fecha_nac.split("-");
-	 String[] dat2 = hoy.split("-");
-	 int anos = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
-	 int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
-	 if (mes < 0) {
-	 anos = anos - 1;
-	 } else if (mes == 0) {
-	 int dia = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
-	 if (dia > 0) {
-	 anos = anos - 1;
-	 }
-	 }
-	 return anos;
-	 }
-	 
-	 public Integer porcentaje(Integer tope,Integer valor){
-		 return (valor*100)/tope;
-	 }
-	 
-	 @SuppressWarnings("unchecked")
-	public Integer totalHombres(){
-		 List<Object> lista = mngDao.ejectNativeSQL3(
-					"select * from gen_persona where per_genero='M' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-		 return lista.size();
-	 }
-	 
-	 @SuppressWarnings("unchecked")
-		public Integer totalMujeres(){
-			 List<Object> lista = mngDao.ejectNativeSQL3(
-						"select * from gen_persona where per_genero='F' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-			 return lista.size();
-		 }
-	 
+	public Integer edad(String fecha_nac) { // fecha_nac debe tener el formato
+											// dd/MM/yyyy
+		Date fechaActual = new Date();
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		String hoy = formato.format(fechaActual);
+		String[] dat1 = fecha_nac.split("-");
+		String[] dat2 = hoy.split("-");
+		int anos = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
+		int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
+		if (mes < 0) {
+			anos = anos - 1;
+		} else if (mes == 0) {
+			int dia = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
+			if (dia > 0) {
+				anos = anos - 1;
+			}
+		}
+		return anos;
+	}
+
+	public Integer porcentaje(Integer tope, Integer valor) {
+		return (valor * 100) / tope;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Integer totalHombres() {
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select * from gen_persona where per_genero='M' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		return lista.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Integer totalMujeres() {
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select * from gen_persona where per_genero='F' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		return lista.size();
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_SANGUINEO)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<Sangre> listaSanguinea() {
+		List<Sangre> lp = new ArrayList<Sangre>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		lp = ObjectToSangre(lista);
+		return lp;
+	}
+
+	private List<Sangre> ObjectToSangre(List<Object> lista) {
+		List<Sangre> l_sangre = new ArrayList<Sangre>();
+		Iterator it = lista.iterator();
+		while (it.hasNext()) {
+			Sangre s = new Sangre();
+			Object[] obj = (Object[]) it.next();
+			s.setSan_genero(String.valueOf(obj[0]));
+			s.setSan_tipo(String.valueOf(obj[1]));
+			s.setSan_cantidad(Integer.parseInt(String.valueOf(obj[2])));
+			l_sangre.add(s);
+		}
+		return l_sangre;
+	}
+
 }
