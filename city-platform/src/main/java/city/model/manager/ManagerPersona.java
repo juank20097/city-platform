@@ -23,6 +23,7 @@ import city.model.dao.entidades.GenPersonaDetalle;
 import city.model.dao.entidades.GenSalud;
 import city.model.dao.entidades.SegIncidenciasAdmin;
 import city.model.dao.entidades.extras.DatosFuncionario;
+import city.model.dao.entidades.extras.GenericClassBoolean;
 import city.model.dao.entidades.extras.Sangre;
 import city.model.generic.Funciones;
 
@@ -751,10 +752,10 @@ public class ManagerPersona {
 			String enfermedades_cronicas3, String medicamentos_cronicos3) throws Exception {
 		try {
 			GenSalud salud = this.SaludByID(dni);
-			if (ejercicio_horas==null || ejercicio_horas.equals("null")) {
+			if (ejercicio_horas == null || ejercicio_horas.equals("null")) {
 				ejercicio_horas = "0";
 			}
-			if (tabaco_semana==null || tabaco_semana.equals("null")) {
+			if (tabaco_semana == null || tabaco_semana.equals("null")) {
 				tabaco_semana = "0";
 			}
 			setearCamposSalud(dni, alergias, altura, asegurado, carnet, con_alcohol, con_tabaco, dis_tipo, dis_grado,
@@ -777,10 +778,10 @@ public class ManagerPersona {
 			campo = "";
 		return campo.toUpperCase();
 	}
-	
-	private String cambiarNulosInteger(String campo){
-		if (campo==null)
-			campo="0";
+
+	private String cambiarNulosInteger(String campo) {
+		if (campo == null)
+			campo = "0";
 		return campo;
 	}
 
@@ -1119,10 +1120,6 @@ public class ManagerPersona {
 		return anos;
 	}
 
-	public Integer porcentaje(Integer tope, Integer valor) {
-		return (valor * 100) / tope;
-	}
-
 	@SuppressWarnings("unchecked")
 	public Integer totalHombres() {
 		List<Object> lista = mngDao.ejectNativeSQL3(
@@ -1162,4 +1159,83 @@ public class ManagerPersona {
 		return l_sangre;
 	}
 
+	//////////////////////////////////////////////// (GRAFICO_EJERCICIO)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaEjercicio() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_ALCOHOL)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaAlcohol() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_consume_alcohol;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_EMBRIAGUEZ)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaEmbriaguez() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_embriagar;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_TABACO)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaTabaco() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_consume_tabaco;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_SEGURO_IESS)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaSeguroI() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	//////////////////////////////////////////////// (GRAFICO_SEGURO_PRIVADO)////////////////////////////////////////////
+
+	@SuppressWarnings("unchecked")
+	public List<GenericClassBoolean> listaSeguroP() {
+		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = mngDao.ejectNativeSQL3(
+				"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		l = ObjectToClass(lista);
+		return l;
+	}
+
+	private List<GenericClassBoolean> ObjectToClass(List<Object> lista) {
+		List<GenericClassBoolean> li = new ArrayList<GenericClassBoolean>();
+		Iterator it = lista.iterator();
+		while (it.hasNext()) {
+			GenericClassBoolean s = new GenericClassBoolean();
+			Object[] obj = (Object[]) it.next();
+			s.setGen_genero(String.valueOf(obj[0]));
+			s.setGen_valor(Boolean.valueOf(String.valueOf(obj[1])));
+			s.setGen_cantidad(Integer.parseInt(String.valueOf(obj[2])));
+			li.add(s);
+		}
+		return li;
+	}
 }
