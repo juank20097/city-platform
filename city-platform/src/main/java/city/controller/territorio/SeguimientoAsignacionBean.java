@@ -313,6 +313,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 	
 	public void cargarBusqueda() {
 		try {
+			getLstPersonas().clear();
 			getLstPersonas().add(new SelectItem(SELECCIONAR, "Seleccionar"));
 			List<GenFuncionariosInstitucion> list = mngSeguridad.findAllfuncionarios();
 			for (GenFuncionariosInstitucion i : mngSeguridad.findAllfuncionarios()) {

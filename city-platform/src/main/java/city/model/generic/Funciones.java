@@ -545,6 +545,67 @@ public class Funciones {
 		}
 		return cifrado.toString();
 	}
+	
+	//método de cifrado AES 
+	
+	private static String llaveSimetrica = "Yachay";
+	
+	 public static byte[] encDatos(String cadena){
+	        byte [] aError = null;
+	        SecretKeySpec key = new SecretKeySpec(llaveSimetrica.getBytes(), "AES");
+	        Cipher cipher;
+	        try {
+	                cipher = Cipher.getInstance("AES");
+	                //Comienzo a encriptar
+	                cipher.init(Cipher.ENCRYPT_MODE, key);
+	                byte[] datosCifrados = cipher.doFinal(cadena.getBytes()); //cadena = a texto a cifrar
+	                /*
+	                 * TODO: Representar los bytes como string vía base64, así será
+	                 * humanamente leíble. La otra opción es expresar como hexadecimal
+	                 * 
+	                 * En este caso lo imprimo en pantalla como bytes.
+	                 */
+	                return datosCifrados;
+	        } catch (Exception e) {
+	                return null;
+	        }
+	    
+	    }
+	 
+	 public static String dencDatos(byte [] datosCifrados){
+	        SecretKeySpec key = new SecretKeySpec(llaveSimetrica.getBytes(), "AES");
+	        Cipher cipher;
+	        try {
+	                cipher = Cipher.getInstance("AES");
+	               
+	                //Comienzo a desencriptar
+	                cipher.init(Cipher.DECRYPT_MODE, key);
+	                byte[] datosDecifrados = cipher.doFinal(datosCifrados);
+	                return new String(datosDecifrados); 
+	                /*
+	                 * TODO: Representar los bytes como string vía base64, así será
+	                 * humanamente leíble. La otra opción es expresar como hexadecimal
+	                 * 
+	                 * En este caso lo imprimo en pantalla como bytes.
+	                 */
+	        } catch (Exception e) {
+	                return null;
+	        }  
+	    }
+	    
+	    public static String asHex (byte buf[]) {
+	         StringBuffer strbuf = new StringBuffer(buf.length * 2);
+	         int i;
+
+	         for (i = 0; i < buf.length; i++) {
+	          if (((int) buf[i] & 0xff) < 0x10)
+	               strbuf.append("0");
+
+	          strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
+	         }
+
+	         return strbuf.toString();
+	    }
 
 	public static String quitarEspacios(String parametro) {
 		if (parametro == null)

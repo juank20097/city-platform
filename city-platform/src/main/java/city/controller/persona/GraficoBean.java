@@ -35,13 +35,24 @@ public class GraficoBean {
 	private BarChartModel barModel;
 	private BarChartModel barModelP;
 	private BarChartModel barModelSanguineo;
+	private BarChartModel barModelSanguineoP;
 	private BarChartModel barModelEjercicio;
+	private BarChartModel barModelEjercicioP;
 	private BarChartModel barModelAlcohol;
+	private BarChartModel barModelAlcoholP;
 	private BarChartModel barModelEmbriaguez;
+	private BarChartModel barModelEmbriaguezP;
 	private BarChartModel barModelTabaco;
+	private BarChartModel barModelTabacoP;
 	private BarChartModel barModelSeguroIESS;
+	private BarChartModel barModelSeguroIESSP;
 	private BarChartModel barModelSeguroPrivado;
-
+	private BarChartModel barModelSeguroPrivadoP;
+	
+	//totales para porcentaje
+	private Integer total_hombre;
+	private Integer total_mujer;
+	
 	// datos obtenidos
 	private Integer h1 = 0;
 	private Integer h2 = 0;
@@ -77,6 +88,7 @@ public class GraficoBean {
 	public void init() {
 		// session.validarSesion();
 		llenarEnteros();
+		llenarTotales();
 		createBarModel();
 		createBarModelPorcentual();
 		createBarModelSanguineo();
@@ -86,6 +98,13 @@ public class GraficoBean {
 		createBarModelTabaco();
 		createBarModelSeguroI();
 		createBarModelSeguroP();
+		createBarModelSanguineoP();
+		createBarModelEjercicioP();
+		createBarModelAlcoholP();
+		createBarModelEmbriaguezP();
+		createBarModelTabacoP();
+		createBarModelSeguroIP();
+		createBarModelSeguroPP();
 	}
 
 	public BarChartModel getBarModelP() {
@@ -122,6 +141,39 @@ public class GraficoBean {
 
 	public BarChartModel getBarModelEjercicio() {
 		return barModelEjercicio;
+	}
+
+	public BarChartModel getBarModelSanguineoP() {
+		return barModelSanguineoP;
+	}
+
+	public BarChartModel getBarModelEjercicioP() {
+		return barModelEjercicioP;
+	}
+
+	public BarChartModel getBarModelTabacoP() {
+		return barModelTabacoP;
+	}
+
+	public BarChartModel getBarModelAlcoholP() {
+		return barModelAlcoholP;
+	}
+
+	public BarChartModel getBarModelEmbriaguezP() {
+		return barModelEmbriaguezP;
+	}
+
+	public BarChartModel getBarModelSeguroIESSP() {
+		return barModelSeguroIESSP;
+	}
+
+	public BarChartModel getBarModelSeguroPrivadoP() {
+		return barModelSeguroPrivadoP;
+	}
+	
+	private void llenarTotales(){
+		total_hombre = manager.totalHombres();
+		total_mujer = manager.totalMujeres();
 	}
 
 	// gráfico_numérico
@@ -207,7 +259,6 @@ public class GraficoBean {
 		BarChartModel modelp = new BarChartModel();
 
 		ChartSeries hombresp = new ChartSeries();
-		Integer total_hombre = manager.totalHombres();
 		hombresp.setLabel("HOMBRES = " + total_hombre + "");
 		hombresp.set("18 a 19", porcentaje(total_hombre, h1));
 		hombresp.set("20 a 24", porcentaje(total_hombre, h2));
@@ -225,7 +276,6 @@ public class GraficoBean {
 		hombresp.set("80 a 84", porcentaje(total_hombre, h14));
 
 		ChartSeries mujeresp = new ChartSeries();
-		Integer total_mujer = manager.totalMujeres();
 		mujeresp.setLabel("MUJERES = " + total_mujer + "");
 		mujeresp.set("18 a 19", porcentaje(total_mujer, m1));
 		mujeresp.set("20 a 24", porcentaje(total_mujer, m2));
@@ -262,7 +312,7 @@ public class GraficoBean {
 		barModelSanguineo.setShowPointLabels(true);
 
 		Axis xAxis = barModelSanguineo.getAxis(AxisType.X);
-		xAxis.setLabel("Tipos des Sangre");
+		xAxis.setLabel("Tipos de Sangre");
 
 		Axis yAxis = barModelSanguineo.getAxis(AxisType.Y);
 		yAxis.setLabel("Número de Personas");
@@ -323,6 +373,56 @@ public class GraficoBean {
 		return r;
 	}
 
+	// gráfico_sanguineo_porcentual
+
+	private void createBarModelSanguineoP() {
+		barModelSanguineoP = initBarModelSanguineoP();
+
+		barModelSanguineoP.setLegendPosition("ne");
+		barModelSanguineoP.setAnimate(true);
+		barModelSanguineoP.setShowPointLabels(true);
+
+		Axis xAxis = barModelSanguineoP.getAxis(AxisType.X);
+		xAxis.setLabel("Tipos de Sangre");
+
+		Axis yAxis = barModelSanguineoP.getAxis(AxisType.Y);
+		yAxis.setLabel("Porcentaje (%)");
+		yAxis.setMin(0);
+	}
+
+	private BarChartModel initBarModelSanguineoP() {
+		BarChartModel models = new BarChartModel();
+
+		ChartSeries hombresp = new ChartSeries();
+		hombresp.setLabel("HOMBRES = " + total_hombre);
+		hombresp.set("O-", porcentaje(total_hombre, recuperarDatosSanguineos("O-", "M")));
+		hombresp.set("O+", porcentaje(total_hombre, recuperarDatosSanguineos("O+", "M")));
+		hombresp.set("A-", porcentaje(total_hombre, recuperarDatosSanguineos("A-", "M")));
+		hombresp.set("A+", porcentaje(total_hombre, recuperarDatosSanguineos("A+", "M")));
+		hombresp.set("AB-", porcentaje(total_hombre, recuperarDatosSanguineos("AB-", "M")));
+		hombresp.set("AB+", porcentaje(total_hombre, recuperarDatosSanguineos("AB+", "M")));
+		hombresp.set("B+", porcentaje(total_hombre, recuperarDatosSanguineos("B+", "M")));
+		hombresp.set("B-", porcentaje(total_hombre, recuperarDatosSanguineos("B-", "M")));
+		hombresp.set("Vacios", porcentaje(total_hombre, recuperarDatosSanguineosNulos("M")));
+
+		ChartSeries mujeresp = new ChartSeries();
+		mujeresp.setLabel("MUJERES = " + total_mujer);
+		mujeresp.set("O-", porcentaje(total_mujer, recuperarDatosSanguineos("O-", "F")));
+		mujeresp.set("O+", porcentaje(total_mujer, recuperarDatosSanguineos("O+", "F")));
+		mujeresp.set("A-", porcentaje(total_mujer, recuperarDatosSanguineos("A-", "F")));
+		mujeresp.set("A+", porcentaje(total_mujer, recuperarDatosSanguineos("A+", "F")));
+		mujeresp.set("AB-", porcentaje(total_mujer, recuperarDatosSanguineos("AB-", "F")));
+		mujeresp.set("AB+", porcentaje(total_mujer, recuperarDatosSanguineos("AB+", "F")));
+		mujeresp.set("B+", porcentaje(total_mujer, recuperarDatosSanguineos("B+", "F")));
+		mujeresp.set("B-", porcentaje(total_mujer, recuperarDatosSanguineos("B-", "F")));
+		mujeresp.set("Vacios", porcentaje(total_mujer, recuperarDatosSanguineosNulos("F")));
+
+		models.addSeries(hombresp);
+		models.addSeries(mujeresp);
+
+		return models;
+	}
+
 	// gráfico_ejercicio
 
 	private void createBarModelEjercicio() {
@@ -367,6 +467,42 @@ public class GraficoBean {
 			}
 		}
 		return r;
+	}
+
+	// gráfico_ejercicio_porcentual
+
+	private void createBarModelEjercicioP() {
+		barModelEjercicioP = initBarModelEjercicioP();
+
+		barModelEjercicioP.setLegendPosition("ne");
+		barModelEjercicioP.setAnimate(true);
+		barModelEjercicioP.setShowPointLabels(true);
+
+		Axis xAxis = barModelEjercicioP.getAxis(AxisType.X);
+		xAxis.setLabel("Valores");
+
+		Axis yAxis = barModelEjercicioP.getAxis(AxisType.Y);
+		yAxis.setLabel("Porcentaje (%)");
+		yAxis.setMin(0);
+	}
+
+	private BarChartModel initBarModelEjercicioP() {
+		BarChartModel models = new BarChartModel();
+
+		ChartSeries hombresp = new ChartSeries();
+		hombresp.setLabel("HOMBRES = "+ total_hombre);
+		hombresp.set("SI", porcentaje(total_hombre, recuperarDatosEjercicio(true, "M")));
+		hombresp.set("NO", porcentaje(total_hombre, recuperarDatosEjercicio(false, "M")));
+
+		ChartSeries mujeresp = new ChartSeries();
+		mujeresp.setLabel("MUJERES = " + total_mujer);
+		mujeresp.set("SI", porcentaje(total_mujer, recuperarDatosEjercicio(true, "F")));
+		mujeresp.set("NO", porcentaje(total_mujer, recuperarDatosEjercicio(false, "F")));
+
+		models.addSeries(hombresp);
+		models.addSeries(mujeresp);
+
+		return models;
 	}
 
 	// gráfico_alcohol
@@ -414,6 +550,42 @@ public class GraficoBean {
 		}
 		return r;
 	}
+	
+	// gráfico_alcohol_porcentual
+
+		private void createBarModelAlcoholP() {
+			barModelAlcoholP = initBarModelAlcoholP();
+
+			barModelAlcoholP.setLegendPosition("ne");
+			barModelAlcoholP.setAnimate(true);
+			barModelAlcoholP.setShowPointLabels(true);
+
+			Axis xAxis = barModelAlcoholP.getAxis(AxisType.X);
+			xAxis.setLabel("Valores");
+
+			Axis yAxis = barModelAlcoholP.getAxis(AxisType.Y);
+			yAxis.setLabel("Porcentaje (%)");
+			yAxis.setMin(0);
+		}
+
+		private BarChartModel initBarModelAlcoholP() {
+			BarChartModel models = new BarChartModel();
+
+			ChartSeries hombresp = new ChartSeries();
+			hombresp.setLabel("HOMBRES = "+ total_hombre);
+			hombresp.set("SI",  porcentaje(total_hombre,recuperarDatosAlcohol(true, "M")));
+			hombresp.set("NO",  porcentaje(total_hombre,recuperarDatosAlcohol(false, "M")));
+
+			ChartSeries mujeresp = new ChartSeries();
+			mujeresp.setLabel("MUJERES = " + total_mujer);
+			mujeresp.set("SI", porcentaje(total_mujer,recuperarDatosAlcohol(true, "F")));
+			mujeresp.set("NO", porcentaje(total_mujer,recuperarDatosAlcohol(false, "F")));
+
+			models.addSeries(hombresp);
+			models.addSeries(mujeresp);
+
+			return models;
+		}
 
 	// gráfico_embriaguez
 
@@ -459,6 +631,42 @@ public class GraficoBean {
 			}
 		}
 		return r;
+	}
+	
+	// gráfico_embriaguez_porcentual
+	
+	private void createBarModelEmbriaguezP() {
+		barModelEmbriaguezP = initBarModelEmbriaguezP();
+
+		barModelEmbriaguezP.setLegendPosition("ne");
+		barModelEmbriaguezP.setAnimate(true);
+		barModelEmbriaguezP.setShowPointLabels(true);
+
+		Axis xAxis = barModelEmbriaguezP.getAxis(AxisType.X);
+		xAxis.setLabel("Valores");
+
+		Axis yAxis = barModelEmbriaguezP.getAxis(AxisType.Y);
+		yAxis.setLabel("Porcentaje (%)");
+		yAxis.setMin(0);
+	}
+
+	private BarChartModel initBarModelEmbriaguezP() {
+		BarChartModel models = new BarChartModel();
+
+		ChartSeries hombresp = new ChartSeries();
+		hombresp.setLabel("HOMBRES = "+ total_hombre);
+		hombresp.set("SI",  porcentaje(total_hombre,recuperarDatosEmbriaguez(true, "M")));
+		hombresp.set("NO",  porcentaje(total_hombre,recuperarDatosEmbriaguez(false, "M")));
+
+		ChartSeries mujeresp = new ChartSeries();
+		mujeresp.setLabel("MUJERES = " + total_mujer);
+		mujeresp.set("SI",  porcentaje(total_mujer,recuperarDatosEmbriaguez(true, "F")));
+		mujeresp.set("NO",  porcentaje(total_mujer,recuperarDatosEmbriaguez(false, "F")));
+
+		models.addSeries(hombresp);
+		models.addSeries(mujeresp);
+
+		return models;
 	}
 
 	// gráfico_tabaco
@@ -506,6 +714,42 @@ public class GraficoBean {
 		}
 		return r;
 	}
+	
+	// gráfico_tabaco_porcentual
+
+		private void createBarModelTabacoP() {
+			barModelTabacoP = initBarModelTabacoP();
+
+			barModelTabacoP.setLegendPosition("ne");
+			barModelTabacoP.setAnimate(true);
+			barModelTabacoP.setShowPointLabels(true);
+
+			Axis xAxis = barModelTabacoP.getAxis(AxisType.X);
+			xAxis.setLabel("Valores");
+
+			Axis yAxis = barModelTabacoP.getAxis(AxisType.Y);
+			yAxis.setLabel("Porcentaje (%)");
+			yAxis.setMin(0);
+		}
+
+		private BarChartModel initBarModelTabacoP() {
+			BarChartModel models = new BarChartModel();
+
+			ChartSeries hombresp = new ChartSeries();
+			hombresp.setLabel("HOMBRES = "+ total_hombre);
+			hombresp.set("SI", porcentaje(total_hombre,recuperarDatosTabaco(true, "M")));
+			hombresp.set("NO", porcentaje(total_hombre,recuperarDatosTabaco(false, "M")));
+
+			ChartSeries mujeresp = new ChartSeries();
+			mujeresp.setLabel("MUJERES = " + total_mujer);
+			mujeresp.set("SI", porcentaje(total_mujer,recuperarDatosTabaco(true, "F")));
+			mujeresp.set("NO", porcentaje(total_mujer,recuperarDatosTabaco(false, "F")));
+
+			models.addSeries(hombresp);
+			models.addSeries(mujeresp);
+
+			return models;
+		}
 
 	// gráfico_seguro_iess
 
@@ -552,36 +796,36 @@ public class GraficoBean {
 		}
 		return r;
 	}
+	
+	// gráfico_seguro_iess_porcentual
 
-	// gráfico_seguro_iess
+		private void createBarModelSeguroIP() {
+			barModelSeguroIESSP = initBarModelSeguroIP();
 
-		private void createBarModelSeguroP() {
-			barModelSeguroPrivado = initBarModelSeguroP();
+			barModelSeguroIESSP.setLegendPosition("ne");
+			barModelSeguroIESSP.setAnimate(true);
+			barModelSeguroIESSP.setShowPointLabels(true);
 
-			barModelSeguroPrivado.setLegendPosition("ne");
-			barModelSeguroPrivado.setAnimate(true);
-			barModelSeguroPrivado.setShowPointLabels(true);
-
-			Axis xAxis = barModelSeguroPrivado.getAxis(AxisType.X);
+			Axis xAxis = barModelSeguroIESSP.getAxis(AxisType.X);
 			xAxis.setLabel("Valores");
 
-			Axis yAxis = barModelSeguroPrivado.getAxis(AxisType.Y);
-			yAxis.setLabel("Número de Personas");
+			Axis yAxis = barModelSeguroIESSP.getAxis(AxisType.Y);
+			yAxis.setLabel("Porcentaje (%)");
 			yAxis.setMin(0);
 		}
 
-		private BarChartModel initBarModelSeguroP() {
+		private BarChartModel initBarModelSeguroIP() {
 			BarChartModel models = new BarChartModel();
 
 			ChartSeries hombresp = new ChartSeries();
-			hombresp.setLabel("HOMBRES");
-			hombresp.set("SI", recuperarDatosSeguroP(true, "M"));
-			hombresp.set("NO", recuperarDatosSeguroP(false, "M"));
+			hombresp.setLabel("HOMBRES = "+ total_hombre);
+			hombresp.set("SI", porcentaje(total_hombre,recuperarDatosSeguroI(true, "M")));
+			hombresp.set("NO", porcentaje(total_hombre,recuperarDatosSeguroI(false, "M")));
 
 			ChartSeries mujeresp = new ChartSeries();
-			mujeresp.setLabel("MUJERES");
-			mujeresp.set("SI", recuperarDatosSeguroP(true, "F"));
-			mujeresp.set("NO", recuperarDatosSeguroP(false, "F"));
+			mujeresp.setLabel("MUJERES = " + total_mujer);
+			mujeresp.set("SI", porcentaje(total_mujer,recuperarDatosSeguroI(true, "F")));
+			mujeresp.set("NO", porcentaje(total_mujer,recuperarDatosSeguroI(false, "F")));
 
 			models.addSeries(hombresp);
 			models.addSeries(mujeresp);
@@ -589,18 +833,89 @@ public class GraficoBean {
 			return models;
 		}
 
-		private Integer recuperarDatosSeguroP(Boolean tipo, String genero) {
-			Integer r = 0;
-			for (GenericClassBoolean gc : manager.listaSeguroP()) {
-				if (gc.isGen_valor() == tipo && gc.getGen_genero().equals(genero)) {
-					r += gc.getGen_cantidad();
-				}
+	// gráfico_seguro_privado
+
+	private void createBarModelSeguroP() {
+		barModelSeguroPrivado = initBarModelSeguroP();
+
+		barModelSeguroPrivado.setLegendPosition("ne");
+		barModelSeguroPrivado.setAnimate(true);
+		barModelSeguroPrivado.setShowPointLabels(true);
+
+		Axis xAxis = barModelSeguroPrivado.getAxis(AxisType.X);
+		xAxis.setLabel("Valores");
+
+		Axis yAxis = barModelSeguroPrivado.getAxis(AxisType.Y);
+		yAxis.setLabel("Número de Personas");
+		yAxis.setMin(0);
+	}
+
+	private BarChartModel initBarModelSeguroP() {
+		BarChartModel models = new BarChartModel();
+
+		ChartSeries hombresp = new ChartSeries();
+		hombresp.setLabel("HOMBRES");
+		hombresp.set("SI", recuperarDatosSeguroP(true, "M"));
+		hombresp.set("NO", recuperarDatosSeguroP(false, "M"));
+
+		ChartSeries mujeresp = new ChartSeries();
+		mujeresp.setLabel("MUJERES");
+		mujeresp.set("SI", recuperarDatosSeguroP(true, "F"));
+		mujeresp.set("NO", recuperarDatosSeguroP(false, "F"));
+
+		models.addSeries(hombresp);
+		models.addSeries(mujeresp);
+
+		return models;
+	}
+
+	private Integer recuperarDatosSeguroP(Boolean tipo, String genero) {
+		Integer r = 0;
+		for (GenericClassBoolean gc : manager.listaSeguroP()) {
+			if (gc.isGen_valor() == tipo && gc.getGen_genero().equals(genero)) {
+				r += gc.getGen_cantidad();
 			}
-			return r;
+		}
+		return r;
+	}
+	
+	// gráfico_seguro_privado_porcentual
+
+		private void createBarModelSeguroPP() {
+			barModelSeguroPrivadoP = initBarModelSeguroPP();
+
+			barModelSeguroPrivadoP.setLegendPosition("ne");
+			barModelSeguroPrivadoP.setAnimate(true);
+			barModelSeguroPrivadoP.setShowPointLabels(true);
+
+			Axis xAxis = barModelSeguroPrivadoP.getAxis(AxisType.X);
+			xAxis.setLabel("Valores");
+
+			Axis yAxis = barModelSeguroPrivadoP.getAxis(AxisType.Y);
+			yAxis.setLabel("Porcentaje (%)");
+			yAxis.setMin(0);
 		}
 
-	
-	// metodo fuera de graficos
+		private BarChartModel initBarModelSeguroPP() {
+			BarChartModel models = new BarChartModel();
+
+			ChartSeries hombresp = new ChartSeries();
+			hombresp.setLabel("HOMBRES = "+ total_hombre);
+			hombresp.set("SI", porcentaje(total_hombre,recuperarDatosSeguroP(true, "M")));
+			hombresp.set("NO", porcentaje(total_hombre,recuperarDatosSeguroP(false, "M")));
+
+			ChartSeries mujeresp = new ChartSeries();
+			mujeresp.setLabel("MUJERES = " + total_mujer);
+			mujeresp.set("SI", porcentaje(total_mujer,recuperarDatosSeguroP(true, "F")));
+			mujeresp.set("NO", porcentaje(total_mujer,recuperarDatosSeguroP(false, "F")));
+
+			models.addSeries(hombresp);
+			models.addSeries(mujeresp);
+
+			return models;
+		}
+
+	// metodo fuera de gráficos
 
 	public void cargarDatos() {
 		llenarEnteros();

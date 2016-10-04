@@ -8,10 +8,16 @@ public class Test {
 
 	public static void main(String[] args) {
 		
+		
 		Funciones f = new Funciones();
 		
-		System.out.println();
-		f.UTM2Deg("17 N 813628.4500000001 45096.81");
+		byte [] datosCifrados;
+        datosCifrados = f.encDatos("Juan");
+    System.out.println("Datos Cifrados -> " + f.asHex(datosCifrados));
+            System.out.println("Datos Descifrados -> " + f.dencDatos(datosCifrados));
+//		
+//		System.out.println();
+//		f.UTM2Deg("17 N 813628.4500000001 45096.81");
 		
 //		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
 //		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));

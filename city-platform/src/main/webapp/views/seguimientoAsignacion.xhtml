@@ -111,12 +111,12 @@
 								<h:outputText value="OPCIONES" />
 							</f:facet>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton iconAwesome="fa fa-pencil-square-o"
+							<p:commandButton icon="ui-icon-pencil" update=":dlgS"
 								style="padding: 0; border: none; background: none;color: #000"
 								onclick="PF('statusDialog').show();"
 								oncomplete="PF('statusDialog').hide();"
 								action="#{seguimientoAsignacionBean.cargarEditarSeguimiento(s)}">
-							</b:commandButton>
+							</p:commandButton>
 						</h:column>
 						<h:column>
 							<f:facet name="header">

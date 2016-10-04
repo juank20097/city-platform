@@ -73,33 +73,30 @@ function exportChart2() {
 </script>
 					</b:tab>
 				</b:tabView>
-
 				<b:row>
 					<p:separator />
 				</b:row>
 				<center>
 					<h1>Personas por Grupos Sanguineos</h1>
 				</center>
-				<b:row>
-					<b:column span="12">
-						<p:chart type="bar" model="#{graficoBean.barModelSanguineo}"
-							style="height:400px" responsive="true" widgetVar="chart3" />
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column offset="9" span="1" style="margin-bottom:10px;">
-						<p:commandButton type="button" styleClass="btn btn-info"
-							value="Exportar a Imagen" onclick="exportChart3()" />
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column>
-						<p:separator />
-					</b:column>
-				</b:row>
-
-
-				<script type="text/javascript">
+				<b:tabView pills="true"
+					contentStyle="border: 1px solid #ddd;padding:10px">
+					<p:ajax event="click" update="frm:san_num frm:san_por"></p:ajax>
+					<b:tab title="Numérico">
+						<b:row>
+							<b:column span="12">
+								<p:chart id="san_num" type="bar"
+									model="#{graficoBean.barModelSanguineo}" style="height:400px"
+									responsive="true" widgetVar="chart3" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column offset="9" span="1" style="margin-bottom:10px;">
+								<p:commandButton type="button" styleClass="btn btn-info"
+									value="Exportar a Imagen" onclick="exportChart3()" />
+							</b:column>
+						</b:row>
+						<script type="text/javascript">
 function exportChart3() {
     //export image
     $('#output').empty().append(PF('chart3').exportAsImage());
@@ -108,28 +105,62 @@ function exportChart3() {
     PF('dlg').show();
 }
 </script>
-
-				<center>
-					<h1>Información Relevante</h1>
-				</center>
-				<b:tabView pills="true"
-					contentStyle="border: 1px solid #ddd;padding:10px">
-					<p:ajax event="click" update="frm:ejercicio frm:alcohol frm:embriaguez frm:tabaco frm:iess frm:privado"></p:ajax>
-					<b:tab title="Ejercicio">
+					</b:tab>
+					<b:tab title="Porcentual">
 						<b:row>
 							<b:column span="12">
-								<p:chart id="ejercicio" type="bar"
-									model="#{graficoBean.barModelEjercicio}" style="height:400px"
-									responsive="true" widgetVar="chartEjercicio" />
+								<p:chart id="san_por" type="bar"
+									model="#{graficoBean.barModelSanguineoP}" style="height:400px"
+									responsive="true" widgetVar="chartSanP" />
 							</b:column>
 						</b:row>
 						<b:row>
 							<b:column offset="9" span="1" style="margin-bottom:10px;">
 								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartEje()" />
+									value="Exportar a Imagen" onclick="exportChartSanP()" />
 							</b:column>
 						</b:row>
 						<script type="text/javascript">
+function exportChartSanP() {
+    //export image
+    $('#output').empty().append(PF('chartSanP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+					</b:tab>
+				</b:tabView>
+
+				<b:column>
+					<p:separator />
+				</b:column>
+				<center>
+					<h1>Hábitos Personales</h1>
+				</center>
+				<b:tabView pills="true"
+					contentStyle="border: 1px solid #ddd;padding:10px">
+					<p:ajax event="click"
+						update="frm:ejercicio frm:ejerciciop frm:alcohol frm:alcoholp frm:emb frm:embp frm:tab frm:tabp"></p:ajax>
+					<b:tab title="Ejercicio">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update="frm:ejercicio frm:ejerciciop"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="ejercicio" type="bar"
+											model="#{graficoBean.barModelEjercicio}" style="height:400px"
+											responsive="true" widgetVar="chartEjercicio" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartEje()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
 function exportChartEje() {
     //export image
     $('#output').empty().append(PF('chartEjercicio').exportAsImage());
@@ -138,46 +169,106 @@ function exportChartEje() {
     PF('dlg').show();
 }
 </script>
-					</b:tab>
-					<b:tab title="Alcohol">
-						<b:row>
-							<b:column span="12">
-								<p:chart id="alcohol" type="bar"
-									model="#{graficoBean.barModelAlcohol}" style="height:400px"
-									responsive="true" widgetVar="chartAlcohol" />
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column offset="9" span="1" style="margin-bottom:10px;">
-								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartAlc()" />
-							</b:column>
-						</b:row>
-						<script type="text/javascript">
-function exportChartAlc() {
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="ejerciciop" type="bar"
+											model="#{graficoBean.barModelEjercicioP}"
+											style="height:400px" responsive="true" widgetVar="chartEjeP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartEjeP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartEjeP() {
     //export image
-    $('#output').empty().append(PF('chartAlcohol').exportAsImage());
+    $('#output').empty().append(PF('chartEjeP').exportAsImage());
  
     //show the dialog
     PF('dlg').show();
 }
 </script>
+							</b:tab>
+						</b:tabView>
+					</b:tab>
+					<b:tab title="Alcohol">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update=" frm:alcohol frm:alcoholp"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="alcohol" type="bar"
+											model="#{graficoBean.barModelAlcohol}" style="height:400px"
+											responsive="true" widgetVar="chartAlc" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartAlc()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartAlc() {
+    //export image
+    $('#output').empty().append(PF('chartAlc').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="alcoholp" type="bar"
+											model="#{graficoBean.barModelAlcoholP}" style="height:400px"
+											responsive="true" widgetVar="chartAlcP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartAlcP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartAlcP() {
+    //export image
+    $('#output').empty().append(PF('chartAlcP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+						</b:tabView>
 					</b:tab>
 					<b:tab title="Embriaguez">
-						<b:row>
-							<b:column span="12">
-								<p:chart id="embriaguez" type="bar"
-									model="#{graficoBean.barModelEmbriaguez}" style="height:400px"
-									responsive="true" widgetVar="chartEmb" />
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column offset="9" span="1" style="margin-bottom:10px;">
-								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartEmb()" />
-							</b:column>
-						</b:row>
-						<script type="text/javascript">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update=" frm:emb frm:embp"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="emb" type="bar"
+											model="#{graficoBean.barModelEmbriaguez}"
+											style="height:400px" responsive="true" widgetVar="chartEmb" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartEmb()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
 function exportChartEmb() {
     //export image
     $('#output').empty().append(PF('chartEmb').exportAsImage());
@@ -186,22 +277,52 @@ function exportChartEmb() {
     PF('dlg').show();
 }
 </script>
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="embp" type="bar"
+											model="#{graficoBean.barModelEmbriaguezP}"
+											style="height:400px" responsive="true" widgetVar="chartEmbP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartEmbP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartEmbP() {
+    //export image
+    $('#output').empty().append(PF('chartEmbP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+						</b:tabView>
 					</b:tab>
 					<b:tab title="Tabaco">
-						<b:row>
-							<b:column span="12">
-								<p:chart id="tabaco" type="bar"
-									model="#{graficoBean.barModelTabaco}" style="height:400px"
-									responsive="true" widgetVar="chartTab" />
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column offset="9" span="1" style="margin-bottom:10px;">
-								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartTab()" />
-							</b:column>
-						</b:row>
-						<script type="text/javascript">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update=" frm:tab frm:tabp"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="tab" type="bar"
+											model="#{graficoBean.barModelTabaco}" style="height:400px"
+											responsive="true" widgetVar="charTab" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartTab()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
 function exportChartTab() {
     //export image
     $('#output').empty().append(PF('chartTab').exportAsImage());
@@ -210,22 +331,64 @@ function exportChartTab() {
     PF('dlg').show();
 }
 </script>
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="tabp" type="bar"
+											model="#{graficoBean.barModelTabacoP}" style="height:400px"
+											responsive="true" widgetVar="chartTabP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartTabP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartTabP() {
+    //export image
+    $('#output').empty().append(PF('chartTabP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+						</b:tabView>
 					</b:tab>
+				</b:tabView>
+
+				<b:column>
+					<p:separator />
+				</b:column>
+				<center>
+					<h1>Información de Seguros</h1>
+				</center>
+				<b:tabView pills="true"
+					contentStyle="border: 1px solid #ddd;padding:10px">
+					<p:ajax event="click"
+						update="frm:iess frm:iessp frm:privado frm:privadop"></p:ajax>
 					<b:tab title="Seguro IESS">
-						<b:row>
-							<b:column span="12">
-								<p:chart id="iess" type="bar"
-									model="#{graficoBean.barModelSeguroIESS}" style="height:400px"
-									responsive="true" widgetVar="chartIess" />
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column offset="9" span="1" style="margin-bottom:10px;">
-								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartIess()" />
-							</b:column>
-						</b:row>
-						<script type="text/javascript">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update=" frm:iess frm:iessp"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="iess" type="bar"
+											model="#{graficoBean.barModelSeguroIESS}"
+											style="height:400px" responsive="true" widgetVar="charIess" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartIess()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
 function exportChartIess() {
     //export image
     $('#output').empty().append(PF('chartIess').exportAsImage());
@@ -234,22 +397,52 @@ function exportChartIess() {
     PF('dlg').show();
 }
 </script>
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="iessp" type="bar"
+											model="#{graficoBean.barModelSeguroIESSP}"
+											style="height:400px" responsive="true" widgetVar="chartIessP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartIessP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartIessP() {
+    //export image
+    $('#output').empty().append(PF('chartIessP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+						</b:tabView>
 					</b:tab>
 					<b:tab title="Seguro Privado">
-						<b:row>
-							<b:column span="12">
-								<p:chart id="privado" type="bar"
-									model="#{graficoBean.barModelSeguroPrivado}" style="height:400px"
-									responsive="true" widgetVar="chartPri" />
-							</b:column>
-						</b:row>
-						<b:row>
-							<b:column offset="9" span="1" style="margin-bottom:10px;">
-								<p:commandButton type="button" styleClass="btn btn-info"
-									value="Exportar a Imagen" onclick="exportChartPri()" />
-							</b:column>
-						</b:row>
-						<script type="text/javascript">
+						<b:tabView pills="true"
+							contentStyle="border: 1px solid #ddd;padding:10px">
+							<p:ajax event="click" update=" frm:privado frm:privadop"></p:ajax>
+							<b:tab title="Numérico">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="privado" type="bar"
+											model="#{graficoBean.barModelSeguroPrivado}"
+											style="height:400px" responsive="true" widgetVar="charPri" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartPri()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
 function exportChartPri() {
     //export image
     $('#output').empty().append(PF('chartPri').exportAsImage());
@@ -258,6 +451,32 @@ function exportChartPri() {
     PF('dlg').show();
 }
 </script>
+							</b:tab>
+							<b:tab title="Porcentual">
+								<b:row>
+									<b:column span="12">
+										<p:chart id="privadop" type="bar"
+											model="#{graficoBean.barModelSeguroPrivadoP}"
+											style="height:400px" responsive="true" widgetVar="chartPriP" />
+									</b:column>
+								</b:row>
+								<b:row>
+									<b:column offset="9" span="1" style="margin-bottom:10px;">
+										<p:commandButton type="button" styleClass="btn btn-info"
+											value="Exportar a Imagen" onclick="exportChartPriP()" />
+									</b:column>
+								</b:row>
+								<script type="text/javascript">
+function exportChartPriP() {
+    //export image
+    $('#output').empty().append(PF('chartPriP').exportAsImage());
+ 
+    //show the dialog
+    PF('dlg').show();
+}
+</script>
+							</b:tab>
+						</b:tabView>
 					</b:tab>
 				</b:tabView>
 			</h:form>
