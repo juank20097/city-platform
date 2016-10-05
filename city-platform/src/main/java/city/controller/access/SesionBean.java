@@ -2,10 +2,14 @@ package city.controller.access;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -47,6 +51,8 @@ public class SesionBean implements Serializable {
 	private String pass2;
 	private List<Menu> menu;
 	private String persona;
+
+	private static SecretKey key = Funciones.addKey("YachayEP2016-cambio!/");
 
 	public SesionBean() {
 		menu = new ArrayList<Menu>();
@@ -249,6 +255,7 @@ public class SesionBean implements Serializable {
 		return r;
 	}
 
+
 	public void EnviarClave() {
 		String cambio = "";
 		String usu = WSUsuario(getUsuario());
@@ -258,15 +265,9 @@ public class SesionBean implements Serializable {
 			cambio = p1.getParValor();
 			if (p != null) {
 				String texto;
-				if (Funciones.isNumeric(getUsuario().trim())){
 				texto = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
-						+ "?usuario=" + Funciones.cifradoCesarInteger(getUsuario().trim(),3) + "'>Cambio de Credencial</a></p>"
+						+ "?usuario=" + URLEncoder.encode(Funciones.encriptarAES256(getUsuario(), key), "UTF-8") + "'>Cambio de Credencial</a></p>"
 						+ "</body>" + "</html>";
-				}else{
-				texto = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
-							+ "?usuario=" + Funciones.cifradoCesar(getUsuario().trim(),3) + "'>Cambio de Credencial</a></p>"
-							+ "</body>" + "</html>";
-				}
 				
 				envioMailWS(p.getPerCorreo(), "Cambio de Credenciales", texto);
 				Mensaje.crearMensajeINFO("El correo se envió satisfactoriamente.");
@@ -284,12 +285,8 @@ public class SesionBean implements Serializable {
 		String res_json = "";
 		try {
 			String variable;
-			if (Funciones.isNumeric(getUsuario().trim())){
-			variable = Funciones.descifradoCesarInteger(getUsuario().trim(),3);
-			}else{
-			variable = Funciones.descifradoCesar(getUsuario().trim(),3);
-			}
-			System.out.println(variable);
+			System.out.println(getUsuario());
+			variable = Funciones.desencriptarAES256(getUsuario(), key);
 			if (verificarSimilitudPassword(pass, pass2)) {
 				try {
 					GenParametro p1 = mngAcc.ParametroByID("usuario_ws");
@@ -318,7 +315,11 @@ public class SesionBean implements Serializable {
 
 		return respuesta;
 	}
+	
 
+	
+	
+	
 	public boolean verificarSimilitudPassword(String pass1, String pass2) {
 		if (pass1.trim().equals(pass2.trim())) {
 			return true;
@@ -355,5 +356,7 @@ public class SesionBean implements Serializable {
 		String usuario = validarSesion();
 		System.out.println("Usuario de session: " + usuario);
 	}
+	
+	
 
 }

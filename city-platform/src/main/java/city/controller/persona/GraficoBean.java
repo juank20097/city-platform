@@ -1,7 +1,5 @@
 package city.controller.persona;
 
-import java.math.BigDecimal;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -54,6 +52,7 @@ public class GraficoBean {
 	private Integer total_mujer;
 	
 	// datos obtenidos
+	private Integer h0 = 0;
 	private Integer h1 = 0;
 	private Integer h2 = 0;
 	private Integer h3 = 0;
@@ -68,7 +67,9 @@ public class GraficoBean {
 	private Integer h12 = 0;
 	private Integer h13 = 0;
 	private Integer h14 = 0;
+	private Integer h15 = 0;
 
+	private Integer m0 = 0;
 	private Integer m1 = 0;
 	private Integer m2 = 0;
 	private Integer m3 = 0;
@@ -83,6 +84,7 @@ public class GraficoBean {
 	private Integer m12 = 0;
 	private Integer m13 = 0;
 	private Integer m14 = 0;
+	private Integer m15 = 0;
 
 	@PostConstruct
 	public void init() {
@@ -199,6 +201,7 @@ public class GraficoBean {
 
 		ChartSeries hombres = new ChartSeries();
 		hombres.setLabel("HOMBRES");
+		hombres.set("menos 18", h0);
 		hombres.set("18 a 19", h1);
 		hombres.set("20 a 24", h2);
 		hombres.set("25 a 29", h3);
@@ -213,9 +216,11 @@ public class GraficoBean {
 		hombres.set("70 a 74", h12);
 		hombres.set("75 a 80", h13);
 		hombres.set("80 a 84", h14);
+		hombres.set("más 84", h15);
 
 		ChartSeries mujeres = new ChartSeries();
 		mujeres.setLabel("MUJERES");
+		hombres.set("menos 18", m0);
 		mujeres.set("18 a 19", m1);
 		mujeres.set("20 a 24", m2);
 		mujeres.set("25 a 29", m3);
@@ -230,6 +235,7 @@ public class GraficoBean {
 		mujeres.set("70 a 74", m12);
 		mujeres.set("75 a 80", m13);
 		mujeres.set("80 a 84", m14);
+		hombres.set("más 84", m15);
 
 		model.addSeries(hombres);
 		model.addSeries(mujeres);
@@ -260,6 +266,7 @@ public class GraficoBean {
 
 		ChartSeries hombresp = new ChartSeries();
 		hombresp.setLabel("HOMBRES = " + total_hombre + "");
+		hombresp.set("menos 18", porcentaje(total_hombre, h0));
 		hombresp.set("18 a 19", porcentaje(total_hombre, h1));
 		hombresp.set("20 a 24", porcentaje(total_hombre, h2));
 		hombresp.set("25 a 29", porcentaje(total_hombre, h3));
@@ -274,9 +281,11 @@ public class GraficoBean {
 		hombresp.set("70 a 74", porcentaje(total_hombre, h12));
 		hombresp.set("75 a 80", porcentaje(total_hombre, h13));
 		hombresp.set("80 a 84", porcentaje(total_hombre, h14));
+		hombresp.set("más 84", porcentaje(total_hombre, h15));
 
 		ChartSeries mujeresp = new ChartSeries();
 		mujeresp.setLabel("MUJERES = " + total_mujer + "");
+		hombresp.set("menos 18", porcentaje(total_hombre, m0));
 		mujeresp.set("18 a 19", porcentaje(total_mujer, m1));
 		mujeresp.set("20 a 24", porcentaje(total_mujer, m2));
 		mujeresp.set("25 a 29", porcentaje(total_mujer, m3));
@@ -291,6 +300,7 @@ public class GraficoBean {
 		mujeresp.set("70 a 74", porcentaje(total_mujer, m12));
 		mujeresp.set("75 a 80", porcentaje(total_mujer, m13));
 		mujeresp.set("80 a 84", porcentaje(total_mujer, m14));
+		hombresp.set("más 84", porcentaje(total_hombre, m15));
 
 		modelp.addSeries(hombresp);
 		modelp.addSeries(mujeresp);
@@ -926,6 +936,7 @@ public class GraficoBean {
 	}
 
 	public void llenarEnteros() {
+		h0 = manager.obtencionDatos(0, 17, "M");
 		h1 = manager.obtencionDatos(18, 19, "M");
 		h2 = manager.obtencionDatos(20, 24, "M");
 		h3 = manager.obtencionDatos(25, 29, "M");
@@ -939,8 +950,10 @@ public class GraficoBean {
 		h11 = manager.obtencionDatos(65, 69, "M");
 		h12 = manager.obtencionDatos(70, 74, "M");
 		h13 = manager.obtencionDatos(75, 80, "M");
-		h14 = manager.obtencionDatos(80, 84, "M");
+		h14 = manager.obtencionDatos(81, 84, "M");
+		h15 = manager.obtencionDatos(85, 100, "M");
 
+		m0 = manager.obtencionDatos(0, 17, "F");
 		m1 = manager.obtencionDatos(18, 19, "F");
 		m2 = manager.obtencionDatos(20, 24, "F");
 		m3 = manager.obtencionDatos(25, 29, "F");
@@ -954,7 +967,8 @@ public class GraficoBean {
 		m11 = manager.obtencionDatos(65, 69, "F");
 		m12 = manager.obtencionDatos(70, 74, "F");
 		m13 = manager.obtencionDatos(75, 80, "F");
-		m14 = manager.obtencionDatos(80, 84, "F");
+		m14 = manager.obtencionDatos(81, 84, "F");
+		m15 = manager.obtencionDatos(85, 100, "F");
 	}
 
 }

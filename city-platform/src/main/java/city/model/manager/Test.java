@@ -11,10 +11,9 @@ public class Test {
 		
 		Funciones f = new Funciones();
 		
-		byte [] datosCifrados;
-        datosCifrados = f.encDatos("Juan");
-    System.out.println("Datos Cifrados -> " + f.asHex(datosCifrados));
-            System.out.println("Datos Descifrados -> " + f.dencDatos(datosCifrados));
+        String datosCifrados = f.encriptarAES256("1003422365",f.addKey("YachayEP2016-cambio!/"));
+    System.out.println("Datos Cifrados -> " + datosCifrados);
+            System.out.println("Datos Descifrados -> " + f.desencriptarAES256("iL+D40lSjal49ziTbUu0uw==",f.addKey("YachayEP2016-cambio!/")));
 //		
 //		System.out.println();
 //		f.UTM2Deg("17 N 813628.4500000001 45096.81");

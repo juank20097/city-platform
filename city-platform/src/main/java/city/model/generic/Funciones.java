@@ -7,23 +7,34 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * @author jestevez
@@ -440,171 +451,61 @@ public class Funciones {
 		}
 	}
 
-	// Mï¿½todo Cifrado
+	// método de cifrado AES
 
-	// mï¿½todo para cifrar el texto
-	public static String cifradoCesar(String texto, int codigo) {
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 26;
-		for (int i = 0; i < texto.length(); i++) {
-			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-				if ((texto.charAt(i) + codigo) > 'z') {
-					cifrado.append((char) (texto.charAt(i) + codigo - 26));
-				} else {
-					cifrado.append((char) (texto.charAt(i) + codigo));
-				}
-			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-				if ((texto.charAt(i) + codigo) > 'Z') {
-					cifrado.append((char) (texto.charAt(i) + codigo - 26));
-				} else {
-					cifrado.append((char) (texto.charAt(i) + codigo));
-				}
-			}
+	public static String encriptarAES256(String cadena, SecretKey key) {
+		Cipher cipher;
+		String value = "";
+		try {
+			cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			byte[] textobytes = cadena.getBytes();
+			byte[] cipherbytes = cipher.doFinal(textobytes);
+			value = new BASE64Encoder().encode(cipherbytes);
+		} catch (NoSuchAlgorithmException ex) {
+			System.err.println(ex.getMessage());
+		} catch (NoSuchPaddingException ex) {
+			System.err.println(ex.getMessage());
+		} catch (InvalidKeyException ex) {
+			System.err.println(ex.getMessage());
+		} catch (IllegalBlockSizeException ex) {
+			System.err.println(ex.getMessage());
+		} catch (BadPaddingException ex) {
+			System.err.println(ex.getMessage());
 		}
-		return cifrado.toString();
+		return value;
 	}
 
-	// mï¿½todo para cifrar el texto
-	public static String cifradoCesarInteger(String texto, int codigo) {
-		String valor = "0123456789";
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 9;
-		for (int i = 0; i < texto.length(); i++) {
-			if ((texto.charAt(i) + codigo) > valor.charAt(9)) {
-				cifrado.append((char) (texto.charAt(i) + codigo - 9));
-			} else {
-				cifrado.append((char) (texto.charAt(i) + codigo));
-			}
+	public static String desencriptarAES256(String datosCifrados, SecretKey key) {
+		Cipher cipher;
+		String str = "";
+		try {
+			byte[] value = new BASE64Decoder().decodeBuffer(datosCifrados);
+			cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			byte[] cipherbytes = cipher.doFinal(value);
+			str = new String(cipherbytes);
+		} catch (InvalidKeyException ex) {
+			System.err.println(ex.getMessage());
+		} catch (IllegalBlockSizeException ex) {
+			System.err.println(ex.getMessage());
+		} catch (BadPaddingException ex) {
+			System.err.println(ex.getMessage());
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		} catch (NoSuchAlgorithmException ex) {
+			System.err.println(ex.getMessage());
+		} catch (NoSuchPaddingException ex) {
+			System.err.println(ex.getMessage());
 		}
-		return cifrado.toString();
-	}
-
-	// mï¿½todo para descifrar el texto
-	public static String descifradoCesar(String texto, int codigo) {
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 26;
-		for (int i = 0; i < texto.length(); i++) {
-			if (texto.charAt(i) >= 'a' && texto.charAt(i) <= 'z') {
-				if ((texto.charAt(i) - codigo) < 'a') {
-					cifrado.append((char) (texto.charAt(i) - codigo + 26));
-				} else {
-					cifrado.append((char) (texto.charAt(i) - codigo));
-				}
-			} else if (texto.charAt(i) >= 'A' && texto.charAt(i) <= 'Z') {
-				if ((texto.charAt(i) - codigo) < 'A') {
-					cifrado.append((char) (texto.charAt(i) - codigo + 26));
-				} else {
-					cifrado.append((char) (texto.charAt(i) - codigo));
-				}
-			}
-		}
-		return cifrado.toString();
-	}
-
-	// mï¿½todo para descifrar el texto
-	public static String descifradoCesarInteger(String texto, int codigo) {
-		String valor = "0123456789";
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 9;
-		for (int i = 0; i < texto.length(); i++) {
-			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-				cifrado.append((char) (texto.charAt(i) - codigo + 9));
-			} else {
-				cifrado.append((char) (texto.charAt(i) - codigo));
-			}
-		}
-		return cifrado.toString();
-	}
-
-	// mï¿½todo para cifrar el texto
-	public static String cifradoPropio(String texto, int codigo) {
-		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 26;
-		for (int i = 0; i < texto.length(); i++) {
-			if ((texto.charAt(i) + codigo) > valor.charAt(61)) {
-				cifrado.append((char) (texto.charAt(i) + codigo - 30));
-			} else {
-				cifrado.append((char) (texto.charAt(i) + codigo));
-			}
-		}
-		return cifrado.toString();
-	}
-
-	// mï¿½todo para descifrar el texto
-	public static String descifradoPropio(String texto, int codigo) {
-		String valor = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		StringBuilder cifrado = new StringBuilder();
-		codigo = codigo % 26;
-		for (int i = 0; i < texto.length(); i++) {
-			if ((texto.charAt(i) - codigo) < valor.charAt(0)) {
-				cifrado.append((char) (texto.charAt(i) - codigo + 26));
-			} else {
-				cifrado.append((char) (texto.charAt(i) - codigo));
-			}
-		}
-		return cifrado.toString();
+		return str;
 	}
 	
-	//método de cifrado AES 
-	
-	private static String llaveSimetrica = "Yachay";
-	
-	 public static byte[] encDatos(String cadena){
-	        byte [] aError = null;
-	        SecretKeySpec key = new SecretKeySpec(llaveSimetrica.getBytes(), "AES");
-	        Cipher cipher;
-	        try {
-	                cipher = Cipher.getInstance("AES");
-	                //Comienzo a encriptar
-	                cipher.init(Cipher.ENCRYPT_MODE, key);
-	                byte[] datosCifrados = cipher.doFinal(cadena.getBytes()); //cadena = a texto a cifrar
-	                /*
-	                 * TODO: Representar los bytes como string vía base64, así será
-	                 * humanamente leíble. La otra opción es expresar como hexadecimal
-	                 * 
-	                 * En este caso lo imprimo en pantalla como bytes.
-	                 */
-	                return datosCifrados;
-	        } catch (Exception e) {
-	                return null;
-	        }
-	    
-	    }
-	 
-	 public static String dencDatos(byte [] datosCifrados){
-	        SecretKeySpec key = new SecretKeySpec(llaveSimetrica.getBytes(), "AES");
-	        Cipher cipher;
-	        try {
-	                cipher = Cipher.getInstance("AES");
-	               
-	                //Comienzo a desencriptar
-	                cipher.init(Cipher.DECRYPT_MODE, key);
-	                byte[] datosDecifrados = cipher.doFinal(datosCifrados);
-	                return new String(datosDecifrados); 
-	                /*
-	                 * TODO: Representar los bytes como string vía base64, así será
-	                 * humanamente leíble. La otra opción es expresar como hexadecimal
-	                 * 
-	                 * En este caso lo imprimo en pantalla como bytes.
-	                 */
-	        } catch (Exception e) {
-	                return null;
-	        }  
-	    }
-	    
-	    public static String asHex (byte buf[]) {
-	         StringBuffer strbuf = new StringBuffer(buf.length * 2);
-	         int i;
-
-	         for (i = 0; i < buf.length; i++) {
-	          if (((int) buf[i] & 0xff) < 0x10)
-	               strbuf.append("0");
-
-	          strbuf.append(Long.toString((int) buf[i] & 0xff, 16));
-	         }
-
-	         return strbuf.toString();
+	 public static SecretKey addKey( String value ){
+		 SecretKey key;
+	        byte[] valuebytes = value.getBytes();            
+	        key = new SecretKeySpec( Arrays.copyOf( valuebytes, 16 ) , "AES" );   
+	        return key;
 	    }
 
 	public static String quitarEspacios(String parametro) {
@@ -613,11 +514,11 @@ public class Funciones {
 		return parametro.trim();
 	}
 
-	
+	// coordenadas UTM
 
 	public static void UTM2Deg(String UTM) {
 		double latitude;
-	    double longitude;
+		double longitude;
 		String[] parts = UTM.split(" ");
 		int Zone = Integer.parseInt(parts[0]);
 		char Letter = parts[1].toUpperCase(Locale.ENGLISH).charAt(0);
@@ -1010,9 +911,9 @@ public class Funciones {
 				* 180 / Math.PI + Zone * 6 - 183;
 		longitude = Math.round(longitude * 10000000);
 		longitude = longitude / 10000000;
-		
-		System.out.println("Latitud: "+latitude);
-		System.out.println("Longitud: "+longitude);
-		
+
+		System.out.println("Latitud: " + latitude);
+		System.out.println("Longitud: " + longitude);
+
 	}
 }
