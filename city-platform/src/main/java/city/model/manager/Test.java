@@ -11,12 +11,12 @@ public class Test {
 		
 		Funciones f = new Funciones();
 		
-        String datosCifrados = f.encriptarAES256("1003422365",f.addKey("YachayEP2016-cambio!/"));
+        String datosCifrados = f.encriptarAES256("aspirina",f.addKey("YachayEP2016-Salud!/"));
     System.out.println("Datos Cifrados -> " + datosCifrados);
-            System.out.println("Datos Descifrados -> " + f.desencriptarAES256("iL+D40lSjal49ziTbUu0uw==",f.addKey("YachayEP2016-cambio!/")));
+            System.out.println("Datos Descifrados -> " + f.desencriptarAES256("RBP37R1USMZQVKZBQ16EOG==",f.addKey("YachayEP2016-Salud!/")));
 //		
 //		System.out.println();
-//		f.UTM2Deg("17 N 813628.4500000001 45096.81");
+//		f.UTM2Deg("17 N 813628.4500000001 45096.81");''
 		
 //		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
 //		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));

@@ -456,6 +456,7 @@ public class Funciones {
 	public static String encriptarAES256(String cadena, SecretKey key) {
 		Cipher cipher;
 		String value = "";
+		if (cadena != null){
 		try {
 			cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -464,14 +465,20 @@ public class Funciones {
 			value = new BASE64Encoder().encode(cipherbytes);
 		} catch (NoSuchAlgorithmException ex) {
 			System.err.println(ex.getMessage());
+			value="error";
 		} catch (NoSuchPaddingException ex) {
 			System.err.println(ex.getMessage());
+			value="error";
 		} catch (InvalidKeyException ex) {
 			System.err.println(ex.getMessage());
+			value="error";
 		} catch (IllegalBlockSizeException ex) {
 			System.err.println(ex.getMessage());
+			value="error";
 		} catch (BadPaddingException ex) {
 			System.err.println(ex.getMessage());
+			value="error";
+		}
 		}
 		return value;
 	}
@@ -479,6 +486,7 @@ public class Funciones {
 	public static String desencriptarAES256(String datosCifrados, SecretKey key) {
 		Cipher cipher;
 		String str = "";
+		if (datosCifrados != null){
 		try {
 			byte[] value = new BASE64Decoder().decodeBuffer(datosCifrados);
 			cipher = Cipher.getInstance("AES");
@@ -487,16 +495,23 @@ public class Funciones {
 			str = new String(cipherbytes);
 		} catch (InvalidKeyException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
 		} catch (IllegalBlockSizeException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
 		} catch (BadPaddingException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
 		} catch (NoSuchAlgorithmException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
 		} catch (NoSuchPaddingException ex) {
 			System.err.println(ex.getMessage());
+			str = "error";
+		}
 		}
 		return str;
 	}

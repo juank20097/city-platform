@@ -673,7 +673,7 @@ public class ManagerPersona {
 			boolean seg_privado, boolean discapacidad, String ejercicio_horas, String tabaco_semana,
 			String enfermedades_cronicas3, String medicamentos_cronicos3, GenSalud salud) {
 		salud.setPerDni(dni);
-		salud.setSldAlergias(cambiarAMayusculas(alergias));
+		salud.setSldAlergias(alergias);
 		salud.setSldAltura(altura);
 		salud.setSldAsegurado(asegurado);
 		salud.setSldCarnetConadies(carnet);
@@ -683,25 +683,25 @@ public class ManagerPersona {
 		salud.setSldDiscapacidadTipo(dis_tipo);
 		salud.setSldFrecuenciaConsumoMedicame(con_medicina);
 		salud.setSldGrupoSanguineo(gru_sanguineo);
-		salud.setSldMedicamentos(cambiarAMayusculas(medicamentos_cronicos1));
-		salud.setSldMedicamentosCronicos2(cambiarAMayusculas(medicamentos_cronicos2));
+		salud.setSldMedicamentos(medicamentos_cronicos1);
+		salud.setSldMedicamentosCronicos2(medicamentos_cronicos2);
 		salud.setSldNivelAzucar(niv_azucar);
 		salud.setSldPeriodicidadEjercicio(ejercicios);
 		salud.setSldPeso(peso);
 		salud.setSldPresion(presion);
 		salud.setSldRealizaEjercicio(rea_ejercicio);
 		salud.setSldVegetariano(vegetariano);
-		salud.setSldAlergiasCronicas2(cambiarAMayusculas(alergias2));
+		salud.setSldAlergiasCronicas2(alergias2);
 		salud.setSldEmbriagar(embriagar);
 		salud.setSldMadreCausaMuerte(m_muerte);
 		salud.setSldMadreEdad(m_edad);
-		salud.setSldMadreEnfermedadesActuales(cambiarAMayusculas(m_enfermedades));
+		salud.setSldMadreEnfermedadesActuales(m_enfermedades);
 		salud.setSldMadreFallecio(m_fallecio);
-		salud.setSldNombreLugarCentroMedico(medico.toUpperCase());
+		salud.setSldNombreLugarCentroMedico(medico);
 		salud.setSldObservaciones(observacion.toUpperCase());
-		salud.setSldPadreCausaMuerte(cambiarAMayusculas(p_muerte));
+		salud.setSldPadreCausaMuerte(p_muerte);
 		salud.setSldPadreEdad(p_edad);
-		salud.setSldPadreEnfermedadesActuales(cambiarAMayusculas(p_enfermedades));
+		salud.setSldPadreEnfermedadesActuales(p_enfermedades);
 		salud.setSldPadreFallecio(p_fallecio);
 		salud.setSldPeriodicidadAlcohol(periodicidad_alcohol);
 		salud.setSldPeriodicidadEmbriagar(periodicidad_embriaga);
@@ -713,8 +713,8 @@ public class ManagerPersona {
 		salud.setSldDiscapacidad(discapacidad);
 		salud.setSldEjercicioHoras(Integer.parseInt(cambiarNulosInteger(ejercicio_horas)));
 		salud.setSldTabacoSemana(Integer.parseInt(cambiarNulosInteger(tabaco_semana)));
-		salud.setSldAlergiasCronicas3(cambiarAMayusculas(enfermedades_cronicas3));
-		salud.setSldMedicamentosCronicos3(cambiarAMayusculas(medicamentos_cronicos3));
+		salud.setSldAlergiasCronicas3(enfermedades_cronicas3);
+		salud.setSldMedicamentosCronicos3(medicamentos_cronicos3);
 	}
 
 	/**
@@ -773,11 +773,6 @@ public class ManagerPersona {
 		}
 	}
 
-	private String cambiarAMayusculas(String campo) {
-		if (campo == null)
-			campo = "";
-		return campo.toUpperCase();
-	}
 
 	private String cambiarNulosInteger(String campo) {
 		if (campo == null)

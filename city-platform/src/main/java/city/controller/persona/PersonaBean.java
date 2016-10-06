@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -158,6 +159,8 @@ public class PersonaBean {
 	private String sldAlergiasCronicas3;
 	private String sldMedicamentosCronicos3;
 
+	private static SecretKey key = Funciones.addKey("YachayEP2016-Salud!/");
+	
 	private boolean sld_padre;
 	private boolean sld_madre;
 
@@ -3125,18 +3128,26 @@ public class PersonaBean {
 							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
 							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
 							getPerEstadoCivil().trim(), getPerCorreo2().trim());
-					this.crearEditarPersonaDetalle();
-					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Persona registrada correctamente");
+					if (this.crearEditarPersonaDetalle()==false){
+						Mensaje.crearMensajeERROR("Error almacenando detalle de la persona.");
+					}else if (!this.crearEditarSalud().equals("ok")){
+						Mensaje.crearMensajeERROR("Error almacenando salud de la persona.");
+					}else{
+						Mensaje.crearMensajeINFO("Persona registrada correctamente");
+					}
 					// setEdicion(true);
 				} else {
 					manager.editarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
 							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
 							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
 							getPerEstadoCivil().trim(), getPerCorreo2(), getPerEstado());
-					this.crearEditarPersonaDetalle();
-					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Persona actualizada correctamente");
+					if (this.crearEditarPersonaDetalle()==false){
+						Mensaje.crearMensajeERROR("Error almacenando detalle de la persona.");
+					}else if (!this.crearEditarSalud().equals("ok")){
+						Mensaje.crearMensajeERROR("Error almacenando salud de la persona.");
+					}else{
+						Mensaje.crearMensajeINFO("Persona registrada correctamente");
+					}
 				}
 				r = "npersona?faces-redirect=true";
 				// this.cleanDatos();
@@ -3165,18 +3176,26 @@ public class PersonaBean {
 							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
 							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
 							getPerEstadoCivil().trim(), getPerCorreo2().trim());
-					this.crearEditarPersonaDetalle();
-					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Persona creada correctamente");
+					if (this.crearEditarPersonaDetalle()==false){
+						Mensaje.crearMensajeERROR("Error almacenando detalle de la persona.");
+					}else if (!this.crearEditarSalud().equals("ok")){
+						Mensaje.crearMensajeERROR("Error almacenando salud de la persona.");
+					}else{
+						Mensaje.crearMensajeINFO("Persona registrada correctamente");
+					}
 					// setEdicion(true);
 				} else {
 					manager.editarPersona(getPerDni().trim(), getPerTipoDni().trim(), getPerNombres().trim(),
 							getPerApellidos().trim(), getPerFechaNacimiento(), getPerGenero().trim(),
 							getPerTelefono().trim(), getPerCelular().trim(), getPerCorreo().trim(),
 							getPerEstadoCivil().trim(), getPerCorreo2(), getPerEstado());
-					this.crearEditarPersonaDetalle();
-					this.crearEditarSalud();
-					Mensaje.crearMensajeINFO("Persona modificada correctamente");
+					if (this.crearEditarPersonaDetalle()==false){
+						Mensaje.crearMensajeERROR("Error almacenando detalle de la persona.");
+					}else if (!this.crearEditarSalud().equals("ok")){
+						Mensaje.crearMensajeERROR("Error almacenando salud de la persona.");
+					}else{
+						Mensaje.crearMensajeINFO("Persona registrada correctamente");
+					}
 				}
 				r = "npersona2?faces-redirect=true";
 				// this.cleanDatos();
@@ -3574,7 +3593,7 @@ public class PersonaBean {
 	 * 
 	 * @return
 	 */
-	public void crearEditarPersonaDetalle() {
+	public boolean crearEditarPersonaDetalle() {
 		try {
 			GenPersonaDetalle pd = manager.PersonaDetalleByID(getPerDni());
 			if (pd == null) {
@@ -3598,8 +3617,10 @@ public class PersonaBean {
 						getPdeInscripcionDefuncion(), getPdeFechaDefuncion(), getPdeObservacion(), getPdeResidencia(),
 						getPdeEstadiaDias(), getPdeEstadiaHoras());
 			}
+			return true;
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
+			return false;
 		}
 	}
 
@@ -3973,45 +3994,28 @@ public class PersonaBean {
 	 * 
 	 * @return
 	 */
-	public void crearEditarSalud() {
+	public String crearEditarSalud() {
+		String ret="null";
 		try {
 			GenSalud sal = manager.SaludByID(getPerDni());
+			cambiarBooleanos();
+			String valor=cifradoCampos();
+			if (valor.equals("null")){
 			if (sal == null) {
-				if (getSldDiscapacidadGrado() == null) {
-					setSldDiscapacidadGrado("0");
-				}
-				if (getSldDiscapacidad() == null) {
-					setSldDiscapacidad(false);
-				}
-				if (getSldSeguroPrivado() == null) {
-					setSldSeguroPrivado(false);
-				}
-				if (getSldSeguroIess() == null) {
-					setSldSeguroIess(false);
-				}
 				manager.insertarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
-						getSldMedicamentosCronicos1(), getSldMedicamentosCronicos2(), getSldNivelAzucar(),
+						getSldMedicamentosCronicos1(),getSldMedicamentosCronicos2(), getSldNivelAzucar(),
 						getSldPeriodicidadEjercicio(), getSldPeso(), getSldPresion(), getSldRealizaEjercicio(),
-						getSldVegetariano(), getSldAlergiasCronicas2(), getSldEmbriagar(), getSldMadreCausaMuerte(),
+						getSldVegetariano(),getSldAlergiasCronicas2(), getSldEmbriagar(), getSldMadreCausaMuerte(),
 						getSldMadreEdad(), getSldMadreEnfermedadesActuales(), getSldMadreFallecio(),
 						getSldNombreLugarCentroMedico(), getSldObservaciones(), getSldPadreCausaMuerte(),
 						getSldPadreEdad(), getSldPadreEnfermedadesActuales(), getSldPadreFallecio(),
 						getSldPeriodicidadAlcohol(), getSldPeriodicidadEmbriagar(), getSldPeriodicidadTabaco(),
 						getSldEstupefacientes(), getSldPeriodicidadEstupefacientes(), getSldSeguroIess(),
 						getSldSeguroPrivado(), getSldDiscapacidad(), getSldEjercicioHoras(), getSldTabacoSemana(),
-						getSldAlergiasCronicas3(), getSldMedicamentosCronicos3());
+						getSldAlergiasCronicas3(),getSldMedicamentosCronicos3());
 			} else {
-				if (getSldDiscapacidad() == null) {
-					setSldDiscapacidad(false);
-				}
-				if (getSldSeguroPrivado() == null) {
-					setSldSeguroPrivado(false);
-				}
-				if (getSldSeguroIess() == null) {
-					setSldSeguroIess(false);
-				}
 				manager.editarSalud(getPerDni(), getSldAlergias(), getSldAltura(), getSldAsegurado(),
 						getSldCarnetConadies(), getSldConsumeAlcohol(), getSldConsumeTabaco(), getSldDiscapacidadTipo(),
 						getSldDiscapacidadGrado(), getSldFrecienciaConsumoMedicame(), getSldGrupoSanguineo(),
@@ -4026,11 +4030,90 @@ public class PersonaBean {
 						getSldSeguroPrivado(), getSldDiscapacidad(), getSldEjercicioHoras(), getSldTabacoSemana(),
 						getSldAlergiasCronicas3(), getSldMedicamentosCronicos3());
 			}
-
+			ret="ok";
+			
+			}
+			decifrarcampos();
+			return ret;
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
+			return ret;
 		}
+	}
+	
+	private String cifradoCampos(){
+		String s="null";
+		setSldAlergias(encriptarMayusculas(getSldAlergias()));
+		setSldFrecienciaConsumoMedicame(encriptarMayusculas(getSldFrecienciaConsumoMedicame()));
+		setSldMedicamentosCronicos1(encriptarMayusculas(getSldMedicamentosCronicos1()));
+		setSldMedicamentosCronicos2(encriptarMayusculas(getSldMedicamentosCronicos2()));
+		setSldMedicamentosCronicos3(encriptarMayusculas(getSldAlergiasCronicas3()));
+		setSldAlergiasCronicas2(encriptarMayusculas(getSldAlergiasCronicas2()));
+		setSldAlergiasCronicas3(encriptarMayusculas(getSldAlergiasCronicas3()));
+		setSldNombreLugarCentroMedico(encriptarMayusculas(getSldNombreLugarCentroMedico()));
+		if (getSldAlergias().equals("error")){
+			s="Error de cifrado de Enfermedades";
+		}
+		if (getSldFrecienciaConsumoMedicame().equals("error")){
+			s="Error de cifrado de Medicamentos Habituales";
+		}
+		if (getSldMedicamentosCronicos1().equals("error")){
+			s="Error de cifrado de Medicamentos1";
+		}
+		if (getSldMedicamentosCronicos2().equals("error")){
+			s="Error de cifrado de Medicamentos2";
+		}
+		if (getSldMedicamentosCronicos3().equals("error")){
+			s="Error de cifrado de Medicamentos3";
+		}
+		if (getSldAlergiasCronicas2().equals("error")){
+			s="Error de cifrado de Enfermedades2";
+		}
+		if (getSldAlergiasCronicas3().equals("error")){
+			s="Error de cifrado de Enfermedades3";
+		}
+		if (getSldNombreLugarCentroMedico().equals("error")){
+			s="Error de cifrado de Centro Médico";
+		}
+		return s;
+	}
+	
+	private void decifrarcampos(){
+		setSldAlergias(Funciones.desencriptarAES256(getSldAlergias(), key));
+		setSldFrecienciaConsumoMedicame(Funciones.desencriptarAES256(getSldFrecienciaConsumoMedicame(), key));
+		setSldMedicamentosCronicos1(Funciones.desencriptarAES256(getSldMedicamentosCronicos1(),key));
+		setSldMedicamentosCronicos2(Funciones.desencriptarAES256(getSldMedicamentosCronicos2(),key));
+		setSldMedicamentosCronicos3(Funciones.desencriptarAES256(getSldAlergiasCronicas3(),key));
+		setSldAlergiasCronicas2(Funciones.desencriptarAES256(getSldAlergiasCronicas2(),key));
+		setSldAlergiasCronicas3(Funciones.desencriptarAES256(getSldAlergiasCronicas3(),key));
+		setSldNombreLugarCentroMedico(Funciones.desencriptarAES256(getSldNombreLugarCentroMedico(),key));
+	}
+	
+	private String encriptarMayusculas(String valor){
+		String a= Funciones.encriptarAES256(cambiarAMayusculas(valor), key);
+		return a;
+	}
+	
+	private void cambiarBooleanos(){
+		if (getSldDiscapacidadGrado() == null) {
+			setSldDiscapacidadGrado("0");
+		}
+		if (getSldDiscapacidad() == null) {
+			setSldDiscapacidad(false);
+		}
+		if (getSldSeguroPrivado() == null) {
+			setSldSeguroPrivado(false);
+		}
+		if (getSldSeguroIess() == null) {
+			setSldSeguroIess(false);
+		}
+	}
+	
+	private String cambiarAMayusculas(String campo) {
+		if (campo == null)
+			campo = "";
+		return campo.toUpperCase();
 	}
 
 	/**
@@ -4053,7 +4136,7 @@ public class PersonaBean {
 			if (salud.getSldEmbriagar() == null) {
 				salud.setSldEmbriagar(false);
 			}
-			setSldAlergias(salud.getSldAlergias());
+			setSldAlergias(Funciones.desencriptarAES256(salud.getSldAlergias(), key));
 			setSldAltura(salud.getSldAltura());
 			setSldAsegurado(salud.getSldAsegurado());
 			setSldCarnetConadies(salud.getSldCarnetConadies());
@@ -4061,23 +4144,23 @@ public class PersonaBean {
 			setSldConsumeTabaco(salud.getSldConsumeTabaco());
 			setSldDiscapacidadGrado(salud.getSldDiscapacidadGrado());
 			setSldDiscapacidadTipo(salud.getSldDiscapacidadTipo());
-			setSldFrecienciaConsumoMedicame(salud.getSldFrecuenciaConsumoMedicame());
+			setSldFrecienciaConsumoMedicame(Funciones.desencriptarAES256(salud.getSldFrecuenciaConsumoMedicame(),key));
 			setSldGrupoSanguineo(salud.getSldGrupoSanguineo());
-			setSldMedicamentosCronicos1(salud.getSldMedicamentos());
-			setSldMedicamentosCronicos2(salud.getSldMedicamentosCronicos2());
+			setSldMedicamentosCronicos1(Funciones.desencriptarAES256(salud.getSldMedicamentos(),key));
+			setSldMedicamentosCronicos2(Funciones.desencriptarAES256(salud.getSldMedicamentosCronicos2(),key));
 			setSldNivelAzucar(salud.getSldNivelAzucar());
 			setSldPeriodicidadEjercicio(salud.getSldPeriodicidadEjercicio());
 			setSldPeso(salud.getSldPeso());
 			setSldPresion(salud.getSldPresion());
 			setSldRealizaEjercicio(salud.getSldRealizaEjercicio());
 			setSldVegetariano(salud.getSldVegetariano());
-			setSldAlergiasCronicas2(salud.getSldAlergiasCronicas2());
+			setSldAlergiasCronicas2(Funciones.desencriptarAES256(salud.getSldAlergiasCronicas2(),key));
 			setSldEmbriagar(salud.getSldEmbriagar());
 			setSldMadreCausaMuerte(salud.getSldMadreCausaMuerte());
 			setSldMadreEdad(salud.getSldMadreEdad());
 			setSldMadreEnfermedadesActuales(salud.getSldMadreEnfermedadesActuales());
 			setSldMadreFallecio(salud.getSldMadreFallecio());
-			setSldNombreLugarCentroMedico(salud.getSldNombreLugarCentroMedico());
+			setSldNombreLugarCentroMedico(Funciones.desencriptarAES256(salud.getSldNombreLugarCentroMedico(),key));
 			setSldObservaciones(salud.getSldObservaciones());
 			setSldPadreCausaMuerte(salud.getSldPadreCausaMuerte());
 			setSldPadreEdad(salud.getSldPadreEdad());
@@ -4091,8 +4174,8 @@ public class PersonaBean {
 			setSldDiscapacidad(salud.getSldDiscapacidad());
 			setSldEjercicioHoras("" + salud.getSldEjercicioHoras());
 			setSldTabacoSemana("" + salud.getSldTabacoSemana());
-			setSldAlergiasCronicas3(salud.getSldAlergiasCronicas3());
-			setSldMedicamentosCronicos3(salud.getSldMedicamentosCronicos3());
+			setSldAlergiasCronicas3(Funciones.desencriptarAES256(salud.getSldAlergiasCronicas3(),key));
+			setSldMedicamentosCronicos3(Funciones.desencriptarAES256(salud.getSldMedicamentosCronicos3(),key));
 			this.llenarBooleanos(getSldSeguroPrivado(), getSldDiscapacidad(), getSldRealizaEjercicio(),
 					getSldConsumeAlcohol(), getSldEmbriagar(), getSldConsumeTabaco(), getSldPadreFallecio(),
 					getSldMadreFallecio());
