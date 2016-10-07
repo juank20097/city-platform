@@ -211,7 +211,7 @@ public class Funciones {
 	 */
 	public static Date stringToDateF(String fecha) throws ParseException {
 		DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-		if (fecha.isEmpty())
+		if (fecha.isEmpty() || fecha.equals("null"))
 			return null;
 		else
 			return formato.parse(fecha);

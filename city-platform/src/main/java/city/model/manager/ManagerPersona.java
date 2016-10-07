@@ -38,6 +38,16 @@ import city.model.generic.Funciones;
 @Stateless
 public class ManagerPersona {
 
+	private static String INS_YACHAYEP = "Yachay EP";
+	private static String INS_YACHAYTECH = "Yachay TECH";
+	private static String INS_CIUDAD = "Ciudad Yachay";
+	private static String INS_IST = "Instituto Tecnológico 17 de Julio";
+
+	private static String PER_FUN = "Funcionarios";
+	private static String PER_EST = "Estudiantes";
+	private static String PER_EXT = "Externos";
+	private static String PER_COM = "Comuneros";
+
 	@EJB
 	private ManagerDAO mngDao;
 
@@ -773,7 +783,6 @@ public class ManagerPersona {
 		}
 	}
 
-
 	private String cambiarNulosInteger(String campo) {
 		if (campo == null)
 			campo = "0";
@@ -1043,28 +1052,128 @@ public class ManagerPersona {
 
 	/////////////////////////////////////////////////// (GRÁFICO)/////////////////////////////////////////////////////////
 
-	public Integer obtencionDatos(Integer edadi, Integer edadf, String genero) {
+	public Integer obtencionDatos(Integer edadi, Integer edadf, String genero, String ins, String per) {
 		Integer valor = 0;
 		ArrayList<Integer> edades = new ArrayList<Integer>();
-		for (GenPersona persona : listaFuncionarios(genero)) {
-			edades.add(edadXFecha(persona.getPerFechaNacimiento()));
-		}
-		for (Integer edad : edades) {
-			if (edad >= edadi && edad <= edadf) {
-				valor += 1;
+		List<GenPersona> l_persona = listarSexoEdad(genero, ins, per);
+		if (l_persona == null || l_persona.isEmpty()) {
+			valor = -1;
+		} else {
+			for (GenPersona persona : listarSexoEdad(genero, ins, per)) {
+				edades.add(edadXFecha(persona.getPerFechaNacimiento()));
+			}
+			for (Integer edad : edades) {
+				if (edad >= edadi && edad <= edadf) {
+					valor += 1;
+				}
 			}
 		}
-		System.out.println(valor);
 		return valor;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<GenPersona> listaFuncionarios(String genero) {
+	public List<GenPersona> listarSexoEdad(String genero, String ins, String per) {
 		List<GenPersona> lp = new ArrayList<GenPersona>();
-		List<Object> lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
-				+ "' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-		lp = ObjectToGenPersona(lista);
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodos(genero, per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEP(genero, per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayT(genero, per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaIST(genero, per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudad(genero, per);
+		}
+		if (lista != null)
+			lp = ObjectToGenPersona(lista);
 		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodos(String genero, String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim() + "';");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_externos where ext_tipo='Comunidad');");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_estudiante_institucion);");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_externos where ext_tipo!='Comunidad');");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayT(String genero, String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') or p.per_genero='"
+					+ genero.trim()
+					+ "' and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A');");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A');");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A');");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaIST(String genero, String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') or p.per_genero='"
+					+ genero.trim()
+					+ "' and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A');");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A');");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A');");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEP(String genero, String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona where per_genero='" + genero.trim()
+					+ "' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudad(String genero, String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select per_dni from gen_externos);");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+					+ "' and p.per_dni in (select per_dni from gen_externos where ext_tipo='Comunidad');");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
+			+ "' and p.per_dni in (select per_dni from gen_externos where ext_tipo!='Comunidad');");
+}
+		return lista;
 	}
 
 	private List<GenPersona> ObjectToGenPersona(List<Object> lista) {
@@ -1089,8 +1198,10 @@ public class ManagerPersona {
 
 	public Integer edadXFecha(Date fecha) {
 		Integer v = 0;
+		if (fecha !=null){
 		String f = Funciones.dateToString(fecha);
 		v = edad(f);
+		}
 		return v;
 
 	}

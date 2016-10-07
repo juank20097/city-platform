@@ -18,6 +18,44 @@
 	<ui:define name="contenido">
 		<b:container>
 			<h:form id="frm">
+			<b:growl id="growl" delay="4000" placementFrom="top"
+						show-detail="false" global-only="false" show-summary="true"
+						allow-dismiss="true" animation-enter="animated bounceInDown"
+						animation-exit="animated flipOutX" escape="true" />
+				<p:separator></p:separator>
+				<b:row>
+					<b:column span="2">
+						<b:commandButton value="Volver" iconAwesome="angle-left"
+							action="index?faces-redirect=true" />
+					</b:column>
+					<b:column offset="1" span="1">
+						<p:outputLabel>Institución :</p:outputLabel>
+					</b:column>
+					<b:column span="3">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{graficoBean.institucion}">
+							<f:selectItem itemLabel="Todos" itemValue="all"></f:selectItem>
+							<f:selectItems value="#{graficoBean.l_instituciones}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+					<b:column span="1">
+						<p:outputLabel>Personas :</p:outputLabel>
+					</b:column>
+					<b:column span="2">
+						<h:selectOneMenu styleClass="form-control"
+							value="#{graficoBean.personas}">
+							<f:selectItem itemLabel="Todos" itemValue="all"></f:selectItem>
+							<f:selectItems value="#{graficoBean.l_personas}">
+							</f:selectItems>
+						</h:selectOneMenu>
+					</b:column>
+					<b:column span="2">
+						<b:commandButton value="Filtrar" styleClass="btn-info btn"
+							iconAwesome="fa fa-filter" action="#{graficoBean.cargarDatos()}" update="frm:growl frm" />
+					</b:column>
+				</b:row>
+				<p:separator></p:separator>
 				<center>
 					<h1>Grupos del Personal por Sexo y Edad</h1>
 				</center>
