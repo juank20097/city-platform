@@ -55,7 +55,7 @@ public class ManagerPersona {
 	 * Metodo de inicialización de contructor
 	 */
 	public ManagerPersona() {
-	}// Cierre del Constructor
+	}
 
 	// //////////////////////////////////////////////////////////(PERSONAS)/////////////////////////////////////////////////////////////////////
 	/**
@@ -1171,8 +1171,8 @@ public class ManagerPersona {
 					+ "' and p.per_dni in (select per_dni from gen_externos where ext_tipo='Comunidad');");
 		} else if (persona.equals(PER_EXT)) {
 			lista = mngDao.ejectNativeSQL3("select * from gen_persona p where p.per_genero='" + genero.trim()
-			+ "' and p.per_dni in (select per_dni from gen_externos where ext_tipo!='Comunidad');");
-}
+					+ "' and p.per_dni in (select per_dni from gen_externos where ext_tipo!='Comunidad');");
+		}
 		return lista;
 	}
 
@@ -1198,9 +1198,9 @@ public class ManagerPersona {
 
 	public Integer edadXFecha(Date fecha) {
 		Integer v = 0;
-		if (fecha !=null){
-		String f = Funciones.dateToString(fecha);
-		v = edad(f);
+		if (fecha != null) {
+			String f = Funciones.dateToString(fecha);
+			v = edad(f);
 		}
 		return v;
 
@@ -1226,29 +1226,109 @@ public class ManagerPersona {
 		return anos;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Integer totalHombres() {
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select * from gen_persona where per_genero='M' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-		return lista.size();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Integer totalMujeres() {
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select * from gen_persona where per_genero='F' and per_dni in (select per_dni from gen_funcionarios_institucion where fun_estado='A');");
-		return lista.size();
-	}
-
 	//////////////////////////////////////////////// (GRAFICO_SANGUINEO)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<Sangre> listaSanguinea() {
+	public List<Sangre> listaSanguinea(String ins, String per) {
 		List<Sangre> lp = new ArrayList<Sangre>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
-		lp = ObjectToSangre(lista);
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosSanguineo(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPSanguineo(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTSanguineo(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTSanguineo(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadSanguineo(per);
+		}
+		if (lista != null)
+			lp = ObjectToSangre(lista);
 		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosSanguineo(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPSanguineo(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_grupo_sanguineo;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTSanguineo(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTSanguineo(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, s.sld_grupo_sanguineo;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadSanguineo(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, s.sld_grupo_sanguineo;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_grupo_sanguineo, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, s.sld_grupo_sanguineo;");
+		}
+		return lista;
 	}
 
 	private List<Sangre> ObjectToSangre(List<Object> lista) {
@@ -1268,67 +1348,631 @@ public class ManagerPersona {
 	//////////////////////////////////////////////// (GRAFICO_EJERCICIO)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaEjercicio() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaEjercicio(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosEje(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPEje(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTEje(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTEje(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadEje(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosEje(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPEje(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_realiza_ejercicio;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTEje(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTEje(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, s.sld_realiza_ejercicio;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadEje(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, s.sld_realiza_ejercicio;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_realiza_ejercicio, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, s.sld_realiza_ejercicio;");
+		}
+		return lista;
 	}
 
 	//////////////////////////////////////////////// (GRAFICO_ALCOHOL)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaAlcohol() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_consume_alcohol;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaAlcohol(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosAlc(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPAlc(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTAlc(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTAlc(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadAlc(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosAlc(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPAlc(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_alcohol;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTAlc(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTAlc(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, sld_consume_alcohol;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadAlc(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, sld_consume_alcohol;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_alcohol, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, sld_consume_alcohol;");
+		}
+		return lista;
 	}
 
 	//////////////////////////////////////////////// (GRAFICO_EMBRIAGUEZ)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaEmbriaguez() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_embriagar;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaEmbriaguez(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosEmb(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPEmb(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTEmb(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTEmb(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadEmb(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosEmb(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPEmb(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_embriagar;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTEmb(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, sld_embriagar;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTEmb(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, sld_embriagar;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadEmb(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, sld_embriagar;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_embriagar, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, sld_embriagar;");
+		}
+		return lista;
 	}
 
 	//////////////////////////////////////////////// (GRAFICO_TABACO)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaTabaco() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_consume_tabaco;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaTabaco(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosTab(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPTab(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTTab(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTTab(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadTab(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosTab(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPTab(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, sld_consume_tabaco;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTTab(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTTab(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, sld_consume_tabaco;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadTab(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, sld_consume_tabaco;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, sld_consume_tabaco, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, sld_consume_tabaco;");
+		}
+		return lista;
 	}
 
 	//////////////////////////////////////////////// (GRAFICO_SEGURO_IESS)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaSeguroI() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaSeguroI(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosIESS(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPIESS(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTIESS(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTIESS(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadIESS(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosIESS(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPIESS(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_iess;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTIESS(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTIESS(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, s.sld_seguro_iess;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadIESS(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, s.sld_seguro_iess;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_iess, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, s.sld_seguro_iess;");
+		}
+		return lista;
 	}
 
 	//////////////////////////////////////////////// (GRAFICO_SEGURO_PRIVADO)////////////////////////////////////////////
 
 	@SuppressWarnings("unchecked")
-	public List<GenericClassBoolean> listaSeguroP() {
-		List<GenericClassBoolean> l = new ArrayList<GenericClassBoolean>();
-		List<Object> lista = mngDao.ejectNativeSQL3(
-				"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
-		l = ObjectToClass(lista);
-		return l;
+	public List<GenericClassBoolean> listaSeguroP(String ins, String per) {
+		List<GenericClassBoolean> lp = new ArrayList<GenericClassBoolean>();
+		List<Object> lista = new ArrayList<Object>();
+		if (ins.equals("all")) {
+			lista = ListaTodosPri(per);
+		} else if (ins.equals(INS_YACHAYEP)) {
+			lista = ListaYachayEPPri(per);
+		} else if (ins.equals(INS_YACHAYTECH)) {
+			lista = ListaYachayTPri(per);
+		} else if (ins.equals(INS_IST)) {
+			lista = ListaISTPri(per);
+		} else if (ins.equals(INS_CIUDAD)) {
+			lista = ListaCiudadPri(per);
+		}
+		if (lista != null)
+			lp = ObjectToClass(lista);
+		return lp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaTodosPri(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s  where p.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_externos e where e.ext_tipo='Comunidad' and p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_estudiante_institucion e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_externos e where p.per_dni = e.per_dni and e.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayEPPri(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s, gen_funcionarios_institucion f where f.fun_estado='A' and p.per_dni = f.per_dni and f.per_dni = s.per_dni group by p.per_genero, s.sld_seguro_privado;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaYachayTPri(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='2' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='2' and e.est_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaISTPri(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') or p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_FUN)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select f.per_dni from gen_funcionarios_institucion f where f.ins_codigo='3' and f.fun_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_EST)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_estudiante_institucion e where e.ins_codigo='3' and e.est_estado='A') group by p.per_genero, s.sld_seguro_privado;");
+		}
+		return lista;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> ListaCiudadPri(String persona) {
+		List<Object> lista = new ArrayList<Object>();
+		if (persona.equals("all")) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e )  group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_COM)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo='Comunidad')  group by p.per_genero, s.sld_seguro_privado;");
+		} else if (persona.equals(PER_EXT)) {
+			lista = mngDao.ejectNativeSQL3(
+					"select p.per_genero, s.sld_seguro_privado, count(*) as total from gen_persona p, gen_salud s where p.per_dni= s.per_dni and p.per_dni in (select e.per_dni from gen_externos e where e.ext_tipo!='Comunidad')  group by p.per_genero, s.sld_seguro_privado;");
+		}
+		return lista;
 	}
 
 	private List<GenericClassBoolean> ObjectToClass(List<Object> lista) {

@@ -350,8 +350,8 @@ function exportChartEmbP() {
 								<b:row>
 									<b:column span="12">
 										<p:chart id="tab" type="bar"
-											model="#{graficoBean.barModelTabaco}" style="height:400px"
-											responsive="true" widgetVar="charTab" />
+											model="#{graficoBean.barModelTabaco}"
+											style="height:400px" responsive="true" widgetVar="chartTab" />
 									</b:column>
 								</b:row>
 								<b:row>
@@ -417,19 +417,19 @@ function exportChartTabP() {
 									<b:column span="12">
 										<p:chart id="iess" type="bar"
 											model="#{graficoBean.barModelSeguroIESS}"
-											style="height:400px" responsive="true" widgetVar="charIess" />
+											style="height:400px" responsive="true" widgetVar="chartIes" />
 									</b:column>
 								</b:row>
 								<b:row>
 									<b:column offset="9" span="1" style="margin-bottom:10px;">
 										<p:commandButton type="button" styleClass="btn btn-info"
-											value="Exportar a Imagen" onclick="exportChartIess()" />
+											value="Exportar a Imagen" onclick="exportChartIes()" />
 									</b:column>
 								</b:row>
 								<script type="text/javascript">
-function exportChartIess() {
+function exportChartIes() {
     //export image
-    $('#output').empty().append(PF('chartIess').exportAsImage());
+    $('#output').empty().append(PF('chartIes').exportAsImage());
  
     //show the dialog
     PF('dlg').show();
@@ -471,7 +471,7 @@ function exportChartIessP() {
 									<b:column span="12">
 										<p:chart id="privado" type="bar"
 											model="#{graficoBean.barModelSeguroPrivado}"
-											style="height:400px" responsive="true" widgetVar="charPri" />
+											style="height:400px" responsive="true" widgetVar="chartPri" />
 									</b:column>
 								</b:row>
 								<b:row>
