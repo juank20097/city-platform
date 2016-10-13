@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.crypto.SecretKey;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
@@ -17,11 +18,14 @@ import city.model.dao.entidades.GenPersona;
 
 import city.model.dao.entidades.extras.DatosMedicosFuncionario;
 import city.model.dao.entidades.extras.Funcionario;
+import city.model.generic.Funciones;
 
 @Stateless
 public class ManagerReporteMedico {
 	@EJB
 	private ManagerDAO mngDao;
+
+	private static SecretKey key = Funciones.addKey("YachayEP2016-Salud!/");
 
 	public ArrayList<DatosMedicosFuncionario> getAllDatosFuncionarios() {
 
@@ -85,7 +89,14 @@ public class ManagerReporteMedico {
 					e.printStackTrace();
 				}
 			}
-
+			dt.setSldMedicamentos(Funciones.desencriptarAES256(dt.getSldMedicamentos(), key));
+			dt.setSldAlergias(Funciones.desencriptarAES256(dt.getSldAlergias(), key));
+			dt.setSldAlergiasCronicas2(Funciones.desencriptarAES256(dt.getSldAlergiasCronicas2(), key));
+			dt.setSldAlergiasCronicas3(Funciones.desencriptarAES256(dt.getSldAlergiasCronicas3(), key));
+			dt.setSldMedicamentosCronicos2(Funciones.desencriptarAES256(dt.getSldMedicamentosCronicos2(), key));
+			dt.setSldMedicamentosCronicos3(Funciones.desencriptarAES256(dt.getSldMedicamentosCronicos3(), key));
+			dt.setSldNombreLugarCentroMedico(Funciones.desencriptarAES256(dt.getSldNombreLugarCentroMedico(), key));
+			dt.setSldFrecuenciaConsumoMedicame(Funciones.desencriptarAES256(dt.getSldFrecuenciaConsumoMedicame(), key));
 			datosFuncionarios.add(dt);
 
 		}
