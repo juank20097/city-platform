@@ -112,7 +112,7 @@ public class GraficoBean {
 		setInstitucion("all");
 		cargarInstituciones();
 		cargarPersonas();
-		cargarDatos();
+//		cargarDatos();
 	}
 
 	public List<SelectItem> getL_personas() {

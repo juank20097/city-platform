@@ -485,7 +485,7 @@ public class Funciones {
 
 	public static String desencriptarAES256(String datosCifrados, SecretKey key) {
 		Cipher cipher;
-		String str = "";
+		String str = "error";
 		if (datosCifrados != null){
 		try {
 			byte[] value = new BASE64Decoder().decodeBuffer(datosCifrados);

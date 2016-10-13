@@ -18,10 +18,10 @@
 	<ui:define name="contenido">
 		<b:container>
 			<h:form id="frm">
-			<b:growl id="growl" delay="4000" placementFrom="top"
-						show-detail="false" global-only="false" show-summary="true"
-						allow-dismiss="true" animation-enter="animated bounceInDown"
-						animation-exit="animated flipOutX" escape="true" />
+				<b:growl id="growl" delay="4000" placementFrom="top"
+					show-detail="false" global-only="false" show-summary="true"
+					allow-dismiss="true" animation-enter="animated bounceInDown"
+					animation-exit="animated flipOutX" escape="true" />
 				<p:separator></p:separator>
 				<b:row>
 					<b:column span="2">
@@ -52,7 +52,9 @@
 					</b:column>
 					<b:column span="2">
 						<b:commandButton value="Filtrar" styleClass="btn-info btn"
-							iconAwesome="fa fa-filter" action="#{graficoBean.cargarDatos()}" update="frm:growl frm" />
+							onclick="PF('statusDialog').show()"
+							oncomplete="PF('statusDialog').hide()" iconAwesome="fa fa-filter"
+							action="#{graficoBean.cargarDatos()}" update="frm:growl frm" />
 					</b:column>
 				</b:row>
 				<p:separator></p:separator>
@@ -350,8 +352,8 @@ function exportChartEmbP() {
 								<b:row>
 									<b:column span="12">
 										<p:chart id="tab" type="bar"
-											model="#{graficoBean.barModelTabaco}"
-											style="height:400px" responsive="true" widgetVar="chartTab" />
+											model="#{graficoBean.barModelTabaco}" style="height:400px"
+											responsive="true" widgetVar="chartTab" />
 									</b:column>
 								</b:row>
 								<b:row>
@@ -522,6 +524,11 @@ function exportChartPriP() {
 			<p:dialog widgetVar="dlg" showEffect="fade" modal="true"
 				resizable="false">
 				<p:outputPanel id="output" layout="block" />
+			</p:dialog>
+
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage value="../resources/img/cargando.gif" />
 			</p:dialog>
 		</b:container>
 	</ui:define>

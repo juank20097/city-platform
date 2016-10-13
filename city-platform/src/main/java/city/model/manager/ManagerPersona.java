@@ -782,6 +782,16 @@ public class ManagerPersona {
 			e.printStackTrace();
 		}
 	}
+	
+	public void editarSalud2(GenSalud s){
+		try {
+			mngDao.actualizar(s);
+			System.out.println("Actualización correcta -- >"+s.getPerDni());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private String cambiarNulosInteger(String campo) {
 		if (campo == null)
