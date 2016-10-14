@@ -268,8 +268,10 @@ public class SesionBean implements Serializable {
 				texto = "<html>" + "<body>" + "<p>Ingrese al siguiente link para cambiar su clave:<a href='" + cambio
 						+ "?usuario=" + URLEncoder.encode(Funciones.encriptarAES256(getUsuario(), key), "UTF-8") + "'>Cambio de Credencial</a></p>"
 						+ "</body>" + "</html>";
-				
+				if (p.getPerCorreo()!=null)
 				envioMailWS(p.getPerCorreo(), "Cambio de Credenciales", texto);
+				if (p.getPerCorreo2()!=null)
+				envioMailWS(p.getPerCorreo2(), "Cambio de Credenciales", texto);
 				Mensaje.crearMensajeINFO("El correo se envió satisfactoriamente.");
 			} else {
 				Mensaje.crearMensajeERROR("El usuario ingresado no existe");

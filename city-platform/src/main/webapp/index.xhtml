@@ -15,7 +15,6 @@
 	<h:outputStylesheet library="css" name="estilo_login.css" />
 </h:head>
 <h:body>
-
 	<div
 		style="margin-top: 0; top: 0; background: linear-gradient(to bottom right, #1c68a6 40%, #ffffff 100%);"
 		class="wrapper">
@@ -27,8 +26,8 @@
 					global-only="false" show-summary="true" allow-dismiss="true"
 					animation-enter="animated bounceInDown"
 					animation-exit="animated flipOutX" escape="true" />
-				<b:inputText style="color:black; width: 350px;"
-					placeholder="CÉDULA" value="#{sesionBean.usuario}">
+				<b:inputText style="color:black; width: 350px;" placeholder="CÉDULA"
+					value="#{sesionBean.usuario}">
 				</b:inputText>
 				<b:inputSecret style="color:black; width: 350px;"
 					placeholder="CONTRASE&Ntilde;A" value="#{sesionBean.pass}">
@@ -50,10 +49,10 @@
 				<br />
 				<br />
 				<br />
-				<b:commandButton value="Recuperar Contraseña" immediate="true" look="danger" size="sm"
-							action="contrasena?faces-redirect=true"></b:commandButton>
+				<b:commandButton value="Recuperar Contraseña" immediate="true"
+					look="danger" size="sm" action="contrasena?faces-redirect=true"></b:commandButton>
 			</h:form>
-						
+
 		</div>
 
 		<ul class="bg-bubbles">
