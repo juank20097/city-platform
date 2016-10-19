@@ -104,7 +104,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 								action="#{seguridadBean.descargarArchivo(seg)}">
-								Descargar
+								#{seg.segArchivo}
 							</p:commandLink>
 					</h:column>
 					<h:column>
@@ -113,7 +113,7 @@
 						</f:facet>
 						<p:commandLink ajax="false" update="mensaje2"
 								action="#{seguridadBean.descargarDocumento(seg)}">
-								Descargar
+								#{seg.segDocumento}
 							</p:commandLink>
 					</h:column>
 				</b:dataTable>

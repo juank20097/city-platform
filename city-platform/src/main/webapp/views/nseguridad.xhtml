@@ -179,7 +179,7 @@
 						<h:outputLabel value="Informe:" />
 					</b:column>
 					<b:column span="6">
-						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl"
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl :frm:archivo"
 							sizeLimit="6000000" multiple="false"
 							invalidSizeMessage="Archivo excede limite 5 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -189,13 +189,16 @@
 							fileUploadListener="#{seguridadBean.cargaArchivo}">
 						</p:fileUpload>
 					</b:column>
+					<b:column span="4">
+							<p:outputLabel id="archivo">#{seguridadBean.segArchivo}</p:outputLabel>	
+					</b:column>
 				</b:row>
 				<b:row>
 					<b:column span="2">
 						<h:outputLabel value="Documento Respaldo:" />
 					</b:column>
 					<b:column span="6">
-						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl"
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm:growl :frm:documento"
 							sizeLimit="6000000" multiple="false"
 							invalidSizeMessage="Archivo excede limite 5 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -204,6 +207,10 @@
 							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
 							fileUploadListener="#{seguridadBean.cargaDocumento}">
 						</p:fileUpload>
+					</b:column>
+					<b:column span="4">
+						<p:outputLabel id="documento">#{seguridadBean.segDocumento}</p:outputLabel>
+								
 					</b:column>
 				</b:row>
 			</b:panel>
