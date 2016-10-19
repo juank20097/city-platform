@@ -11,15 +11,15 @@ public class Test {
 		
 		Funciones f = new Funciones();
 		
-        String datosCifrados = f.encriptarAES256("aspirina",f.addKey("YachayEP2016-Salud!/"));
-    System.out.println("Datos Cifrados -> " + datosCifrados);
-            System.out.println("Datos Descifrados -> " + f.desencriptarAES256("KSatKgDJZsgJOlvt3tCLKFQRLrsp7KO6Xdzb1zqKDRJY7Szav7ziI3h8OM3t8KBc",f.addKey("YachayEP2016-Salud!/")));
-            //System.out.println("Datos Descifrados -> " + f.desencriptarAES256("6uggZCXgSOHLWKzqkeFUBg==",f.addKey("YachayEP2016-Salud!/")));
+//        String datosCifrados = f.encriptarAES256("aspirina",f.addKey("YachayEP2016-Salud!/"));
+//    System.out.println("Datos Cifrados -> " + datosCifrados);
+//            System.out.println("Datos Descifrados -> " + f.desencriptarAES256("KSatKgDJZsgJOlvt3tCLKFQRLrsp7KO6Xdzb1zqKDRJY7Szav7ziI3h8OM3t8KBc",f.addKey("YachayEP2016-Salud!/")));
+//            //System.out.println("Datos Descifrados -> " + f.desencriptarAES256("6uggZCXgSOHLWKzqkeFUBg==",f.addKey("YachayEP2016-Salud!/")));
 
            
-	//		
-//		System.out.println();
-//		f.UTM2Deg("17 N 813628.4500000001 45096.81");''
+		
+
+		System.out.println(f.UTM2Deg("17 N 813628.4500000001 45096.81"));
 		
 //		System.out.println("valor: " + Funciones.cifradoPropio("AZC1003422365", 3));
 //		System.out.println("valor decifrado:" + Funciones.descifradoPropio("D?F4336755698", 3));
