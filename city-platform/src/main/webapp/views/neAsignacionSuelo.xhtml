@@ -8,136 +8,575 @@
 
 
 <ui:composition template="template.xhtml">
-<f:metadata>
-		<f:viewAction action="#{sesionBean.validarPersona('asignacionSuelos.xhtml')}" />
-	</f:metadata>
+
 	<ui:define name="titulo">
             Suelos
         </ui:define>
 	<ui:define name="contenido">
 		<br />
-		<h:form id="frm">
-			<b:growl id="growl" delay="4000" placementFrom="top"
-				show-detail="false" global-only="false" show-summary="true"
-				allow-dismiss="true" animation-enter="animated bounceInDown"
-				animation-exit="animated flipOutX" escape="true" />
-			<b:panel title="Registro de Asignaci&oacute;n de Suelos" collapsible="false" look="primary">
-				<br />
-				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="ID:*"
-							rendered="#{asignacionSueloBean.edicion}" />
-					</b:column>
-					<b:column col-xs="4">
-						<b:inputText value="#{asignacionSueloBean.id}"
-							rendered="#{asignacionSueloBean.edicion}"
-							disabled="#{asignacionSueloBean.edicion}" />
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="ZONA: " />
-					</b:column>
-					<b:column col-xs="4">
-						<b:selectOneMenu value="#{asignacionSueloBean.zona}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{asignacionSueloBean.l_zona}" />
-						</b:selectOneMenu>
-					</b:column>
-					<b:column span="2">
-						<h:outputLabel value="TIPO: " />
-					</b:column>
-					<b:column span="4">
-						<h:selectOneMenu styleClass="form-control"
-							value="#{asignacionSueloBean.sueTipoCatalogo}">
-							<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
-							<f:selectItems value="#{asignacionSueloBean.l_tipo_catalogo}">
-							</f:selectItems>
-						</h:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="ACTIVIDAD: " />
-					</b:column>
-					<b:column col-xs="4">
-						<b:inputText value="#{asignacionSueloBean.actividad}" />
-					</b:column>
-					<b:column col-xs="2">
-						<h:outputLabel value="ASIGNADO A: " />
-					</b:column>
-					<b:column col-xs="4">
-						<b:inputText value="#{asignacionSueloBean.asignacion}" />
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column span="2">
-						<h:outputLabel value="TEMPORALIDAD: " />
-					</b:column>
-					<b:column span="4">
-						<p:spinner id="basic"
-							value="#{asignacionSueloBean.sueNumeroanios}" size="3" />
-					</b:column>
+		<b:growl id="growl" delay="4000" placementFrom="top"
+			show-detail="false" global-only="false" show-summary="true"
+			allow-dismiss="true" animation-enter="animated bounceInDown"
+			animation-exit="animated flipOutX" escape="true" />
+		<b:tabView tabPosition="top" pills="true"
+			contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 
-				</b:row>
+			<b:tab title="Asignaci&oacute;n de Suelos">
+
+				<b:tabView orientation="left" pills="true" tabPosition="left"
+					contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+
+					<b:tab title="Datos Generales">
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Id:*"
+									rendered="#{asignacionSueloBean.edicion}" />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.id}"
+									rendered="#{asignacionSueloBean.edicion}"
+									disabled="#{asignacionSueloBean.edicion}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Zona:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:selectOneMenu value="#{asignacionSueloBean.zona}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{asignacionSueloBean.l_zona}" />
+								</b:selectOneMenu>
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Tipo:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<h:selectOneMenu styleClass="form-control"
+									value="#{asignacionSueloBean.sueTipoCatalogo}">
+									<f:selectItem itemLabel="--Seleccione--" itemValue="-1"></f:selectItem>
+									<f:selectItems value="#{asignacionSueloBean.l_tipo_catalogo}">
+									</f:selectItems>
+								</h:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Nombre:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.nombre}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Descripci&oacute;n:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.descripcion}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Actividad:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.actividad}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Asignado a:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.asignacion}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Metros Cuadrados:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.metros}"
+									required="true"
+									requiredMessage="Metros cuadrados es requerido." />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Temporalidad:* " />
+							</b:column>
+							<b:column col-xs="1">
+								<p:spinner id="basic" min="0"
+									value="#{asignacionSueloBean.sueNumeroanios}" size="3" />
+							</b:column>
+							<b:column col-xs="1">
+								<p:selectOneMenu value="#{asignacionSueloBean.sueTipoCatalogo}">
+									<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+								</p:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Observaci&oacute;n: " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputTextarea value="#{asignacionSueloBean.observacion}"
+									rows="1" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Regulaci&oacute;n Ambiental:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputTextarea value="#{asignacionSueloBean.regAmbiental}"
+									rows="1" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Coordenada X:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.coordenadaX}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Coordenada Y:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.coordenadaY}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Superficie Solicitada:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.superficieSolicitada}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Superficie Asignada:* " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.superficieAsignada}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Estado:*" />
+							</b:column>
+							<b:column col-xs="4">
+								<b:selectOneMenu value="#{asignacionSueloBean.estado}">
+									<f:selectItems value="#{asignacionSueloBean.slctEstados}" />
+								</b:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="12">
+								<b:panel tooltip="Ocupaci&oacute;n">
+									<h4>Ocupaci&oacute;n</h4>
+									<b:row>
+										<b:column col-xs="2">
+											<h:outputLabel value="Ocupado:* " />
+										</b:column>
+										<b:column col-xs="4">
+											<p:selectBooleanButton value="#{asignacionSueloBean.ocupado}"
+												onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+												offLabel="No" style="width:60px">
+												<p:ajax update="op tu"/>
+											</p:selectBooleanButton>
+										</b:column>
+									</b:row>
+									<b:row style="margin-top:10px;">
+										<b:column col-xs="2">
+											<h:outputLabel value="Ocupado por:" />
+										</b:column>
+										<b:column col-xs="4">
+											<b:inputText id="op" value="#{asignacionSueloBean.ocupadoPor}" disabled="#{!asignacionSueloBean.ocupado}"/>
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Tipo de Uso: " />
+										</b:column>
+										<b:column col-xs="4">
+											<h:selectOneMenu id="tu" styleClass="form-control" disabled="#{!asignacionSueloBean.ocupado}"
+												value="#{asignacionSueloBean.tipoUso}">
+												<f:selectItems value="#{asignacionSueloBean.lstTipoUso}" />
+											</h:selectOneMenu>
+										</b:column>
+									</b:row>
+								</b:panel>
+							</b:column>
+						</b:row>
+						<b:row style="margin-bottom:20px;">
+							<b:column col-xs="2">
+								<h:outputLabel value="Responsable:* " />
+							</b:column>
+							<b:column col-xs="10">
+								<p:selectOneMenu filter="true" filterMatchMode="contains"
+									styleClass="form-control"
+									value="#{asignacionSueloBean.busquedaPersona}">
+									<p:ajax listener="#{asignacionSueloBean.buscarPersona()}"
+										update="dniR nomR dirR" />
+									<f:selectItems value="#{asignacionSueloBean.lstPersonas}">
+									</f:selectItems>
+								</p:selectOneMenu>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Identificaci&oacute;n: " />
+							</b:column>
+							<b:column col-xs="4">
+								<h:outputText id="dniR"
+									value="#{asignacionSueloBean.dniResponsablePorDir}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Nombres: " />
+							</b:column>
+							<b:column col-xs="4">
+								<h:outputText id="nomR"
+									value="#{asignacionSueloBean.nombreResponsablePorDir}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Direcci&oacute;n Responsable: " />
+							</b:column>
+							<b:column col-xs="10">
+								<h:outputText id="dirR"
+									value="#{asignacionSueloBean.direccionResponsable}" />
+							</b:column>
+						</b:row>
+					</b:tab>
+					<b:tab title="Fuente H&iacute;drica">
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Fuente H&iacute;drica: " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.fuenteHidrica}" />
+							</b:column>
+							<b:column col-xs="2">
+								<h:outputLabel value="Concesi&oacute;n Fuente H&iacute;drica: " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.concesionFHidrica}" />
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="2">
+								<h:outputLabel value="Responsable Concesi&oacute;n: " />
+							</b:column>
+							<b:column col-xs="4">
+								<b:inputText value="#{asignacionSueloBean.responsableConcesion}" />
+							</b:column>
+						</b:row>
+					</b:tab>
+
+				</b:tabView>
+				<h:form id="frm">
+					<b:row style="margin-bottom:10px;">
+						<b:column>
+							<b:commandButton value="Guardar"
+								onclick="PF('statusDialog').show();"
+								disabled="#{asignacionSueloBean.ocultarGuardar}"
+								oncomplete="PF('statusDialog').hide();"
+								action="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
+								update="frm" look="info">
+							</b:commandButton>&nbsp;&nbsp;&nbsp;
+								<b:commandButton value="Volver"
+								action="#{asignacionSueloBean.cancelar()}"
+								onclick="PF('statusDialog').show();" process="@this"
+								oncomplete="PF('statusDialog').hide();" immediate="true"
+								update="frm" look="info">
+							</b:commandButton>&nbsp;&nbsp;&nbsp;
+							</b:column>
+					</b:row>
+				</h:form>
+			</b:tab>
+			<b:tab title="Informes Asignaci&oacute;n de Suelos">
+				<h:form>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel
+								value="Informe Actual de Gesti&oacute;n Territorial:*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
+								sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel value="Informe Consolidado:*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
+								sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel value="Pronunciamiento Jur&iacute;dico*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
+								sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel value="Informe Consolidado 2:*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">1234567890123456789012343456789AS-DPTUS-12-02-2016-006
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel
+								value="Solicitud de Creaci&oacute;n Comit&eacute;:*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
+								sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel
+								value="Acta de Resoluci&oacute;n del Comit&eacute;:*" />
+						</b:column>
+						<b:column col-xs="7">
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm" disabled="#{!asignacionSueloBean.edicion}"
+								sizeLimit="11000000" multiple="false"
+								invalidSizeMessage="Archivo excede limite 10 MB "
+								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+								fileLimitMessage="Solo un archivo"
+								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+								fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+							</p:fileUpload>
+						</b:column>
+						<b:column col-xs="3">
+							<p:commandLink ajax="false" immediate="true" update="growl"
+								disabled="#{!asignacionSueloBean.edicion}"
+								action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+						#{asignacionSueloBean.dirPdf}
+					</p:commandLink>
+						</b:column>
+					</b:row>
+				</h:form>
+			</b:tab>
+			<b:tab title="Contrato">
+				<h:form id="frmlCo">
+					<b:growl id="gC" delay="4000" placementFrom="top"
+						show-detail="false" global-only="false" show-summary="true"
+						allow-dismiss="true" animation-enter="animated bounceInDown"
+						animation-exit="animated flipOutX" escape="true" />
+					<b:row style="margin-bottom:10px;">
+						<b:column>
+							<p:commandButton immediate="true" icon="ui-icon-plus"
+								value="Ingresar Contrato"
+								action="#{asignacionSueloBean.mostrarDlgContrato()}" />
+						</b:column>
+					</b:row>
+					<b:row style="margin-bottom:10px;">
+						<b:column>
+							<p:commandButton immediate="true" icon="ui-icon-plus"
+								value="Entregables Contrato"
+								action="#{asignacionSueloBean.mostrarDlgEntregables()}" />
+						</b:column>
+					</b:row>
+					<p:dataTable id="dtco" var="co" rows="8"
+						emptyMessage="No existen datos"
+						value="#{asignacionSueloBean.lstContratos}" scrollable="true"
+						scrollRows="20" liveScroll="true" paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<p:column headerText="Opciones">
+							<p:commandButton
+								actionListener="#{asignacionSueloBean.cargarContrato(co)}"
+								id="btnE" icon="ui-icon-pencil">
+								<p:tooltip for="btnE" value="Editar Contrato" trackMouse="true" />
+							</p:commandButton>
+
+						</p:column>
+						<p:column headerText="C&oacute;digo Contrato">
+							<h:outputText value="#{co.casId}" />
+						</p:column>
+						<p:column headerText="TDR">
+							<p:commandLink ajax="false" update="gC"
+								action="#{asignacionSueloBean.descargarPDF(co)}">
+							#{co.casTdr}
+						</p:commandLink>
+						</p:column>
+						<p:column headerText="Pliego">
+							<p:commandLink ajax="false" update="gC"
+								action="#{asignacionSueloBean.descargarPDF(co)}">
+							#{co.casPliego}
+						</p:commandLink>
+						</p:column>
+						<p:column headerText="Arrendador">
+							<h:outputText value="#{co.casArrendador}" />
+						</p:column>
+						<p:column headerText="Arrendatario">
+							<h:outputText value="#{co.casArrendatario}" />
+						</p:column>
+						<p:column headerText="Fecha Inicio">
+							<h:outputText value="#{co.casFechaInicio}" />
+						</p:column>
+						<p:column headerText="Fecha Fin">
+							<h:outputText value="#{co.casFechaFin}" />
+						</p:column>
+						<p:column headerText="Periodicidad de Pago">
+							<h:outputText
+								value="#{co.casPeriodicidadPago} #{co.casUnidadTiempo}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</b:tab>
+		</b:tabView>
+		<p:dialog id="pdC" style="padding-top:3%;" widgetVar="conDlg" modal="true" draggable="false"
+			width="850" height="400" closable="false" resizable="false"
+			showHeader="false">
+			<h:form id="frmCo">
 				<b:row>
-					<b:column span="12">
-						<b:panel tooltip="CONTRATO">
-							<h4>CONTRATO</h4>
-							<b:row>
-								<b:column span="2">
-									<h:outputLabel value="FECHA INICIO: " />
-								</b:column>
-								<b:column span="4">
-									<p:calendar value="#{asignacionSueloBean.fechaIncio}"
-										pattern="dd-MM-yyyy" navigator="true" showOn="button"
-										size="10" />
-								</b:column>
-								<b:column span="2">
-									<h:outputLabel value="FECHA FIN: " />
-								</b:column>
-								<b:column span="4">
-									<p:calendar value="#{asignacionSueloBean.fechaFin}"
-										pattern="dd-MM-yyyy" navigator="true" showOn="button"
-										size="10" />
-								</b:column>
-							</b:row>
-						</b:panel>
+					<b:column>
+						<p:messages id="co" closable="true" />
 					</b:column>
 				</b:row>
-				<br />
 				<b:row>
 					<b:column col-xs="2">
-						<h:outputLabel value="METROS CUADRADOS: " />
+						<h:outputLabel value="C&oacute;digo Contrato:*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{asignacionSueloBean.idContrato}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Arrendador:*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{asignacionSueloBean.arrendadorCotrato}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Arrendatario:*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:inputText value="#{asignacionSueloBean.arrendatarioContrato}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Periodicidad de Pago:* " />
+					</b:column>
+					<b:column col-xs="3">
+						<p:spinner id="basic" min="0"
+							value="#{asignacionSueloBean.periodicidadPagoC}" size="3" />
+					</b:column>
+					<b:column col-xs="2">
+						<p:selectOneMenu
+							value="#{asignacionSueloBean.unidadTiempoContrato}">
+							<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+						</p:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Fecha Inicio:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:inputText value="#{asignacionSueloBean.metros}" required="true"
-							requiredMessage="Metros cuadrados es requerido." />
+						<p:calendar id="fi" value="#{asignacionSueloBean.fechaIncio}"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-30:c+5" navigator="true" />
 					</b:column>
 					<b:column col-xs="2">
-						<h:outputLabel value="OBSERVACI&Oacute;N: " />
+						<h:outputLabel value="Fecha Fin:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:inputTextarea value="#{asignacionSueloBean.observacion}" />
+						<p:calendar id="ff" value="#{asignacionSueloBean.fechaFin}"
+							yearRange="c-30:c+5" navigator="true" pattern="dd-MM-yyyy"
+							mask="true" showOn="button">
+						</p:calendar>
 					</b:column>
 				</b:row>
-				<b:row>
+				<b:row style="margin-top:15px;">
 					<b:column col-xs="2">
-						<h:outputLabel value="ESTADO:*"
-							rendered="#{asignacionSueloBean.edicion}" />
+						<h:outputLabel value="TDR:*" />
 					</b:column>
-					<b:column col-xs="4">
-						<b:selectOneMenu value="#{asignacionSueloBean.estado}"
-							rendered="#{asignacionSueloBean.edicion}">
-							<f:selectItems value="#{asignacionSueloBean.slctEstados}" />
-						</b:selectOneMenu>
-					</b:column>
-				</b:row>
-				<b:row>
-					<b:column col-xs="2">
-						<h:outputLabel value="PDF:*" />
-					</b:column>
-					<b:column col-xs="6">
+					<b:column col-xs="7">
 						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
 							disabled="#{!asignacionSueloBean.edicion}" sizeLimit="11000000"
 							multiple="false"
@@ -149,7 +588,7 @@
 							fileUploadListener="#{asignacionSueloBean.cargaPDF}">
 						</p:fileUpload>
 					</b:column>
-					<b:column col-xs="4">
+					<b:column col-xs="3">
 						<p:commandLink ajax="false" immediate="true" update="growl"
 							disabled="#{!asignacionSueloBean.edicion}"
 							action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
@@ -158,24 +597,176 @@
 					</b:column>
 				</b:row>
 				<b:row style="margin-bottom:10px;">
-					<b:column>
-						<b:commandButton value="Guardar"
-							onclick="PF('statusDialog').show();" disabled="#{asignacionSueloBean.ocultarGuardar}"
-							oncomplete="PF('statusDialog').hide();" 
-							action="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
-							update="frm" look="info">
-						</b:commandButton>&nbsp;&nbsp;&nbsp;
-						<b:commandButton value="Volver"
-							action="#{asignacionSueloBean.cancelar()}"
-							onclick="PF('statusDialog').show();" process="@this"
-							oncomplete="PF('statusDialog').hide();" immediate="true"
-							update="frm" look="info">
-						</b:commandButton>&nbsp;&nbsp;&nbsp;
+					<b:column col-xs="2">
+						<h:outputLabel value="Pliego:*" />
+					</b:column>
+					<b:column col-xs="7">
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
+							disabled="#{!asignacionSueloBean.edicion}" sizeLimit="11000000"
+							multiple="false"
+							invalidSizeMessage="Archivo excede limite 10 MB "
+							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+							fileLimitMessage="Solo un archivo"
+							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+							fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+						</p:fileUpload>
+					</b:column>
+					<b:column col-xs="3">
+						<p:commandLink ajax="false" immediate="true" update="growl"
+							disabled="#{!asignacionSueloBean.edicion}"
+							action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
+							#{asignacionSueloBean.dirPdf}
+						</p:commandLink>
 					</b:column>
 				</b:row>
-			</b:panel>
-		</h:form>
-
+				<b:row>
+					<b:column col-xs="2">
+						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+							disabled="#{!asignacionSueloBean.edicion}"
+							action="#{asignacionSueloBean.guardarEditarContrato()}"
+							look="info" update="co frmCo" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{asignacionSueloBean.cancelarContrato()}" look="info"
+							update="frmCo" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmCo" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+		</p:dialog>
+		<p:dialog id="pdEC" widgetVar="entDlg" modal="true" draggable="false"
+			width="900" height="260" closable="true" resizable="false" 
+			showHeader="true">
+			<h:form id="frmEC">
+				<b:row>
+					<b:column>
+						<p:messages id="ec" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Documento:*" />
+					</b:column>
+					<b:column col-xs="7">
+						<h:outputText value="#{asignacionSueloBean.documento}" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="7">
+						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
+							sizeLimit="11000000" multiple="false"
+							invalidSizeMessage="Archivo excede limite 10 MB "
+							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+							fileLimitMessage="Solo un archivo"
+							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+							fileUploadListener="#{asignacionSueloBean.cargaPDF}">
+						</p:fileUpload>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Fecha M&aacute;xima Entrega:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar id="fm" value="#{asignacionSueloBean.fechaMaxEntrega}"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-30:c+5" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Fecha Entrega:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText value="#{asignacionSueloBean.fechaSubida}" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Responsable:* " />
+					</b:column>
+					<b:column col-xs="10">
+						<p:selectOneMenu filter="true" filterMatchMode="contains"
+							styleClass="form-control"
+							value="#{asignacionSueloBean.busquedaResponsableEC}">
+							<p:ajax listener="#{asignacionSueloBean.buscarResponsableEnt()}"
+								update="dniRE nomRE" />
+							<f:selectItems value="#{asignacionSueloBean.lstPersonas}">
+							</f:selectItems>
+						</p:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row >
+					<b:column col-xs="2">
+						<h:outputLabel value="Identificaci&oacute;n: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="dniRE"
+							value="#{asignacionSueloBean.dniresponsableEntregable}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Nombres: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="nomRE"
+							value="#{asignacionSueloBean.nombreResponsableEntregable}" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+							disabled="#{!asignacionSueloBean.edicion}"
+							action="#{asignacionSueloBean.guardarEditarEntregable()}"
+							look="info" update="ec frmEC" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{asignacionSueloBean.cancelarEntregable()}" look="info"
+							update="frmCo" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmEC" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
+			</h:form>
+			<h:form id="frmlEC">
+				<p:dataTable id="dtec" var="ec" rows="8"
+					emptyMessage="No existen datos"
+					value="#{asignacionSueloBean.lstEntregables}" scrollable="true"
+					scrollRows="20" liveScroll="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<p:column headerText="Opciones">
+						<p:commandButton
+							actionListener="#{asignacionSueloBean.cargarEntregables(ec)}"
+							id="btnE" icon="ui-icon-pencil">
+							<p:tooltip for="btnE" value="Editar Entregable" trackMouse="true" />
+						</p:commandButton>
+					</p:column>
+					<p:column headerText="C&oacute;digo Contrato">
+						<h:outputText value="#{ec.genContratoAsignacion.casId}" />
+					</p:column>
+					<p:column headerText="Documento">
+						<p:commandLink ajax="false" update="gC"
+							action="#{asignacionSueloBean.descargarPDF(ec)}">
+						#{ec.id.ecoDocumento}
+					</p:commandLink>
+					</p:column>
+					<p:column headerText="Responsable">
+						<h:outputText action="#{asignacionSueloBean.buscarNombre(ec.ecoResponsable)}"/>
+					</p:column>
+					<p:column headerText="Fecha M&aacute;xima Entrega">
+						<h:outputText value="#{ec.ecoFechaMaxEntrega}" />
+					</p:column>
+					<p:column headerText="Fecha de Entrega">
+						<h:outputText value="#{ec.ecoFechaSubida}" />
+					</p:column>
+					<p:column headerText="Estado">
+						<h:outputText value="#{ec.ecoEstado}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
 			closable="false" resizable="false" showHeader="false">
 			<p:graphicImage value="../resources/img/cargando.gif" />

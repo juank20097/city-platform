@@ -42,10 +42,10 @@ import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerPersona;
 import city.model.manager.ManagerWSDinardap;
-import ec.gob.dinardap.interoperacion.interoperadorws.servicio.ClienteWS;
-import ec.gob.dinardap.interoperacion.interoperadorws.servicio.FichaGeneral;
-import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Institucion;
-import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Registro;
+//import ec.gob.dinardap.interoperacion.interoperadorws.servicio.ClienteWS;
+//import ec.gob.dinardap.interoperacion.interoperadorws.servicio.FichaGeneral;
+//import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Institucion;
+//import ec.gob.dinardap.interoperacion.interoperadorws.servicio.Registro;
 
 @SessionScoped
 @ManagedBean
@@ -4336,7 +4336,7 @@ public class PersonaBean {
 		return val;
 	}
 
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	public void loadWS() {
 
 		try {
@@ -4478,7 +4478,7 @@ public class PersonaBean {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	// *** MÃ¨todos de Curriculum
 
 	/**

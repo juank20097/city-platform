@@ -11,6 +11,7 @@ import city.model.dao.entidades.GenAsignacionSuelo;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
+import city.model.dao.entidades.GenContratoAsignacion;
 import city.model.dao.entidades.GenDistrito;
 import city.model.dao.entidades.GenElementoBarrioValor;
 import city.model.dao.entidades.GenElementoBarrioValorPK;
@@ -18,6 +19,7 @@ import city.model.dao.entidades.GenElementoZonaValor;
 import city.model.dao.entidades.GenElementoZonaValorPK;
 import city.model.dao.entidades.GenElementosBarrio;
 import city.model.dao.entidades.GenElementosZona;
+import city.model.dao.entidades.GenEntregablesContrato;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenHistorialSeguimiento;
 import city.model.dao.entidades.GenHistorialSeguimientoPK;
@@ -179,6 +181,7 @@ public class ManagerTerritorio {
 
 	@SuppressWarnings("unchecked")
 	public List<GenCatalogoItemsDet> AllofItems(String cat_nombre) {
+		if(cat_nombre!=null){
 		List<GenCatalogoItemsDet> li = mngDAO.findWhere(GenCatalogoItemsDet.class,
 				"o.genCatalogoCab.catCodigo='" + cat_nombre + "'", null);
 		if (li == null || li.isEmpty()) {
@@ -186,6 +189,8 @@ public class ManagerTerritorio {
 		} else {
 			return li;
 		}
+		}else 
+			return null;
 	}// Cierre del metodo
 
 	public void eliminarZonaCom(GenZonasComunidadePK id) {
@@ -290,8 +295,7 @@ public class ManagerTerritorio {
 		mngDAO.actualizar(manzana);
 	}
 
-	////////////////////////////////////// (Generales)
-	////////////////////////////////////// /////////////////////////////////////
+	////////////////////////////////////// (Generales) ////////////////////////// /////////////////////////////////////
 
 	public String findParametroByID(String iParametro) throws Exception {
 		GenParametro p = (GenParametro) mngDAO.findById(GenParametro.class, iParametro);
@@ -356,8 +360,7 @@ public class ManagerTerritorio {
 		mngDAO.actualizar(barrioValor);
 	}
 
-	///////////////////////// (Elementos Zonas)
-	///////////////////////// /////////////////////////////////
+	///////////////////////// (Elementos Zonas) /////////////////// /////////////////////////////////
 
 	public Integer idElementoZona() {
 		Integer id = 0;
@@ -519,6 +522,19 @@ public class ManagerTerritorio {
 		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsigSuelo+" and o.hseEstado='A'", "o.hseFecha desc");
 	}
 
+	// Contratos
+	
+	@SuppressWarnings("unchecked")
+	public List<GenContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
+		return mngDAO.findWhere(GenContratoAsignacion.class, "o.genAsignacionSuelo.sueId", "o.casFechaInicio");
+	}
+	
+	// Entregables
+	
+	@SuppressWarnings("unchecked")
+	public List<GenEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
+		return mngDAO.findWhere(GenEntregablesContrato.class, "o.genContratoAsignacion.casId", "o.id.ecoDocumento");
+	}
 	///////////////////////////// (Seguimiento Asignación Suelo) ////////////////////////////
 	
 	/**
