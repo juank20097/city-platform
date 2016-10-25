@@ -526,14 +526,14 @@ public class ManagerTerritorio {
 	
 	@SuppressWarnings("unchecked")
 	public List<GenContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
-		return mngDAO.findWhere(GenContratoAsignacion.class, "o.genAsignacionSuelo.sueId", "o.casFechaInicio");
+		return mngDAO.findWhere(GenContratoAsignacion.class, "o.genAsignacionSuelo.sueId="+idSuelo, "o.casFechaInicio");
 	}
 	
 	// Entregables
 	
 	@SuppressWarnings("unchecked")
 	public List<GenEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
-		return mngDAO.findWhere(GenEntregablesContrato.class, "o.genContratoAsignacion.casId", "o.id.ecoDocumento");
+		return mngDAO.findWhere(GenEntregablesContrato.class, "o.genContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
 	}
 	///////////////////////////// (Seguimiento Asignación Suelo) ////////////////////////////
 	

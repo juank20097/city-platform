@@ -37,10 +37,10 @@ public class GenAsignacionSuelo implements Serializable {
 	private String sueConcesionFuenteHidrica;
 
 	@Column(name="sue_coordenada_x")
-	private String sueCoordenadaX;
+	private BigDecimal sueCoordenadaX;
 
 	@Column(name="sue_coordenada_y")
-	private String sueCoordenadaY;
+	private BigDecimal sueCoordenadaY;
 
 	@Column(name="sue_descripcion")
 	private String sueDescripcion;
@@ -189,19 +189,19 @@ public class GenAsignacionSuelo implements Serializable {
 		this.sueConcesionFuenteHidrica = sueConcesionFuenteHidrica;
 	}
 
-	public String getSueCoordenadaX() {
+	public BigDecimal getSueCoordenadaX() {
 		return this.sueCoordenadaX;
 	}
 
-	public void setSueCoordenadaX(String sueCoordenadaX) {
+	public void setSueCoordenadaX(BigDecimal sueCoordenadaX) {
 		this.sueCoordenadaX = sueCoordenadaX;
 	}
 
-	public String getSueCoordenadaY() {
+	public BigDecimal getSueCoordenadaY() {
 		return this.sueCoordenadaY;
 	}
 
-	public void setSueCoordenadaY(String sueCoordenadaY) {
+	public void setSueCoordenadaY(BigDecimal sueCoordenadaY) {
 		this.sueCoordenadaY = sueCoordenadaY;
 	}
 
