@@ -17,6 +17,15 @@
 			show-detail="false" global-only="false" show-summary="true"
 			allow-dismiss="true" animation-enter="animated bounceInDown"
 			animation-exit="animated flipOutX" escape="true" />
+		<b:row style="margin-bottom:20px;">
+			<b:column>
+				<p:commandButton value="Volver" styleClass="btn btn-info"
+					action="#{asignacionSueloBean.cancelar()}"
+					onclick="PF('statusDialog').show();"
+					oncomplete="PF('statusDialog').hide();" immediate="true"
+					update="frm" look="info"></p:commandButton>
+			</b:column>
+		</b:row>
 		<b:tabView tabPosition="top" pills="true"
 			contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
 
@@ -271,7 +280,7 @@
 						</b:tab>
 
 					</b:tabView>
-					<center>
+					<center style="margin-top:20px;">
 						<p:commandButton value="Guardar" styleClass="btn btn-info"
 							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
 							onclick="PF('statusDialog').show();"
@@ -288,36 +297,12 @@
 								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 						</p:confirmDialog>
 						&nbsp;&nbsp;&nbsp;
-						<p:commandButton value="Volver" styleClass="btn btn-info"
-							action="#{asignacionSueloBean.cancelar()}"
-							onclick="PF('statusDialog').show();"
-							oncomplete="PF('statusDialog').hide();" immediate="true"
-							update="frm" look="info"></p:commandButton>
-						&nbsp;&nbsp;&nbsp;
 						<b:label
 							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
 							severity="success" />
 					</center>
 					<b:growl>
 					</b:growl>
-					<b:row style="margin-bottom:10px;">
-						<b:column>
-							<b:commandButton value="Guardar"
-								onclick="PF('statusDialog').show();"
-								disabled="#{asignacionSueloBean.ocultarGuardar}"
-								oncomplete="PF('statusDialog').hide();"
-								action="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
-								update="frm :frmIn :frmlCo" look="info">
-							</b:commandButton>&nbsp;&nbsp;&nbsp;
-								<b:commandButton value="Volver"
-								action="#{asignacionSueloBean.cancelar()}"
-								onclick="PF('statusDialog').show();" process="@this"
-								oncomplete="PF('statusDialog').hide();" immediate="true"
-								update="frm" look="info">
-							</b:commandButton>&nbsp;&nbsp;&nbsp;
-							</b:column>
-					</b:row>
-
 				</h:form>
 			</b:tab>
 			<b:tab title="Informes Asignaci&oacute;n de Suelos">
@@ -509,13 +494,6 @@
 								action="#{asignacionSueloBean.mostrarDlgContrato()}" />
 						</b:column>
 					</b:row>
-					<b:row style="margin-bottom:10px;">
-						<b:column>
-							<p:commandButton immediate="true" icon="ui-icon-plus"
-								value="Entregables Contrato"
-								action="#{asignacionSueloBean.mostrarDlgEntregables()}" />
-						</b:column>
-					</b:row>
 					<p:dataTable id="dtco" var="co" rows="8"
 						emptyMessage="No existen datos"
 						value="#{asignacionSueloBean.lstContratos}" scrollable="true"
@@ -527,7 +505,11 @@
 								id="btnE" icon="ui-icon-pencil" update=":pdC">
 								<p:tooltip for="btnE" value="Editar Contrato" trackMouse="true" />
 							</p:commandButton>
-
+							<p:commandButton
+								actionListener="#{asignacionSueloBean.mostrarDlgEntregables(co)}"
+								id="btnEC" icon="ui-icon-pencil" update=":pdEC">
+								<p:tooltip for="btnEC" value="Entregables del Contrato" trackMouse="true" />
+							</p:commandButton>
 						</p:column>
 						<p:column headerText="Asignaci&oacute;n Suelo">
 							<h:outputText value="#{co.genAsignacionSuelo.sueNombre}" />
@@ -690,10 +672,9 @@
 						</p:commandLink>
 					</b:column>
 				</b:row>
-				<b:row>
+				<b:row style="margin-bottom:20px;">
 					<b:column col-xs="2">
 						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
-							disabled="#{asignacionSueloBean.edicionContrato}"
 							action="#{asignacionSueloBean.guardarEditarContrato()}"
 							look="info" update="co frmCo" style="padding:.4em;" />
 					</b:column>
@@ -799,8 +780,15 @@
 							look="info" update="ec frmEC" style="padding:.4em;" />
 					</b:column>
 					<b:column col-xs="4">
+						<b:commandButton value="Limpiar"
+							actionListener="#{asignacionSueloBean.cancelarEntregable()}" look="info"
+							update="frmCo frmEC" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmEC" />
+						</b:commandButton>
+					</b:column>
+					<b:column col-xs="4">
 						<b:commandButton value="Cancelar"
-							action="#{asignacionSueloBean.cancelarEntregable()}" look="info"
+							action="#{asignacionSueloBean.volverContrato()}" look="info"
 							update="frmCo" style="padding:.4em;" process="@this">
 							<p:resetInput target="frmEC" />
 						</b:commandButton>

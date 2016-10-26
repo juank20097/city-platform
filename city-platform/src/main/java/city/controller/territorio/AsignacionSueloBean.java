@@ -1132,7 +1132,7 @@ public class AsignacionSueloBean implements Serializable {
 
 	public void subirPliego(FileUploadEvent evento) {
 		try {
-			setTdrContrato(cargarInformes(evento));
+			setPliegoContrato(cargarInformes(evento));
 			editarContrato();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1494,7 +1494,7 @@ public class AsignacionSueloBean implements Serializable {
 		setArrendadorCotrato(contrato.getCasArrendador());
 		setArrendatarioContrato(contrato.getCasArrendatario());
 		setPeriodicidadPagoC(contrato.getCasPeriodicidadPago());
-		setUnidadTiempo(contrato.getCasUnidadTiempo());
+		setUnidadTiempoContrato(contrato.getCasUnidadTiempo());
 		setPrecio(contrato.getCasPrecio());
 		
 		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
@@ -1536,6 +1536,7 @@ public class AsignacionSueloBean implements Serializable {
 					Mensaje.crearMensajeINFO("Contrato ingresado correctamente.");
 				}
 			}
+			cargarLstContratos();
 		}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar contrato: " + e.getMessage());
@@ -1582,6 +1583,7 @@ public class AsignacionSueloBean implements Serializable {
 				}
 				mngTerritorio.modificarContrato(ca);
 			}
+			cargarLstContratos();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1602,18 +1604,21 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	private void cargarLstContratos(){
+		System.out.println(" ----------------> id asignacion suelos ---------->"+getId());
 		setLstContratos(mngTerritorio.findAllContratosPorAsignacion(getId()));
 	}
 	
 	// Entregables
 	
-	public void mostrarDlgEntregables() {
-		cargarLstEntregables();
+	public void mostrarDlgEntregables(GenContratoAsignacion contrato) {
+		cargarLstEntregables(contrato.getCasId());
+		setContrato(contrato);
+		System.out.println("id de contrato al ingresar a los entregables -->"+contrato.getCasId());
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
 	
-	private void cargarLstEntregables(){
-		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(getIdContrato()));
+	private void cargarLstEntregables(String idContrato){
+		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(idContrato));
 	}
 	
 	public void buscarResponsableEnt() {
@@ -1672,8 +1677,8 @@ public class AsignacionSueloBean implements Serializable {
 	public void guardarEditarEntregable(){
 		try{
 		GenEntregablesContratoPK pk = new  GenEntregablesContratoPK();
-		pk.setCasId(getIdContrato()); pk.setEcoDocumento(getDocumento());
-		
+		pk.setCasId(getContrato().getCasId()); pk.setEcoDocumento(getDocumento());
+		System.out.println();
 		GenEntregablesContrato ec = new GenEntregablesContrato();
 		ec.setId(pk); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntrega().getTime()));
 		ec.setEcoFechaSubida(getFechaSubida()); ec.setEcoResponsable(getDniresponsableEntregable());
@@ -1695,11 +1700,14 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 	
-	
 	public void cancelarEntregable(){
 		limpiarCamposEntregable();
-		
+	}
+	
+	public void volverContrato(){
+		limpiarCamposEntregable();
 		RequestContext.getCurrentInstance().execute("PF('entDlg').hide();");
+		cargarLstContratos();
 	}
 	
 	public void limpiarCamposEntregable(){
