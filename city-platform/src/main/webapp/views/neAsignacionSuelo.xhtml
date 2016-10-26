@@ -329,7 +329,7 @@
 								fileLimitMessage="Solo un archivo"
 								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
 								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.cargarInformes}">
+								fileUploadListener="#{asignacionSueloBean.inforActualGT}">
 							</p:fileUpload>
 						</b:column>
 						<b:column col-xs="3">
@@ -604,7 +604,7 @@
 					</b:column>
 					<b:column col-xs="7">
 						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
-							disabled="#{!asignacionSueloBean.edicion}" sizeLimit="11000000"
+							disabled="#{!asignacionSueloBean.edicionContrato}" sizeLimit="11000000"
 							multiple="false"
 							invalidSizeMessage="Archivo excede limite 10 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -616,7 +616,7 @@
 					</b:column>
 					<b:column col-xs="3">
 						<p:commandLink ajax="false" immediate="true" update="growl"
-							disabled="#{!asignacionSueloBean.edicion}"
+							disabled="#{!asignacionSueloBean.edicionContrato}"
 							action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
 							#{asignacionSueloBean.dirPdf}
 						</p:commandLink>
@@ -628,7 +628,7 @@
 					</b:column>
 					<b:column col-xs="7">
 						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm"
-							disabled="#{!asignacionSueloBean.edicion}" sizeLimit="11000000"
+							disabled="#{!asignacionSueloBean.edicionContrato}" sizeLimit="11000000"
 							multiple="false"
 							invalidSizeMessage="Archivo excede limite 10 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -640,7 +640,7 @@
 					</b:column>
 					<b:column col-xs="3">
 						<p:commandLink ajax="false" immediate="true" update="growl"
-							disabled="#{!asignacionSueloBean.edicion}"
+							disabled="#{!asignacionSueloBean.edicionContrato}"
 							action="#{asignacionSueloBean.descargarPDF(asignacionSueloBean.id)}">
 							#{asignacionSueloBean.dirPdf}
 						</p:commandLink>
@@ -649,7 +649,7 @@
 				<b:row>
 					<b:column col-xs="2">
 						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
-							disabled="#{!asignacionSueloBean.edicion}"
+							disabled="#{!asignacionSueloBean.edicionContrato}"
 							action="#{asignacionSueloBean.guardarEditarContrato()}"
 							look="info" update="co frmCo" style="padding:.4em;" />
 					</b:column>
@@ -743,7 +743,7 @@
 				<b:row style="margin-top:10px;">
 					<b:column col-xs="2">
 						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
-							disabled="#{!asignacionSueloBean.edicion}"
+							disabled="#{!asignacionSueloBean.edicionEntregable}"
 							action="#{asignacionSueloBean.guardarEditarEntregable()}"
 							look="info" update="ec frmEC" style="padding:.4em;" />
 					</b:column>
@@ -773,7 +773,7 @@
 						<h:outputText value="#{ec.genContratoAsignacion.casId}" />
 					</p:column>
 					<p:column headerText="Documento">
-						<p:commandLink ajax="false" update="gC"
+						<p:commandLink ajax="false" update=":frmEC:ec"
 							action="#{asignacionSueloBean.descargarPDF(ec)}">
 						#{ec.id.ecoDocumento}
 					</p:commandLink>

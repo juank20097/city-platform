@@ -20,6 +20,7 @@ import city.model.dao.entidades.GenElementoZonaValorPK;
 import city.model.dao.entidades.GenElementosBarrio;
 import city.model.dao.entidades.GenElementosZona;
 import city.model.dao.entidades.GenEntregablesContrato;
+import city.model.dao.entidades.GenEntregablesContratoPK;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GenHistorialSeguimiento;
 import city.model.dao.entidades.GenHistorialSeguimientoPK;
@@ -523,19 +524,43 @@ public class ManagerTerritorio {
 	}
 
 	// Contratos
+	public GenContratoAsignacion findContratoById(String idContrato)throws Exception{
+		return (GenContratoAsignacion) mngDAO.findById(GenContratoAsignacion.class, idContrato);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<GenContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
 		return mngDAO.findWhere(GenContratoAsignacion.class, "o.genAsignacionSuelo.sueId="+idSuelo, "o.casFechaInicio");
 	}
 	
+	public void insertarContrato(GenContratoAsignacion contrato) throws Exception{
+		mngDAO.insertar(contrato);
+	}
+	
+	public void modificarContrato(GenContratoAsignacion contrato) throws Exception {
+		mngDAO.actualizar(contrato);
+	}
 	// Entregables
 	
 	@SuppressWarnings("unchecked")
 	public List<GenEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
 		return mngDAO.findWhere(GenEntregablesContrato.class, "o.genContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
 	}
+	
+	public GenEntregablesContrato findEntregableById(GenEntregablesContratoPK id) throws Exception{
+		return (GenEntregablesContrato) mngDAO.findById(GenEntregablesContrato.class, id);
+	}
+	
+	public void insertarEntregable(GenEntregablesContrato entregable) throws Exception{
+		mngDAO.insertar(entregable);
+	}
+
+	public void modificarEntregable(GenEntregablesContrato entregable) throws Exception{
+		mngDAO.insertar(entregable);
+	}
+	
 	///////////////////////////// (Seguimiento Asignación Suelo) ////////////////////////////
+	
 	
 	/**
 	 * Método para generar el id de seguimiento asignación

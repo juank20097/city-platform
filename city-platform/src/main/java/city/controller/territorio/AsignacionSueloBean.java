@@ -896,7 +896,6 @@ public class AsignacionSueloBean implements Serializable {
 			System.out.println("tipo catalogo "+getTipoCatalogo());
 			if (validarCampos()) {
 				GenAsignacionSuelo as = new GenAsignacionSuelo();
-				as.setSueId(mngTerritorio.asignacionSueloId());
 				as.setSueTipo(getTipoCatalogo());
 				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
 				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
@@ -924,6 +923,8 @@ public class AsignacionSueloBean implements Serializable {
 				
 				if (isEdicion()) {
 					GenAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getId());
+					setId(asignacionSuelo.getSueId());
+					as.setSueId(getId());
 					
 					if(getInforActualGT()!= null || getInforActualGT() != ""){
 						as.setSueInforActualGestionTerr(getInforActualGT());
@@ -959,8 +960,10 @@ public class AsignacionSueloBean implements Serializable {
 					mngTerritorio.modicarAsignacionSuelo(as);
 					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
 				} else {
+					setId(mngTerritorio.asignacionSueloId());
+					as.setSueId(getId());
 					mngTerritorio.insertarAsignacionSuelo(as);
-					setEdicion(false);
+					setEdicion(true);
 					setOcultarGuardar(true);
 					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
 				}
@@ -1017,24 +1020,32 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void inforActualGT(FileUploadEvent event){
 		try{
+			System.out.println("Ingreso a metodo informActual");
 			setInforActualGT(cargarInformes(event));
+			editarAsignacionSuelo();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
+	public String direccionArchivo(UploadedFile file){
+		try {
+			String ubicacionArchivo = mngTerritorio.findParametroByID("direccion_informes") + "/"+ File.separatorChar +file.getFileName();
+			return ubicacionArchivo;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 	
 	public String cargarInformes(FileUploadEvent event) throws IOException {
+		System.out.println("Ingreso a metodo cargar informes");
 		filePdf = event.getFile();
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
-
+		String nombre = filePdf.getFileName();
 		if (filePdf != null) {
 			try {
-				String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
-				setDirPdf(filePdf.getFileName());
-				System.out.println("PAD------> " + carpeta);
-				System.out.println("name------> " + getDirPdf());
-				outputStream = new FileOutputStream(new File(carpeta + File.separatorChar + getDirPdf()));
+				outputStream = new FileOutputStream(direccionArchivo(filePdf));
 				inputStream = filePdf.getInputstream();
 
 				int read = 0;
@@ -1044,7 +1055,6 @@ public class AsignacionSueloBean implements Serializable {
 					outputStream.write(bytes, 0, read);
 				}
 				Mensaje.crearMensajeINFO("Carga del archivo Correcta");
-				editarAsignacionSuelo();
 			} catch (Exception e) {
 				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
 				e.printStackTrace();
@@ -1056,7 +1066,7 @@ public class AsignacionSueloBean implements Serializable {
 					outputStream.close();
 				}
 			}
-			return getDirPdf();
+			return  nombre ;
 		} else {
 			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
 			return "";
@@ -1071,7 +1081,7 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			if (validarCampos()) {
 				GenAsignacionSuelo as = new GenAsignacionSuelo();
-				as.setSueId(mngTerritorio.asignacionSueloId());
+				as.setSueId(getId());
 				as.setSueTipo(getTipoCatalogo());
 				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
 				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
@@ -1356,7 +1366,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void mostrarDlgContrato() {
-		RequestContext.getCurrentInstance().execute("PF('conDlg').show();;");
+		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
 	}
 	
 	public void cargarContrato(GenContratoAsignacion contrato){
@@ -1376,7 +1386,54 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void guardarEditarContrato(){
-		
+		try{
+		if(validarCamposContrato()){
+			GenContratoAsignacion ca = new GenContratoAsignacion();
+			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
+			ca.setCasArrendador(Funciones.quitarEspacios(getArrendadorCotrato()));
+			ca.setCasArrendatario(Funciones.quitarEspacios(getArrendatarioContrato()));
+			ca.setCasFechaInicio(new Timestamp(getFechaIncio().getTime()));
+			ca.setCasFechaFin(new Timestamp(getFechaFin().getTime()));
+			ca.setCasPeriodicidadPago(getPeriodicidadPagoC());
+			ca.setCasUnidadTiempo(getUnidadTiempoContrato());
+			if( isEdicionContrato()){
+				GenContratoAsignacion contrato = mngTerritorio.findContratoById(getIdContrato());
+				if(getTdrContrato() != null || getTdrContrato() != ""){
+					ca.setCasTdr(getTdrContrato());
+				}else{
+					ca.setCasTdr(contrato.getCasTdr());
+				}
+				if(getPliegoContrato() != null || getPliegoContrato() != ""){
+					ca.setCasPliego(getPliegoContrato());
+				}else{
+					ca.setCasPliego(contrato.getCasPliego());
+				}
+				mngTerritorio.modificarContrato(ca);
+				Mensaje.crearMensajeINFO("Contrato actualizado correctamente.");
+				
+			}else{
+				if(mngTerritorio.findContratoById(getIdContrato()) != null){
+					Mensaje.crearMensajeERROR("Ya existe el código de contrato.");
+				}else{
+					mngTerritorio.insertarContrato(ca);
+					setEdicionContrato(true);
+					Mensaje.crearMensajeINFO("Contrato ingresado correctamente.");
+				}
+			}
+		}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error al almacenar contrato: " + e.getMessage());
+			System.out.println("Error al almacenar contrato ");
+			e.printStackTrace();
+		}
+	} 
+	private boolean validarCamposContrato(){
+		if(getUnidadTiempoContrato().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Se debe seleccionar la Unidad de tiempo de pa Periodicidad de Pago.");
+			return false;
+		}else {
+			return true;
+		}
 	}
 	
 	public void cancelarContrato(){
@@ -1400,6 +1457,7 @@ public class AsignacionSueloBean implements Serializable {
 	// Entregables
 	
 	public void mostrarDlgEntregables() {
+		cargarLstEntregables();
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
 	
@@ -1438,7 +1496,7 @@ public class AsignacionSueloBean implements Serializable {
 		setEstadoEntregable(entregable.getEcoEstado());
 		setNombreResponsableEntregable(buscarNombre(entregable.getEcoResponsable()));
 		
-		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
+		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
 	
 	public String buscarNombre(String cedula){
@@ -1456,8 +1514,31 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void guardarEditarEntregable(){
+		try{
+		GenEntregablesContratoPK pk = new  GenEntregablesContratoPK();
+		pk.setCasId(getIdContrato()); pk.setEcoDocumento(getDocumento());
 		
+		GenEntregablesContrato ec = new GenEntregablesContrato();
+		ec.setId(pk); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntrega().getTime()));
+		ec.setEcoFechaSubida(getFechaSubida()); ec.setEcoResponsable(getDniresponsableEntregable());
+		
+		if(isEdicionEntregable()){
+			mngTerritorio.modificarEntregable(ec);
+			Mensaje.crearMensajeINFO("Entregable ingresado correctamente.");
+			setEdicionEntregable(false);
+		}else{
+			if(mngTerritorio.findEntregableById(pk) != null){
+				mngTerritorio.insertarEntregable(ec);
+				Mensaje.crearMensajeINFO("Entregable ingresado correctamente.");
+			}
+		}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error al almacenar entregable contrato: " + e.getMessage());
+			System.out.println("Error al almacenar entregable contrato ");
+			e.printStackTrace();
+		}
 	}
+	
 	
 	public void cancelarEntregable(){
 		limpiarCamposEntregable();
