@@ -145,7 +145,7 @@ public class AsignacionSueloBean implements Serializable {
 	private String inforActualGT;
 	private String inforConsolidado;
 	private String inforPronJuidico;
-	private String informeConsolidado2;
+	private String inforConsolidado2;
 	private String solicitudComite;
 	private String actaResolucion;
 	private String estadoProceso;
@@ -158,6 +158,7 @@ public class AsignacionSueloBean implements Serializable {
 	private List<SelectItem> lstUnidadTiempo;
 	private List<SelectItem> lstTipoUso;
 	private String dirPdf;
+	private GenAsignacionSuelo asignacionSuelo;
 	// Contrato
 	private String idContrato;
 	private String tdrContrato;
@@ -220,6 +221,7 @@ public class AsignacionSueloBean implements Serializable {
 		cargarAsignacionSuelo();
 		cargarTiposCatalogo();
 		cargarUnidadTiempo();
+		cargarTipoUso();
 		cargarEstados();
 		cargarBusqueda();
 	}
@@ -555,12 +557,12 @@ public class AsignacionSueloBean implements Serializable {
 		this.inforPronJuidico = inforPronJuidico;
 	}
 
-	public String getInformeConsolidado2() {
-		return informeConsolidado2;
+	public String getInforConsolidado2() {
+		return inforConsolidado2;
 	}
 
-	public void setInformeConsolidado2(String informeConsolidado2) {
-		this.informeConsolidado2 = informeConsolidado2;
+	public void setInforConsolidado2(String inforConsolidado2) {
+		this.inforConsolidado2 = inforConsolidado2;
 	}
 
 	public String getSolicitudComite() {
@@ -651,6 +653,16 @@ public class AsignacionSueloBean implements Serializable {
 		this.dirPdf = dirPdf;
 	}
 	
+	public GenAsignacionSuelo getAsignacionSuelo() {
+		return asignacionSuelo;
+	}
+	
+	public void setAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) {
+		this.asignacionSuelo = asignacionSuelo;
+	}
+	
+	//Contrato 
+	
 	public List<GenContratoAsignacion> getLstContratos() {
 		return lstContratos;
 	}
@@ -659,7 +671,6 @@ public class AsignacionSueloBean implements Serializable {
 		this.lstContratos = lstContratos;
 	}
 	
-	//Contrato 
 	
 	public String getIdContrato() {
 		return idContrato;
@@ -881,14 +892,21 @@ public class AsignacionSueloBean implements Serializable {
 		setFuenteHidrica(asigSuelo.getSueFuenteHidrica());
 		setConcesionFHidrica(asigSuelo.getSueConcesionFuenteHidrica());
 		setResponsableConcesion(asigSuelo.getSueResponsableConcesion());
-			
+		setearAsignacionSuelo(getId());
+	    // Settear Informes
+		setInforActualGT(asigSuelo.getSueInforActualGestionTerr());
+		setInforConsolidado(asigSuelo.getSueInforConsolidado());
+		setInforGestionTerr(asigSuelo.getSueInforGestionTerritorial());
+		setInforConsolidado2(asigSuelo.getSueInforConsolidado2());
+		setInforPronJuidico(asigSuelo.getSueInforPronunciamientoJurid());
+		setActaResolucion(asigSuelo.getSueActaResolucionComite());
+		setSolicitudComite(asigSuelo.getSueSolicitudComite());
 		setEdicion(true);
 		ocultarGuardar = false;
 		cargarLstContratos();
 		
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
-	
 
 	public void guardarEditarAsignacionSuelos() {
 		try {
@@ -926,6 +944,11 @@ public class AsignacionSueloBean implements Serializable {
 					setId(asignacionSuelo.getSueId());
 					as.setSueId(getId());
 					
+					if(getInforGestionTerr() != null || getInforGestionTerr() != ""){
+					as.setSueInforGestionTerritorial(getInforGestionTerr());	
+					}else{
+						as.setSueInforGestionTerritorial(asignacionSuelo.getSueInforGestionTerritorial());
+					}
 					if(getInforActualGT()!= null || getInforActualGT() != ""){
 						as.setSueInforActualGestionTerr(getInforActualGT());
 					}else{
@@ -941,8 +964,8 @@ public class AsignacionSueloBean implements Serializable {
 					}else{
 						as.setSueInforPronunciamientoJurid(asignacionSuelo.getSueInforPronunciamientoJurid());
 					}
-					if(getInformeConsolidado2()!= null || getInformeConsolidado2() != ""){
-						as.setSueInforConsolidado2(getInformeConsolidado2());
+					if(getInforConsolidado2()!= null || getInforConsolidado2() != ""){
+						as.setSueInforConsolidado2(getInforConsolidado2());
 					}else{
 						as.setSueInforConsolidado2(asignacionSuelo.getSueInforConsolidado2());
 					}
@@ -956,7 +979,6 @@ public class AsignacionSueloBean implements Serializable {
 					}else{
 						as.setSueActaResolucionComite(asignacionSuelo.getSueActaResolucionComite());
 					}
-					
 					mngTerritorio.modicarAsignacionSuelo(as);
 					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
 				} else {
@@ -967,11 +989,20 @@ public class AsignacionSueloBean implements Serializable {
 					setOcultarGuardar(true);
 					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
 				}
+				setearAsignacionSuelo(getId());
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
 			System.out.println("Error al almacenar suelo: ");
 			e.printStackTrace();
+		}
+	}
+	private void setearAsignacionSuelo(int idSuelo){
+		try {
+			setAsignacionSuelo(mngTerritorio.findAsignacionSueloById(getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error al buscar Asignación Suelo por ID. ");
 		}
 	}
 
@@ -1018,35 +1049,117 @@ public class AsignacionSueloBean implements Serializable {
 		getListAsignacionSuelos().addAll(mngTerritorio.findAllAsignacionSuelo());
 	}
 	
-	public void inforActualGT(FileUploadEvent event){
-		try{
-			System.out.println("Ingreso a metodo informActual");
-			setInforActualGT(cargarInformes(event));
-			editarAsignacionSuelo();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	public String direccionArchivo(UploadedFile file){
+	public void subirInforActualGT(FileUploadEvent evento) {
 		try {
-			String ubicacionArchivo = mngTerritorio.findParametroByID("direccion_informes") + "/"+ File.separatorChar +file.getFileName();
-			return ubicacionArchivo;
+			System.out.println("Ingreso a metodo informActual");
+			setInforActualGT(cargarInformes(evento));
+			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "";
 		}
 	}
-	
+
+	public void subirInforGestionT(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setInforGestionTerr(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirInforConsolidado(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setInforConsolidado(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirInforPronunciamientoJ(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setInforPronJuidico(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirInforConsolidado2(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setInforConsolidado2(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirSolicitudComite(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setSolicitudComite(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirActaComite(FileUploadEvent evento) {
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setActaResolucion(cargarInformes(evento));
+			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Contrato
+
+	public void subirTDR(FileUploadEvent evento) {
+		try {
+			setTdrContrato(cargarInformes(evento));
+			editarContrato();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirPliego(FileUploadEvent evento) {
+		try {
+			setTdrContrato(cargarInformes(evento));
+			editarContrato();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Entregables
+
+	public void subirDocumentoEntregable(FileUploadEvent evento) {
+		try {
+			setDocumento(cargarInformes(evento));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public String cargarInformes(FileUploadEvent event) throws IOException {
-		System.out.println("Ingreso a metodo cargar informes");
 		filePdf = event.getFile();
+		String nombreArchivo ="";
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
-		String nombre = filePdf.getFileName();
 		if (filePdf != null) {
 			try {
+				
 				outputStream = new FileOutputStream(direccionArchivo(filePdf));
 				inputStream = filePdf.getInputstream();
+				nombreArchivo = filePdf.getFileName();
 
 				int read = 0;
 				byte[] bytes = new byte[1024];
@@ -1066,9 +1179,23 @@ public class AsignacionSueloBean implements Serializable {
 					outputStream.close();
 				}
 			}
-			return  nombre ;
+			return  nombreArchivo ;
 		} else {
 			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+			return "";
+		}
+	}
+	
+	public String direccionArchivo(UploadedFile file){
+		try {
+			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
+			String nombreArchivo = file.getFileName();
+			String ubicacionArchivo = carpeta + File.separatorChar +nombreArchivo;
+			System.out.println("Carpeta -----> "+carpeta);
+			System.out.println("PAD -----> "+nombreArchivo);
+			return ubicacionArchivo;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return "";
 		}
 	}
@@ -1110,6 +1237,13 @@ public class AsignacionSueloBean implements Serializable {
 				GenAsignacionSuelo asignacionSuelo = mngTerritorio
 						.findAsignacionSueloById(getId());
 
+				if (getInforGestionTerr() != null
+						|| getInforGestionTerr() != "") {
+					as.setSueInforGestionTerritorial(getInforGestionTerr());
+				} else {
+					as.setSueInforGestionTerritorial(asignacionSuelo
+							.getSueInforGestionTerritorial());
+				}
 				if (getInforActualGT() != null || getInforActualGT() != "") {
 					as.setSueInforActualGestionTerr(getInforActualGT());
 				} else {
@@ -1130,9 +1264,9 @@ public class AsignacionSueloBean implements Serializable {
 					as.setSueInforPronunciamientoJurid(asignacionSuelo
 							.getSueInforPronunciamientoJurid());
 				}
-				if (getInformeConsolidado2() != null
-						|| getInformeConsolidado2() != "") {
-					as.setSueInforConsolidado2(getInformeConsolidado2());
+				if (getInforConsolidado2() != null
+						|| getInforConsolidado2() != "") {
+					as.setSueInforConsolidado2(getInforConsolidado2());
 				} else {
 					as.setSueInforConsolidado2(asignacionSuelo
 							.getSueInforConsolidado2());
@@ -1156,37 +1290,21 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 
-	public void descargarInformes(GenAsignacionSuelo asignacionSuelo) {
+	public void descargarInforme(String informe){
 		try {
-			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
-				Mensaje.crearMensajeERROR("La asignación de suelo no cuenta con un archivo asignado.");
-			} else {
+			if(informe == null || informe.isEmpty()){
+				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
+			}else {
 				String contextPath = mngTerritorio.findParametroByID("direccion_informes") + File.separatorChar
-						+ asignacionSuelo.getSueArchivo() + "";
+					+ informe+"";
 				Funciones.descargarPDF(contextPath);
 			}
 		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error: " + e.getMessage());
+			Mensaje.crearMensajeERROR("Error al descargar el documento: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
-	public void descargarPDF(Integer idasignacionSuelo) {
-		try {
-			GenAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(idasignacionSuelo);
-			if (asignacionSuelo.getSueArchivo() == null || asignacionSuelo.getSueArchivo().isEmpty()) {
-				Mensaje.crearMensajeERROR("La asignación de suelo no cuenta con un archivo asignado.");
-			} else {
-				String contextPath = mngTerritorio.findParametroByID("direccion_pdf") + File.separatorChar
-						+ asignacionSuelo.getSueArchivo() + "";
-				Funciones.descargarPDF(contextPath);
-			}
-		} catch (Exception e) {
-			Mensaje.crearMensajeERROR("Error: " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
+	
 	/**
 	 * Lista de Zona
 	 */
@@ -1361,9 +1479,6 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	//Contrato 
-	public void validar(){
-		
-	}
 	
 	public void mostrarDlgContrato() {
 		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
@@ -1390,6 +1505,7 @@ public class AsignacionSueloBean implements Serializable {
 		if(validarCamposContrato()){
 			GenContratoAsignacion ca = new GenContratoAsignacion();
 			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
+			ca.setGenAsignacionSuelo(mngTerritorio.findAsignacionSueloById(getId()));
 			ca.setCasArrendador(Funciones.quitarEspacios(getArrendadorCotrato()));
 			ca.setCasArrendatario(Funciones.quitarEspacios(getArrendatarioContrato()));
 			ca.setCasFechaInicio(new Timestamp(getFechaIncio().getTime()));
@@ -1435,6 +1551,41 @@ public class AsignacionSueloBean implements Serializable {
 			return true;
 		}
 	}
+
+	private void editarContrato() {
+		try {
+			if (validarCamposContrato()) {
+				GenContratoAsignacion ca = new GenContratoAsignacion();
+				ca.setCasId(Funciones.quitarEspacios(getIdContrato())
+						.toUpperCase());
+				ca.setGenAsignacionSuelo(mngTerritorio
+						.findAsignacionSueloById(getId()));
+				ca.setCasArrendador(Funciones
+						.quitarEspacios(getArrendadorCotrato()));
+				ca.setCasArrendatario(Funciones
+						.quitarEspacios(getArrendatarioContrato()));
+				ca.setCasFechaInicio(new Timestamp(getFechaIncio().getTime()));
+				ca.setCasFechaFin(new Timestamp(getFechaFin().getTime()));
+				ca.setCasPeriodicidadPago(getPeriodicidadPagoC());
+				ca.setCasUnidadTiempo(getUnidadTiempoContrato());
+				GenContratoAsignacion contrato = mngTerritorio
+						.findContratoById(getIdContrato());
+				if (getTdrContrato() != null || getTdrContrato() != "") {
+					ca.setCasTdr(getTdrContrato());
+				} else {
+					ca.setCasTdr(contrato.getCasTdr());
+				}
+				if (getPliegoContrato() != null || getPliegoContrato() != "") {
+					ca.setCasPliego(getPliegoContrato());
+				} else {
+					ca.setCasPliego(contrato.getCasPliego());
+				}
+				mngTerritorio.modificarContrato(ca);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void cancelarContrato(){
 		limpiarCamposContrato();
@@ -1459,6 +1610,10 @@ public class AsignacionSueloBean implements Serializable {
 	public void mostrarDlgEntregables() {
 		cargarLstEntregables();
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
+	}
+	
+	private void cargarLstEntregables(){
+		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(getIdContrato()));
 	}
 	
 	public void buscarResponsableEnt() {
@@ -1489,6 +1644,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void cargarEntregables(GenEntregablesContrato entregable){
 		setEdicionEntregable(true);
 		setPkEntregable(entregable.getId());
+		setContrato(entregable.getGenContratoAsignacion());
 		setDocumento(entregable.getId().getEcoDocumento());
 		setDniresponsableEntregable(entregable.getEcoResponsable());
 		setFechaMaxEntrega(entregable.getEcoFechaMaxEntrega());
@@ -1552,10 +1708,5 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaMaxEntrega(new Date()); setFechaSubida(new Timestamp(new Date().getTime()));
 		setEstadoEntregable(SELECCIONAR);
 	}
-	
-	private void cargarLstEntregables(){
-		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(getIdContrato()));
-	}
-	
 	
 }
