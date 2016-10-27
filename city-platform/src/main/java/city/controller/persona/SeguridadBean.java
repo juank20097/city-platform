@@ -804,7 +804,7 @@ public class SeguridadBean {
 					Mensaje.crearMensajeINFO("Registrado - Incidente Creado");
 					setEdicion(false);
 				} else {
-					manager.editarSeguridad(getSegId(), getSegAccion(), getSegEmergencia(), getSegFecha(),
+					manager.editarSeguridad(getSegId(),getPerDni(), getSegAccion(), getSegEmergencia(), getSegFecha(),
 							getSegTipoEmergencia(), getSegLatitud(), getSegLongitud(), getSegSubTipo(), getSegSubHijo(),
 							getSegArchivo(), usuario, getSegDocumento(), getUtmX(), getUtmY());
 					Mensaje.crearMensajeINFO("Actualizado - Incidente Modificado");
@@ -900,6 +900,8 @@ public class SeguridadBean {
 			setSegSubHijo(incidente.getSegSubHijo());
 			setSegArchivo(incidente.getSegArchivo());
 			setSegDocumento(incidente.getSegDocumento());
+			setUtmX(incidente.getSegUtmX());
+			setUtmY(incidente.getSegUtmY());
 			System.out.println(getControl());
 			setEdicion(false);
 		} catch (Exception e) {

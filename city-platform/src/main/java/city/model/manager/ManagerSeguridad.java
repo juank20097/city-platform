@@ -226,11 +226,12 @@ public class ManagerSeguridad {
 	 * @param estado
 	 * @throws Exception
 	 */
-	public void editarSeguridad(Integer id, String accion, String emergencia, Date fecha, String tipo, double latitud,
+	public void editarSeguridad(Integer id, String per_dni, String accion, String emergencia, Date fecha, String tipo, double latitud,
 			double longitud, String sub_tipo, String sub_hijo, String archivo,String usuario,String documento,String utm_x,String utm_y) throws Exception {
 		try {
 			SegRegistroEmergencia seg = this.SeguridadByID(id);
 			seg.setSegAccion(accion);
+			seg.setGenFuncionariosInstitucion(this.findFuncionarioXDni(per_dni));
 			seg.setSegEmergencia(emergencia);
 			seg.setSegFecha(new Timestamp(fecha.getTime()));
 			seg.setSegTipoEmergencia(tipo);
