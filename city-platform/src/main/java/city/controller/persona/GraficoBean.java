@@ -38,6 +38,7 @@ public class GraficoBean {
 	private ManagerPersona manager;
 	@EJB
 	private ManagerSitios managerSitio;
+	
 	@Inject
 	private SesionBean session;
 
