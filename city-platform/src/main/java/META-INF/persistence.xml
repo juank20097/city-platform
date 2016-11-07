@@ -21,7 +21,6 @@
 		<class>city.model.dao.entidades.GenElementoZonaValorPK</class>
 		<class>city.model.dao.entidades.GenElementosBarrio</class>
 		<class>city.model.dao.entidades.GenElementosZona</class>
-		<class>city.model.dao.entidades.GenEntregablesContratoPK</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucion</class>
 		<class>city.model.dao.entidades.GenEstudianteInstitucionPK</class>
 		<class>city.model.dao.entidades.GenExperiencialaboral</class>
@@ -49,6 +48,12 @@
 		<class>city.model.dao.entidades.GenZona</class>
 		<class>city.model.dao.entidades.GenZonasComunidade</class>
 		<class>city.model.dao.entidades.GenZonasComunidadePK</class>
+		<class>city.model.dao.entidades.GtrAdministradorContrato</class>
+		<class>city.model.dao.entidades.GtrAsignacionSuelo</class>
+		<class>city.model.dao.entidades.GtrContratoAsignacion</class>
+		<class>city.model.dao.entidades.GtrEntregablesContrato</class>
+		<class>city.model.dao.entidades.GtrHistorialSeguimiento</class>
+		<class>city.model.dao.entidades.GtrHistorialSeguimientoPK</class>
 		<class>city.model.dao.entidades.SegIncidenciasAdmin</class>
 		<class>city.model.dao.entidades.SegRegistroEmergencia</class>
 		<properties>

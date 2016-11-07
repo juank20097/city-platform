@@ -25,7 +25,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
-import city.model.dao.entidades.GenAsignacionSuelo;
+import city.model.dao.entidades.GtrAsignacionSuelo;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
 import city.model.dao.entidades.GtrHistorialSeguimiento;
 import city.model.dao.entidades.GtrHistorialSeguimientoPK;
@@ -76,7 +76,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 	private String novedades;
 	private String estado;
 	private List<GtrHistorialSeguimiento> lstSeguimiento;
-	private GenAsignacionSuelo asignacionSuelo;
+	private GtrAsignacionSuelo asignacionSuelo;
 	private GtrHistorialSeguimiento seguimiento;
 	private GtrHistorialSeguimientoPK pkSeguimiento;
 	private String dirAdjuntoDoc;
@@ -248,11 +248,11 @@ public class SeguimientoAsignacionBean implements Serializable {
 		this.lstSeguimiento = lstSeguimiento;
 	}
 	
-	public GenAsignacionSuelo getAsignacionSuelo() {
+	public GtrAsignacionSuelo getAsignacionSuelo() {
 		return asignacionSuelo;
 	}
 	
-	public void setAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) {
+	public void setAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) {
 		this.asignacionSuelo = asignacionSuelo;
 	}
 	
@@ -304,7 +304,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 	private void cargarLstAsignacion() {
 		getLstAsignacion().clear();
 		getLstAsignacion().add(new SelectItem(SELECCIONAR, "Seleccionar"));
-		for (GenAsignacionSuelo as : manager.findAllAsignacionSuelo()) {
+		for (GtrAsignacionSuelo as : manager.findAllAsignacionSuelo()) {
 			getLstAsignacion().add(
 					new SelectItem(as.getSueId(),as.getGenZona().getZonNombre()+" | "+ as.getSueAsignacion()));
 		}
@@ -342,7 +342,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 			setFechaRegistro(seguimiento.getHseFechaRegistro());
 			setDirAdjuntoDoc(seguimiento.getHseAdjuntoDoc());
 			setDirAdjuntoFoto(seguimiento.getHseAdjuntoFot());
-			setAsignacionSuelo(seguimiento.getGenAsignacionSuelo());
+			setAsignacionSuelo(seguimiento.getGtrAsignacionSuelo());
 			setPkSeguimiento(seguimiento.getId());
 			setEstado(seguimiento.getHseEstado());
 			setNovedades(seguimiento.getHseNovedades());
@@ -403,7 +403,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 			
 		} else {
 			try {
-				GenAsignacionSuelo as = manager.findAsignacionSueloById(getIdAsignacion());
+				GtrAsignacionSuelo as = manager.findAsignacionSueloById(getIdAsignacion());
 				if (as == null) {
 					Mensaje.crearMensajeWARN("Asignación no encontrada");
 					setIdAsignacion(ID_INICIAL);
@@ -452,7 +452,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 				seg.setHseFecha(getFechaSeguimiento());
 				seg.setHseNovedades(Funciones.quitarEspacios(getNovedades()).toUpperCase());
 				seg.setHseResponsable(getCedulaResponsable());
-				seg.setGenAsignacionSuelo(manager.findAsignacionSueloById(getIdAsignacion()));
+				seg.setGtrAsignacionSuelo(manager.findAsignacionSueloById(getIdAsignacion()));
 				seg.setHseEstado(getEstado());
 
 				if (isEdicion()) {
@@ -615,7 +615,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 			seg.setHseNovedades(getNovedades());
 			seg.setHseResponsable(getCedulaResponsable());
 			seg.setHseUsuario(getUsuario());
-			seg.setGenAsignacionSuelo(manager.findAsignacionSueloById(getIdAsignacion()));
+			seg.setGtrAsignacionSuelo(manager.findAsignacionSueloById(getIdAsignacion()));
 			seg.setHseEstado(getEstado());
 			
 			if(seg.getHseAdjuntoDoc() != null || seg.getHseAdjuntoDoc() != ""){

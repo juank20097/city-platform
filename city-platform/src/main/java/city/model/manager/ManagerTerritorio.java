@@ -7,11 +7,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import city.model.dao.entidades.GenAsignacionSuelo;
+import city.model.dao.entidades.GtrAsignacionSuelo;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
 import city.model.dao.entidades.GenComunidade;
-import city.model.dao.entidades.GenContratoAsignacion;
+import city.model.dao.entidades.GtrContratoAsignacion;
 import city.model.dao.entidades.GenDistrito;
 import city.model.dao.entidades.GenElementoBarrioValor;
 import city.model.dao.entidades.GenElementoBarrioValorPK;
@@ -19,11 +19,10 @@ import city.model.dao.entidades.GenElementoZonaValor;
 import city.model.dao.entidades.GenElementoZonaValorPK;
 import city.model.dao.entidades.GenElementosBarrio;
 import city.model.dao.entidades.GenElementosZona;
-import city.model.dao.entidades.GenEntregablesContrato;
-import city.model.dao.entidades.GenEntregablesContratoPK;
+import city.model.dao.entidades.GtrEntregablesContrato;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
-import city.model.dao.entidades.GenHistorialSeguimiento;
-import city.model.dao.entidades.GenHistorialSeguimientoPK;
+import city.model.dao.entidades.GtrHistorialSeguimiento;
+import city.model.dao.entidades.GtrHistorialSeguimientoPK;
 import city.model.dao.entidades.GenManzana;
 import city.model.dao.entidades.GenManzanaDetalle;
 import city.model.dao.entidades.GenManzanaPosicione;
@@ -198,7 +197,6 @@ public class ManagerTerritorio {
 		try {
 			mngDAO.eliminar(GenZonasComunidade.class, id);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -475,7 +473,6 @@ public class ManagerTerritorio {
 			}
 			return id;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -495,67 +492,66 @@ public class ManagerTerritorio {
 					+ " from gen_asignacion_suelo where sue_id = "+idSuelo+" ;").toString();
 			return numero;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<GenAsignacionSuelo> findAllAsignacionSuelo() {
-		return mngDAO.findAll(GenAsignacionSuelo.class, "o.sueId");
+	public List<GtrAsignacionSuelo> findAllAsignacionSuelo() {
+		return mngDAO.findAll(GtrAsignacionSuelo.class, "o.sueId");
 	}
 
-	public void insertarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
+	public void insertarAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) throws Exception {
 		mngDAO.insertar(asignacionSuelo);
 	}
 
-	public void modicarAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) throws Exception {
+	public void modicarAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) throws Exception {
 		mngDAO.actualizar(asignacionSuelo);
 	}
 
-	public GenAsignacionSuelo findAsignacionSueloById(Integer idAsignacionSuelo) throws Exception {
-		return (GenAsignacionSuelo) mngDAO.findById(GenAsignacionSuelo.class, idAsignacionSuelo);
+	public GtrAsignacionSuelo findAsignacionSueloById(Integer idAsignacionSuelo) throws Exception {
+		return (GtrAsignacionSuelo) mngDAO.findById(GtrAsignacionSuelo.class, idAsignacionSuelo);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<GenHistorialSeguimiento> listaSeguimientoFiltrado(Integer idAsigSuelo){
-		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsigSuelo+" and o.hseEstado='A'", "o.hseFecha desc");
+	public List<GtrHistorialSeguimiento> listaSeguimientoFiltrado(Integer idAsigSuelo){
+		return mngDAO.findWhere(GtrHistorialSeguimiento.class, "o.id.sueId="+idAsigSuelo+" and o.hseEstado='A'", "o.hseFecha desc");
 	}
 
 	// Contratos
-	public GenContratoAsignacion findContratoById(String idContrato)throws Exception{
-		return (GenContratoAsignacion) mngDAO.findById(GenContratoAsignacion.class, idContrato);
+	public GtrContratoAsignacion findContratoById(String idContrato)throws Exception{
+		return (GtrContratoAsignacion) mngDAO.findById(GtrContratoAsignacion.class, idContrato);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<GenContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
-		return mngDAO.findWhere(GenContratoAsignacion.class, "o.genAsignacionSuelo.sueId="+idSuelo, "o.casFechaInicio");
+	public List<GtrContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
+		return mngDAO.findWhere(GtrContratoAsignacion.class, "o.GtrAsignacionSuelo.sueId="+idSuelo, "o.casFechaInicio");
 	}
 	
-	public void insertarContrato(GenContratoAsignacion contrato) throws Exception{
+	public void insertarContrato(GtrContratoAsignacion contrato) throws Exception{
 		mngDAO.insertar(contrato);
 	}
 	
-	public void modificarContrato(GenContratoAsignacion contrato) throws Exception {
+	public void modificarContrato(GtrContratoAsignacion contrato) throws Exception {
 		mngDAO.actualizar(contrato);
 	}
 	// Entregables
 	
 	@SuppressWarnings("unchecked")
-	public List<GenEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
-		return mngDAO.findWhere(GenEntregablesContrato.class, "o.genContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
+	public List<GtrEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
+		return mngDAO.findWhere(GtrEntregablesContrato.class, "o.GtrContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
 	}
 	
-	public GenEntregablesContrato findEntregableById(GenEntregablesContratoPK id) throws Exception{
-		return (GenEntregablesContrato) mngDAO.findById(GenEntregablesContrato.class, id);
+	public GtrEntregablesContrato findEntregableById(int id) throws Exception{
+		return (GtrEntregablesContrato) mngDAO.findById(GtrEntregablesContrato.class, id);
 	}
 	
-	public void insertarEntregable(GenEntregablesContrato entregable) throws Exception{
+	public void insertarEntregable(GtrEntregablesContrato entregable) throws Exception{
 		mngDAO.insertar(entregable);
 	}
 
-	public void modificarEntregable(GenEntregablesContrato entregable) throws Exception{
+	public void modificarEntregable(GtrEntregablesContrato entregable) throws Exception{
 		mngDAO.insertar(entregable);
 	}
 	
@@ -571,7 +567,7 @@ public class ManagerTerritorio {
 	public Integer idSeguimientoAsignacion(int idAsignacion) {
 		Integer id = 0;
 		try {
-			List<GenHistorialSeguimiento> lst= mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId = "+idAsignacion, null);
+			List<GtrHistorialSeguimiento> lst= mngDAO.findWhere(GtrHistorialSeguimiento.class, "o.id.sueId = "+idAsignacion, null);
 			if (lst.isEmpty()) {
 				id = 1;
 			} else {
@@ -596,19 +592,19 @@ public class ManagerTerritorio {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<GenHistorialSeguimiento> findSeguimientoByIDAsignacion(int idAsignacion){
-		return mngDAO.findWhere(GenHistorialSeguimiento.class, "o.id.sueId="+idAsignacion, "o.hseFecha");
+	public List<GtrHistorialSeguimiento> findSeguimientoByIDAsignacion(int idAsignacion){
+		return mngDAO.findWhere(GtrHistorialSeguimiento.class, "o.id.sueId="+idAsignacion, "o.hseFecha");
 	}
 	
-	public GenHistorialSeguimiento findSeguimientoByID(GenHistorialSeguimientoPK idSeguimiento) throws Exception{
-		return (GenHistorialSeguimiento) mngDAO.findById(GenHistorialSeguimiento.class, idSeguimiento);
+	public GtrHistorialSeguimiento findSeguimientoByID(GtrHistorialSeguimientoPK idSeguimiento) throws Exception{
+		return (GtrHistorialSeguimiento) mngDAO.findById(GtrHistorialSeguimiento.class, idSeguimiento);
 	}
 	
-	public void insertarSeguimiento(GenHistorialSeguimiento seguimiento) throws Exception{
+	public void insertarSeguimiento(GtrHistorialSeguimiento seguimiento) throws Exception{
 		mngDAO.insertar(seguimiento);
 	}
 	
-	public void modificarSeguimiento(GenHistorialSeguimiento seguimiento) throws Exception{
+	public void modificarSeguimiento(GtrHistorialSeguimiento seguimiento) throws Exception{
 		mngDAO.actualizar(seguimiento);
 	}
 }
