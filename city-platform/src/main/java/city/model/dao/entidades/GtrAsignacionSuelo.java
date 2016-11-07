@@ -204,7 +204,7 @@ public class GtrAsignacionSuelo implements Serializable {
 	private String sueUnidadSupAsignada;
 
 	@Column(name="sue_unidad_sup_solicitada")
-	private BigDecimal sueUnidadSupSolicitada;
+	private String sueUnidadSupSolicitada;
 
 	@Column(name="sue_unidad_tiempo")
 	private String sueUnidadTiempo;
@@ -714,11 +714,11 @@ public class GtrAsignacionSuelo implements Serializable {
 		this.sueUnidadSupAsignada = sueUnidadSupAsignada;
 	}
 
-	public BigDecimal getSueUnidadSupSolicitada() {
+	public String getSueUnidadSupSolicitada() {
 		return this.sueUnidadSupSolicitada;
 	}
 
-	public void setSueUnidadSupSolicitada(BigDecimal sueUnidadSupSolicitada) {
+	public void setSueUnidadSupSolicitada(String sueUnidadSupSolicitada) {
 		this.sueUnidadSupSolicitada = sueUnidadSupSolicitada;
 	}
 
