@@ -4,11 +4,11 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The primary key class for the gen_historial_seguimiento database table.
+ * The primary key class for the gtr_historial_seguimiento database table.
  * 
  */
 @Embeddable
-public class GenHistorialSeguimientoPK implements Serializable {
+public class GtrHistorialSeguimientoPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +18,7 @@ public class GenHistorialSeguimientoPK implements Serializable {
 	@Column(name="hse_id")
 	private Integer hseId;
 
-	public GenHistorialSeguimientoPK() {
+	public GtrHistorialSeguimientoPK() {
 	}
 	public Integer getSueId() {
 		return this.sueId;
@@ -37,10 +37,10 @@ public class GenHistorialSeguimientoPK implements Serializable {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof GenHistorialSeguimientoPK)) {
+		if (!(other instanceof GtrHistorialSeguimientoPK)) {
 			return false;
 		}
-		GenHistorialSeguimientoPK castOther = (GenHistorialSeguimientoPK)other;
+		GtrHistorialSeguimientoPK castOther = (GtrHistorialSeguimientoPK)other;
 		return 
 			this.sueId.equals(castOther.sueId)
 			&& this.hseId.equals(castOther.hseId);

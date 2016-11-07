@@ -1,6 +1,7 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 import java.math.BigDecimal;
@@ -58,7 +59,7 @@ public class GenZona implements Serializable {
 
 	// bi-directional many-to-one association to GenAsignacionSuelo
 	@OneToMany(mappedBy = "genZona")
-	private List<GenAsignacionSuelo> genAsignacionSuelos;
+	private List<GtrAsignacionSuelo> gtrAsignacionSuelos;
 
 
 	public GenZona() {
@@ -180,26 +181,26 @@ public class GenZona implements Serializable {
 		return genZonasComunidade;
 	}
 	
-	public List<GenAsignacionSuelo> getGenAsignacionSuelos() {
-		return this.genAsignacionSuelos;
+	public List<GtrAsignacionSuelo> getGtrAsignacionSuelos() {
+		return this.gtrAsignacionSuelos;
 	}
 
-	public void setGenAsignacionSuelos(List<GenAsignacionSuelo> genAsignacionSuelos) {
-		this.genAsignacionSuelos = genAsignacionSuelos;
+	public void setGtrAsignacionSuelos(List<GtrAsignacionSuelo> gtrAsignacionSuelos) {
+		this.gtrAsignacionSuelos = gtrAsignacionSuelos;
 	}
 
-	public GenAsignacionSuelo addGenAsignacionSuelo(GenAsignacionSuelo genAsignacionSuelo) {
-		getGenAsignacionSuelos().add(genAsignacionSuelo);
-		genAsignacionSuelo.setGenZona(this);
+	public GtrAsignacionSuelo addGtrAsignacionSuelo(GtrAsignacionSuelo gtrAsignacionSuelo) {
+		getGtrAsignacionSuelos().add(gtrAsignacionSuelo);
+		gtrAsignacionSuelo.setGenZona(this);
 
-		return genAsignacionSuelo;
+		return gtrAsignacionSuelo;
 	}
 
-	public GenAsignacionSuelo removeGenAsignacionSuelo(GenAsignacionSuelo genAsignacionSuelo) {
-		getGenAsignacionSuelos().remove(genAsignacionSuelo);
-		genAsignacionSuelo.setGenZona(null);
+	public GtrAsignacionSuelo removeGtrAsignacionSuelo(GtrAsignacionSuelo gtrAsignacionSuelo) {
+		getGtrAsignacionSuelos().remove(gtrAsignacionSuelo);
+		gtrAsignacionSuelo.setGenZona(null);
 
-		return genAsignacionSuelo;
+		return gtrAsignacionSuelo;
 	}
 
 	public List<GenElementoZonaValor> getGenElementoZonaValors() {

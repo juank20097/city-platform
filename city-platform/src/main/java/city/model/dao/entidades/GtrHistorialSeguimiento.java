@@ -5,66 +5,59 @@ import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 
+
 /**
- * The persistent class for the gen_historial_seguimiento database table.
+ * The persistent class for the gtr_historial_seguimiento database table.
  * 
  */
 @Entity
-@Table(name = "gen_historial_seguimiento")
-@NamedQuery(name = "GenHistorialSeguimiento.findAll", query = "SELECT g FROM GenHistorialSeguimiento g")
-public class GenHistorialSeguimiento implements Serializable {
+@Table(name="gtr_historial_seguimiento")
+@NamedQuery(name="GtrHistorialSeguimiento.findAll", query="SELECT g FROM GtrHistorialSeguimiento g")
+public class GtrHistorialSeguimiento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private GenHistorialSeguimientoPK id;
+	private GtrHistorialSeguimientoPK id;
 
-	@Column(name = "hse_adjunto_doc")
+	@Column(name="hse_adjunto_doc")
 	private String hseAdjuntoDoc;
 
-	@Column(name = "hse_adjunto_fot")
+	@Column(name="hse_adjunto_fot")
 	private String hseAdjuntoFot;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "hse_fecha")
-	private Date hseFecha;
-
-	@Column(name = "hse_fecha_registro")
-	private Timestamp hseFechaRegistro;
-
-	@Column(name = "hse_novedades")
-	private String hseNovedades;
-
-	@Column(name = "hse_responsable")
-	private String hseResponsable;
-
-	@Column(name = "hse_usuario")
-	private String hseUsuario;
-
-	@Column(name = "hse_estado", columnDefinition = "bpchar")
+	@Column(name="hse_estado", columnDefinition = "bpchar")
 	private String hseEstado;
 
-	// bi-directional many-to-one association to GenAsignacionSuelo
-	@ManyToOne
-	@JoinColumn(name = "sue_id", insertable = false, updatable = false)
-	private GenAsignacionSuelo genAsignacionSuelo;
+	@Temporal(TemporalType.DATE)
+	@Column(name="hse_fecha")
+	private Date hseFecha;
 
-	public GenHistorialSeguimiento() {
+	@Column(name="hse_fecha_registro")
+	private Timestamp hseFechaRegistro;
+
+	@Column(name="hse_novedades")
+	private String hseNovedades;
+
+	@Column(name="hse_responsable")
+	private String hseResponsable;
+
+	@Column(name="hse_usuario")
+	private String hseUsuario;
+
+	//bi-directional many-to-one association to GtrAsignacionSuelo
+	@ManyToOne
+	@JoinColumn(name="sue_id", insertable=false, updatable=false)
+	private GtrAsignacionSuelo gtrAsignacionSuelo;
+
+	public GtrHistorialSeguimiento() {
 	}
 
-	public GenHistorialSeguimientoPK getId() {
+	public GtrHistorialSeguimientoPK getId() {
 		return this.id;
 	}
 
-	public void setId(GenHistorialSeguimientoPK id) {
+	public void setId(GtrHistorialSeguimientoPK id) {
 		this.id = id;
-	}
-
-	public String getHseEstado() {
-		return hseEstado;
-	}
-
-	public void setHseEstado(String hseEstado) {
-		this.hseEstado = hseEstado;
 	}
 
 	public String getHseAdjuntoDoc() {
@@ -81,6 +74,14 @@ public class GenHistorialSeguimiento implements Serializable {
 
 	public void setHseAdjuntoFot(String hseAdjuntoFot) {
 		this.hseAdjuntoFot = hseAdjuntoFot;
+	}
+
+	public String getHseEstado() {
+		return this.hseEstado;
+	}
+
+	public void setHseEstado(String hseEstado) {
+		this.hseEstado = hseEstado;
 	}
 
 	public Date getHseFecha() {
@@ -123,12 +124,12 @@ public class GenHistorialSeguimiento implements Serializable {
 		this.hseUsuario = hseUsuario;
 	}
 
-	public GenAsignacionSuelo getGenAsignacionSuelo() {
-		return this.genAsignacionSuelo;
+	public GtrAsignacionSuelo getGtrAsignacionSuelo() {
+		return this.gtrAsignacionSuelo;
 	}
 
-	public void setGenAsignacionSuelo(GenAsignacionSuelo genAsignacionSuelo) {
-		this.genAsignacionSuelo = genAsignacionSuelo;
+	public void setGtrAsignacionSuelo(GtrAsignacionSuelo gtrAsignacionSuelo) {
+		this.gtrAsignacionSuelo = gtrAsignacionSuelo;
 	}
 
 }

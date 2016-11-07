@@ -27,8 +27,8 @@ import org.primefaces.model.UploadedFile;
 import city.controller.access.SesionBean;
 import city.model.dao.entidades.GenAsignacionSuelo;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
-import city.model.dao.entidades.GenHistorialSeguimiento;
-import city.model.dao.entidades.GenHistorialSeguimientoPK;
+import city.model.dao.entidades.GtrHistorialSeguimiento;
+import city.model.dao.entidades.GtrHistorialSeguimientoPK;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
 import city.model.manager.ManagerSeguridad;
@@ -75,10 +75,10 @@ public class SeguimientoAsignacionBean implements Serializable {
 	@NotBlank(message = "NOVEDADES no debe ser solo espacios blancos.")
 	private String novedades;
 	private String estado;
-	private List<GenHistorialSeguimiento> lstSeguimiento;
+	private List<GtrHistorialSeguimiento> lstSeguimiento;
 	private GenAsignacionSuelo asignacionSuelo;
-	private GenHistorialSeguimiento seguimiento;
-	private GenHistorialSeguimientoPK pkSeguimiento;
+	private GtrHistorialSeguimiento seguimiento;
+	private GtrHistorialSeguimientoPK pkSeguimiento;
 	private String dirAdjuntoDoc;
 	private String dirAdjuntoFoto;
 	private boolean asignacionSeleccionada;
@@ -91,7 +91,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 		session.validarSesion();
 		usuarioSesion = session.validarSesion();
 		lstAsignacion = new ArrayList<SelectItem>();
-		lstSeguimiento = new ArrayList<GenHistorialSeguimiento>();
+		lstSeguimiento = new ArrayList<GtrHistorialSeguimiento>();
 		lstPersonas = new ArrayList<SelectItem>();
 		slctEstados = new ArrayList<SelectItem>();
 		idAsignacion = ID_INICIAL;
@@ -240,11 +240,11 @@ public class SeguimientoAsignacionBean implements Serializable {
 		this.estado = estado;
 	}
 	
-	public List<GenHistorialSeguimiento> getLstSeguimiento() {
+	public List<GtrHistorialSeguimiento> getLstSeguimiento() {
 		return lstSeguimiento;
 	}
 	
-	public void setLstSeguimiento(List<GenHistorialSeguimiento> lstSeguimiento) {
+	public void setLstSeguimiento(List<GtrHistorialSeguimiento> lstSeguimiento) {
 		this.lstSeguimiento = lstSeguimiento;
 	}
 	
@@ -256,19 +256,19 @@ public class SeguimientoAsignacionBean implements Serializable {
 		this.asignacionSuelo = asignacionSuelo;
 	}
 	
-	public GenHistorialSeguimiento getSeguimiento() {
+	public GtrHistorialSeguimiento getSeguimiento() {
 		return seguimiento;
 	}
 	
-	public void setSeguimiento(GenHistorialSeguimiento seguimiento) {
+	public void setSeguimiento(GtrHistorialSeguimiento seguimiento) {
 		this.seguimiento = seguimiento;
 	}
 	
-	public GenHistorialSeguimientoPK getPkSeguimiento() {
+	public GtrHistorialSeguimientoPK getPkSeguimiento() {
 		return pkSeguimiento;
 	}
 	
-	public void setPkSeguimiento(GenHistorialSeguimientoPK pkSeguimiento) {
+	public void setPkSeguimiento(GtrHistorialSeguimientoPK pkSeguimiento) {
 		this.pkSeguimiento = pkSeguimiento;
 	}
 	
@@ -331,7 +331,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 		RequestContext.getCurrentInstance().execute("PF('nSDlg').show();");
 	}
 	
-	public void cargarEditarSeguimiento(GenHistorialSeguimiento seguimiento){
+	public void cargarEditarSeguimiento(GtrHistorialSeguimiento seguimiento){
 		setUsuario(seguimiento.getHseUsuario());
 		if(!getUsuarioSesion().equals(getUsuario())){
 			Mensaje.crearMensajeWARN("El Seguimiento puede ser editado unicamente por el usuario de creación.");
@@ -447,7 +447,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 			if (!validarSelects()) {
 				Mensaje.crearMensajeWARN("Se debe seleccionar todos los campos para continuar.");
 			} else {
-				GenHistorialSeguimiento seg = new GenHistorialSeguimiento();
+				GtrHistorialSeguimiento seg = new GtrHistorialSeguimiento();
 				seg.setId(getPkSeguimiento());
 				seg.setHseFecha(getFechaSeguimiento());
 				seg.setHseNovedades(Funciones.quitarEspacios(getNovedades()).toUpperCase());
@@ -473,7 +473,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 					
 				} else {
 					setIdSeguimiento(manager.idSeguimientoAsignacion(getIdAsignacion()));
-					GenHistorialSeguimientoPK pk = new GenHistorialSeguimientoPK();
+					GtrHistorialSeguimientoPK pk = new GtrHistorialSeguimientoPK();
 					pk.setHseId(getIdSeguimiento());
 					pk.setSueId(getIdAsignacion());
 					seg.setId(pk);
@@ -605,10 +605,10 @@ public class SeguimientoAsignacionBean implements Serializable {
 	public void editarSeguimiento(){
 		try {
 			System.out.println("id seguimiento ----> "+getIdSeguimiento());
-			GenHistorialSeguimientoPK pk = new GenHistorialSeguimientoPK();
+			GtrHistorialSeguimientoPK pk = new GtrHistorialSeguimientoPK();
 			pk.setHseId(getIdSeguimiento());
 			pk.setSueId(getIdAsignacion());
-			GenHistorialSeguimiento seg = new GenHistorialSeguimiento();
+			GtrHistorialSeguimiento seg = new GtrHistorialSeguimiento();
 			seg.setId(pk);
 			seg.setHseFecha(getFechaSeguimiento());
 			seg.setHseFechaRegistro(getFechaRegistro());
@@ -637,7 +637,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 		}
 	}
 	
-	public void descargarDocumento(GenHistorialSeguimiento seguimiento) {
+	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
 		try {
 			if (seguimiento.getHseAdjuntoDoc() == null
 					|| seguimiento.getHseAdjuntoDoc().isEmpty()) {
@@ -654,7 +654,7 @@ public class SeguimientoAsignacionBean implements Serializable {
 		}
 	}
 	
-	public void descargarFoto(GenHistorialSeguimiento seguimiento) {
+	public void descargarFoto(GtrHistorialSeguimiento seguimiento) {
 		try {
 			if (seguimiento.getHseAdjuntoFot() == null
 					|| seguimiento.getHseAdjuntoFot().isEmpty()) {

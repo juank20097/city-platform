@@ -29,13 +29,12 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import city.controller.access.SesionBean;
-import city.model.dao.entidades.GenAsignacionSuelo;
+import city.model.dao.entidades.GtrAsignacionSuelo;
 import city.model.dao.entidades.GenCatalogoItemsDet;
-import city.model.dao.entidades.GenContratoAsignacion;
-import city.model.dao.entidades.GenEntregablesContrato;
-import city.model.dao.entidades.GenEntregablesContratoPK;
+import city.model.dao.entidades.GtrContratoAsignacion;
+import city.model.dao.entidades.GtrEntregablesContrato;
 import city.model.dao.entidades.GenFuncionariosInstitucion;
-import city.model.dao.entidades.GenHistorialSeguimiento;
+import city.model.dao.entidades.GtrHistorialSeguimiento;
 import city.model.dao.entidades.GenZona;
 import city.model.generic.Funciones;
 import city.model.generic.Mensaje;
@@ -89,7 +88,7 @@ public class AsignacionSueloBean implements Serializable {
 	@NotBlank(message = "El campo ASIGNACIÓN no debe tener solo espacios blancos.")
 	private String asignacion;
 
-	private List<GenAsignacionSuelo> listAsignacionSuelos;
+	private List<GtrAsignacionSuelo> listAsignacionSuelos;
 	private boolean edicion;
 	private List<SelectItem> slctEstados;
 
@@ -158,7 +157,7 @@ public class AsignacionSueloBean implements Serializable {
 	private List<SelectItem> lstUnidadTiempo;
 	private List<SelectItem> lstTipoUso;
 	private String dirPdf;
-	private GenAsignacionSuelo asignacionSuelo;
+	private GtrAsignacionSuelo asignacionSuelo;
 	// Contrato
 	private String idContrato;
 	private String tdrContrato;
@@ -169,9 +168,9 @@ public class AsignacionSueloBean implements Serializable {
 	private String unidadTiempoContrato;
 	private BigDecimal precio;
 	private boolean edicionContrato;
-	private List<GenContratoAsignacion> lstContratos;
+	private List<GtrContratoAsignacion> lstContratos;
 	private List<SelectItem> slctEstadosContrato;
-	private GenContratoAsignacion contrato;
+	private GtrContratoAsignacion contrato;
 	// Entregables
 	private String documento;
 	private String dniresponsableEntregable;
@@ -180,14 +179,13 @@ public class AsignacionSueloBean implements Serializable {
 	private Timestamp fechaSubida;
 	private String estadoEntregable;
 	private boolean edicionEntregable;
-	private GenEntregablesContrato entregableC;
-	private GenEntregablesContratoPK pkEntregable;
-	private List<GenEntregablesContrato> lstEntregables;
+	private GtrEntregablesContrato entregableC;
+	private List<GtrEntregablesContrato> lstEntregables;
 	private List<SelectItem> slctEstadosEntregable;
 	private String busquedaResponsableEC;
 
 	// lista de seguimientos
-	List<GenHistorialSeguimiento> l_seguimiento;
+	List<GtrHistorialSeguimiento> l_seguimiento;
 	
 	public AsignacionSueloBean() {
 	
@@ -199,8 +197,8 @@ public class AsignacionSueloBean implements Serializable {
 		estado = EN_PROGRESO;
 		slctEstados = new ArrayList<SelectItem>();
 		lstPersonas = new ArrayList<SelectItem>();
-		listAsignacionSuelos = new ArrayList<GenAsignacionSuelo>();
-		l_seguimiento = new ArrayList<GenHistorialSeguimiento>();
+		listAsignacionSuelos = new ArrayList<GtrAsignacionSuelo>();
+		l_seguimiento = new ArrayList<GtrHistorialSeguimiento>();
 		l_tipo_catalogo = new ArrayList<SelectItem>();
 		l_zona = new ArrayList<SelectItem>();
 		lstUnidadTiempo = new ArrayList<SelectItem>();
@@ -229,7 +227,7 @@ public class AsignacionSueloBean implements Serializable {
 	/**
 	 * @return the l_seguimiento
 	 */
-	public List<GenHistorialSeguimiento> getL_seguimiento() {
+	public List<GtrHistorialSeguimiento> getL_seguimiento() {
 		return l_seguimiento;
 	}
 
@@ -237,7 +235,7 @@ public class AsignacionSueloBean implements Serializable {
 	 * @param l_seguimiento
 	 *            the l_seguimiento to set
 	 */
-	public void setL_seguimiento(List<GenHistorialSeguimiento> l_seguimiento) {
+	public void setL_seguimiento(List<GtrHistorialSeguimiento> l_seguimiento) {
 		this.l_seguimiento = l_seguimiento;
 	}
 
@@ -305,11 +303,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.metros = metros;
 	}
 
-	public List<GenAsignacionSuelo> getListAsignacionSuelos() {
+	public List<GtrAsignacionSuelo> getListAsignacionSuelos() {
 		return listAsignacionSuelos;
 	}
 
-	public void setListAsignacionSuelos(List<GenAsignacionSuelo> listAsignacionSuelos) {
+	public void setListAsignacionSuelos(List<GtrAsignacionSuelo> listAsignacionSuelos) {
 		this.listAsignacionSuelos = listAsignacionSuelos;
 	}
 
@@ -653,21 +651,21 @@ public class AsignacionSueloBean implements Serializable {
 		this.dirPdf = dirPdf;
 	}
 	
-	public GenAsignacionSuelo getAsignacionSuelo() {
+	public GtrAsignacionSuelo getAsignacionSuelo() {
 		return asignacionSuelo;
 	}
 	
-	public void setAsignacionSuelo(GenAsignacionSuelo asignacionSuelo) {
+	public void setAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) {
 		this.asignacionSuelo = asignacionSuelo;
 	}
 	
 	//Contrato 
 	
-	public List<GenContratoAsignacion> getLstContratos() {
+	public List<GtrContratoAsignacion> getLstContratos() {
 		return lstContratos;
 	}
 	
-	public void setLstContratos(List<GenContratoAsignacion> lstContratos) {
+	public void setLstContratos(List<GtrContratoAsignacion> lstContratos) {
 		this.lstContratos = lstContratos;
 	}
 	
@@ -808,35 +806,27 @@ public class AsignacionSueloBean implements Serializable {
 		this.slctEstadosContrato = slctEstadosContrato;
 	}
 
-	public GenContratoAsignacion getContrato() {
+	public GtrContratoAsignacion getContrato() {
 		return contrato;
 	}
 
-	public void setContrato(GenContratoAsignacion contrato) {
+	public void setContrato(GtrContratoAsignacion contrato) {
 		this.contrato = contrato;
 	}
 
-	public GenEntregablesContrato getEntregableC() {
+	public GtrEntregablesContrato getEntregableC() {
 		return entregableC;
 	}
 
-	public void setEntregableC(GenEntregablesContrato entregableC) {
+	public void setEntregableC(GtrEntregablesContrato entregableC) {
 		this.entregableC = entregableC;
 	}
 
-	public GenEntregablesContratoPK getPkEntregable() {
-		return pkEntregable;
-	}
-
-	public void setPkEntregable(GenEntregablesContratoPK pkEntregable) {
-		this.pkEntregable = pkEntregable;
-	}
-
-	public List<GenEntregablesContrato> getLstEntregables() {
+	public List<GtrEntregablesContrato> getLstEntregables() {
 		return lstEntregables;
 	}
 
-	public void setLstEntregables(List<GenEntregablesContrato> lstEntregables) {
+	public void setLstEntregables(List<GtrEntregablesContrato> lstEntregables) {
 		this.lstEntregables = lstEntregables;
 	}
 
@@ -864,7 +854,7 @@ public class AsignacionSueloBean implements Serializable {
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
 
-	public String cargarEditarAsignacionSuelo(GenAsignacionSuelo asigSuelo) {
+	public String cargarEditarAsignacionSuelo(GtrAsignacionSuelo asigSuelo) {
 		setId(asigSuelo.getSueId());
 		setTipoCatalogo(asigSuelo.getSueTipo());
 		setNombre(asigSuelo.getSueNombre());
@@ -913,7 +903,7 @@ public class AsignacionSueloBean implements Serializable {
 			System.out.println("ingreso a metodo guardar");
 			System.out.println("tipo catalogo "+getTipoCatalogo());
 			if (validarCampos()) {
-				GenAsignacionSuelo as = new GenAsignacionSuelo();
+				GtrAsignacionSuelo as = new GtrAsignacionSuelo();
 				as.setSueTipo(getTipoCatalogo());
 				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
 				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
@@ -940,7 +930,7 @@ public class AsignacionSueloBean implements Serializable {
 				as.setSueResponsableConcesion(Funciones.quitarEspacios(getResponsableConcesion()));
 				
 				if (isEdicion()) {
-					GenAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getId());
+					GtrAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getId());
 					setId(asignacionSuelo.getSueId());
 					as.setSueId(getId());
 					
@@ -1207,7 +1197,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void editarAsignacionSuelo() {
 		try {
 			if (validarCampos()) {
-				GenAsignacionSuelo as = new GenAsignacionSuelo();
+				GtrAsignacionSuelo as = new GtrAsignacionSuelo();
 				as.setSueId(getId());
 				as.setSueTipo(getTipoCatalogo());
 				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
@@ -1234,7 +1224,7 @@ public class AsignacionSueloBean implements Serializable {
 				as.setSueConcesionFuenteHidrica(Funciones.quitarEspacios(getConcesionFHidrica()));
 				as.setSueResponsableConcesion(Funciones.quitarEspacios(getResponsableConcesion()));
 
-				GenAsignacionSuelo asignacionSuelo = mngTerritorio
+				GtrAsignacionSuelo asignacionSuelo = mngTerritorio
 						.findAsignacionSueloById(getId());
 
 				if (getInforGestionTerr() != null
@@ -1367,13 +1357,13 @@ public class AsignacionSueloBean implements Serializable {
 		return aniosEntreFechas;
 	}
 
-	public void tablaSeguimiento(GenAsignacionSuelo asignacion) {
+	public void tablaSeguimiento(GtrAsignacionSuelo asignacion) {
 		getL_seguimiento().clear();
 		setL_seguimiento(mngTerritorio.listaSeguimientoFiltrado(asignacion.getSueId()));
 		RequestContext.getCurrentInstance().execute("PF('dlgSeg').show();");
 	}
 	
-	public void descargarDocumento(GenHistorialSeguimiento seguimiento) {
+	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
 		  try {
 		   if (seguimiento.getHseAdjuntoDoc() == null
 		     || seguimiento.getHseAdjuntoDoc().isEmpty()) {
@@ -1390,7 +1380,7 @@ public class AsignacionSueloBean implements Serializable {
 		  }
 		 }
 		 
-		 public void descargarFoto(GenHistorialSeguimiento seguimiento) {
+		 public void descargarFoto(GtrHistorialSeguimiento seguimiento) {
 		  try {
 		   if (seguimiento.getHseAdjuntoFot() == null
 		     || seguimiento.getHseAdjuntoFot().isEmpty()) {
@@ -1484,7 +1474,7 @@ public class AsignacionSueloBean implements Serializable {
 		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
 	}
 	
-	public void cargarContrato(GenContratoAsignacion contrato){
+	public void cargarContrato(GtrContratoAsignacion contrato){
 		setEdicionContrato(true);
 		setIdContrato(contrato.getCasId());
 		setTdrContrato(contrato.getCasTdr());
@@ -1503,9 +1493,9 @@ public class AsignacionSueloBean implements Serializable {
 	public void guardarEditarContrato(){
 		try{
 		if(validarCamposContrato()){
-			GenContratoAsignacion ca = new GenContratoAsignacion();
+			GtrContratoAsignacion ca = new GtrContratoAsignacion();
 			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
-			ca.setGenAsignacionSuelo(mngTerritorio.findAsignacionSueloById(getId()));
+			ca.setGtrAsignacionSuelo(mngTerritorio.findAsignacionSueloById(getId()));
 			ca.setCasArrendador(Funciones.quitarEspacios(getArrendadorCotrato()));
 			ca.setCasArrendatario(Funciones.quitarEspacios(getArrendatarioContrato()));
 			ca.setCasFechaInicio(new Timestamp(getFechaIncio().getTime()));
@@ -1513,7 +1503,7 @@ public class AsignacionSueloBean implements Serializable {
 			ca.setCasPeriodicidadPago(getPeriodicidadPagoC());
 			ca.setCasUnidadTiempo(getUnidadTiempoContrato());
 			if( isEdicionContrato()){
-				GenContratoAsignacion contrato = mngTerritorio.findContratoById(getIdContrato());
+				GtrContratoAsignacion contrato = mngTerritorio.findContratoById(getIdContrato());
 				if(getTdrContrato() != null || getTdrContrato() != ""){
 					ca.setCasTdr(getTdrContrato());
 				}else{
@@ -1556,10 +1546,10 @@ public class AsignacionSueloBean implements Serializable {
 	private void editarContrato() {
 		try {
 			if (validarCamposContrato()) {
-				GenContratoAsignacion ca = new GenContratoAsignacion();
+				GtrContratoAsignacion ca = new GtrContratoAsignacion();
 				ca.setCasId(Funciones.quitarEspacios(getIdContrato())
 						.toUpperCase());
-				ca.setGenAsignacionSuelo(mngTerritorio
+				ca.setGtrAsignacionSuelo(mngTerritorio
 						.findAsignacionSueloById(getId()));
 				ca.setCasArrendador(Funciones
 						.quitarEspacios(getArrendadorCotrato()));
@@ -1569,7 +1559,7 @@ public class AsignacionSueloBean implements Serializable {
 				ca.setCasFechaFin(new Timestamp(getFechaFin().getTime()));
 				ca.setCasPeriodicidadPago(getPeriodicidadPagoC());
 				ca.setCasUnidadTiempo(getUnidadTiempoContrato());
-				GenContratoAsignacion contrato = mngTerritorio
+				GtrContratoAsignacion contrato = mngTerritorio
 						.findContratoById(getIdContrato());
 				if (getTdrContrato() != null || getTdrContrato() != "") {
 					ca.setCasTdr(getTdrContrato());
@@ -1610,7 +1600,7 @@ public class AsignacionSueloBean implements Serializable {
 	
 	// Entregables
 	
-	public void mostrarDlgEntregables(GenContratoAsignacion contrato) {
+	public void mostrarDlgEntregables(GtrContratoAsignacion contrato) {
 		cargarLstEntregables(contrato.getCasId());
 		setContrato(contrato);
 		System.out.println("id de contrato al ingresar a los entregables -->"+contrato.getCasId());
@@ -1646,10 +1636,10 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 	
-	public void cargarEntregables(GenEntregablesContrato entregable){
+	public void cargarEntregables(GtrEntregablesContrato entregable){
 		setEdicionEntregable(true);
 		setPkEntregable(entregable.getId());
-		setContrato(entregable.getGenContratoAsignacion());
+		setContrato(entregable.getGtrContratoAsignacion());
 		setDocumento(entregable.getId().getEcoDocumento());
 		setDniresponsableEntregable(entregable.getEcoResponsable());
 		setFechaMaxEntrega(entregable.getEcoFechaMaxEntrega());
@@ -1676,10 +1666,10 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void guardarEditarEntregable(){
 		try{
-		GenEntregablesContratoPK pk = new  GenEntregablesContratoPK();
+		GtrEntregablesContratoPK pk = new  GtrEntregablesContratoPK();
 		pk.setCasId(getContrato().getCasId()); pk.setEcoDocumento(getDocumento());
 		System.out.println();
-		GenEntregablesContrato ec = new GenEntregablesContrato();
+		GtrEntregablesContrato ec = new GtrEntregablesContrato();
 		ec.setId(pk); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntrega().getTime()));
 		ec.setEcoFechaSubida(getFechaSubida()); ec.setEcoResponsable(getDniresponsableEntregable());
 		
@@ -1711,7 +1701,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void limpiarCamposEntregable(){
-		setEdicionEntregable(false); setPkEntregable(new GenEntregablesContratoPK());
+		setEdicionEntregable(false);
 		setDocumento(""); setDniresponsableEntregable(""); setNombreResponsableEntregable("");
 		setFechaMaxEntrega(new Date()); setFechaSubida(new Timestamp(new Date().getTime()));
 		setEstadoEntregable(SELECCIONAR);
