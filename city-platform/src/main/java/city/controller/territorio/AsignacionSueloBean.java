@@ -141,6 +141,7 @@ public class AsignacionSueloBean implements Serializable {
 	private String figuraLegal;
 	private boolean aplicaRegAmbiental;
 	private String archRegulacionAmb;
+	private Date fechaDocRegulacionAmb;
 	private Timestamp fechaSubRegAmbiental;
 	private String usuRegAmbiental;
 	private String archivoKMZ;
@@ -206,8 +207,8 @@ public class AsignacionSueloBean implements Serializable {
 	private String documento;
 	private String dniresponsableEntregable;
 	private String nombreResponsableEntregable;
-	private Date fechaMaxEntrega;
-	private Timestamp fechaSubida;
+	private Date fechaMaxEntregaDoc;
+	private Timestamp fechaSubidaDoc;
 	private String usuarioDocumento;
 	private String estadoEntregable;
 	private boolean edicionEntregable;
@@ -247,6 +248,7 @@ public class AsignacionSueloBean implements Serializable {
 		lstAdministrador = new ArrayList<GtrAdministradorContrato>();
 		lstUnidadTiempo = new ArrayList<SelectItem>();
 		lstTipoUso = new ArrayList<SelectItem>();
+		lstZonas = new ArrayList<SelectItem>();
 		superficieAsignada = new BigDecimal(0);
 		superficieSolicitada = new BigDecimal(0);
 		numeroAnios = 0;
@@ -337,6 +339,14 @@ public class AsignacionSueloBean implements Serializable {
 
 	public void setArchRegulacionAmb(String archRegulacionAmb) {
 		this.archRegulacionAmb = archRegulacionAmb;
+	}
+	
+	public Date getFechaDocRegulacionAmb() {
+		return fechaDocRegulacionAmb;
+	}
+	
+	public void setFechaDocRegulacionAmb(Date fechaDocRegulacionAmb) {
+		this.fechaDocRegulacionAmb = fechaDocRegulacionAmb;
 	}
 
 	public String getArchivoKMZ() {
@@ -867,20 +877,20 @@ public class AsignacionSueloBean implements Serializable {
 		this.idEntregable = idEntregable;
 	}
 
-	public Date getFechaMaxEntrega() {
-		return fechaMaxEntrega;
+	public Date getFechaMaxEntregaDoc() {
+		return fechaMaxEntregaDoc;
 	}
 
-	public void setFechaMaxEntrega(Date fechaMaxEntrega) {
-		this.fechaMaxEntrega = fechaMaxEntrega;
+	public void setFechaMaxEntregaDoc(Date fechaMaxEntregaDoc) {
+		this.fechaMaxEntregaDoc = fechaMaxEntregaDoc;
 	}
 
-	public Timestamp getFechaSubida() {
-		return fechaSubida;
+	public Timestamp getFechaSubidaDoc() {
+		return fechaSubidaDoc;
 	}
 
-	public void setFechaSubida(Timestamp fechaSubida) {
-		this.fechaSubida = fechaSubida;
+	public void setFechaSubidaDoc(Timestamp fechaSubidaDoc) {
+		this.fechaSubidaDoc = fechaSubidaDoc;
 	}
 
 	public int getIdAdmin() {
@@ -1338,6 +1348,15 @@ public class AsignacionSueloBean implements Serializable {
 		getSlctEstados().add(new SelectItem(NEGADO, VALORNEGADO));
 	}
 	
+	public void switchRegAmbiental(){
+		if(isAplicaRegAmbiental() == false){
+			setArchRegulacionAmb(""); setUsuRegAmbiental("");
+			setFechaDocRegulacionAmb(null); setFechaSubRegAmbiental(null);
+		}else {
+			setFechaDocRegulacionAmb(new Date()); setFechaSubRegAmbiental(new Timestamp(new Date().getTime()));
+		}
+	}
+	
 	public void cargarBusqueda() {
 		try {
 			getLstPersonas().clear();
@@ -1416,41 +1435,73 @@ public class AsignacionSueloBean implements Serializable {
 		setResponsableConcesion(asigSuelo.getSueResponsableConcesion());
 		setCaudalAsignado(asigSuelo.getSueCaudalAsignado());
 		setCaudalTotal(asigSuelo.getSueCaudalTotal());
-		setSuperficieAsignada(asigSuelo.getSueSuperficieAsignada());
-		setUnidadMedSupAsignada(asigSuelo.getSueUnidadSupAsignada());
-		setSuperficieSolicitada(asigSuelo.getSueSuperficieSolicitada());
-		setUnidadMedSupSol(asigSuelo.getSueUnidadSupSolicitada());
 		setDniResponsablePorDir(asigSuelo.getSueResponsable());
 		setNombreResponsablePorDir(buscarNombre(getDniResponsablePorDir()));
 		setDireccionResponsable(asigSuelo.getSueDireccionResponsable());
 		setFiguraLegal(asigSuelo.getSueFiguraLegal());
 		setearAsignacionSuelo(getIdAsignacion());
+		setAplicaRegAmbiental(asigSuelo.getSueAplicaRegulacionAmbiental());
+		setArchRegulacionAmb(asigSuelo.getSueArchivoRegulacionAmb());
+		setFechaDocRegulacionAmb(asigSuelo.getSueFechaArchivoRegAmb());
+		setUsuRegAmbiental(asigSuelo.getSueUsuarioSubidaRegAmb());
+		setFechaSubRegAmbiental(asigSuelo.getSueFechaSubidaRegAmb());
+		setArchivoKMZ(asigSuelo.getSueArchivoKmz());
+		setFechaArcKMZ(asigSuelo.getSueFechaArchivoKmz());
+		setFechaSubidaKMZ(asigSuelo.getSueFechaSubidaKmz());
+		setUsuArchivoKMZ(asigSuelo.getSueUsuarioArchivoKmz());
+		setArchivoPDF(asigSuelo.getSueArchivoPdf());
+		setFechaArcPDF(asigSuelo.getSueFechaArchivoPdf());
+		setFechaSubidaPDF(asigSuelo.getSueFechaSubidaPdf());
+		setUsuArchivoPDF(asigSuelo.getSueUsuarioArchivoPdf());
+		setSuperficieAsignada(asigSuelo.getSueSuperficieAsignada());
+		setUnidadMedSupAsignada(asigSuelo.getSueUnidadSupAsignada());
+		setSuperficieSolicitada(asigSuelo.getSueSuperficieSolicitada());
+		setUnidadMedSupSol(asigSuelo.getSueUnidadSupSolicitada());
+		// informes
+		setInforCaracterizacion(asigSuelo.getSueInforCaracterizacion());
+		setFechaDocCaracte(asigSuelo.getSueFechaDocCaracterizacion());
+		setFechaSubidaCaracte(asigSuelo.getSueFechaSubidaCaracterizacio());
+		setUsuCaracterizacion(asigSuelo.getSueUsuarioCaracterizacion());
+		setInforUsoSuelo(asigSuelo.getSueInforUsoSuelo());
+		setFechaDocUsoSuelo(asigSuelo.getSueFechaDocUsoSuelo());
+		setFechaSubidaUsoS(asigSuelo.getSueFechaSubidaUsoSuelo());
+		setUsuUsoSuelo(asigSuelo.getSueUsuarioUsoSuelo());
+		setInforDisponibilidad(asigSuelo.getSueInforDisponibilidad());
+		setFechaDocDisponibil(asigSuelo.getSueFechaDocDisponibilidad());
+		setFechaSubidaDisponi(asigSuelo.getSueFechaSubidaDisponibilidad());
+		setUsuDisponibilidad(asigSuelo.getSueUsuarioDisponibilidad());
+		setInforConsolidado(asigSuelo.getSueInforConsolidado());
+		setFechaDocConsolidado(asigSuelo.getSueFechaDocConsolidado());
+		setFechaSubidaConsol(asigSuelo.getSueFechaSubidaConsolidado());
+		setUsuConsolidado(asigSuelo.getSueUsuarioConsolidado());
+		setResolucion(asigSuelo.getSueResolucion());
+		setFechaDocResolucion(asigSuelo.getSueFechaDocResolucion());
+		setFechaSubidaResol(asigSuelo.getSueFechaSubidaResolucion());
+		setUsuResolucion(asigSuelo.getSueUsuarioResolucion());
+		setActaResolutiva(asigSuelo.getSueActaResolutiva());
+		setFechaDocActaResol(asigSuelo.getSueFechaDocResolutiva());
+		setFechaSubidaActaRes(asigSuelo.getSueFechaSubidaResolutiva());
+		setUsuActaResol(asigSuelo.getSueUsuarioResolutiva());
+		setConvocatoria(asigSuelo.getSueConvocatoria());
+		setFechaDocConvoca(asigSuelo.getSueFechaDocConvocatoria());
+		setFechaSubidaConvoca(asigSuelo.getSueFechaSubidaConvocatoria());
+		setUsuConvocatoria(asigSuelo.getSueUsuarioConvocatoria());
+		setNotificacionApNe(asigSuelo.getSueNotificacionApNe());
+		setFechaDocNotificacion(asigSuelo.getSueFechaDocNotificacion());
+		setFechaSubidaNotificacion(asigSuelo.getSueFechaSubidaNotificacion());
+		setUsuNotificacion(asigSuelo.getSueUsuarioNotificacion());
 		
-//		setMetros(asigSuelo.getSueMetros());
-//		
-//		setRegAmbiental(asigSuelo.getSueRegulacionAmbiental());
-//		
-//	    // Settear Informes
-//		setInforActualGT(asigSuelo.getSueInforActualGestionTerr());
-//		setInforConsolidado(asigSuelo.getSueInforConsolidado());
-//		
-//		setInforConsolidado2(asigSuelo.getSueInforConsolidado2());
-//		setInforPronJuidico(asigSuelo.getSueInforPronunciamientoJurid());
-//		setActaResolucion(asigSuelo.getSueActaResolucionComite());
-//		setSolicitudComite(asigSuelo.getSueSolicitudComite());
-//		setEdicion(true);
-//		ocultarGuardar = false;
+		setEdicionAS(true);
 //		cargarLstContratos();
-//		
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
 
 	public void guardarEditarAsignacionSuelos() {
-//		try {
-//			System.out.println("ingreso a metodo guardar");
-//			System.out.println("tipo catalogo "+getTipoCatalogo());
-//			if (validarCampos()) {
-//				GtrAsignacionSuelo as = new GtrAsignacionSuelo();
+		try {
+			System.out.println("ingreso a metodo guardar");
+			System.out.println("tipo catalogo "+getTipoCatalogo());
+			if (validarCampos()) {
+				GtrAsignacionSuelo as = new GtrAsignacionSuelo();
 //				as.setSueTipo(getTipoCatalogo());
 //				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
 //				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
@@ -1476,7 +1527,7 @@ public class AsignacionSueloBean implements Serializable {
 //				as.setSueConcesionFuenteHidrica(Funciones.quitarEspacios(getConcesionFHidrica()));
 //				as.setSueResponsableConcesion(Funciones.quitarEspacios(getResponsableConcesion()));
 //				
-//				if (isEdicion()) {
+				if (isEdicionAS()) {
 //					GtrAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getId());
 //					setId(asignacionSuelo.getSueId());
 //					as.setSueId(getId());
@@ -1518,21 +1569,20 @@ public class AsignacionSueloBean implements Serializable {
 //					}
 //					mngTerritorio.modicarAsignacionSuelo(as);
 //					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
-//				} else {
+				} else {
 //					setId(mngTerritorio.asignacionSueloId());
 //					as.setSueId(getId());
 //					mngTerritorio.insertarAsignacionSuelo(as);
-//					setEdicion(true);
-//					setOcultarGuardar(true);
+//					setEdicionAS(true);
 //					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
-//				}
+				}
 //				setearAsignacionSuelo(getId());
-//			}
-//		} catch (Exception e) {
-//			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
-//			System.out.println("Error al almacenar suelo: ");
-//			e.printStackTrace();
-//		}
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
+			System.out.println("Error al almacenar suelo: ");
+			e.printStackTrace();
+		}
 	}
 	
 	private void setearAsignacionSuelo(int idSuelo){
@@ -1545,23 +1595,23 @@ public class AsignacionSueloBean implements Serializable {
 	}
 //
 	public boolean validarCampos() {
-//		if (getZona().equals(SELECCIONAR)) {
-//			Mensaje.crearMensajeERROR("Campo zona requerido");
-//			return false;
-//		} else if (getTipoCatalogo().equals(SELECCIONAR)) {
-//			Mensaje.crearMensajeERROR("Campo tipo requerido");
-//			return false;
-//		} else {
-//			if (getUnidadTiempo().equals(SELECCIONAR)) {
-//				Mensaje.crearMensajeERROR("Seleccione la unidad de tiempo de la Temporalidad. ");
-//				return false;
-//			}
+		if (getZona().equals(SELECCIONAR)) {
+			Mensaje.crearMensajeERROR("Campo zona requerido");
+			return false;
+		} else if (getTipoCatalogo().equals(SELECCIONAR)) {
+			Mensaje.crearMensajeERROR("Campo tipo requerido");
+			return false;
+		} else {
+			if (getUnidadTiempo().equals(SELECCIONAR)) {
+				Mensaje.crearMensajeERROR("Seleccione la unidad de tiempo de la Temporalidad. ");
+				return false;
+			}
 			return true;
-//		}
+		}
 	}
-//
+
 	public String cancelar() {
-//		limpiarDatos();
+		limpiarDatos();
 //		cargarAsignacionSuelo();
 		return "asignacionSuelos?faces-redirect=true";
 	}
@@ -1587,7 +1637,7 @@ public class AsignacionSueloBean implements Serializable {
 		getLstAsignacionSuelos().addAll(mngTerritorio.findAllAsignacionSuelo());
 	}
 //	
-//	public void subirInforActualGT(FileUploadEvent evento) {
+	public void subirInforActualGT(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setInforActualGT(cargarInformes(evento));
@@ -1595,9 +1645,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirInforGestionT(FileUploadEvent evento) {
+	}
+
+	public void subirInforGestionT(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setInforGestionTerr(cargarInformes(evento));
@@ -1605,9 +1655,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirInforConsolidado(FileUploadEvent evento) {
+	}
+
+	public void subirInforConsolidado(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setInforConsolidado(cargarInformes(evento));
@@ -1615,9 +1665,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirInforPronunciamientoJ(FileUploadEvent evento) {
+	}
+
+	public void subirInforPronunciamientoJ(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setInforPronJuidico(cargarInformes(evento));
@@ -1625,9 +1675,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirInforConsolidado2(FileUploadEvent evento) {
+	}
+
+	public void subirInforConsolidado2(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setInforConsolidado2(cargarInformes(evento));
@@ -1635,9 +1685,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirSolicitudComite(FileUploadEvent evento) {
+	}
+
+	public void subirSolicitudComite(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setSolicitudComite(cargarInformes(evento));
@@ -1645,9 +1695,9 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirActaComite(FileUploadEvent evento) {
+	}
+
+	public void subirActaComite(FileUploadEvent evento) {
 //		try {
 //			System.out.println("Ingreso a metodo informActual");
 //			setActaResolucion(cargarInformes(evento));
@@ -1655,39 +1705,47 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	// Contrato
-//
-//	public void subirTDR(FileUploadEvent evento) {
+	}
+
+	// Contrato
+
+	public void subirTDR(FileUploadEvent evento) {
 //		try {
 //			setTdrContrato(cargarInformes(evento));
 //			editarContrato();
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public void subirPliego(FileUploadEvent evento) {
+	}
+
+	public void subirPliego(FileUploadEvent evento) {
 //		try {
 //			setPliegoContrato(cargarInformes(evento));
 //			editarContrato();
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	// Entregables
-//
-//	public void subirDocumentoEntregable(FileUploadEvent evento) {
+	}
+	public void subirContrato(FileUploadEvent evento) {
+//		try {
+//			setTdrContrato(cargarInformes(evento));
+//			editarContrato();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+	}
+
+	// Entregables
+
+	public void subirDocumentoEntregable(FileUploadEvent evento) {
 //		try {
 //			setDocumento(cargarInformes(evento));
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//
-//	public String cargarInformes(FileUploadEvent event) throws IOException {
+	}
+
+	public String cargarInformes(FileUploadEvent event) throws IOException {
 //		filePdf = event.getFile();
 //		String nombreArchivo ="";
 //		InputStream inputStream = null;
@@ -1720,11 +1778,11 @@ public class AsignacionSueloBean implements Serializable {
 //			return  nombreArchivo ;
 //		} else {
 //			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
-//			return "";
+			return "";
 //		}
-//	}
-//	
-//	public String direccionArchivo(UploadedFile file){
+	}
+	
+	public String direccionArchivo(UploadedFile file){
 //		try {
 //			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
 //			String nombreArchivo = file.getFileName();
@@ -1734,14 +1792,14 @@ public class AsignacionSueloBean implements Serializable {
 //			return ubicacionArchivo;
 //		} catch (Exception e) {
 //			e.printStackTrace();
-//			return "";
+			return "";
 //		}
-//	}
-//
-//	public String extensionArchivo(String nombreArchivo) {
-//		return nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
-//	}
-//
+	}
+
+	public String extensionArchivo(String nombreArchivo) {
+		return nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+	}
+
 //	public void editarAsignacionSuelo() {
 //		try {
 //			if (validarCampos()) {
@@ -1828,41 +1886,38 @@ public class AsignacionSueloBean implements Serializable {
 //		}
 //	}
 //
-//	public void descargarInforme(String informe){
-//		try {
-//			if(informe == null || informe.isEmpty()){
-//				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
-//			}else {
-//				String contextPath = mngTerritorio.findParametroByID("direccion_informes") + File.separatorChar
-//					+ informe+"";
-//				Funciones.descargarPDF(contextPath);
-//			}
-//		} catch (Exception e) {
-//			Mensaje.crearMensajeERROR("Error al descargar el documento: " + e.getMessage());
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	
-//
-//	/**
-//	 * Validar campos
-//	 * 
-//	 * @param item
-//	 * @return
-//	 */
-//	public String validarItemCatalogo(String item) {
-//		String respuesta = "";
-//		try {
-//			respuesta = mngTerritorio.catalogoItem(item);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			Mensaje.crearMensajeERROR("Error al validar Item. " + e.getMessage());
-//		}
-//		return respuesta;
-//	}
-//
+	public void descargarInforme(String informe){
+		try {
+			if(informe == null || informe.isEmpty()){
+				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
+			}else {
+				String contextPath = mngTerritorio.findParametroByID("direccion_informes") + File.separatorChar
+					+ informe+"";
+				Funciones.descargarPDF(contextPath);
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error al descargar el documento: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Validar campos
+	 * @param item
+	 * @return
+	 */
+	public String validarItemCatalogo(String item) {
+		String respuesta = "";
+		try {
+			respuesta = mngTerritorio.catalogoItem(item);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Mensaje.crearMensajeERROR("Error al validar Item. " + e.getMessage());
+		}
+		return respuesta;
+	}
+
 //	public String fechasaanios(Date fechaInicio, Date fechaFin) {
 //		String aniosEntreFechas = mngTerritorio.fechasaAnios(getFechaIncio(), getFechaFin(), getId());
 //		return aniosEntreFechas;
@@ -1874,7 +1929,7 @@ public class AsignacionSueloBean implements Serializable {
 //		RequestContext.getCurrentInstance().execute("PF('dlgSeg').show();");
 //	}
 //	
-//	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
+	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
 //		  try {
 //		   if (seguimiento.getHseAdjuntoDoc() == null
 //		     || seguimiento.getHseAdjuntoDoc().isEmpty()) {
@@ -1906,73 +1961,64 @@ public class AsignacionSueloBean implements Serializable {
 //		   Mensaje.crearMensajeERROR("Error: "+e.getMessage());
 //		   e.printStackTrace();
 //		  }
-//		 }
-//	
-//	public String cambiarNombre(String param){
-//		if(param.equals(EN_PROGRESO)){
-//			return "En progreso";
-//		}else{
-//			return "Actualizado";
-//		}
-//		
-//	}
-//	
-//	//// Fase 2
-//	
-//	public String nombreBoton() {
-//		if (isEdicionContrato() || isEdicionEntregable()) {
-//			return "Actualizar";
-//		} else {
-//			return "Insertar";
-//		}
-//	}
-//	
-//	public void switchOcupado(){
-//		if(isOcupado() == false){
-//			setOcupadoPor("");
-//			setTipoUso(SELECCIONAR);
-//		}
-//	}
-//	
-//	
-//	/**
-//	 * Método para buscar un funcionario
-//	 */
-//	public void buscarPersona() {
-//		if (getBusquedaPersona() == null || getBusquedaPersona().isEmpty()) {
-//			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
-//			setBusquedaPersona("");
-//			setDniResponsablePorDir("");
-//			setNombreResponsablePorDir("");
-//			setDireccionResponsable("");
-//		} else {
-//			try {
-//				GenFuncionariosInstitucion f = mngGeneral.findFuncionarioXDni(getBusquedaPersona());
-//				if (f == null) {
-//					Mensaje.crearMensajeWARN("Persona no encontrada");
-//					setBusquedaPersona("");
-//					setDniResponsablePorDir("");
-//					setNombreResponsablePorDir("");
-//					setDireccionResponsable("");
-//				} else {
-//					setBusquedaPersona("");
-//					setDniResponsablePorDir(f.getGenPersona().getPerDni());
-//					setNombreResponsablePorDir(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
-//					setDireccionResponsable(f.getFunDireccion());
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//	
+		 }
+	
+	public String cambiarNombre(String param){
+		if(param.equals(ENPROCESO)){
+			return "En progreso";
+		}else{
+			return "Actualizado";
+		}
+		
+	}
+	
+	//// Fase 2
+	
+	public String nombreBoton() {
+		if (isEdicionContrato() || isEdicionEntregable()) {
+			return "Actualizar";
+		} else {
+			return "Insertar";
+		}
+	}
+	/**
+	 * Método para buscar un funcionario
+	 */
+	public void buscarPersona() {
+		if (getBusquedaPersona() == null || getBusquedaPersona().isEmpty()) {
+			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
+			setBusquedaPersona("");
+			setDniResponsablePorDir("");
+			setNombreResponsablePorDir("");
+			setDireccionResponsable("");
+		} else {
+			try {
+				GenFuncionariosInstitucion f = mngGeneral.findFuncionarioXDni(getBusquedaPersona());
+				if (f == null) {
+					Mensaje.crearMensajeWARN("Persona no encontrada");
+					setBusquedaPersona("");
+					setDniResponsablePorDir("");
+					setNombreResponsablePorDir("");
+					setDireccionResponsable("");
+				} else {
+					setBusquedaPersona("");
+					setDniResponsablePorDir(f.getGenPersona().getPerDni());
+					setNombreResponsablePorDir(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
+					setDireccionResponsable(f.getFunDireccion());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 //	//Contrato 
 //	
 //	public void mostrarDlgContrato() {
 //		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
 //	}
 //	
-//	public void cargarContrato(GtrContratoAsignacion contrato){
+	public void cargarContrato(GtrContratoAsignacion contrato){
 //		setEdicionContrato(true);
 //		setIdContrato(contrato.getCasId());
 //		setTdrContrato(contrato.getCasTdr());
@@ -1986,9 +2032,9 @@ public class AsignacionSueloBean implements Serializable {
 //		setPrecio(contrato.getCasPrecio());
 //		
 //		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
-//	}
-//	
-//	public void guardarEditarContrato(){
+	}
+	
+	public void guardarEditarContrato(){
 //		try{
 //		if(validarCamposContrato()){
 //			GtrContratoAsignacion ca = new GtrContratoAsignacion();
@@ -2031,7 +2077,8 @@ public class AsignacionSueloBean implements Serializable {
 //			System.out.println("Error al almacenar contrato ");
 //			e.printStackTrace();
 //		}
-//	} 
+	} 
+	
 //	private boolean validarCamposContrato(){
 //		if(getUnidadTiempoContrato().equals(SELECCIONAR)){
 //			Mensaje.crearMensajeERROR("Se debe seleccionar la Unidad de tiempo de pa Periodicidad de Pago.");
@@ -2040,8 +2087,8 @@ public class AsignacionSueloBean implements Serializable {
 //			return true;
 //		}
 //	}
-//
-//	private void editarContrato() {
+
+	private void editarContrato() {
 //		try {
 //			if (validarCamposContrato()) {
 //				GtrContratoAsignacion ca = new GtrContratoAsignacion();
@@ -2075,13 +2122,13 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-//	}
-//	
-//	public void cancelarContrato(){
+	}
+	
+	public void cancelarContrato(){
 //		limpiarCamposContrato();
 //		
 //		RequestContext.getCurrentInstance().execute("PF('conDlg').hide();");
-//	}
+	}
 //	
 //	public void limpiarCamposContrato(){
 //		setIdContrato(""); setTdrContrato(""); setPliegoContrato(""); 
@@ -2098,18 +2145,18 @@ public class AsignacionSueloBean implements Serializable {
 //	
 //	// Entregables
 //	
-//	public void mostrarDlgEntregables(GtrContratoAsignacion contrato) {
+	public void mostrarDlgEntregables(GtrContratoAsignacion contrato) {
 //		cargarLstEntregables(contrato.getCasId());
 //		setContrato(contrato);
 //		System.out.println("id de contrato al ingresar a los entregables -->"+contrato.getCasId());
 //		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
-//	}
-//	
-//	private void cargarLstEntregables(String idContrato){
+	}
+	
+	private void cargarLstEntregables(String idContrato){
 //		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(idContrato));
-//	}
-//	
-//	public void buscarResponsableEnt() {
+	}
+	
+	public void buscarResponsableEnt() {
 //		if (getBusquedaResponsableEC() == null || getBusquedaResponsableEC().isEmpty()) {
 //			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 //			setBusquedaResponsableEC("");
@@ -2132,9 +2179,9 @@ public class AsignacionSueloBean implements Serializable {
 //				e.printStackTrace();
 //			}
 //		}
-//	}
-//	
-//	public void cargarEntregables(GtrEntregablesContrato entregable){
+	}
+	
+	public void cargarEntregables(GtrEntregablesContrato entregable){
 //		setEdicionEntregable(true);
 //		setPkEntregable(entregable.getId());
 //		setContrato(entregable.getGtrContratoAsignacion());
@@ -2146,8 +2193,8 @@ public class AsignacionSueloBean implements Serializable {
 //		setNombreResponsableEntregable(buscarNombre(entregable.getEcoResponsable()));
 //		
 //		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
-//	}
-//	
+	}
+	
 	public String buscarNombre(String cedula){
 		try {
 			if(cedula != null){
@@ -2161,8 +2208,8 @@ public class AsignacionSueloBean implements Serializable {
 			return "";
 		}
 	}
-//	
-//	public void guardarEditarEntregable(){
+	
+	public void guardarEditarEntregable(){
 //		try{
 //		GtrEntregablesContratoPK pk = new  GtrEntregablesContratoPK();
 //		pk.setCasId(getContrato().getCasId()); pk.setEcoDocumento(getDocumento());
@@ -2186,17 +2233,17 @@ public class AsignacionSueloBean implements Serializable {
 //			System.out.println("Error al almacenar entregable contrato ");
 //			e.printStackTrace();
 //		}
-//	}
-//	
-//	public void cancelarEntregable(){
+	}
+	
+	public void cancelarEntregable(){
 //		limpiarCamposEntregable();
-//	}
+	}
 //	
-//	public void volverContrato(){
+	public void volverContrato(){
 //		limpiarCamposEntregable();
 //		RequestContext.getCurrentInstance().execute("PF('entDlg').hide();");
 //		cargarLstContratos();
-//	}
+	}
 //	
 //	public void limpiarCamposEntregable(){
 //		setEdicionEntregable(false);
