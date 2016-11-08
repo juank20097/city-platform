@@ -1,7 +1,9 @@
 package city.model.dao.entidades;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.sql.Timestamp;
@@ -61,6 +63,9 @@ public class GtrAsignacionSuelo implements Serializable {
 	@Column(name="sue_direccion_responsable")
 	private String sueDireccionResponsable;
 
+	@Column(name="sue_ente_aprobador")
+	private String sueEnteAprobador;
+	
 	@Column(name="sue_estado", columnDefinition = "bpchar")
 	private String sueEstado;
 
@@ -370,6 +375,14 @@ public class GtrAsignacionSuelo implements Serializable {
 		this.sueDireccionResponsable = sueDireccionResponsable;
 	}
 
+	public String getSueEnteAprobador() {
+		return this.sueEnteAprobador;
+	}
+
+	public void setSueEnteAprobador(String sueEnteAprobador) {
+		this.sueEnteAprobador = sueEnteAprobador;
+	}
+	
 	public String getSueEstado() {
 		return this.sueEstado;
 	}

@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.loader.custom.Return;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
@@ -162,6 +163,7 @@ public class AsignacionSueloBean implements Serializable {
 	@DecimalMin("0")
 	private BigDecimal superficieAsignada;
 	private String unidadMedSupAsignada;
+	private String enteAprobador;
 	private boolean edicionAS;
 	private UploadedFile filePdf;
 	private GtrAsignacionSuelo asignacionSuelo;
@@ -517,6 +519,14 @@ public class AsignacionSueloBean implements Serializable {
 		this.dniresponsableEntregable = dniresponsableEntregable;
 	}
 
+	public String getEnteAprobador() {
+		return enteAprobador;
+	}
+	
+	public void setEnteAprobador(String enteAprobador) {
+		this.enteAprobador = enteAprobador;
+	}
+	
 	public String getEstadoEntregable() {
 		return estadoEntregable;
 	}
@@ -1457,6 +1467,7 @@ public class AsignacionSueloBean implements Serializable {
 		setUnidadMedSupAsignada(asigSuelo.getSueUnidadSupAsignada());
 		setSuperficieSolicitada(asigSuelo.getSueSuperficieSolicitada());
 		setUnidadMedSupSol(asigSuelo.getSueUnidadSupSolicitada());
+		setEnteAprobador(asigSuelo.getSueEnteAprobador());
 		// informes
 		setInforCaracterizacion(asigSuelo.getSueInforCaracterizacion());
 		setFechaDocCaracte(asigSuelo.getSueFechaDocCaracterizacion());
@@ -1502,87 +1513,217 @@ public class AsignacionSueloBean implements Serializable {
 			System.out.println("tipo catalogo "+getTipoCatalogo());
 			if (validarCampos()) {
 				GtrAsignacionSuelo as = new GtrAsignacionSuelo();
-//				as.setSueTipo(getTipoCatalogo());
-//				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
-//				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
-//				as.setSueActividad(Funciones.quitarEspacios(getActividad()));
-//				as.setGenZona(mngTerritorio.findZonaById(getZona()));
-//				as.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
-//				as.setSueMetros(getMetros());
-//				as.setSueNumeroAnios(getSueNumeroanios());
-//				as.setSueUnidadTiempo(getUnidadTiempo());
-//				as.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
-//				as.setSueRegulacionAmbiental(Funciones.quitarEspacios(getRegAmbiental()));
-//				as.setSueCoordenadaX(getCoordenadaX());
-//				as.setSueCoordenadaY(getCoordenadaY());
-//				as.setSueSuperficieSolicitada(getSuperficieSolicitada());
-//				as.setSueSuperficieAsignada(getSuperficieAsignada());
-//				as.setSueOcupado(isOcupado());
-//				as.setSueOcupadoPor(getOcupadoPor());
-//				as.setSueTipoUso(getTipoUso());
-//				as.setSueEstado(getEstado());
-//				as.setSueResponsable(Funciones.quitarEspacios(getDniResponsablePorDir()));
-//				as.setSueDireccionResponsable(Funciones.quitarEspacios(getDireccionResponsable()));
-//				as.setSueFuenteHidrica(Funciones.quitarEspacios(getFuenteHidrica()));
-//				as.setSueConcesionFuenteHidrica(Funciones.quitarEspacios(getConcesionFHidrica()));
-//				as.setSueResponsableConcesion(Funciones.quitarEspacios(getResponsableConcesion()));
-//				
-				if (isEdicionAS()) {
-//					GtrAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getId());
-//					setId(asignacionSuelo.getSueId());
-//					as.setSueId(getId());
-//					
-//					if(getInforGestionTerr() != null || getInforGestionTerr() != ""){
-//					as.setSueInforGestionTerritorial(getInforGestionTerr());	
-//					}else{
-//						as.setSueInforGestionTerritorial(asignacionSuelo.getSueInforGestionTerritorial());
-//					}
-//					if(getInforActualGT()!= null || getInforActualGT() != ""){
-//						as.setSueInforActualGestionTerr(getInforActualGT());
-//					}else{
-//						as.setSueInforActualGestionTerr(asignacionSuelo.getSueInforActualGestionTerr());
-//					}
-//					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
-//						as.setSueInforConsolidado(getInforConsolidado());
-//					}else{
-//						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
-//					}
-//					if(getInforPronJuidico()!= null || getInforPronJuidico() != ""){
-//						as.setSueInforPronunciamientoJurid(getInforPronJuidico());
-//					}else{
-//						as.setSueInforPronunciamientoJurid(asignacionSuelo.getSueInforPronunciamientoJurid());
-//					}
-//					if(getInforConsolidado2()!= null || getInforConsolidado2() != ""){
-//						as.setSueInforConsolidado2(getInforConsolidado2());
-//					}else{
-//						as.setSueInforConsolidado2(asignacionSuelo.getSueInforConsolidado2());
-//					}
-//					if(getSolicitudComite()!= null || getSolicitudComite() != ""){
-//						as.setSueSolicitudComite(getSolicitudComite());
-//					}else{
-//						as.setSueSolicitudComite(asignacionSuelo.getSueSolicitudComite());
-//					}
-//					if(getActaResolucion()!= null || getActaResolucion() != ""){
-//						as.setSueActaResolucionComite(getActaResolucion());
-//					}else{
-//						as.setSueActaResolucionComite(asignacionSuelo.getSueActaResolucionComite());
-//					}
-//					mngTerritorio.modicarAsignacionSuelo(as);
-//					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
-				} else {
-//					setId(mngTerritorio.asignacionSueloId());
-//					as.setSueId(getId());
-//					mngTerritorio.insertarAsignacionSuelo(as);
-//					setEdicionAS(true);
-//					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
+				as.setGenZona(mngTerritorio.findZonaById(getZona()));
+				as.setSueActividad(Funciones.quitarEspacios(getActividad()));
+				as.setSueAsignacion(Funciones.quitarEspacios(getAsignacion()));
+				as.setSueEstado(getEstado());
+				as.setSueTipo(getTipoCatalogo());
+				as.setSueObservacion(Funciones.quitarEspacios(getObservacion()));
+				as.setSueNumeroAnios(getNumeroAnios());
+				as.setSueUnidadTiempo(getUnidadTiempo());
+				as.setSueNombre(Funciones.quitarEspacios(getNombre()));
+				as.setSueDescripcion(Funciones.quitarEspacios(getDescripcion()));
+				as.setSueFuenteHidrica(Funciones.quitarEspacios(getFuenteHidrica()));
+				as.setSueConcesionFuenteHidrica(Funciones.quitarEspacios(getConcesionFHidrica()));
+				as.setSueResponsableConcesion(Funciones.quitarEspacios(getResponsableConcesion()));
+				as.setSueCaudalAsignado(Funciones.quitarEspacios(getCaudalAsignado()));
+				as.setSueCaudalTotal(Funciones.quitarEspacios(getCaudalTotal()));
+				as.setSueResponsable(getDniResponsablePorDir());
+				as.setSueDireccionResponsable(getDireccionResponsable());
+				as.setSueFiguraLegal(getFiguraLegal());
+				as.setSueAplicaRegulacionAmbiental(isAplicaRegAmbiental());
+				if(aplicaRegulacionAmbiental()){
+					as.setSueArchivoRegulacionAmb(getArchRegulacionAmb());
+					as.setSueFechaArchivoRegAmb(getFechaDocRegulacionAmb());
+					as.setSueFechaSubidaRegAmb(getFechaSubRegAmbiental());
+					as.setSueUsuarioSubidaRegAmb(getUsuRegAmbiental());
+				}else{
+					as.setSueArchivoRegulacionAmb("");
+					as.setSueFechaArchivoRegAmb(null);
+					as.setSueFechaSubidaRegAmb(null);
+					as.setSueUsuarioSubidaRegAmb("");
 				}
-//				setearAsignacionSuelo(getId());
+				as.setSueSuperficieAsignada(getSuperficieAsignada());
+				as.setSueUnidadSupAsignada(getUnidadMedSupAsignada());
+				as.setSueSuperficieSolicitada(getSuperficieSolicitada());
+				as.setSueUnidadSupSolicitada(getUnidadMedSupSol());
+				as.setSueEnteAprobador(getEnteAprobador());
+				
+				if(isEdicionAS()){
+					GtrAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getIdAsignacion());
+					setIdAsignacion(asignacionSuelo.getSueId());
+					setearAsignacionSuelo(getIdAsignacion());
+					as.setSueId(getIdAsignacion());
+					//Informes
+					if(getInforGestionTerr() != null || getInforGestionTerr() != ""){
+					as.setSueInforGestionTerritorial(getInforGestionTerr());
+					}else{
+						as.setSueInforGestionTerritorial(asignacionSuelo.getSueInforGestionTerritorial());
+					}
+					if(getArchivoKMZ()!= null || getArchivoKMZ() != ""){
+						as.setSueArchivoKmz(getArchivoKMZ());
+						as.setSueFechaArchivoKmz(getFechaArcKMZ());
+						as.setSueFechaSubidaKmz(getFechaSubidaKMZ());
+						as.setSueUsuarioArchivoKmz(getUsuArchivoKMZ());
+					}else{
+						as.setSueArchivoKmz(asignacionSuelo.getSueArchivoKmz());
+						as.setSueFechaArchivoKmz(asignacionSuelo.getSueFechaArchivoKmz());
+						as.setSueFechaSubidaKmz(asignacionSuelo.getSueFechaSubidaKmz());
+						as.setSueUsuarioArchivoKmz(asignacionSuelo.getSueUsuarioArchivoKmz());
+					}
+					if(getArchivoPDF()!= null || getArchivoPDF() != ""){
+						as.setSueArchivoPdf(getArchivoPDF());
+						as.setSueFechaArchivoPdf(getFechaArcPDF());
+						as.setSueFechaSubidaPdf(getFechaSubidaPDF());
+						as.setSueUsuarioArchivoPdf(getUsuArchivoPDF());
+					}else{
+						as.setSueArchivoPdf(asignacionSuelo.getSueArchivoPdf());
+						as.setSueFechaArchivoPdf(asignacionSuelo.getSueFechaArchivoPdf());
+						as.setSueFechaSubidaPdf(asignacionSuelo.getSueFechaSubidaPdf());
+						as.setSueUsuarioArchivoPdf(asignacionSuelo.getSueUsuarioArchivoPdf());
+					}
+					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
+						as.setSueInforConsolidado(getInforConsolidado());
+					}else{
+						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
+					}
+					if(getInforCaracterizacion()!= null || getInforCaracterizacion() != ""){
+						as.setSueInforCaracterizacion(getInforCaracterizacion());
+						as.setSueFechaDocCaracterizacion(getFechaDocCaracte());
+						as.setSueFechaSubidaCaracterizacio(getFechaSubidaCaracte());
+						as.setSueUsuarioCaracterizacion(getUsuCaracterizacion());
+					}else{
+						as.setSueInforCaracterizacion(asignacionSuelo.getSueInforCaracterizacion());
+						as.setSueFechaDocCaracterizacion(asignacionSuelo.getSueFechaDocCaracterizacion());
+						as.setSueFechaSubidaCaracterizacio(asignacionSuelo.getSueFechaSubidaCaracterizacio());
+						as.setSueUsuarioCaracterizacion(asignacionSuelo.getSueUsuarioCaracterizacion());
+					}
+					if(getInforUsoSuelo()!= null || getInforUsoSuelo() != ""){
+						as.setSueInforUsoSuelo(getInforUsoSuelo());
+						as.setSueFechaDocUsoSuelo(getFechaDocUsoSuelo());
+						as.setSueFechaSubidaUsoSuelo(getFechaSubidaUsoS());
+						as.setSueUsuarioUsoSuelo(getUsuUsoSuelo());
+					}else{
+						as.setSueInforUsoSuelo(asignacionSuelo.getSueInforUsoSuelo());
+						as.setSueFechaDocUsoSuelo(asignacionSuelo.getSueFechaDocUsoSuelo());
+						as.setSueFechaSubidaUsoSuelo(asignacionSuelo.getSueFechaSubidaUsoSuelo());
+						as.setSueUsuarioUsoSuelo(asignacionSuelo.getSueUsuarioUsoSuelo());
+					}
+					if(getInforDisponibilidad()!= null || getInforDisponibilidad() != ""){
+						as.setSueInforDisponibilidad(getInforDisponibilidad());
+						as.setSueFechaDocDisponibilidad(getFechaDocDisponibil());
+						as.setSueFechaSubidaDisponibilidad(getFechaSubidaDisponi());
+						as.setSueUsuarioDisponibilidad(getUsuDisponibilidad());
+					}else{
+						as.setSueInforDisponibilidad(asignacionSuelo.getSueInforDisponibilidad());
+						as.setSueFechaDocDisponibilidad(asignacionSuelo.getSueFechaDocDisponibilidad());
+						as.setSueFechaSubidaDisponibilidad(asignacionSuelo.getSueFechaSubidaDisponibilidad());
+						as.setSueUsuarioDisponibilidad(asignacionSuelo.getSueUsuarioDisponibilidad());
+					}
+					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
+						as.setSueInforConsolidado(getInforConsolidado());
+						as.setSueFechaDocConsolidado(getFechaDocConsolidado());
+						as.setSueFechaSubidaConsolidado(getFechaSubidaConsol());
+						as.setSueUsuarioConsolidado(getUsuConsolidado());
+					}else{
+						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
+						as.setSueFechaDocConsolidado(asignacionSuelo.getSueFechaDocConsolidado());
+						as.setSueFechaSubidaConsolidado(asignacionSuelo.getSueFechaSubidaConsolidado());
+						as.setSueUsuarioConsolidado(asignacionSuelo.getSueUsuarioConsolidado());
+					}
+					if(getResolucion()!= null || getResolucion() != ""){
+						as.setSueResolucion(getResolucion());
+						as.setSueFechaDocResolucion(getFechaDocResolucion());
+						as.setSueFechaSubidaResolucion(getFechaSubidaResol());
+						as.setSueUsuarioResolucion(getUsuResolucion());
+					}else{
+						as.setSueResolucion(asignacionSuelo.getSueResolucion());
+						as.setSueFechaDocResolucion(asignacionSuelo.getSueFechaDocResolucion());
+						as.setSueFechaSubidaResolucion(asignacionSuelo.getSueFechaSubidaResolucion());
+						as.setSueUsuarioResolucion(asignacionSuelo.getSueUsuarioResolucion());
+					}
+					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
+						as.setSueActaResolutiva(getActaResolutiva());
+						as.setSueFechaDocResolutiva(getFechaDocActaResol());
+						as.setSueFechaSubidaResolutiva(getFechaSubidaActaRes());
+						as.setSueUsuarioResolutiva(getUsuActaResol());
+					}else{
+						as.setSueActaResolutiva(asignacionSuelo.getSueActaResolutiva());
+						as.setSueFechaDocResolutiva(asignacionSuelo.getSueFechaDocResolutiva());
+						as.setSueFechaSubidaResolutiva(asignacionSuelo.getSueFechaSubidaResolutiva());
+						as.setSueUsuarioResolutiva(asignacionSuelo.getSueUsuarioResolutiva());
+					}
+					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
+						as.setSueActaResolutiva(getActaResolutiva());
+						as.setSueFechaDocResolutiva(getFechaDocActaResol());
+						as.setSueFechaSubidaResolutiva(getFechaSubidaActaRes());
+						as.setSueUsuarioResolutiva(getUsuActaResol());
+					}else{
+						as.setSueActaResolutiva(asignacionSuelo.getSueActaResolutiva());
+						as.setSueFechaDocResolutiva(asignacionSuelo.getSueFechaDocResolutiva());
+						as.setSueFechaSubidaResolutiva(asignacionSuelo.getSueFechaSubidaResolutiva());
+						as.setSueUsuarioResolutiva(asignacionSuelo.getSueUsuarioResolutiva());
+					}
+					if(getConvocatoria()!= null || getConvocatoria() != ""){
+						as.setSueConvocatoria(getConvocatoria());
+						as.setSueFechaDocConvocatoria(getFechaDocConvoca());
+						as.setSueFechaSubidaConvocatoria(getFechaSubidaConvoca());
+						as.setSueUsuarioConvocatoria(getUsuConvocatoria());
+					}else{
+						as.setSueConvocatoria(asignacionSuelo.getSueConvocatoria());
+						as.setSueFechaDocConvocatoria(asignacionSuelo.getSueFechaDocConvocatoria());
+						as.setSueFechaSubidaConvocatoria(asignacionSuelo.getSueFechaSubidaConvocatoria());
+						as.setSueUsuarioConvocatoria(asignacionSuelo.getSueUsuarioConvocatoria());
+					}
+					if(getNotificacionApNe()!= null || getNotificacionApNe() != ""){
+						as.setSueNotificacionApNe(getNotificacionApNe());
+						as.setSueFechaDocNotificacion(getFechaDocNotificacion());
+						as.setSueFechaSubidaNotificacion(getFechaSubidaNotificacion());
+						as.setSueUsuarioNotificacion(getUsuNotificacion());
+					}else{
+						as.setSueNotificacionApNe(asignacionSuelo.getSueNotificacionApNe());
+						as.setSueFechaDocNotificacion(asignacionSuelo.getSueFechaDocNotificacion());
+						as.setSueFechaSubidaNotificacion(asignacionSuelo.getSueFechaSubidaNotificacion());
+						as.setSueUsuarioNotificacion(asignacionSuelo.getSueUsuarioNotificacion());
+					}
+					mngTerritorio.modicarAsignacionSuelo(as);
+					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
+				} else {
+					setIdAsignacion(mngTerritorio.asignacionSueloId());
+					as.setSueId(getIdAsignacion());
+					mngTerritorio.insertarAsignacionSuelo(as);
+					setEdicionAS(true);
+					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
+				}
+				setearAsignacionSuelo(getIdAsignacion());
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
 			System.out.println("Error al almacenar suelo: ");
 			e.printStackTrace();
 		}
+	}
+	private boolean aplicaRegulacionAmbiental(){
+		if(validarRegAmbiental()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	private boolean validarRegAmbiental(){
+		boolean resultado = false;
+		if(isAplicaRegAmbiental()){
+			if(getArchRegulacionAmb() == null || getArchRegulacionAmb().equals("")){
+				Mensaje.crearMensajeWARN("Se debe subir el archivo de Regulación Ambiental.");
+				resultado = false;
+			}else if(getFechaDocRegulacionAmb() == null){
+				Mensaje.crearMensajeWARN("Se debe seleccionar la fecha del documento.");
+				resultado = false;
+			}else {
+				resultado = true;
+			}
+		}
+		return resultado;
 	}
 	
 	private void setearAsignacionSuelo(int idSuelo){
@@ -1637,163 +1778,211 @@ public class AsignacionSueloBean implements Serializable {
 		getLstAsignacionSuelos().addAll(mngTerritorio.findAllAsignacionSuelo());
 	}
 //	
-	public void subirInforActualGT(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setInforActualGT(cargarInformes(evento));
+	public void subirInforGestionT(FileUploadEvent evento) {
+		try {
+			setInforGestionTerr(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/****/
+	public void editarAsignacion(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueInforGestionTerritorial(getInforGestionTerr());
+			mngTerritorio.modicarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public void subirInforGestionT(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setInforGestionTerr(cargarInformes(evento));
+	public void subirInforCaracterizacion(FileUploadEvent evento) {
+		try {
+			setInforCaracterizacion(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirInforUsoSuelo(FileUploadEvent evento) {
+		try {
+			setInforUsoSuelo(cargarInformes(evento));
+//			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void subirInforDisponibilidad(FileUploadEvent evento) {
+		try {
+			setInforDisponibilidad(cargarInformes(evento));
+//			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void subirInforConsolidado(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setInforConsolidado(cargarInformes(evento));
+		try {
+			System.out.println("Ingreso a metodo informActual");
+			setInforConsolidado(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void subirInforPronunciamientoJ(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setInforPronJuidico(cargarInformes(evento));
+	public void subirResolucion(FileUploadEvent evento) {
+		try {
+			setResolucion(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void subirInforConsolidado2(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setInforConsolidado2(cargarInformes(evento));
+	public void subirActaResolutiva(FileUploadEvent evento) {
+		try {
+			setActaResolutiva(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void subirSolicitudComite(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setSolicitudComite(cargarInformes(evento));
+	
+	public void subirConvocatoria(FileUploadEvent evento) {
+		try {
+			setConvocatoria(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void subirActaComite(FileUploadEvent evento) {
-//		try {
-//			System.out.println("Ingreso a metodo informActual");
-//			setActaResolucion(cargarInformes(evento));
+	
+	public void subirRegulacionAmb(FileUploadEvent evento) {
+		try {
+			setArchRegulacionAmb(cargarInformes(evento));
 //			editarAsignacionSuelo();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+	
+	public void subirKMZ(FileUploadEvent evento) {
+		try {
+			setArchivoKMZ(cargarInformes(evento));
+//			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void subirPDF(FileUploadEvent evento) {
+		try {
+			setArchivoPDF(cargarInformes(evento));
+//			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void subirNotificacionAN(FileUploadEvent evento) {
+		try {
+			setNotificacionApNe(cargarInformes(evento));
+//			editarAsignacionSuelo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	// Contrato
 
 	public void subirTDR(FileUploadEvent evento) {
-//		try {
-//			setTdrContrato(cargarInformes(evento));
+		try {
+			setTdrContrato(cargarInformes(evento));
 //			editarContrato();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void subirPliego(FileUploadEvent evento) {
-//		try {
-//			setPliegoContrato(cargarInformes(evento));
+		try {
+			setPliegoContrato(cargarInformes(evento));
 //			editarContrato();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void subirContrato(FileUploadEvent evento) {
-//		try {
-//			setTdrContrato(cargarInformes(evento));
+		try {
+			setArchContrato(cargarInformes(evento));
 //			editarContrato();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Entregables
 
 	public void subirDocumentoEntregable(FileUploadEvent evento) {
-//		try {
-//			setDocumento(cargarInformes(evento));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			setDocumento(cargarInformes(evento));
+//			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String cargarInformes(FileUploadEvent event) throws IOException {
-//		filePdf = event.getFile();
-//		String nombreArchivo ="";
-//		InputStream inputStream = null;
-//		OutputStream outputStream = null;
-//		if (filePdf != null) {
-//			try {
-//				
-//				outputStream = new FileOutputStream(direccionArchivo(filePdf));
-//				inputStream = filePdf.getInputstream();
-//				nombreArchivo = filePdf.getFileName();
-//
-//				int read = 0;
-//				byte[] bytes = new byte[1024];
-//
-//				while ((read = inputStream.read(bytes)) != -1) {
-//					outputStream.write(bytes, 0, read);
-//				}
-//				Mensaje.crearMensajeINFO("Carga del archivo Correcta");
-//			} catch (Exception e) {
-//				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
-//				e.printStackTrace();
-//			} finally {
-//				if (inputStream != null) {
-//					inputStream.close();
-//				}
-//				if (outputStream != null) {
-//					outputStream.close();
-//				}
-//			}
-//			return  nombreArchivo ;
-//		} else {
-//			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
+		filePdf = event.getFile();
+		String nombreArchivo = "";
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		if (filePdf != null) {
+			try {
+				outputStream = new FileOutputStream(direccionArchivo(filePdf));
+				inputStream = filePdf.getInputstream();
+				nombreArchivo = filePdf.getFileName();
+
+				int read = 0;
+				byte[] bytes = new byte[1024];
+
+				while ((read = inputStream.read(bytes)) != -1) {
+					outputStream.write(bytes, 0, read);
+				}
+				Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+			} catch (Exception e) {
+				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
+				e.printStackTrace();
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+			return nombreArchivo;
+		} else {
+			Mensaje.crearMensajeWARN("No se pudo cargar el archivo");
 			return "";
-//		}
+		}
 	}
 	
 	public String direccionArchivo(UploadedFile file){
-//		try {
-//			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
-//			String nombreArchivo = file.getFileName();
-//			String ubicacionArchivo = carpeta + File.separatorChar +nombreArchivo;
-//			System.out.println("Carpeta -----> "+carpeta);
-//			System.out.println("PAD -----> "+nombreArchivo);
-//			return ubicacionArchivo;
-//		} catch (Exception e) {
-//			e.printStackTrace();
+		try {
+			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
+			String nombreArchivo = file.getFileName();
+			String ubicacionArchivo = carpeta + File.separatorChar +nombreArchivo;
+			System.out.println("Carpeta -----> "+carpeta);
+			System.out.println("PAD -----> "+nombreArchivo);
+			return ubicacionArchivo;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return "";
-//		}
+		}
 	}
 
 	public String extensionArchivo(String nombreArchivo) {
@@ -1930,49 +2119,31 @@ public class AsignacionSueloBean implements Serializable {
 //	}
 //	
 	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
-//		  try {
-//		   if (seguimiento.getHseAdjuntoDoc() == null
-//		     || seguimiento.getHseAdjuntoDoc().isEmpty()) {
-//		    Mensaje.crearMensajeERROR("No existe un archivo asignado.");
-//		   } else {
-//		    String contextPath = mngTerritorio
-//		      .findParametroByID("direccion_ad_doc") + File.separatorChar 
-//		      + seguimiento.getHseAdjuntoDoc() + "";
-//		    Funciones.descargarPDF(contextPath);
-//		   }
-//		  } catch (Exception e) {
-//		   Mensaje.crearMensajeERROR("Error: "+e.getMessage());
-//		   e.printStackTrace();
-//		  }
-//		 }
-//		 
-//		 public void descargarFoto(GtrHistorialSeguimiento seguimiento) {
-//		  try {
-//		   if (seguimiento.getHseAdjuntoFot() == null
-//		     || seguimiento.getHseAdjuntoFot().isEmpty()) {
-//		    Mensaje.crearMensajeERROR("No existe un archivo asignado.");
-//		   } else {
-//		    String contextPath = mngTerritorio
-//		      .findParametroByID("direccion_ad_foto") + File.separatorChar
-//		      + seguimiento.getHseAdjuntoFot() + "";
-//		    Funciones.descargarPDF(contextPath);
-//		   }
-//		  } catch (Exception e) {
-//		   Mensaje.crearMensajeERROR("Error: "+e.getMessage());
-//		   e.printStackTrace();
-//		  }
-		 }
-	
+		try {
+			if (seguimiento.getHseAdjuntoDoc() == null
+					|| seguimiento.getHseAdjuntoDoc().isEmpty()) {
+				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
+			} else {
+				String contextPath = mngTerritorio.findParametroByID("direccion_ad_doc")
+						+ File.separatorChar + seguimiento.getHseAdjuntoDoc() + "";
+				Funciones.descargarPDF(contextPath);
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+		 
 	public String cambiarNombre(String param){
 		if(param.equals(ENPROCESO)){
-			return "En progreso";
+			return VALORENPROCESO;
+		}else if(param.equals(APROBADO)){
+			return	VALORAPROBADO;
 		}else{
-			return "Actualizado";
+			return VALORNEGADO;
 		}
 		
 	}
-	
-	//// Fase 2
 	
 	public String nombreBoton() {
 		if (isEdicionContrato() || isEdicionEntregable()) {
