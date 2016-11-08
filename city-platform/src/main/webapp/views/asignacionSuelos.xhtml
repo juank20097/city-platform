@@ -34,7 +34,7 @@
 				animation-exit="animated flipOutX" escape="true" />
 			<b:panel title="Listado" look="primary" collapsible="false">
 				<b:dataTable id="dt_ins"
-					value="#{asignacionSueloBean.listAsignacionSuelos}" var="s"
+					value="#{asignacionSueloBean.lstAsignacionSuelos}" var="s"
 					styleClass="table table-striped table-bordered dt-responsive nowrap"
 					fixedHeader="true" responsive="true" lang="es" style="width:100%">
 					<h:column width="100">
@@ -49,10 +49,7 @@
 							action="#{asignacionSueloBean.cargarEditarAsignacionSuelo(s)}">
 						</b:commandButton>
 						&nbsp;&nbsp;&nbsp;
-						<b:commandButton iconAwesome="fa fa-eye"
-							style="padding: 0; border: none; background: none;color: #000"
-							action="#{asignacionSueloBean.tablaSeguimiento(s)}">
-						</b:commandButton>
+						
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -87,9 +84,9 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<h:outputText value="METROS CUADRADOS" />
+							<h:outputText value="SUPERFICIE" />
 						</f:facet>
-						<h:outputText value="#{s.sueMetros}" />
+						<h:outputText value="#{s.sueSuperficieAsignada}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
@@ -103,15 +100,6 @@
 							<h:outputText value="OBSERVACI&Oacute;N" />
 						</f:facet>
 						<h:outputText value="#{s.sueObservacion}" />
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="PDF" />
-						</f:facet>
-						<p:commandLink ajax="false" update="mensaje2"
-							action="#{asignacionSueloBean.descargarPDF(s)}">
-							#{s.sueArchivo}
-						</p:commandLink>
 					</h:column>
 				</b:dataTable>
 			</b:panel>
@@ -150,16 +138,6 @@
 							update="mensaje2"
 							action="#{asignacionSueloBean.descargarDocumento(seg)}">
 							#{seg.hseAdjuntoDoc}
-						</p:commandLink>
-					</h:column>
-					<h:column>
-						<f:facet name="header">
-							<h:outputText value="FOTO" />
-						</f:facet>
-						<p:commandLink style="color:#6EB9EB;" ajax="false"
-							update="mensaje2"
-							action="#{asignacionSueloBean.descargarFoto(seg)}">
-							#{seg.hseAdjuntoFot}
 						</p:commandLink>
 					</h:column>
 					<h:column>

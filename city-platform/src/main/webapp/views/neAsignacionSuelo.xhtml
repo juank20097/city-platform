@@ -99,7 +99,7 @@
 									<h:outputLabel value="Temporalidad:* " />
 								</b:column>
 								<b:column col-xs="1">
-									<p:spinner id="basic" min="0"
+									<p:spinner min="0"
 										value="#{asignacionSueloBean.numeroAnios}" size="3" />
 								</b:column>
 								<b:column col-xs="1">
@@ -509,7 +509,7 @@
 							<h:outputLabel value="Precio:* " />
 						</b:column>
 						<b:column col-xs="3">
-							<p:spinner id="basic" min="0"
+							<p:spinner min="0"
 								value="#{asignacionSueloBean.precio}" size="3" />
 						</b:column>
 						<b:column col-xs="2">
@@ -586,7 +586,7 @@
 							</p:fileUpload>
 						</b:column>
 						<b:column col-xs="3">
-							<p:commandLink id="pli" ajax="false" immediate="true" update="growl"
+							<p:commandLink id="con" ajax="false" immediate="true" update="growl"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.pliegoContrato)}">
 								#{asignacionSueloBean.pliegoContrato}
@@ -632,7 +632,7 @@
 						<b:column col-xs="2">
 							<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
 								action="#{asignacionSueloBean.guardarEditarContrato()}"
-								look="info" update="co frmCo" style="padding:.4em;" />
+								look="info" update=" frmCo" style="padding:.4em;" />
 						</b:column>
 						<b:column col-xs="4">
 							<b:commandButton value="Cancelar"
