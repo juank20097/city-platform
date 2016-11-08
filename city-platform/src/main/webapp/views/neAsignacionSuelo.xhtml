@@ -33,7 +33,6 @@
 				<h:form id="frm">
 					<b:tabView orientation="left" pills="true" tabPosition="left"
 						contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-
 						<b:tab title="Datos Generales">
 							<b:row>
 								<b:column col-xs="2">
@@ -99,8 +98,8 @@
 									<h:outputLabel value="Temporalidad:* " />
 								</b:column>
 								<b:column col-xs="1">
-									<p:spinner min="0"
-										value="#{asignacionSueloBean.numeroAnios}" size="3" />
+									<p:spinner min="0" value="#{asignacionSueloBean.numeroAnios}"
+										size="3" />
 								</b:column>
 								<b:column col-xs="1">
 									<p:selectOneMenu value="#{asignacionSueloBean.unidadTiempo}">
@@ -112,30 +111,8 @@
 								<b:column col-xs="2">
 									<h:outputLabel value="Observaci&oacute;n: " />
 								</b:column>
-								<b:column col-xs="4">
+								<b:column col-xs="10">
 									<b:inputTextarea value="#{asignacionSueloBean.observacion}"
-										rows="1" />
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputLabel value="Aplica Regulaci&oacute;n Ambiental:* " />
-								</b:column>
-								<b:column col-xs="4">
-									<p:selectBooleanButton value="#{asignacionSueloBean.aplicaRegAmbiental}"
-										onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
-										offLabel="No" style="width:60px">
-										<p:ajax listener="#{asignacionSueloBean.switchRegAmbiental()}"
-											update="ra" />
-									</p:selectBooleanButton>
-								</b:column>
-							</b:row>
-							<b:row>
-								<b:column col-xs="2">
-									<h:outputLabel value="Regulaci&oacute;n Ambiental:* " />
-								</b:column>
-								<b:column col-xs="4">
-									<b:inputTextarea id="ra" value="#{asignacionSueloBean.archRegulacionAmb}"
 										rows="1" />
 								</b:column>
 							</b:row>
@@ -147,7 +124,7 @@
 									<b:inputText
 										value="#{asignacionSueloBean.superficieSolicitada}" />
 								</b:column>
-								<b:column col-xs="1">
+								<b:column col-xs="2">
 									<p:selectOneMenu value="#{asignacionSueloBean.unidadMedSupSol}">
 										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
 									</p:selectOneMenu>
@@ -158,8 +135,9 @@
 								<b:column col-xs="2">
 									<b:inputText value="#{asignacionSueloBean.superficieAsignada}" />
 								</b:column>
-								<b:column col-xs="1">
-									<p:selectOneMenu value="#{asignacionSueloBean.unidadMedSupAsignada}">
+								<b:column col-xs="2">
+									<p:selectOneMenu
+										value="#{asignacionSueloBean.unidadMedSupAsignada}">
 										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
 									</p:selectOneMenu>
 								</b:column>
@@ -214,6 +192,247 @@
 										value="#{asignacionSueloBean.direccionResponsable}" />
 								</b:column>
 							</b:row>
+							<p:separator />
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Aplica Regulaci&oacute;n Ambiental:* " />
+								</b:column>
+								<b:column col-xs="4">
+									<p:selectBooleanButton
+										value="#{asignacionSueloBean.aplicaRegAmbiental}"
+										onIcon="ui-icon-check" offIcon="ui-icon-close" onLabel="Si"
+										offLabel="No" style="width:60px">
+										<p:ajax listener="#{asignacionSueloBean.switchRegAmbiental()}"
+											update="ra fsra fuRa ara" />
+									</p:selectBooleanButton>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Archivo Regulaci&oacute;n Ambiental:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="ra"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												value="#{asignacionSueloBean.fechaDocRegulacionAmb}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fsra"
+												value="#{asignacionSueloBean.fechaSubRegAmbiental}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload id="fuRa" mode="advanced"
+												dragDropSupport="true" update=":frm ara"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="ara" ajax="false" immediate="true"
+												update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archRegulacionAmb)}">
+												#{asignacionSueloBean.archRegulacionAmb}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Informe de Gesti&oacute;n Territorial:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload id="fuGt" mode="advanced"
+												dragDropSupport="true" update=":frm igt"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="igt" ajax="false" immediate="true"
+												update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforGestionTerr)}">
+												#{asignacionSueloBean.inforGestionTerr}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Archivo KMZ:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="fkm"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												value="#{asignacionSueloBean.fechaArcKMZ}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fskm"
+												value="#{asignacionSueloBean.fechaSubidaKMZ}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload id="fuKmz" mode="advanced"
+												dragDropSupport="true" update=":frm akm"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="akm" ajax="false" immediate="true"
+												update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archivoKMZ)}">
+												#{asignacionSueloBean.archivoKMZ}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Archivo PDF:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="fpd"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												value="#{asignacionSueloBean.fechaArcPDF}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fspd"
+												value="#{asignacionSueloBean.fechaSubidaPDF}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload id="fuPdf" mode="advanced"
+												dragDropSupport="true" update=":frm apd"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="apd" ajax="false" immediate="true"
+												update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archivoPDF)}">
+												#{asignacionSueloBean.archivoPDF}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Notificaci&oacute;n Aprobaci&oacute;n / Negaci&oacute;n:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="fan"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												value="#{asignacionSueloBean.fechaDocNotificacion}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fsan"
+												value="#{asignacionSueloBean.fechaSubidaNotificacion}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload id="fuN" mode="advanced"
+												dragDropSupport="true" update=":frm nan"
+												disabled="#{!asignacionSueloBean.edicionAS}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="nan" ajax="false" immediate="true"
+												update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.notificacionApNe)}">
+												#{asignacionSueloBean.notificacionApNe}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
 						</b:tab>
 						<b:tab title="Fuente H&iacute;drica">
 							<b:row>
@@ -256,7 +475,7 @@
 						</b:tab>
 
 					</b:tabView>
-					<center style="margin-top:20px;">
+					<center style="margin-top: 20px;">
 						<p:commandButton value="Guardar" styleClass="btn btn-info"
 							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
 							onclick="PF('statusDialog').show();"
@@ -288,173 +507,329 @@
 							<h:outputLabel
 								value="Informe de Caracterizaci&oacute;n del Proyecto (Atracción Inversiones):*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm iagt" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirInforGestionT}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="iagt" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforGestionTerr)}">
-						#{asignacionSueloBean.inforCaracterizacion}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fic"
+										value="#{asignacionSueloBean.fechaDocCaracte}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaCaracte}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm iagt"
+										disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirInforGestionT}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="iagt" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforGestionTerr)}">
+										#{asignacionSueloBean.inforCaracterizacion}
+									</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
+					<b:row style="margin-bottom:10px;">
+						<b:column col-xs="2">
+							<h:outputLabel value="Informe de uso de suelos (GGT):*" />
+						</b:column>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fus"
+										value="#{asignacionSueloBean.fechaDocUsoSuelo}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaUsoS}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm igt" disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirInforActualGT}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="igt" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforUsoSuelo)}">
+								#{asignacionSueloBean.inforUsoSuelo}
+							</p:commandLink>
+								</b:column>
+							</b:row>
+						</b:column>
+					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
 							<h:outputLabel
-								value="Informe de uso de suelos (GGT):*" />
+								value="Informe de Disponibilidad de Servicio (GNU):*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm igt" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirInforActualGT}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="igt" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforUsoSuelo)}">
-						#{asignacionSueloBean.inforUsoSuelo}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fid"
+										value="#{asignacionSueloBean.fechaDocConsolidado}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaConsol}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm ico1"
+										disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirInforConsolidado}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="ico1" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforDisponibilidad)}">
+								#{asignacionSueloBean.inforDisponibilidad}
+							</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
-							<h:outputLabel value="Informe de Disponibilidad de Servicio (GNU):*" />
+							<h:outputLabel
+								value="Informe Consolidado (Atracción Inversiones):*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm ico1" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirInforConsolidado}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="ico1" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforConsolidado)}">
-						#{asignacionSueloBean.inforDisponibilidad}
-					</p:commandLink>
-						</b:column>
-					</b:row>
-					<b:row style="margin-bottom:10px;">
-						<b:column col-xs="2">
-							<h:outputLabel value="Informe Consolidado (Atracción Inversiones):*" />
-						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm ipj" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="ipj" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforConsolidado)}">
-						#{asignacionSueloBean.inforConsolidado}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fc"
+										value="#{asignacionSueloBean.fechaDocConsolidado}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaConsol}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm ipj" disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirInforPronunciamientoJ}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="ipj" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.inforConsolidado)}">
+								#{asignacionSueloBean.inforConsolidado}
+							</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
 							<h:outputLabel value="Resoluci&oacute;n:*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm ico2" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirInforConsolidado2}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="ico2" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.resolucion)}">
-						#{asignacionSueloBean.resolucion}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fre"
+										value="#{asignacionSueloBean.fechaDocResolucion}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaResol}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm ico2"
+										disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirInforConsolidado2}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="ico2" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.resolucion)}">
+								#{asignacionSueloBean.resolucion}
+							</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
-							<h:outputLabel
-								value="Acta Resolutiva:*" />
+							<h:outputLabel value="Acta Resolutiva:*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm scc" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirSolicitudComite}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="scc" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.actaResolutiva)}">
-						#{asignacionSueloBean.actaResolutiva}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="far"
+										value="#{asignacionSueloBean.fechaDocActaResol}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaActaRes}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm scc" disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirSolicitudComite}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="scc" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.actaResolutiva)}">
+								#{asignacionSueloBean.actaResolutiva}
+							</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
-							<h:outputLabel
-								value="Convocatoria:*" />
+							<h:outputLabel value="Convocatoria:*" />
 						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm arc" disabled="#{!asignacionSueloBean.edicionAS}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirActaComite}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="arc" ajax="false" immediate="true" update="growl"
-								disabled="#{!asignacionSueloBean.edicionAS}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.convocatoria)}">
-						#{asignacionSueloBean.convocatoria}
-					</p:commandLink>
+						<b:column col-xs="10">
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="3">
+									<h:outputLabel value="Fecha Documento:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fcv"
+										value="#{asignacionSueloBean.fechaDocConvoca}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-5:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Subida:" />
+								</b:column>
+								<b:column col-xs="3">
+									<h:outputText value="#{asignacionSueloBean.fechaSubidaConvoca}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="7">
+									<p:fileUpload mode="advanced" dragDropSupport="true"
+										update=":frm arc" disabled="#{!asignacionSueloBean.edicionAS}"
+										sizeLimit="11000000" multiple="false"
+										invalidSizeMessage="Archivo excede limite 10 MB "
+										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+										fileLimitMessage="Solo un archivo"
+										allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+										uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+										fileUploadListener="#{asignacionSueloBean.subirActaComite}">
+									</p:fileUpload>
+								</b:column>
+								<b:column col-xs="3">
+									<p:commandLink id="arc" ajax="false" immediate="true"
+										update="growl" disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.convocatoria)}">
+								#{asignacionSueloBean.convocatoria}
+							</p:commandLink>
+								</b:column>
+							</b:row>
 						</b:column>
 					</b:row>
+
 				</h:form>
 			</b:tab>
 			<b:tab title="Instrumento Legal">
@@ -468,7 +843,8 @@
 							<h:outputLabel value="Asignaci&oacute;n Suelo:" />
 						</b:column>
 						<b:column col-xs="4">
-							<h:outputText value="#{asignacionSueloBean.asignacionSuelo.sueNombre}" />
+							<h:outputText
+								value="#{asignacionSueloBean.asignacionSuelo.sueNombre}" />
 						</b:column>
 					</b:row>
 					<b:row>
@@ -482,8 +858,7 @@
 							<h:outputLabel value="Tipo:* " />
 						</b:column>
 						<b:column col-xs="3">
-							<p:selectOneMenu
-								value="#{asignacionSueloBean.tipoContrato}">
+							<p:selectOneMenu value="#{asignacionSueloBean.tipoContrato}">
 								<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
 							</p:selectOneMenu>
 						</b:column>
@@ -509,8 +884,7 @@
 							<h:outputLabel value="Precio:* " />
 						</b:column>
 						<b:column col-xs="3">
-							<p:spinner min="0"
-								value="#{asignacionSueloBean.precio}" size="3" />
+							<p:spinner min="0" value="#{asignacionSueloBean.precio}" size="3" />
 						</b:column>
 						<b:column col-xs="2">
 							<h:outputLabel value="Periodicidad de Pago:* " />
@@ -550,7 +924,8 @@
 							<h:outputLabel value="TDR:*" />
 						</b:column>
 						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm tdr"
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm tdr"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								sizeLimit="11000000" multiple="false"
 								invalidSizeMessage="Archivo excede limite 10 MB "
@@ -562,19 +937,22 @@
 							</p:fileUpload>
 						</b:column>
 						<b:column col-xs="3">
-							<p:commandLink id="tdr" ajax="false" immediate="true" update="growl"
+							<p:commandLink id="tdr" ajax="false" immediate="true"
+								update="growl"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.tdrContrato)}">
 								#{asignacionSueloBean.tdrContrato}
 							</p:commandLink>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
 							<h:outputLabel value="Pliego:*" />
 						</b:column>
 						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm pli"
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm pli"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								sizeLimit="11000000" multiple="false"
 								invalidSizeMessage="Archivo excede limite 10 MB "
@@ -586,19 +964,22 @@
 							</p:fileUpload>
 						</b:column>
 						<b:column col-xs="3">
-							<p:commandLink id="con" ajax="false" immediate="true" update="growl"
+							<p:commandLink id="con" ajax="false" immediate="true"
+								update="growl"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.pliegoContrato)}">
 								#{asignacionSueloBean.pliegoContrato}
 							</p:commandLink>
 						</b:column>
 					</b:row>
+					<p:separator />
 					<b:row style="margin-bottom:10px;">
 						<b:column col-xs="2">
 							<h:outputLabel value="Contrato:*" />
 						</b:column>
 						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm pli"
+							<p:fileUpload mode="advanced" dragDropSupport="true"
+								update=":frm pli"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								sizeLimit="11000000" multiple="false"
 								invalidSizeMessage="Archivo excede limite 10 MB "
@@ -610,7 +991,8 @@
 							</p:fileUpload>
 						</b:column>
 						<b:column col-xs="3">
-							<p:commandLink id="pli" ajax="false" immediate="true" update="growl"
+							<p:commandLink id="pli" ajax="false" immediate="true"
+								update="growl"
 								disabled="#{!asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archContrato)}">
 								#{asignacionSueloBean.archContrato}
@@ -622,9 +1004,9 @@
 							<h:outputLabel value="Estado:*" />
 						</b:column>
 						<b:column col-xs="4">
-							<p:selectOneMenu
-								value="#{asignacionSueloBean.estadoContrato}">
-								<f:selectItems value="#{asignacionSueloBean.slctEstadosContrato}" />
+							<p:selectOneMenu value="#{asignacionSueloBean.estadoContrato}">
+								<f:selectItems
+									value="#{asignacionSueloBean.slctEstadosContrato}" />
 							</p:selectOneMenu>
 						</b:column>
 					</b:row>
@@ -667,14 +1049,15 @@
 							<p:commandButton
 								actionListener="#{asignacionSueloBean.cargarEntregables(ec)}"
 								id="btnE" icon="ui-icon-pencil">
-								<p:tooltip for="btnE" value="Editar Entregable" trackMouse="true" />
+								<p:tooltip for="btnE" value="Editar Entregable"
+									trackMouse="true" />
 							</p:commandButton>
 						</p:column>
 						<p:column headerText="C&oacute;digo Contrato">
 							<h:outputText value="#{ec.gtrContratoAsignacion.casId}" />
 						</p:column>
 						<p:column headerText="Documento">
-						
+
 						</p:column>
 						<p:column headerText="Responsable">
 							<h:outputText
@@ -697,7 +1080,7 @@
 			modal="true" draggable="false" width="850" height="400"
 			closable="false" resizable="false" showHeader="false">
 			<h:form id="frmCo">
-				
+
 			</h:form>
 		</p:dialog>
 		<p:dialog id="pdEC" widgetVar="entDlg" modal="true" draggable="false"
@@ -727,8 +1110,8 @@
 				</b:row>
 				<b:row style="margin-bottom:10px;">
 					<b:column col-xs="7">
-						<p:fileUpload mode="advanced" dragDropSupport="true" update=":frm doc"
-							sizeLimit="11000000" multiple="false"
+						<p:fileUpload mode="advanced" dragDropSupport="true"
+							update=":frm doc" sizeLimit="11000000" multiple="false"
 							invalidSizeMessage="Archivo excede limite 10 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
 							fileLimitMessage="Solo un archivo"
@@ -743,7 +1126,8 @@
 						<h:outputLabel value="Fecha M&aacute;xima Entrega:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<p:calendar id="fm" value="#{asignacionSueloBean.fechaMaxEntregaDoc}"
+						<p:calendar id="fm"
+							value="#{asignacionSueloBean.fechaMaxEntregaDoc}"
 							pattern="dd-MM-yyyy" mask="true" showOn="button"
 							yearRange="c-30:c+5" navigator="true" />
 					</b:column>
@@ -793,8 +1177,9 @@
 					</b:column>
 					<b:column col-xs="4">
 						<b:commandButton value="Limpiar"
-							actionListener="#{asignacionSueloBean.cancelarEntregable()}" look="info"
-							update="frmCo frmEC" style="padding:.4em;" process="@this">
+							actionListener="#{asignacionSueloBean.cancelarEntregable()}"
+							look="info" update="frmCo frmEC" style="padding:.4em;"
+							process="@this">
 							<p:resetInput target="frmEC" />
 						</b:commandButton>
 					</b:column>
