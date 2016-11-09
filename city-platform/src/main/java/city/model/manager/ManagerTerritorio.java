@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import city.model.dao.entidades.GtrAdministradorContrato;
 import city.model.dao.entidades.GtrAsignacionSuelo;
 import city.model.dao.entidades.GenBarrio;
 import city.model.dao.entidades.GenCatalogoItemsDet;
@@ -31,6 +32,7 @@ import city.model.dao.entidades.GenSectore;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
 import city.model.dao.entidades.GenZonasComunidadePK;
+import city.model.generic.Funciones;
 
 @Stateless
 public class ManagerTerritorio {
@@ -551,7 +553,25 @@ public class ManagerTerritorio {
 	}
 
 	public void modificarEntregable(GtrEntregablesContrato entregable) throws Exception{
-		mngDAO.insertar(entregable);
+		mngDAO.actualizar(entregable);
+	}
+	
+	// Administradores Contrato 
+	
+	@SuppressWarnings("unchecked")
+	public List<GtrAdministradorContrato> findAllAdministradoresPorContrato(String idContrato){
+		return mngDAO.findWhere(GtrAdministradorContrato.class, "o.gtrContratoAsignacion.casId = '"+idContrato+"'", "o.adcEstado ='A'");
+	}
+	
+	public GtrAdministradorContrato findAdministradorById(int idAdministrador) throws Exception{
+		return (GtrAdministradorContrato) mngDAO.findById(GtrAdministradorContrato.class, idAdministrador);
+	}
+	public void insertarAdministrador(GtrAdministradorContrato admin) throws Exception{
+		mngDAO.insertar(admin);
+	}
+	
+	public void modificarAdministrador(GtrAdministradorContrato admin) throws Exception{
+		mngDAO.actualizar(admin);
 	}
 	
 	///////////////////////////// (Seguimiento Asignación Suelo) ////////////////////////////
