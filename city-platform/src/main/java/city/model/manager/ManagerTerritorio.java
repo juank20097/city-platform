@@ -524,9 +524,8 @@ public class ManagerTerritorio {
 		return (GtrContratoAsignacion) mngDAO.findById(GtrContratoAsignacion.class, idContrato);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<GtrContratoAsignacion> findAllContratosPorAsignacion(int idSuelo){
-		return mngDAO.findWhere(GtrContratoAsignacion.class, "o.GtrAsignacionSuelo.sueId="+idSuelo, "o.casFechaInicio");
+	public GtrContratoAsignacion findContratoByIdAsignacion(int idAsignacion){
+		return (GtrContratoAsignacion) mngDAO.findWhere(GtrContratoAsignacion.class, "o.gtrAsignacionSuelo.sueId ="+ idAsignacion, null);
 	}
 	
 	public void insertarContrato(GtrContratoAsignacion contrato) throws Exception{

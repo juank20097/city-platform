@@ -243,6 +243,9 @@ public class AsignacionSueloBean implements Serializable {
 		session.validarSesion();
 		estado = ENPROCESO;
 		slctEstados = new ArrayList<SelectItem>();
+		slctEstadosContrato = new ArrayList<SelectItem>();
+		slctEstadosEntregable = new ArrayList<SelectItem>();
+		slctEstadosAdmin = new ArrayList<SelectItem>();
 		lstPersonas = new ArrayList<SelectItem>();
 		lstAsignacionSuelos = new ArrayList<GtrAsignacionSuelo>();
 		l_seguimiento = new ArrayList<GtrHistorialSeguimiento>();
@@ -1503,10 +1506,45 @@ public class AsignacionSueloBean implements Serializable {
 		setUsuNotificacion(asigSuelo.getSueUsuarioNotificacion());
 		
 		setEdicionAS(true);
+		cargarContratoPorAsignacion(getIdAsignacion());
+		cargarLstEntregables(idContrato);
 //		cargarLstContratos();
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
+	public void cargarContratoPorAsignacion(int idAsignacion){
+		setContrato(mngTerritorio.findContratoByIdAsignacion(idAsignacion));
+		cargarContrato(getContrato());
+	}
 
+	public void cargarContrato(GtrContratoAsignacion contrato){
+		setEdicionContrato(true);
+		setIdContrato(contrato.getCasId());
+		setTdrContrato(contrato.getCasTdr());
+		setFechaDocTdr(contrato.getCasFechaDocTdr());
+		setFechaSubidaTdr(contrato.getCasFechaSubidaTdr());
+		setUsuTdr(contrato.getCasUsuarioTdr());
+		setPliegoContrato(contrato.getCasPliego());
+		setFechaDocPliego(contrato.getCasFechaDocPliego());
+		setFechaSubPliego(contrato.getCasFechaSubidaPliego());
+		setUsuPliego(contrato.getCasUsuarioPliego());
+		setArchContrato(contrato.getCasContrato());
+		setFechaDocContrato(contrato.getCasFechaDocContrato());
+		setFechaSubContrato(contrato.getCasFechaSubidaContrato());
+		setUsuContrato(contrato.getCasUsuarioContrato());
+		setFechaInicioC(contrato.getCasFechaInicio());
+		setFechaFinC(contrato.getCasFechaFin());
+		setArrendadorCotrato(contrato.getCasArrendador());
+		setArrendatarioContrato(contrato.getCasArrendatario());
+		setPrecio(contrato.getCasPrecio());
+		setPeriodicidadPagoC(contrato.getCasPeriodicidadPago());
+		setUnidadTiempoContrato(contrato.getCasUnidadTiempo());
+		setEstadoContrato(contrato.getCasEstado());
+		setTipoContrato(contrato.getCasTipo());
+		
+		//cargar entregables
+		//cargar administradores
+	}
+	
 	public void guardarEditarAsignacionSuelos() {
 		try {
 			System.out.println("ingreso a metodo guardar");
@@ -2189,21 +2227,7 @@ public class AsignacionSueloBean implements Serializable {
 //		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
 //	}
 //	
-	public void cargarContrato(GtrContratoAsignacion contrato){
-//		setEdicionContrato(true);
-//		setIdContrato(contrato.getCasId());
-//		setTdrContrato(contrato.getCasTdr());
-//		setPliegoContrato(contrato.getCasPliego());
-//		setFechaIncio(contrato.getCasFechaInicio());
-//		setFechaFin(contrato.getCasFechaFin());
-//		setArrendadorCotrato(contrato.getCasArrendador());
-//		setArrendatarioContrato(contrato.getCasArrendatario());
-//		setPeriodicidadPagoC(contrato.getCasPeriodicidadPago());
-//		setUnidadTiempoContrato(contrato.getCasUnidadTiempo());
-//		setPrecio(contrato.getCasPrecio());
-//		
-//		RequestContext.getCurrentInstance().execute("PF('conDlg').show();");
-	}
+
 	
 	public void guardarEditarContrato(){
 //		try{
@@ -2316,15 +2340,13 @@ public class AsignacionSueloBean implements Serializable {
 //	
 //	// Entregables
 //	
-	public void mostrarDlgEntregables(GtrContratoAsignacion contrato) {
-//		cargarLstEntregables(contrato.getCasId());
-//		setContrato(contrato);
-//		System.out.println("id de contrato al ingresar a los entregables -->"+contrato.getCasId());
-//		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
+	public void mostrarDlgEntregables() {
+		cargarLstEntregables(getIdContrato());
+		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
 	
 	private void cargarLstEntregables(String idContrato){
-//		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(idContrato));
+		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(idContrato));
 	}
 	
 	public void buscarResponsableEnt() {
@@ -2352,7 +2374,7 @@ public class AsignacionSueloBean implements Serializable {
 //		}
 	}
 	
-	public void cargarEntregables(GtrEntregablesContrato entregable){
+	public void cargarEditarEntregables(GtrEntregablesContrato entregable){
 //		setEdicionEntregable(true);
 //		setPkEntregable(entregable.getId());
 //		setContrato(entregable.getGtrContratoAsignacion());
@@ -2422,4 +2444,45 @@ public class AsignacionSueloBean implements Serializable {
 //		setFechaMaxEntrega(new Date()); setFechaSubida(new Timestamp(new Date().getTime()));
 //		setEstadoEntregable(SELECCIONAR);
 //	}
+	// Administrador
+		
+	public void mostrarDlgAdministrador() {
+		RequestContext.getCurrentInstance().execute("PF('admCDlg').show();");
+	}
+	
+	public void cancelarAdministrador(){
+		RequestContext.getCurrentInstance().execute("PF('admCDlg').hide();");
+	}
+	
+	public void cargarEditarAdministrador(GtrAdministradorContrato administrador){
+		
+	}
+	public void buscarAdministrador() {
+		if (getDniAdmin() == null || getDniAdmin().isEmpty()) {
+			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
+			setDniAdmin("");
+			setNombreAdmin("");
+			setDireccionAdmin("");
+		} else {
+			try {
+				GenFuncionariosInstitucion f = mngGeneral.findFuncionarioXDni(getDniAdmin());
+				if (f == null) {
+					Mensaje.crearMensajeWARN("Persona no encontrada");
+					setDniAdmin("");
+					setNombreAdmin("");
+					setDireccionAdmin("");
+				} else {
+					setDniAdmin(f.getGenPersona().getPerDni());
+					setNombreAdmin(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
+					setDireccionAdmin(f.getFunDireccion());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void guardarEditarAdministrador(){
+		
+	}
 }

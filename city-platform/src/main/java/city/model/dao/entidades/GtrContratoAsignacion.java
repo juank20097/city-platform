@@ -54,7 +54,7 @@ public class GtrContratoAsignacion implements Serializable {
 	private Timestamp casFechaInicio;
 
 	@Column(name="cas_fecha_subida_contrato")
-	private Time casFechaSubidaContrato;
+	private Timestamp casFechaSubidaContrato;
 
 	@Column(name="cas_fecha_subida_pliego")
 	private Timestamp casFechaSubidaPliego;
@@ -185,11 +185,11 @@ public class GtrContratoAsignacion implements Serializable {
 		this.casFechaInicio = casFechaInicio;
 	}
 
-	public Time getCasFechaSubidaContrato() {
+	public Timestamp getCasFechaSubidaContrato() {
 		return this.casFechaSubidaContrato;
 	}
 
-	public void setCasFechaSubidaContrato(Time casFechaSubidaContrato) {
+	public void setCasFechaSubidaContrato(Timestamp casFechaSubidaContrato) {
 		this.casFechaSubidaContrato = casFechaSubidaContrato;
 	}
 

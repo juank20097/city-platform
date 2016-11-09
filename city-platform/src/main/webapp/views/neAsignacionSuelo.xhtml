@@ -5,7 +5,6 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
-
 <ui:composition template="template.xhtml">
 
 	<ui:define name="titulo">
@@ -835,195 +834,316 @@
 			<b:tab title="Instrumento Legal">
 				<h:form id="frmlCo">
 					<b:growl id="gC" delay="4000" placementFrom="top"
-						show-detail="false" global-only="false" show-summary="true"
-						allow-dismiss="true" animation-enter="animated bounceInDown"
-						animation-exit="animated flipOutX" escape="true" />
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Asignaci&oacute;n Suelo:" />
-						</b:column>
-						<b:column col-xs="4">
-							<h:outputText
-								value="#{asignacionSueloBean.asignacionSuelo.sueNombre}" />
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="C&oacute;digo Contrato:*" />
-						</b:column>
-						<b:column col-xs="4">
-							<b:inputText value="#{asignacionSueloBean.idContrato}" />
-						</b:column>
-						<b:column col-xs="2">
-							<h:outputLabel value="Tipo:* " />
-						</b:column>
-						<b:column col-xs="3">
-							<p:selectOneMenu value="#{asignacionSueloBean.tipoContrato}">
-								<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
-							</p:selectOneMenu>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Arrendador:*" />
-						</b:column>
-						<b:column col-xs="10">
-							<b:inputText value="#{asignacionSueloBean.arrendadorCotrato}" />
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Arrendatario:*" />
-						</b:column>
-						<b:column col-xs="10">
-							<b:inputText value="#{asignacionSueloBean.arrendatarioContrato}" />
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Precio:* " />
-						</b:column>
-						<b:column col-xs="3">
-							<p:spinner min="0" value="#{asignacionSueloBean.precio}" size="3" />
-						</b:column>
-						<b:column col-xs="2">
-							<h:outputLabel value="Periodicidad de Pago:* " />
-						</b:column>
-						<b:column col-xs="3">
-							<p:spinner id="basic" min="0"
-								value="#{asignacionSueloBean.periodicidadPagoC}" size="3" />
-						</b:column>
-						<b:column col-xs="2">
-							<p:selectOneMenu
-								value="#{asignacionSueloBean.unidadTiempoContrato}">
-								<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
-							</p:selectOneMenu>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Fecha Inicio:*" />
-						</b:column>
-						<b:column col-xs="4">
-							<p:calendar id="fi" value="#{asignacionSueloBean.fechaInicioC}"
-								pattern="dd-MM-yyyy" mask="true" showOn="button"
-								yearRange="c-30:c+5" navigator="true" />
-						</b:column>
-						<b:column col-xs="2">
-							<h:outputLabel value="Fecha Fin:*" />
-						</b:column>
-						<b:column col-xs="4">
-							<p:calendar id="ff" value="#{asignacionSueloBean.fechaFinC}"
-								yearRange="c-30:c+5" navigator="true" pattern="dd-MM-yyyy"
-								mask="true" showOn="button">
-							</p:calendar>
-						</b:column>
-					</b:row>
-					<b:row style="margin-top:15px;">
-						<b:column col-xs="2">
-							<h:outputLabel value="TDR:*" />
-						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm tdr"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirTDR}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="tdr" ajax="false" immediate="true"
-								update="growl"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.tdrContrato)}">
-								#{asignacionSueloBean.tdrContrato}
-							</p:commandLink>
-						</b:column>
-					</b:row>
-					<p:separator />
-					<b:row style="margin-bottom:10px;">
-						<b:column col-xs="2">
-							<h:outputLabel value="Pliego:*" />
-						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm pli"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirPliego}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="con" ajax="false" immediate="true"
-								update="growl"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.pliegoContrato)}">
-								#{asignacionSueloBean.pliegoContrato}
-							</p:commandLink>
-						</b:column>
-					</b:row>
-					<p:separator />
-					<b:row style="margin-bottom:10px;">
-						<b:column col-xs="2">
-							<h:outputLabel value="Contrato:*" />
-						</b:column>
-						<b:column col-xs="7">
-							<p:fileUpload mode="advanced" dragDropSupport="true"
-								update=":frm pli"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								sizeLimit="11000000" multiple="false"
-								invalidSizeMessage="Archivo excede limite 10 MB "
-								invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-								fileLimitMessage="Solo un archivo"
-								allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-								uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-								fileUploadListener="#{asignacionSueloBean.subirContrato}">
-							</p:fileUpload>
-						</b:column>
-						<b:column col-xs="3">
-							<p:commandLink id="pli" ajax="false" immediate="true"
-								update="growl"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
-								action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archContrato)}">
-								#{asignacionSueloBean.archContrato}
-							</p:commandLink>
-						</b:column>
-					</b:row>
-					<b:row>
-						<b:column col-xs="2">
-							<h:outputLabel value="Estado:*" />
-						</b:column>
-						<b:column col-xs="4">
-							<p:selectOneMenu value="#{asignacionSueloBean.estadoContrato}">
-								<f:selectItems
-									value="#{asignacionSueloBean.slctEstadosContrato}" />
-							</p:selectOneMenu>
-						</b:column>
-					</b:row>
-					<b:row style="margin-bottom:20px;">
-						<b:column col-xs="2">
-							<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
-								action="#{asignacionSueloBean.guardarEditarContrato()}"
-								look="info" update=" frmCo" style="padding:.4em;" />
-						</b:column>
-						<b:column col-xs="4">
-							<b:commandButton value="Cancelar"
-								action="#{asignacionSueloBean.cancelarContrato()}" look="info"
-								update="frmCo" style="padding:.4em;" process="@this">
-								<p:resetInput target="frmCo" />
-							</b:commandButton>
-						</b:column>
-					</b:row>
+								show-detail="false" global-only="false" show-summary="true"
+								allow-dismiss="true" animation-enter="animated bounceInDown"
+								animation-exit="animated flipOutX" escape="true" />
+					<b:tabView orientation="left" pills="true" tabPosition="left"
+						contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
+						<b:tab title="Informaci&oacute;n">
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Asignaci&oacute;n Suelo:" />
+								</b:column>
+								<b:column col-xs="4">
+									<h:outputText
+										value="#{asignacionSueloBean.asignacionSuelo.sueNombre}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="C&oacute;digo Contrato:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<b:inputText value="#{asignacionSueloBean.idContrato}" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Tipo:* " />
+								</b:column>
+								<b:column col-xs="3">
+									<p:selectOneMenu value="#{asignacionSueloBean.tipoContrato}">
+										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+									</p:selectOneMenu>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Arrendador:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:inputText value="#{asignacionSueloBean.arrendadorCotrato}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Arrendatario:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:inputText value="#{asignacionSueloBean.arrendatarioContrato}" />
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Precio:* " />
+								</b:column>
+								<b:column col-xs="4">
+									<b:inputText value="#{asignacionSueloBean.precio}" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Periodicidad de Pago:* " />
+								</b:column>
+								<b:column col-xs="1">
+									<p:spinner id="basic" min="0"
+										value="#{asignacionSueloBean.periodicidadPagoC}" size="3" />
+								</b:column>
+								<b:column col-xs="2">
+									<p:selectOneMenu
+										value="#{asignacionSueloBean.unidadTiempoContrato}">
+										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+									</p:selectOneMenu>
+								</b:column>
+							</b:row>
+							<b:row style="margin-top:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Inicio:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="fi" value="#{asignacionSueloBean.fechaInicioC}"
+										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										yearRange="c-30:c+5" navigator="true" />
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Fecha Fin:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:calendar id="ff" value="#{asignacionSueloBean.fechaFinC}"
+										yearRange="c-30:c+5" navigator="true" pattern="dd-MM-yyyy"
+										mask="true" showOn="button">
+									</p:calendar>
+								</b:column>
+							</b:row>
+							<b:row style="margin-top:15px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="TDR:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="ftd"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												value="#{asignacionSueloBean.fechaDocTdr}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fstd"
+												value="#{asignacionSueloBean.fechaSubidaTdr}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload mode="advanced" dragDropSupport="true"
+												update=":frm tdr"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirTDR}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="tdr" ajax="false" immediate="true"
+												update="growl"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.tdrContrato)}">
+												#{asignacionSueloBean.tdrContrato}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Pliego:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="fpl"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												value="#{asignacionSueloBean.fechaDocPliego}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fspl"
+												value="#{asignacionSueloBean.fechaSubPliego}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload mode="advanced" dragDropSupport="true"
+												update=":frm pli"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirPliego}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="con" ajax="false" immediate="true"
+												update="growl"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.pliegoContrato)}">
+												#{asignacionSueloBean.pliegoContrato}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<p:separator />
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Contrato:*" />
+								</b:column>
+								<b:column col-xs="10">
+									<b:row style="margin-bottom:10px;">
+										<b:column col-xs="3">
+											<h:outputLabel value="Fecha Documento:*" />
+										</b:column>
+										<b:column col-xs="4">
+											<p:calendar id="fcnt"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												value="#{asignacionSueloBean.fechaDocContrato}"
+												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												yearRange="c-5:c+5" navigator="true" />
+										</b:column>
+										<b:column col-xs="2">
+											<h:outputLabel value="Fecha Subida:" />
+										</b:column>
+										<b:column col-xs="3">
+											<h:outputText id="fscnt"
+												value="#{asignacionSueloBean.fechaSubContrato}" />
+										</b:column>
+									</b:row>
+									<b:row>
+										<b:column col-xs="7">
+											<p:fileUpload mode="advanced" dragDropSupport="true"
+												update=":frm pli"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												sizeLimit="11000000" multiple="false"
+												invalidSizeMessage="Archivo excede limite 10 MB "
+												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+												fileLimitMessage="Solo un archivo"
+												allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+												uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+												fileUploadListener="#{asignacionSueloBean.subirContrato}">
+											</p:fileUpload>
+										</b:column>
+										<b:column col-xs="3">
+											<p:commandLink id="pli" ajax="false" immediate="true"
+												update="growl"
+												disabled="#{!asignacionSueloBean.edicionContrato}"
+												action="#{asignacionSueloBean.descargarInforme(asignacionSueloBean.archContrato)}">
+												#{asignacionSueloBean.archContrato}
+											</p:commandLink>
+										</b:column>
+									</b:row>
+								</b:column>
+							</b:row>
+							<b:row>
+								<b:column col-xs="2">
+									<h:outputLabel value="Estado:*" />
+								</b:column>
+								<b:column col-xs="4">
+									<p:selectOneMenu value="#{asignacionSueloBean.estadoContrato}">
+										<f:selectItems
+											value="#{asignacionSueloBean.slctEstadosContrato}" />
+									</p:selectOneMenu>
+								</b:column>
+							</b:row>
+							<b:row style="margin-bottom:20px;">
+								<b:column col-xs="2">
+									<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+										disabled="#{!asignacionSueloBean.edicionAS}"
+										action="#{asignacionSueloBean.guardarEditarContrato()}"
+										look="info" update=" frmCo" style="padding:.4em;" />
+								</b:column>
+								<b:column col-xs="4">
+									<b:commandButton value="Cancelar"
+										action="#{asignacionSueloBean.cancelarContrato()}" look="info"
+										update="frmCo" style="padding:.4em;" process="@this">
+										<p:resetInput target="frmCo" />
+									</b:commandButton>
+								</b:column>
+							</b:row>
+						</b:tab>
+						<b:tab title="Administrador Instrumento Legal">
+							<b:row style="margin-bottom:10px;">
+								<b:column>
+									<p:commandButton immediate="true" icon="ui-icon-plus"
+										value="Ingresar Adiministrador"
+										disabled="#{asignacionSueloBean.edicionContrato}"
+										action="#{asignacionSueloBean.mostrarDlgAdministrador()}" />
+								</b:column>
+							</b:row>
+							<p:dataTable id="dtac" var="ad" rows="8"
+								emptyMessage="No existen datos"
+								value="#{asignacionSueloBean.lstAdministrador}" scrollable="true"
+								scrollRows="20" liveScroll="true" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								<p:column headerText="Opciones">
+									<p:commandButton
+										actionListener="#{asignacionSueloBean.cargarEditarAdministrador(ad)}"
+										id="btnEa" icon="ui-icon-pencil">
+										<p:tooltip for="btnEa" value="Editar Administrador"
+											trackMouse="true" />
+									</p:commandButton>
+								</p:column>
+								<p:column headerText="C&oacute;digo Administrador">
+									<h:outputText value="#{ad.adcId}" />
+								</p:column>
+								<p:column headerText="Identificaci&oacute;n Administrador">
+									<h:outputText value="#{ad.adcAdministrador}" />
+								</p:column>
+								<p:column headerText="Nombre Administrador">
+									<h:outputText
+										action="#{asignacionSueloBean.buscarNombre(ad.adcAdministrador)}" />
+								</p:column>
+								<p:column headerText="Direcci&oacute;n">
+									<h:outputText value="#{ad.adcDireccionAdm}" />
+								</p:column>
+								<p:column headerText="Fecha Inicio">
+									<h:outputText value="#{ad.adcFechaInicio}" />
+								</p:column>
+								<p:column headerText="Fecha Fin">
+									<h:outputText value="#{ad.adcFechaFin}" />
+								</p:column>
+								<p:column headerText="Estado">
+									<h:outputText value="#{ad.adcEstado}" />
+								</p:column>
+							</p:dataTable>
+						</b:tab>
+					</b:tabView>
 				</h:form>
 			</b:tab>
 			<b:tab title="Entregables">
@@ -1036,7 +1156,7 @@
 						<b:column>
 							<p:commandButton immediate="true" icon="ui-icon-plus"
 								value="Ingresar Entregable"
-								disabled="#{!asignacionSueloBean.edicionContrato}"
+								disabled="#{asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.mostrarDlgEntregables()}" />
 						</b:column>
 					</b:row>
@@ -1047,7 +1167,7 @@
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 						<p:column headerText="Opciones">
 							<p:commandButton
-								actionListener="#{asignacionSueloBean.cargarEntregables(ec)}"
+								actionListener="#{asignacionSueloBean.cargarEditarEntregables(ec)}"
 								id="btnE" icon="ui-icon-pencil">
 								<p:tooltip for="btnE" value="Editar Entregable"
 									trackMouse="true" />
@@ -1076,11 +1196,116 @@
 				</h:form>
 			</b:tab>
 		</b:tabView>
-		<p:dialog id="pdC" style="padding-top:3%;" widgetVar="conDlg"
+		<p:dialog id="pdA" style="padding-top:3%;" widgetVar="admCDlg"
 			modal="true" draggable="false" width="850" height="400"
 			closable="false" resizable="false" showHeader="false">
-			<h:form id="frmCo">
-
+			<h:form id="frmAdm">
+				<b:row>
+					<b:column>
+						<p:messages id="mad" closable="true" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Contrato:" />
+					</b:column>
+					<b:column col-xs="7">
+						<h:outputText value="#{asignacionSueloBean.contrato.casId}" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="C&oacute;digo Administrador:" />
+					</b:column>
+					<b:column col-xs="10">
+						<p:selectOneMenu required="true"
+							value="#{asignacionSueloBean.idAdmin}" id="adm"
+							disabled="#{asignacionSueloBean.edicionAdmin}"
+							style="width:200px" requiredMessage="AdministradorRequerido"
+							filter="true" filterMatchMode="contains">
+							<p:ajax listener="#{asignacionSueloBean.buscarAdministrador()}"
+											update="dniA nomA dirA" />
+							<f:selectItems value="#{asignacionSueloBean.lstPersonas}" />
+						</p:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Identificaci&oacute;n: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="dniA"
+							value="#{asignacionSueloBean.dniAdmin}" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Nombres: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="nomA"
+							value="#{asignacionSueloBean.nombreAdmin}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Identificaci&oacute;n: " />
+					</b:column>
+					<b:column col-xs="4">
+						<h:outputText id="dirA"
+							value="#{asignacionSueloBean.direccionAdmin}" />
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-xs="2">
+						<h:outputLabel value="Fecha Inicio:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar 
+							value="#{asignacionSueloBean.fechaInicioAdmin}"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-5:c+5" navigator="true" />
+					</b:column>
+					<b:column col-xs="2">
+						<h:outputLabel value="Fecha Fin:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<p:calendar 
+							value="#{asignacionSueloBean.fechaFinAdmin}"
+							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							yearRange="c-5:c+5" navigator="true" />
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Estado:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{asignacionSueloBean.estadoAdmin}">
+							<f:selectItems value="#{asignacionSueloBean.slctEstadosAdmin}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+							action="#{asignacionSueloBean.guardarEditarAdministrador()}"
+							look="info" update="ec frmEC" style="padding:.4em;" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Limpiar"
+							actionListener="#{asignacionSueloBean.cancelarAdministrador()}"
+							look="info" update="frmCo frmEC" style="padding:.4em;"
+							process="@this">
+							<p:resetInput target="frmEC" />
+						</b:commandButton>
+					</b:column>
+					<b:column col-xs="4">
+						<b:commandButton value="Cancelar"
+							action="#{asignacionSueloBean.volverContrato()}" look="info"
+							update="frmCo" style="padding:.4em;" process="@this">
+							<p:resetInput target="frmEC" />
+						</b:commandButton>
+					</b:column>
+				</b:row>
 			</h:form>
 		</p:dialog>
 		<p:dialog id="pdEC" widgetVar="entDlg" modal="true" draggable="false"
