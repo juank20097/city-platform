@@ -220,7 +220,7 @@
 											<p:calendar id="ra"
 												disabled="#{!asignacionSueloBean.edicionAS}"
 												value="#{asignacionSueloBean.fechaDocRegulacionAmb}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -299,7 +299,7 @@
 											<p:calendar id="fkm"
 												disabled="#{!asignacionSueloBean.edicionAS}"
 												value="#{asignacionSueloBean.fechaArcKMZ}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -348,7 +348,7 @@
 											<p:calendar id="fpd"
 												disabled="#{!asignacionSueloBean.edicionAS}"
 												value="#{asignacionSueloBean.fechaArcPDF}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -397,7 +397,7 @@
 											<p:calendar id="fan"
 												disabled="#{!asignacionSueloBean.edicionAS}"
 												value="#{asignacionSueloBean.fechaDocNotificacion}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -478,7 +478,7 @@
 						<p:commandButton value="Guardar" styleClass="btn btn-info"
 							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
 							onclick="PF('statusDialog').show();"
-							oncomplete="PF('statusDialog').hide();" update="frm">
+							oncomplete="PF('statusDialog').hide();" update="frm :frmIn :frmCo">***
 							<p:confirm header="Confirmación"
 								message="¿Seguro desea guardar la información?"
 								icon="ui-icon-alert" />
@@ -512,9 +512,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fic"
+									<p:calendar id="fic" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocCaracte}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -559,9 +559,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fus"
+									<p:calendar id="fus" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocUsoSuelo}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -606,9 +606,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fid"
+									<p:calendar id="fid" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocConsolidado}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -654,9 +654,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fc"
+									<p:calendar id="fc" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocConsolidado}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -700,9 +700,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fre"
+									<p:calendar id="fre" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocResolucion}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -747,9 +747,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="far"
+									<p:calendar id="far" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocActaResol}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -793,9 +793,9 @@
 									<h:outputLabel value="Fecha Documento:*" />
 								</b:column>
 								<b:column col-xs="4">
-									<p:calendar id="fcv"
+									<p:calendar id="fcv" disabled="#{!asignacionSueloBean.edicionAS}" 
 										value="#{asignacionSueloBean.fechaDocConvoca}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 										yearRange="c-5:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -828,6 +828,7 @@
 							</b:row>
 						</b:column>
 					</b:row>
+					<p:separator />
 				</h:form>
 			</b:tab>
 			<b:tab title="Instrumento Legal">
@@ -907,7 +908,7 @@
 								</b:column>
 								<b:column col-xs="4">
 									<p:calendar id="fi" value="#{asignacionSueloBean.fechaInicioC}"
-										pattern="dd-MM-yyyy" mask="true" showOn="button"
+										pattern="dd/MM/yyyy HH:mm" mask="true" showOn="button" 
 										yearRange="c-30:c+5" navigator="true" />
 								</b:column>
 								<b:column col-xs="2">
@@ -915,7 +916,7 @@
 								</b:column>
 								<b:column col-xs="4">
 									<p:calendar id="ff" value="#{asignacionSueloBean.fechaFinC}"
-										yearRange="c-30:c+5" navigator="true" pattern="dd-MM-yyyy"
+										yearRange="c-30:c+5" navigator="true" pattern="dd/MM/yyyy HH:mm"  
 										mask="true" showOn="button">
 									</p:calendar>
 								</b:column>
@@ -930,10 +931,10 @@
 											<h:outputLabel value="Fecha Documento:*" />
 										</b:column>
 										<b:column col-xs="4">
-											<p:calendar id="ftd"
+											<p:calendar id="ftd"  
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												value="#{asignacionSueloBean.fechaDocTdr}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -980,10 +981,10 @@
 											<h:outputLabel value="Fecha Documento:*" />
 										</b:column>
 										<b:column col-xs="4">
-											<p:calendar id="fpl"
+											<p:calendar id="fpl"  
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												value="#{asignacionSueloBean.fechaDocPliego}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -1030,10 +1031,10 @@
 											<h:outputLabel value="Fecha Documento:*" />
 										</b:column>
 										<b:column col-xs="4">
-											<p:calendar id="fcnt"
+											<p:calendar id="fcnt"  
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												value="#{asignacionSueloBean.fechaDocContrato}"
-												pattern="dd-MM-yyyy" mask="true" showOn="button"
+												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
 										</b:column>
 										<b:column col-xs="2">
@@ -1085,7 +1086,7 @@
 									<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
 										disabled="#{!asignacionSueloBean.edicionAS}"
 										action="#{asignacionSueloBean.guardarEditarContrato()}"
-										look="info" update=" frmCo" style="padding:.4em;" />
+										look="info" update="frmIn :growl" style="padding:.4em;" />
 								</b:column>
 								<b:column col-xs="4">
 									<b:commandButton value="Cancelar"
@@ -1262,7 +1263,7 @@
 					<b:column col-xs="4">
 						<p:calendar 
 							value="#{asignacionSueloBean.fechaInicioAdmin}"
-							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 							yearRange="c-5:c+5" navigator="true" />
 					</b:column>
 					<b:column col-xs="2">
@@ -1271,7 +1272,7 @@
 					<b:column col-xs="4">
 						<p:calendar 
 							value="#{asignacionSueloBean.fechaFinAdmin}"
-							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 							yearRange="c-5:c+5" navigator="true" />
 					</b:column>
 				</b:row>
@@ -1344,9 +1345,9 @@
 						<h:outputLabel value="Fecha M&aacute;xima Entrega:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<p:calendar id="fm"
+						<p:calendar id="fm" disabled="#{!asignacionSueloBean.edicionEntregable}" 
 							value="#{asignacionSueloBean.fechaMaxEntregaDoc}"
-							pattern="dd-MM-yyyy" mask="true" showOn="button"
+							pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 							yearRange="c-30:c+5" navigator="true" />
 					</b:column>
 					<b:column col-xs="2">
@@ -1403,7 +1404,7 @@
 					</b:column>
 					<b:column col-xs="4">
 						<b:commandButton value="Cancelar"
-							action="#{asignacionSueloBean.volverContrato()}" look="info"
+							action="#{asignacionSueloBean.cancelarEntregable()}" look="info"
 							update="frmCo" style="padding:.4em;" process="@this">
 							<p:resetInput target="frmEC" />
 						</b:commandButton>

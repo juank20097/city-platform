@@ -32,7 +32,6 @@ import city.model.dao.entidades.GenSectore;
 import city.model.dao.entidades.GenZona;
 import city.model.dao.entidades.GenZonasComunidade;
 import city.model.dao.entidades.GenZonasComunidadePK;
-import city.model.generic.Funciones;
 
 @Stateless
 public class ManagerTerritorio {
@@ -459,15 +458,10 @@ public class ManagerTerritorio {
 
 	// //////////////////////////////////////////////////////////(AsignacionSuelo)/////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Metodo para generar el id
-	 * 
-	 * @return
-	 */
-	public Integer asignacionSueloId() {
+	public Integer generarIdAsignacionSuelo() {
 		Integer id = 0;
 		try {
-			id = (Integer) mngDAO.ejectNativeSQL2("select max(sue_id) from gen_asignacion_suelo limit 1;");
+			id = (Integer) mngDAO.ejectNativeSQL2("select max(sue_id) from gtr_asignacion_suelo limit 1;");
 			if (id == null || id == 0) {
 				id = 1;
 			} else {
@@ -491,7 +485,7 @@ public class ManagerTerritorio {
 			numero = mngDAO.ejectNativeSQL2(
 					"SELECT EXTRACT(YEAR FROM AGE(DATE('"+fechaFin+"'),"
 					+ "DATE('"+fechaInicio+"'))) "
-					+ " from gen_asignacion_suelo where sue_id = "+idSuelo+" ;").toString();
+					+ " from gtr_asignacion_suelo where sue_id = "+idSuelo+" ;").toString();
 			return numero;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -526,8 +520,14 @@ public class ManagerTerritorio {
 		return (GtrContratoAsignacion) mngDAO.findById(GtrContratoAsignacion.class, idContrato);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public GtrContratoAsignacion findContratoByIdAsignacion(int idAsignacion){
-		return (GtrContratoAsignacion) mngDAO.findWhere(GtrContratoAsignacion.class, "o.gtrAsignacionSuelo.sueId ="+ idAsignacion, null);
+		List<GtrContratoAsignacion> lst =  mngDAO.findWhere(GtrContratoAsignacion.class, "o.gtrAsignacionSuelo.sueId ="+ idAsignacion, null);
+		if( lst.size()!= 0){
+			return lst.get(0);
+		}else{
+			return null;
+		}
 	}
 	
 	public void insertarContrato(GtrContratoAsignacion contrato) throws Exception{
@@ -539,9 +539,25 @@ public class ManagerTerritorio {
 	}
 	// Entregables
 	
+	public Integer generarIdEntregable() {
+		Integer id = 0;
+		try {
+			id = (Integer) mngDAO.ejectNativeSQL2("select max(eco_id) from gtr_entregables_contrato limit 1;");
+			if (id == null || id == 0) {
+				id = 1;
+			} else {
+				id = id + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<GtrEntregablesContrato> findAllEntregablesPorContrato(String idContrato){
-		return mngDAO.findWhere(GtrEntregablesContrato.class, "o.GtrContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
+		return mngDAO.findWhere(GtrEntregablesContrato.class, "o.gtrContratoAsignacion.casId = '"+idContrato+"'", "o.id.ecoDocumento");
 	}
 	
 	public GtrEntregablesContrato findEntregableById(int id) throws Exception{
@@ -558,9 +574,25 @@ public class ManagerTerritorio {
 	
 	// Administradores Contrato 
 	
+	public Integer generarIdAdministrador() {
+		Integer id = 0;
+		try {
+			id = (Integer) mngDAO.ejectNativeSQL2("select max(adc_id) from gtr_administrador_contrato limit 1;");
+			if (id == null || id == 0) {
+				id = 1;
+			} else {
+				id = id + 1;
+			}
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<GtrAdministradorContrato> findAllAdministradoresPorContrato(String idContrato){
-		return mngDAO.findWhere(GtrAdministradorContrato.class, "o.gtrContratoAsignacion.casId = '"+idContrato+"'", "o.adcEstado ='A'");
+		return mngDAO.findWhere(GtrAdministradorContrato.class, "o.gtrContratoAsignacion.casId = '"+idContrato+"'", null);
 	}
 	
 	public GtrAdministradorContrato findAdministradorById(int idAdministrador) throws Exception{

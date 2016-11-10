@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,10 +22,8 @@ import javax.inject.Inject;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.loader.custom.Return;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.URL;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -56,6 +55,10 @@ public class AsignacionSueloBean implements Serializable {
 	private static String VALORAPROBADO = "Aprobado";
 	private static String VALORNEGADO = "Negado";
 	private static String SELECCIONAR = "S/N";
+	private static String ACTIVO = "A";
+	private static String INACTIVO ="A";
+	private static String VALORACTIVO = "A";
+	private static String VALORINACTIVO ="A";
 
 	@EJB
 	private ManagerTerritorio mngTerritorio;
@@ -108,31 +111,31 @@ public class AsignacionSueloBean implements Serializable {
 	private String caudalTotal;
 	private String inforCaracterizacion;
 	private Date fechaDocCaracte;
-	private Timestamp fechaSubidaCaracte ;
+	private Date fechaSubidaCaracte ;
 	private String usuCaracterizacion;
 	private String inforUsoSuelo;
 	private Date fechaDocUsoSuelo;
-	private Timestamp fechaSubidaUsoS;
+	private Date fechaSubidaUsoS;
 	private String usuUsoSuelo;
 	private String inforDisponibilidad;
 	private Date fechaDocDisponibil;
-	private Timestamp fechaSubidaDisponi;
+	private Date fechaSubidaDisponi;
 	private String usuDisponibilidad;
 	private String inforConsolidado;
 	private Date fechaDocConsolidado;
-	private Timestamp fechaSubidaConsol;
+	private Date fechaSubidaConsol;
 	private String usuConsolidado;
 	private String resolucion;
 	private Date fechaDocResolucion;
-	private Timestamp fechaSubidaResol;
+	private Date fechaSubidaResol;
 	private String usuResolucion;
 	private String actaResolutiva;
 	private Date fechaDocActaResol;
-	private Timestamp fechaSubidaActaRes;
+	private Date fechaSubidaActaRes;
 	private String usuActaResol;
 	private String convocatoria;
 	private Date fechaDocConvoca;
-	private Timestamp fechaSubidaConvoca;
+	private Date fechaSubidaConvoca;
 	private String usuConvocatoria;
 	private String direccionResponsable;
 	@NotNull(message = "El campo Responsable no debe estar vacío.")
@@ -143,19 +146,19 @@ public class AsignacionSueloBean implements Serializable {
 	private boolean aplicaRegAmbiental;
 	private String archRegulacionAmb;
 	private Date fechaDocRegulacionAmb;
-	private Timestamp fechaSubRegAmbiental;
+	private Date fechaSubRegAmbiental;
 	private String usuRegAmbiental;
 	private String archivoKMZ;
 	private Date fechaArcKMZ;
-	private Timestamp fechaSubidaKMZ;
+	private Date fechaSubidaKMZ;
 	private String usuArchivoKMZ;
 	private String archivoPDF;
 	private Date fechaArcPDF;
-	private Timestamp fechaSubidaPDF;
+	private Date fechaSubidaPDF;
 	private String usuArchivoPDF;
 	private String notificacionApNe;
 	private Date fechaDocNotificacion;
-	private Timestamp fechaSubidaNotificacion;
+	private Date fechaSubidaNotificacion;
 	private String usuNotificacion;
 	@DecimalMin("0")
 	private BigDecimal superficieSolicitada;
@@ -179,18 +182,18 @@ public class AsignacionSueloBean implements Serializable {
 	private String idContrato;
 	private String tdrContrato;
 	private Date fechaDocTdr;
-	private Timestamp fechaSubidaTdr;
+	private Date fechaSubidaTdr;
 	private String usuTdr;
 	private String pliegoContrato;
 	private Date fechaDocPliego;
-	private Timestamp fechaSubPliego;
+	private Date fechaSubPliego;
 	private String usuPliego;
 	private String archContrato;
 	private Date fechaDocContrato;
-	private Timestamp fechaSubContrato;
+	private Date fechaSubContrato;
 	private String usuContrato;
-	private Timestamp fechaInicioC;
-	private Timestamp fechaFinC;
+	private Date fechaInicioC;
+	private Date fechaFinC;
 	private String arrendadorCotrato;
 	private String arrendatarioContrato;
 	private BigDecimal periodicidadPagoC;
@@ -212,7 +215,7 @@ public class AsignacionSueloBean implements Serializable {
 	private String dniresponsableEntregable;
 	private String nombreResponsableEntregable;
 	private Date fechaMaxEntregaDoc;
-	private Timestamp fechaSubidaDoc;
+	private Date fechaSubidaDoc;
 	private String usuarioDocumento;
 	private String estadoEntregable;
 	private boolean edicionEntregable;
@@ -228,11 +231,11 @@ public class AsignacionSueloBean implements Serializable {
 	private Date fechaInicioAdmin;
 	private Date fechaFinAdmin;
 	private String estadoAdmin;
-	private String edicionAdmin;
+	private boolean edicionAdmin;
 	private GtrAdministradorContrato adminContrato;
 	private List<GtrAdministradorContrato> lstAdministradores;
 	private List<SelectItem> slctEstadosAdmin;
-	
+	private Timestamp fechaActual; 
 	// lista de seguimientos
 	List<GtrHistorialSeguimiento> l_seguimiento;
 	
@@ -259,10 +262,6 @@ public class AsignacionSueloBean implements Serializable {
 		superficieAsignada = new BigDecimal(0);
 		superficieSolicitada = new BigDecimal(0);
 		numeroAnios = 0;
-		fechaInicioC = new Timestamp(new Date().getTime());
-		fechaFinC = new Timestamp(new Date().getTime());
-		fechaInicioAdmin = new Date();
-		fechaFinAdmin = new Date();
 		periodicidadPagoC = BigDecimal.ZERO;
 		zona = SELECCIONAR;
 		tipoCatalogo  = SELECCIONAR;
@@ -274,6 +273,7 @@ public class AsignacionSueloBean implements Serializable {
 		cargarTipoUso();
 		cargarEstados();
 		cargarBusqueda();
+		inicializarFechas();
 	}
 
 	public String getActividad() {
@@ -580,14 +580,14 @@ public class AsignacionSueloBean implements Serializable {
 		this.estadoAdmin = estadoAdmin;
 	}
 
-	public String getEdicionAdmin() {
+	public boolean isEdicionAdmin() {
 		return edicionAdmin;
 	}
-
-	public void setEdicionAdmin(String edicionAdmin) {
+	
+	public void setEdicionAdmin(boolean edicionAdmin) {
 		this.edicionAdmin = edicionAdmin;
 	}
-
+	
 	public Integer getIdAsignacion() {
 		return idAsignacion;
 	}
@@ -628,11 +628,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocCaracte = fechaDocCaracte;
 	}
 
-	public Timestamp getFechaSubidaCaracte() {
+	public Date getFechaSubidaCaracte() {
 		return fechaSubidaCaracte;
 	}
 
-	public void setFechaSubidaCaracte(Timestamp fechaSubidaCaracte) {
+	public void setFechaSubidaCaracte(Date fechaSubidaCaracte) {
 		this.fechaSubidaCaracte = fechaSubidaCaracte;
 	}
 
@@ -652,11 +652,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocUsoSuelo = fechaDocUsoSuelo;
 	}
 
-	public Timestamp getFechaSubidaUsoS() {
+	public Date getFechaSubidaUsoS() {
 		return fechaSubidaUsoS;
 	}
 
-	public void setFechaSubidaUsoS(Timestamp fechaSubidaUsoS) {
+	public void setFechaSubidaUsoS(Date fechaSubidaUsoS) {
 		this.fechaSubidaUsoS = fechaSubidaUsoS;
 	}
 
@@ -676,11 +676,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocDisponibil = fechaDocDisponibil;
 	}
 
-	public Timestamp getFechaSubidaDisponi() {
+	public Date getFechaSubidaDisponi() {
 		return fechaSubidaDisponi;
 	}
 
-	public void setFechaSubidaDisponi(Timestamp fechaSubidaDisponi) {
+	public void setFechaSubidaDisponi(Date fechaSubidaDisponi) {
 		this.fechaSubidaDisponi = fechaSubidaDisponi;
 	}
 
@@ -700,11 +700,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocConsolidado = fechaDocConsolidado;
 	}
 
-	public Timestamp getFechaSubidaConsol() {
+	public Date getFechaSubidaConsol() {
 		return fechaSubidaConsol;
 	}
 
-	public void setFechaSubidaConsol(Timestamp fechaSubidaConsol) {
+	public void setFechaSubidaConsol(Date fechaSubidaConsol) {
 		this.fechaSubidaConsol = fechaSubidaConsol;
 	}
 
@@ -716,11 +716,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocResolucion = fechaDocResolucion;
 	}
 
-	public Timestamp getFechaSubidaResol() {
+	public Date getFechaSubidaResol() {
 		return fechaSubidaResol;
 	}
 
-	public void setFechaSubidaResol(Timestamp fechaSubidaResol) {
+	public void setFechaSubidaResol(Date fechaSubidaResol) {
 		this.fechaSubidaResol = fechaSubidaResol;
 	}
 
@@ -732,11 +732,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocActaResol = fechaDocActaResol;
 	}
 
-	public Timestamp getFechaSubidaActaRes() {
+	public Date getFechaSubidaActaRes() {
 		return fechaSubidaActaRes;
 	}
 
-	public void setFechaSubidaActaRes(Timestamp fechaSubidaActaRes) {
+	public void setFechaSubidaActaRes(Date fechaSubidaActaRes) {
 		this.fechaSubidaActaRes = fechaSubidaActaRes;
 	}
 
@@ -748,11 +748,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocConvoca = fechaDocConvoca;
 	}
 
-	public Timestamp getFechaSubidaConvoca() {
+	public Date getFechaSubidaConvoca() {
 		return fechaSubidaConvoca;
 	}
 
-	public void setFechaSubidaConvoca(Timestamp fechaSubidaConvoca) {
+	public void setFechaSubidaConvoca(Date fechaSubidaConvoca) {
 		this.fechaSubidaConvoca = fechaSubidaConvoca;
 	}
 
@@ -764,27 +764,27 @@ public class AsignacionSueloBean implements Serializable {
 		this.figuraLegal = figuraLegal;
 	}
 
-	public Timestamp getFechaSubRegAmbiental() {
+	public Date getFechaSubRegAmbiental() {
 		return fechaSubRegAmbiental;
 	}
 
-	public void setFechaSubRegAmbiental(Timestamp fechaSubRegAmbiental) {
+	public void setFechaSubRegAmbiental(Date fechaSubRegAmbiental) {
 		this.fechaSubRegAmbiental = fechaSubRegAmbiental;
 	}
 
-	public Timestamp getFechaSubidaKMZ() {
+	public Date getFechaSubidaKMZ() {
 		return fechaSubidaKMZ;
 	}
 
-	public void setFechaSubidaKMZ(Timestamp fechaSubidaKMZ) {
+	public void setFechaSubidaKMZ(Date fechaSubidaKMZ) {
 		this.fechaSubidaKMZ = fechaSubidaKMZ;
 	}
 
-	public Timestamp getFechaSubidaPDF() {
+	public Date getFechaSubidaPDF() {
 		return fechaSubidaPDF;
 	}
 
-	public void setFechaSubidaPDF(Timestamp fechaSubidaPDF) {
+	public void setFechaSubidaPDF(Date fechaSubidaPDF) {
 		this.fechaSubidaPDF = fechaSubidaPDF;
 	}
 
@@ -796,11 +796,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocNotificacion = fechaDocNotificacion;
 	}
 
-	public Timestamp getFechaSubidaNotificacion() {
+	public Date getFechaSubidaNotificacion() {
 		return fechaSubidaNotificacion;
 	}
 
-	public void setFechaSubidaNotificacion(Timestamp fechaSubidaNotificacion) {
+	public void setFechaSubidaNotificacion(Date fechaSubidaNotificacion) {
 		this.fechaSubidaNotificacion = fechaSubidaNotificacion;
 	}
 
@@ -828,11 +828,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocTdr = fechaDocTdr;
 	}
 
-	public Timestamp getFechaSubidaTdr() {
+	public Date getFechaSubidaTdr() {
 		return fechaSubidaTdr;
 	}
 
-	public void setFechaSubidaTdr(Timestamp fechaSubidaTdr) {
+	public void setFechaSubidaTdr(Date fechaSubidaTdr) {
 		this.fechaSubidaTdr = fechaSubidaTdr;
 	}
 
@@ -844,11 +844,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocPliego = fechaDocPliego;
 	}
 
-	public Timestamp getFechaSubPliego() {
+	public Date getFechaSubPliego() {
 		return fechaSubPliego;
 	}
 
-	public void setFechaSubPliego(Timestamp fechaSubPliego) {
+	public void setFechaSubPliego(Date fechaSubPliego) {
 		this.fechaSubPliego = fechaSubPliego;
 	}
 
@@ -860,27 +860,27 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaDocContrato = fechaDocContrato;
 	}
 
-	public Timestamp getFechaSubContrato() {
+	public Date getFechaSubContrato() {
 		return fechaSubContrato;
 	}
 
-	public void setFechaSubContrato(Timestamp fechaSubContrato) {
+	public void setFechaSubContrato(Date fechaSubContrato) {
 		this.fechaSubContrato = fechaSubContrato;
 	}
 
-	public Timestamp getFechaInicioC() {
+	public Date getFechaInicioC() {
 		return fechaInicioC;
 	}
 
-	public void setFechaInicioC(Timestamp fechaInicioC) {
+	public void setFechaInicioC(Date fechaInicioC) {
 		this.fechaInicioC = fechaInicioC;
 	}
 
-	public Timestamp getFechaFinC() {
+	public Date getFechaFinC() {
 		return fechaFinC;
 	}
 
-	public void setFechaFinC(Timestamp fechaFinC) {
+	public void setFechaFinC(Date fechaFinC) {
 		this.fechaFinC = fechaFinC;
 	}
 
@@ -900,11 +900,11 @@ public class AsignacionSueloBean implements Serializable {
 		this.fechaMaxEntregaDoc = fechaMaxEntregaDoc;
 	}
 
-	public Timestamp getFechaSubidaDoc() {
+	public Date getFechaSubidaDoc() {
 		return fechaSubidaDoc;
 	}
 
-	public void setFechaSubidaDoc(Timestamp fechaSubidaDoc) {
+	public void setFechaSubidaDoc(Date fechaSubidaDoc) {
 		this.fechaSubidaDoc = fechaSubidaDoc;
 	}
 
@@ -1356,11 +1356,49 @@ public class AsignacionSueloBean implements Serializable {
 	public void setUsuContrato(String usuContrato) {
 		this.usuContrato = usuContrato;
 	}
+	
+	public Timestamp getFechaActual() {
+		return fechaActual;
+	}
+	
+	public void setFechaActual(Timestamp fechaActual) {
+		this.fechaActual = fechaActual;
+	}
 
 	private void cargarEstados() {
+		cargarEstadosAsignacion();
+		cargarEstadosEntregables();
+	}
+
+	private void cargarEstadosAsignacion(){
 		getSlctEstados().add(new SelectItem(ENPROCESO, VALORENPROCESO));
 		getSlctEstados().add(new SelectItem(APROBADO, VALORAPROBADO));
 		getSlctEstados().add(new SelectItem(NEGADO, VALORNEGADO));
+	}
+	
+	private void cargarEstadosEntregables(){
+		getSlctEstadosEntregable().add(new SelectItem(ACTIVO, VALORACTIVO));
+		getSlctEstadosEntregable().add(new SelectItem(INACTIVO, VALORINACTIVO));
+	}	
+	
+	private void inicializarFechas(){
+		setFechaActual(new Timestamp(new Date().getTime()));
+		// Asignación
+		setFechaDocRegulacionAmb(new Date()); setFechaArcKMZ(new Date());
+		setFechaArcPDF(new Date()); setFechaDocCaracte(new Date());
+		setFechaDocUsoSuelo(new Date()); setFechaDocDisponibil(new Date());
+		setFechaDocConsolidado(new Date()); setFechaDocResolucion(new Date());
+		setFechaDocActaResol(new Date()); setFechaDocConvoca(new Date());
+		setFechaDocNotificacion(new Date());
+		// Contrato
+		setFechaDocTdr(new Date()); setFechaDocPliego(new Date());
+		setFechaDocContrato(new Date()); 
+		setFechaInicioC(new Timestamp(new Date().getTime()));
+		setFechaFinC(new Timestamp(new Date().getTime()));
+		// Entregables
+		setFechaMaxEntregaDoc(new Timestamp(new Date().getTime()));
+		// Administradores
+		setFechaInicioAdmin(new Date()); setFechaFinAdmin(new Date());
 	}
 	
 	public void switchRegAmbiental(){
@@ -1517,6 +1555,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 
 	public void cargarContrato(GtrContratoAsignacion contrato){
+		if(contrato !=null){
 		setEdicionContrato(true);
 		setIdContrato(contrato.getCasId());
 		setTdrContrato(contrato.getCasTdr());
@@ -1545,6 +1584,9 @@ public class AsignacionSueloBean implements Serializable {
 		cargarLstEntregables(getIdContrato());
 		//cargar administradores
 		cargarLstAdministradores(getIdContrato());
+	}else{
+		Mensaje.crearMensajeINFO("Aún no se ha ingresado información de un contrato.");
+	}
 	}
 	private void cargarLstEntregables(String idContrato){
 		setLstEntregables(mngTerritorio.findAllEntregablesPorContrato(idContrato));
@@ -1581,7 +1623,7 @@ public class AsignacionSueloBean implements Serializable {
 				if(aplicaRegulacionAmbiental()){
 					as.setSueArchivoRegulacionAmb(getArchRegulacionAmb());
 					as.setSueFechaArchivoRegAmb(getFechaDocRegulacionAmb());
-					as.setSueFechaSubidaRegAmb(getFechaSubRegAmbiental());
+					as.setSueFechaSubidaRegAmb(new Timestamp(getFechaSubRegAmbiental().getTime()));
 					as.setSueUsuarioSubidaRegAmb(getUsuRegAmbiental());
 				}else{
 					as.setSueArchivoRegulacionAmb("");
@@ -1597,7 +1639,6 @@ public class AsignacionSueloBean implements Serializable {
 				
 				if(isEdicionAS()){
 					GtrAsignacionSuelo asignacionSuelo = mngTerritorio.findAsignacionSueloById(getIdAsignacion());
-					setIdAsignacion(asignacionSuelo.getSueId());
 					setearAsignacionSuelo(getIdAsignacion());
 					as.setSueId(getIdAsignacion());
 					//Informes
@@ -1609,7 +1650,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getArchivoKMZ()!= null || getArchivoKMZ() != ""){
 						as.setSueArchivoKmz(getArchivoKMZ());
 						as.setSueFechaArchivoKmz(getFechaArcKMZ());
-						as.setSueFechaSubidaKmz(getFechaSubidaKMZ());
+						as.setSueFechaSubidaKmz(new Timestamp(getFechaSubidaKMZ().getTime()));
 						as.setSueUsuarioArchivoKmz(getUsuArchivoKMZ());
 					}else{
 						as.setSueArchivoKmz(asignacionSuelo.getSueArchivoKmz());
@@ -1620,7 +1661,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getArchivoPDF()!= null || getArchivoPDF() != ""){
 						as.setSueArchivoPdf(getArchivoPDF());
 						as.setSueFechaArchivoPdf(getFechaArcPDF());
-						as.setSueFechaSubidaPdf(getFechaSubidaPDF());
+						as.setSueFechaSubidaPdf(new Timestamp(getFechaSubidaPDF().getTime()));
 						as.setSueUsuarioArchivoPdf(getUsuArchivoPDF());
 					}else{
 						as.setSueArchivoPdf(asignacionSuelo.getSueArchivoPdf());
@@ -1636,7 +1677,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getInforCaracterizacion()!= null || getInforCaracterizacion() != ""){
 						as.setSueInforCaracterizacion(getInforCaracterizacion());
 						as.setSueFechaDocCaracterizacion(getFechaDocCaracte());
-						as.setSueFechaSubidaCaracterizacio(getFechaSubidaCaracte());
+						as.setSueFechaSubidaCaracterizacio(new Timestamp(getFechaSubidaCaracte().getTime()));
 						as.setSueUsuarioCaracterizacion(getUsuCaracterizacion());
 					}else{
 						as.setSueInforCaracterizacion(asignacionSuelo.getSueInforCaracterizacion());
@@ -1647,7 +1688,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getInforUsoSuelo()!= null || getInforUsoSuelo() != ""){
 						as.setSueInforUsoSuelo(getInforUsoSuelo());
 						as.setSueFechaDocUsoSuelo(getFechaDocUsoSuelo());
-						as.setSueFechaSubidaUsoSuelo(getFechaSubidaUsoS());
+						as.setSueFechaSubidaUsoSuelo(new Timestamp(getFechaSubidaUsoS().getTime()));
 						as.setSueUsuarioUsoSuelo(getUsuUsoSuelo());
 					}else{
 						as.setSueInforUsoSuelo(asignacionSuelo.getSueInforUsoSuelo());
@@ -1658,7 +1699,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getInforDisponibilidad()!= null || getInforDisponibilidad() != ""){
 						as.setSueInforDisponibilidad(getInforDisponibilidad());
 						as.setSueFechaDocDisponibilidad(getFechaDocDisponibil());
-						as.setSueFechaSubidaDisponibilidad(getFechaSubidaDisponi());
+						as.setSueFechaSubidaDisponibilidad(new Timestamp(getFechaSubidaDisponi().getTime()));
 						as.setSueUsuarioDisponibilidad(getUsuDisponibilidad());
 					}else{
 						as.setSueInforDisponibilidad(asignacionSuelo.getSueInforDisponibilidad());
@@ -1669,7 +1710,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
 						as.setSueInforConsolidado(getInforConsolidado());
 						as.setSueFechaDocConsolidado(getFechaDocConsolidado());
-						as.setSueFechaSubidaConsolidado(getFechaSubidaConsol());
+						as.setSueFechaSubidaConsolidado(new Timestamp(getFechaSubidaConsol().getTime()));
 						as.setSueUsuarioConsolidado(getUsuConsolidado());
 					}else{
 						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
@@ -1680,7 +1721,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getResolucion()!= null || getResolucion() != ""){
 						as.setSueResolucion(getResolucion());
 						as.setSueFechaDocResolucion(getFechaDocResolucion());
-						as.setSueFechaSubidaResolucion(getFechaSubidaResol());
+						as.setSueFechaSubidaResolucion(new Timestamp(getFechaSubidaResol().getTime()));
 						as.setSueUsuarioResolucion(getUsuResolucion());
 					}else{
 						as.setSueResolucion(asignacionSuelo.getSueResolucion());
@@ -1691,7 +1732,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
 						as.setSueActaResolutiva(getActaResolutiva());
 						as.setSueFechaDocResolutiva(getFechaDocActaResol());
-						as.setSueFechaSubidaResolutiva(getFechaSubidaActaRes());
+						as.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaActaRes().getTime()));
 						as.setSueUsuarioResolutiva(getUsuActaResol());
 					}else{
 						as.setSueActaResolutiva(asignacionSuelo.getSueActaResolutiva());
@@ -1702,7 +1743,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
 						as.setSueActaResolutiva(getActaResolutiva());
 						as.setSueFechaDocResolutiva(getFechaDocActaResol());
-						as.setSueFechaSubidaResolutiva(getFechaSubidaActaRes());
+						as.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaActaRes().getTime()));
 						as.setSueUsuarioResolutiva(getUsuActaResol());
 					}else{
 						as.setSueActaResolutiva(asignacionSuelo.getSueActaResolutiva());
@@ -1713,7 +1754,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getConvocatoria()!= null || getConvocatoria() != ""){
 						as.setSueConvocatoria(getConvocatoria());
 						as.setSueFechaDocConvocatoria(getFechaDocConvoca());
-						as.setSueFechaSubidaConvocatoria(getFechaSubidaConvoca());
+						as.setSueFechaSubidaConvocatoria(new Timestamp(getFechaSubidaConvoca().getTime()));
 						as.setSueUsuarioConvocatoria(getUsuConvocatoria());
 					}else{
 						as.setSueConvocatoria(asignacionSuelo.getSueConvocatoria());
@@ -1724,7 +1765,7 @@ public class AsignacionSueloBean implements Serializable {
 					if(getNotificacionApNe()!= null || getNotificacionApNe() != ""){
 						as.setSueNotificacionApNe(getNotificacionApNe());
 						as.setSueFechaDocNotificacion(getFechaDocNotificacion());
-						as.setSueFechaSubidaNotificacion(getFechaSubidaNotificacion());
+						as.setSueFechaSubidaNotificacion(new Timestamp(getFechaSubidaNotificacion().getTime()));
 						as.setSueUsuarioNotificacion(getUsuNotificacion());
 					}else{
 						as.setSueNotificacionApNe(asignacionSuelo.getSueNotificacionApNe());
@@ -1735,7 +1776,7 @@ public class AsignacionSueloBean implements Serializable {
 					mngTerritorio.modicarAsignacionSuelo(as);
 					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
 				} else {
-					setIdAsignacion(mngTerritorio.asignacionSueloId());
+					setIdAsignacion(mngTerritorio.generarIdAsignacionSuelo());
 					as.setSueId(getIdAsignacion());
 					mngTerritorio.insertarAsignacionSuelo(as);
 					setEdicionAS(true);
@@ -1799,24 +1840,64 @@ public class AsignacionSueloBean implements Serializable {
 
 	public String cancelar() {
 		limpiarDatos();
-//		cargarAsignacionSuelo();
+		cargarAsignacionSuelo();
 		return "asignacionSuelos?faces-redirect=true";
 	}
 
 	private void limpiarDatos() {
-//		setId(null);
-//		setTipoCatalogo(SELECCIONAR); setNombre(""); setDescripcion("");
-//		setActividad(""); setZona(SELECCIONAR); setAsignacion(""); 
-//		setMetros(BigDecimal.ZERO); setSueNumeroanios(0); setUnidadTiempo(SELECCIONAR);
-//		setObservacion(""); setEstado(EN_PROGRESO);
-//		setRegAmbiental(""); setCoordenadaX(BigDecimal.ZERO); setCoordenadaY(BigDecimal.ZERO);
-//		setSuperficieAsignada(BigDecimal.ZERO); setSuperficieSolicitada(BigDecimal.ZERO);
-//		setOcupado(false); setOcupadoPor(""); setTipoUso(SELECCIONAR);
-//		setDniResponsablePorDir(""); setNombreResponsablePorDir("");
-//		setDireccionResponsable(""); setFuenteHidrica("");
-//		setConcesionFHidrica(""); setResponsableConcesion("");
-//		setOcultarGuardar(false);
-//		setEdicion(false);
+		setIdAsignacion(0);
+		setZona(null); setActividad(""); setAsignacion("");
+		setEstado(ENPROCESO); setTipoCatalogo(SELECCIONAR);
+		setObservacion(""); setUnidadTiempo(SELECCIONAR);
+		setNombre(""); setDescripcion(""); setInforGestionTerr("");
+		setFuenteHidrica(""); setConcesionFHidrica("");
+		setResponsableConcesion(""); setCaudalAsignado("");
+		setCaudalTotal(""); setDniResponsablePorDir("");
+		setNombreResponsablePorDir(""); setDireccionResponsable("");
+		setFiguraLegal(""); setAsignacionSuelo(null);
+		setAplicaRegAmbiental(false); setArchRegulacionAmb("");
+		setFechaDocRegulacionAmb(new Date()); setUsuRegAmbiental("");
+		setFechaSubRegAmbiental(new Timestamp(new Date().getTime()));
+		setArchivoKMZ(""); setFechaArcKMZ(new Date());
+		setFechaSubidaKMZ(new Timestamp(new Date().getTime()));
+		setUsuArchivoKMZ("");
+		setArchivoPDF(""); setFechaArcPDF(new Date());
+		setFechaSubidaPDF(new Timestamp(new Date().getTime()));
+		setUsuArchivoPDF("");
+		setSuperficieAsignada(BigDecimal.ZERO);	setUnidadMedSupAsignada(SELECCIONAR);
+		setSuperficieSolicitada(BigDecimal.ZERO); setUnidadMedSupSol(SELECCIONAR);
+		setEnteAprobador(SELECCIONAR);
+		// informes
+		setInforCaracterizacion(""); setFechaDocCaracte(new Date());
+		setFechaSubidaCaracte(new Timestamp(new Date().getTime()));
+		setUsuCaracterizacion("");
+		setInforUsoSuelo(""); setFechaDocUsoSuelo(new Date());
+		setFechaSubidaUsoS(new Timestamp(new Date().getTime()));
+		setUsuUsoSuelo("");
+		setInforDisponibilidad(""); setFechaDocDisponibil(new Date());
+		setFechaSubidaDisponi(new Timestamp(new Date().getTime()));
+		setUsuDisponibilidad("");
+		setInforConsolidado(""); setFechaDocConsolidado(new Date());
+		setFechaSubidaConsol(new Timestamp(new Date().getTime()));
+		setUsuConsolidado("");
+		setResolucion(""); setFechaDocResolucion(new Date());
+		setFechaSubidaResol(new Timestamp(new Date().getTime()));
+		setUsuResolucion("");
+		setActaResolutiva(""); setFechaDocActaResol(new Date());
+		setFechaSubidaActaRes(new Timestamp(new Date().getTime()));
+		setUsuActaResol("");
+		setConvocatoria(""); setFechaDocConvoca(new Date());
+		setFechaSubidaConvoca(new Timestamp(new Date().getTime()));
+		setUsuConvocatoria("");
+		setNotificacionApNe(""); setFechaDocNotificacion(new Date());
+		setFechaSubidaNotificacion(new Timestamp(new Date().getTime()));
+		setUsuNotificacion("");
+		
+		setEdicionAS(false);
+		limpiarCamposAdmin();
+		limpiarCamposEntregable();
+		limpiarCamposContrato();
+		
 	}
 
 	private void cargarAsignacionSuelo() {
@@ -1951,14 +2032,12 @@ public class AsignacionSueloBean implements Serializable {
 	
 	// Contrato 
 	
-	
-	public void guardarEditarContrato(){**
+	public void guardarEditarContrato(){
 		try{
-		if(validarCamposContrato() || validarFechasContrato()){
+		if(validarCamposContrato()){ // || validarFechasContrato()){
 			GtrContratoAsignacion ca = new GtrContratoAsignacion();
 			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
 			ca.setGtrAsignacionSuelo(getAsignacionSuelo());
-		
 			ca.setCasArrendador(Funciones.quitarEspacios(getArrendadorCotrato()));
 			ca.setCasArrendatario(Funciones.quitarEspacios(getArrendatarioContrato()));
 			ca.setCasFechaInicio(new Timestamp(getFechaInicioC().getTime()));
@@ -1974,7 +2053,7 @@ public class AsignacionSueloBean implements Serializable {
 				if(getTdrContrato() != null || getTdrContrato() != ""){
 					ca.setCasTdr(getTdrContrato());
 					ca.setCasFechaDocTdr(getFechaDocTdr());
-					ca.setCasFechaSubidaTdr(getFechaSubidaTdr());
+					ca.setCasFechaSubidaTdr(new Timestamp(getFechaSubidaTdr().getTime()));
 					ca.setCasUsuarioTdr(getUsuTdr());
 				}else{
 					ca.setCasTdr(contrato.getCasTdr());
@@ -1985,7 +2064,7 @@ public class AsignacionSueloBean implements Serializable {
 				if(getPliegoContrato() != null || getPliegoContrato() != ""){
 					ca.setCasPliego(getPliegoContrato());
 					ca.setCasFechaDocPliego(contrato.getCasFechaDocPliego());
-					ca.setCasFechaSubidaPliego(getFechaSubPliego());
+					ca.setCasFechaSubidaPliego(new Timestamp(getFechaSubPliego().getTime()));
 					ca.setCasUsuarioPliego(getUsuPliego());
 				}else{
 					ca.setCasPliego(contrato.getCasPliego());
@@ -1996,7 +2075,7 @@ public class AsignacionSueloBean implements Serializable {
 				if(getArchContrato() != null || getArchContrato() != ""){
 					ca.setCasContrato(getArchContrato());
 					ca.setCasFechaDocContrato(getFechaDocContrato());
-					ca.setCasFechaSubidaContrato(getFechaSubContrato());
+					ca.setCasFechaSubidaContrato(new Timestamp(getFechaSubContrato().getTime()));
 					ca.setCasUsuarioContrato(getUsuContrato());
 				}else{
 					ca.setCasTdr(contrato.getCasContrato());
@@ -2047,7 +2126,7 @@ public class AsignacionSueloBean implements Serializable {
 		return true;
 	}
 
-	private void editarContrato() {
+//	private void editarContrato() {
 //		try {
 //			if (validarCamposContrato()) {
 //				GtrContratoAsignacion ca = new GtrContratoAsignacion();
@@ -2081,7 +2160,7 @@ public class AsignacionSueloBean implements Serializable {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-	}
+//	}
 	
 	public void cancelarContrato(){
 //		limpiarCamposContrato();
@@ -2089,16 +2168,27 @@ public class AsignacionSueloBean implements Serializable {
 //		RequestContext.getCurrentInstance().execute("PF('conDlg').hide();");
 	}
 //	
-//	public void limpiarCamposContrato(){
-//		setIdContrato(""); setTdrContrato(""); setPliegoContrato(""); 
-//		setFechaIncio(new Date()); setFechaFin(new Date()); 
-//		setArrendadorCotrato(""); setArrendatarioContrato("");
-//		setPeriodicidadPagoC(BigDecimal.ZERO); setUnidadTiempoContrato(SELECCIONAR);
-//		setPrecio(BigDecimal.ZERO); setEdicionContrato(false);
-//	}
+	public void limpiarCamposContrato(){
+		setIdContrato(""); 
+		setTdrContrato(""); setFechaDocTdr(new Date());
+		setFechaSubidaTdr(new Timestamp(new Date().getTime()));
+		setUsuTdr("");
+		setPliegoContrato(""); setFechaDocPliego(new Date());
+		setFechaSubPliego(new Timestamp(new Date().getTime()));
+		setUsuPliego("");
+		setArchContrato(""); setFechaDocContrato(new Date());
+		setFechaSubContrato(new Timestamp(new Date().getTime()));
+		setUsuContrato("");
+		setFechaInicioC(new Timestamp(new Date().getTime())); setFechaFinC(new Timestamp(new Date().getTime())); 
+		setArrendadorCotrato(""); setArrendatarioContrato("");
+		setPeriodicidadPagoC(BigDecimal.ZERO); setUnidadTiempoContrato(SELECCIONAR);
+		setPrecio(BigDecimal.ZERO); setPrecio(BigDecimal.ZERO);
+		
+		setEdicionContrato(false);
+	}
 	
-//	// Entregables
-//	
+	// Entregables
+	
 	public void mostrarDlgEntregables() {
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
@@ -2138,6 +2228,7 @@ public class AsignacionSueloBean implements Serializable {
 		setUsuarioDocumento(entregable.getEcoUsuarioSubida());
 		setEstadoEntregable(entregable.getEcoEstado());
 		setNombreResponsableEntregable(buscarNombre(entregable.getEcoResponsable()));
+		
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
 	
@@ -2157,32 +2248,30 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void guardarEditarEntregable(){
 		try{
-//			GtrEntregablesContrato ec = new GtrEntregablesContrato();
-//			setIdEntregable(entregable.getEcoId());
-//			setDocumento(entregable.getEcoDocumento());
-//			setDniresponsableEntregable(entregable.getEcoResponsable());
-//			setFechaMaxEntregaDoc(entregable.getEcoFechaMaxEntrega());
-//			setFechaSubidaDoc(entregable.getEcoFechaSubida());
-//			setUsuarioDocumento(entregable.getEcoUsuarioSubida());
-//			setEstadoEntregable(entregable.getEcoEstado());
-//			setNombreResponsableEntregable(buscarNombre(entregable.getEcoResponsable()));
-//		GtrEntregablesContratoPK pk = new  GtrEntregablesContratoPK();
-//		pk.setCasId(getContrato().getCasId()); pk.setEcoDocumento(getDocumento());
-//		System.out.println();
-//		
-//		ec.setId(pk); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntrega().getTime()));
-//		ec.setEcoFechaSubida(getFechaSubida()); ec.setEcoResponsable(getDniresponsableEntregable());
-//		
+			GtrEntregablesContrato ec = new GtrEntregablesContrato();
+			ec.setEcoId(getIdEntregable()); ec.setEcoResponsable(getDniresponsableEntregable());
+			ec.setEcoEstado(getEstadoEntregable()); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntregaDoc().getTime()));
 		if(isEdicionEntregable()){
-//			mngTerritorio.modificarEntregable(ec);
-//			Mensaje.crearMensajeINFO("Entregable ingresado correctamente.");
-//			setEdicionEntregable(false);
-//		}else{
-//			if(mngTerritorio.findEntregableById(pk) != null){
-//				mngTerritorio.insertarEntregable(ec);
-//				Mensaje.crearMensajeINFO("Entregable ingresado correctamente.");
-//			}
+			GtrEntregablesContrato entregable = mngTerritorio.findEntregableById(getIdEntregable());
+			if(getDocumento() != null || !getDocumento().equals("")){
+				ec.setEcoDocumento(getDocumento());
+				ec.setEcoFechaSubida(new Timestamp(getFechaSubidaDoc().getTime()));
+				ec.setEcoUsuarioSubida(getUsuarioDocumento());
+			}else{
+				ec.setEcoDocumento(entregable.getEcoDocumento());
+				ec.setEcoFechaSubida(entregable.getEcoFechaSubida());
+				ec.setEcoUsuarioSubida(entregable.getEcoUsuarioSubida());
+			}
+			mngTerritorio.modificarEntregable(ec);
+			Mensaje.crearMensajeINFO("Entregable actualizado correctamente.");
+		}else{
+			setIdEntregable(mngTerritorio.generarIdEntregable());
+			ec.setEcoId(getIdEntregable());
+			mngTerritorio.insertarEntregable(ec);
+			setEdicionEntregable(true);
+			Mensaje.crearMensajeINFO("Entregable ingresado correctamente.");
 		}
+		cargarLstEntregables(getIdContrato());
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar entregable contrato: " + e.getMessage());
 			System.out.println("Error al almacenar entregable contrato ");
@@ -2191,21 +2280,18 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void cancelarEntregable(){
-//		limpiarCamposEntregable();
+		limpiarCamposEntregable();
+		cargarLstEntregables(getIdContrato());
+		RequestContext.getCurrentInstance().execute("PF('entDlg').hide();");
 	}
-//	
-	public void volverContrato(){
-//		limpiarCamposEntregable();
-//		RequestContext.getCurrentInstance().execute("PF('entDlg').hide();");
-//		cargarLstContratos();
+
+	public void limpiarCamposEntregable(){
+		setEdicionEntregable(false);
+		setDocumento(""); setDniresponsableEntregable(""); setNombreResponsableEntregable("");
+		setFechaMaxEntregaDoc(new Timestamp(new Date().getTime())); setFechaSubidaDoc(new Timestamp(new Date().getTime()));
+		setEstadoEntregable(ACTIVO);
 	}
-//	
-//	public void limpiarCamposEntregable(){
-//		setEdicionEntregable(false);
-//		setDocumento(""); setDniresponsableEntregable(""); setNombreResponsableEntregable("");
-//		setFechaMaxEntrega(new Date()); setFechaSubida(new Timestamp(new Date().getTime()));
-//		setEstadoEntregable(SELECCIONAR);
-//	}
+	
 	// Administrador
 		
 	public void mostrarDlgAdministrador() {
@@ -2213,30 +2299,33 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void cancelarAdministrador(){
+		limpiarCamposAdmin();
+		cargarLstAdministradores(getIdContrato());
 		RequestContext.getCurrentInstance().execute("PF('admCDlg').hide();");
 	}
 	
 	public void cargarEditarAdministrador(GtrAdministradorContrato administrador){
-		
+		setEdicionAdmin(true);
+		setIdAdmin(administrador.getAdcId()); setDniAdmin(administrador.getAdcAdministrador());
+		setNombreAdmin(buscarNombre(administrador.getAdcAdministrador()));
+		setDireccionAdmin(administrador.getAdcDireccionAdm()); setFechaInicioAdmin(administrador.getAdcFechaInicio());
+		setFechaFinAdmin(administrador.getAdcFechaFin()); setEstadoAdmin(administrador.getAdcEstado());
+		mostrarDlgAdministrador();
 	}
+	
 	public void buscarAdministrador() {
 		if (getDniAdmin() == null || getDniAdmin().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
-			setDniAdmin("");
-			setNombreAdmin("");
-			setDireccionAdmin("");
+			setDniAdmin(""); setNombreAdmin(""); setDireccionAdmin("");
 		} else {
 			try {
 				GenFuncionariosInstitucion f = mngGeneral.findFuncionarioXDni(getDniAdmin());
 				if (f == null) {
 					Mensaje.crearMensajeWARN("Persona no encontrada");
-					setDniAdmin("");
-					setNombreAdmin("");
-					setDireccionAdmin("");
+					setDniAdmin(""); setNombreAdmin(""); setDireccionAdmin("");
 				} else {
-					setDniAdmin(f.getGenPersona().getPerDni());
+					setDniAdmin(f.getGenPersona().getPerDni()); setDireccionAdmin(f.getFunDireccion());
 					setNombreAdmin(f.getGenPersona().getPerNombres() + " " + f.getGenPersona().getPerApellidos());
-					setDireccionAdmin(f.getFunDireccion());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2244,11 +2333,50 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 	
-	public void guardarEditarAdministrador(){
-		
+	public void guardarEditarAdministrador() {
+		try {
+			if (validarFechasAdmin()) {
+				GtrAdministradorContrato ad = new GtrAdministradorContrato();
+				ad.setAdcAdministrador(getDniAdmin()); ad.setAdcDireccionAdm(getDireccionAdmin());
+				ad.setAdcFechaInicio(getFechaInicioAdmin()); ad.setAdcFechaFin(getFechaFinAdmin());
+				ad.setAdcEstado(getEstadoAdmin());
+				if (isEdicionAdmin()) {
+					ad.setAdcId(getIdAdmin());
+					mngTerritorio.modificarAdministrador(ad);
+					Mensaje.crearMensajeINFO("Administrador actualizado Correctamente.");
+				} else {
+					setIdAdmin(mngTerritorio.generarIdAdministrador());
+					ad.setAdcId(getIdAdmin());
+					mngTerritorio.insertarAdministrador(ad);
+					Mensaje.crearMensajeINFO("Administrador ingresado Correctamente.");
+				}
+				cargarLstAdministradores(getIdContrato());
+			}
+		} catch (Exception e) {
+			Mensaje.crearMensajeERROR("Error al almacenar administrador contrato: " + e.getMessage());
+			System.out.println("Error al almacenar administrador contrato ");
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean validarFechasAdmin(){
+		if(getFechaFinAdmin().before(getFechaInicioAdmin())){
+			Mensaje.crearMensajeERROR("La Fecha Fin debe ser mayor que la Fecha de Inicio.");
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	private void limpiarCamposAdmin(){
+		setEdicionAdmin(false);
+		setIdAdmin(0); setDniAdmin(""); setNombreAdmin("");
+		setDireccionAdmin(""); setFechaInicioAdmin(new Date());
+		setFechaFinAdmin(new Date()); setEstadoAdmin(ACTIVO);
 	}
 	
 	// Manejo de Archivos
+	
 	public void subirInforGestionT(FileUploadEvent evento) {
 		try {
 			setInforGestionTerr(cargarInformes(evento));
@@ -2271,6 +2399,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirInforCaracterizacion(FileUploadEvent evento) {
 		try {
 			setInforCaracterizacion(cargarInformes(evento));
+			setFechaSubidaCaracte(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2280,6 +2409,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirInforUsoSuelo(FileUploadEvent evento) {
 		try {
 			setInforUsoSuelo(cargarInformes(evento));
+			setFechaSubidaUsoS(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2289,6 +2419,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirInforDisponibilidad(FileUploadEvent evento) {
 		try {
 			setInforDisponibilidad(cargarInformes(evento));
+			setFechaSubidaDisponi(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2299,6 +2430,7 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			System.out.println("Ingreso a metodo informActual");
 			setInforConsolidado(cargarInformes(evento));
+			setFechaSubidaConsol(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2308,6 +2440,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirResolucion(FileUploadEvent evento) {
 		try {
 			setResolucion(cargarInformes(evento));
+			setFechaSubidaResol(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2317,6 +2450,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirActaResolutiva(FileUploadEvent evento) {
 		try {
 			setActaResolutiva(cargarInformes(evento));
+			setFechaSubidaActaRes(new Timestamp(new Date().getTime()));;
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2326,6 +2460,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirConvocatoria(FileUploadEvent evento) {
 		try {
 			setConvocatoria(cargarInformes(evento));
+			setFechaSubidaConvoca(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2335,6 +2470,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirRegulacionAmb(FileUploadEvent evento) {
 		try {
 			setArchRegulacionAmb(cargarInformes(evento));
+			setFechaSubRegAmbiental(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2344,6 +2480,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirKMZ(FileUploadEvent evento) {
 		try {
 			setArchivoKMZ(cargarInformes(evento));
+			setFechaArcKMZ(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2353,6 +2490,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirPDF(FileUploadEvent evento) {
 		try {
 			setArchivoPDF(cargarInformes(evento));
+			setFechaArcPDF(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2362,6 +2500,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirNotificacionAN(FileUploadEvent evento) {
 		try {
 			setNotificacionApNe(cargarInformes(evento));
+			setFechaSubidaNotificacion(new Timestamp(new Date().getTime()));
 //			editarAsignacionSuelo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2372,6 +2511,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirTDR(FileUploadEvent evento) {
 		try {
 			setTdrContrato(cargarInformes(evento));
+			setFechaSubidaTdr(new Timestamp(new Date().getTime()));
 //			editarContrato();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2381,6 +2521,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirPliego(FileUploadEvent evento) {
 		try {
 			setPliegoContrato(cargarInformes(evento));
+			setFechaSubPliego(new Timestamp(new Date().getTime()));
 //			editarContrato();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2389,6 +2530,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirContrato(FileUploadEvent evento) {
 		try {
 			setArchContrato(cargarInformes(evento));
+			setFechaSubContrato(new Timestamp(new Date().getTime()));
 //			editarContrato();
 		} catch (Exception e) {
 			e.printStackTrace();
