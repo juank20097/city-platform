@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1642,12 +1641,12 @@ public class AsignacionSueloBean implements Serializable {
 					setearAsignacionSuelo(getIdAsignacion());
 					as.setSueId(getIdAsignacion());
 					//Informes
-					if(getInforGestionTerr() != null || getInforGestionTerr() != ""){
+					if(getInforGestionTerr() != null ){
 					as.setSueInforGestionTerritorial(getInforGestionTerr());
 					}else{
 						as.setSueInforGestionTerritorial(asignacionSuelo.getSueInforGestionTerritorial());
 					}
-					if(getArchivoKMZ()!= null || getArchivoKMZ() != ""){
+					if(getArchivoKMZ()!= null){
 						as.setSueArchivoKmz(getArchivoKMZ());
 						as.setSueFechaArchivoKmz(getFechaArcKMZ());
 						as.setSueFechaSubidaKmz(new Timestamp(getFechaSubidaKMZ().getTime()));
@@ -1658,7 +1657,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaKmz(asignacionSuelo.getSueFechaSubidaKmz());
 						as.setSueUsuarioArchivoKmz(asignacionSuelo.getSueUsuarioArchivoKmz());
 					}
-					if(getArchivoPDF()!= null || getArchivoPDF() != ""){
+					if(getArchivoPDF()!= null){
 						as.setSueArchivoPdf(getArchivoPDF());
 						as.setSueFechaArchivoPdf(getFechaArcPDF());
 						as.setSueFechaSubidaPdf(new Timestamp(getFechaSubidaPDF().getTime()));
@@ -1669,45 +1668,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaPdf(asignacionSuelo.getSueFechaSubidaPdf());
 						as.setSueUsuarioArchivoPdf(asignacionSuelo.getSueUsuarioArchivoPdf());
 					}
-					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
-						as.setSueInforConsolidado(getInforConsolidado());
-					}else{
-						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
-					}
-					if(getInforCaracterizacion()!= null || getInforCaracterizacion() != ""){
-						as.setSueInforCaracterizacion(getInforCaracterizacion());
-						as.setSueFechaDocCaracterizacion(getFechaDocCaracte());
-						as.setSueFechaSubidaCaracterizacio(new Timestamp(getFechaSubidaCaracte().getTime()));
-						as.setSueUsuarioCaracterizacion(getUsuCaracterizacion());
-					}else{
-						as.setSueInforCaracterizacion(asignacionSuelo.getSueInforCaracterizacion());
-						as.setSueFechaDocCaracterizacion(asignacionSuelo.getSueFechaDocCaracterizacion());
-						as.setSueFechaSubidaCaracterizacio(asignacionSuelo.getSueFechaSubidaCaracterizacio());
-						as.setSueUsuarioCaracterizacion(asignacionSuelo.getSueUsuarioCaracterizacion());
-					}
-					if(getInforUsoSuelo()!= null || getInforUsoSuelo() != ""){
-						as.setSueInforUsoSuelo(getInforUsoSuelo());
-						as.setSueFechaDocUsoSuelo(getFechaDocUsoSuelo());
-						as.setSueFechaSubidaUsoSuelo(new Timestamp(getFechaSubidaUsoS().getTime()));
-						as.setSueUsuarioUsoSuelo(getUsuUsoSuelo());
-					}else{
-						as.setSueInforUsoSuelo(asignacionSuelo.getSueInforUsoSuelo());
-						as.setSueFechaDocUsoSuelo(asignacionSuelo.getSueFechaDocUsoSuelo());
-						as.setSueFechaSubidaUsoSuelo(asignacionSuelo.getSueFechaSubidaUsoSuelo());
-						as.setSueUsuarioUsoSuelo(asignacionSuelo.getSueUsuarioUsoSuelo());
-					}
-					if(getInforDisponibilidad()!= null || getInforDisponibilidad() != ""){
-						as.setSueInforDisponibilidad(getInforDisponibilidad());
-						as.setSueFechaDocDisponibilidad(getFechaDocDisponibil());
-						as.setSueFechaSubidaDisponibilidad(new Timestamp(getFechaSubidaDisponi().getTime()));
-						as.setSueUsuarioDisponibilidad(getUsuDisponibilidad());
-					}else{
-						as.setSueInforDisponibilidad(asignacionSuelo.getSueInforDisponibilidad());
-						as.setSueFechaDocDisponibilidad(asignacionSuelo.getSueFechaDocDisponibilidad());
-						as.setSueFechaSubidaDisponibilidad(asignacionSuelo.getSueFechaSubidaDisponibilidad());
-						as.setSueUsuarioDisponibilidad(asignacionSuelo.getSueUsuarioDisponibilidad());
-					}
-					if(getInforConsolidado()!= null || getInforConsolidado() != ""){
+					if(getInforConsolidado()!= null){
 						as.setSueInforConsolidado(getInforConsolidado());
 						as.setSueFechaDocConsolidado(getFechaDocConsolidado());
 						as.setSueFechaSubidaConsolidado(new Timestamp(getFechaSubidaConsol().getTime()));
@@ -1718,7 +1679,51 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaConsolidado(asignacionSuelo.getSueFechaSubidaConsolidado());
 						as.setSueUsuarioConsolidado(asignacionSuelo.getSueUsuarioConsolidado());
 					}
-					if(getResolucion()!= null || getResolucion() != ""){
+					if(getInforCaracterizacion()!= null){
+						as.setSueInforCaracterizacion(getInforCaracterizacion());
+						as.setSueFechaDocCaracterizacion(getFechaDocCaracte());
+						as.setSueFechaSubidaCaracterizacio(new Timestamp(getFechaSubidaCaracte().getTime()));
+						as.setSueUsuarioCaracterizacion(getUsuCaracterizacion());
+					}else{
+						as.setSueInforCaracterizacion(asignacionSuelo.getSueInforCaracterizacion());
+						as.setSueFechaDocCaracterizacion(asignacionSuelo.getSueFechaDocCaracterizacion());
+						as.setSueFechaSubidaCaracterizacio(asignacionSuelo.getSueFechaSubidaCaracterizacio());
+						as.setSueUsuarioCaracterizacion(asignacionSuelo.getSueUsuarioCaracterizacion());
+					}
+					if(getInforUsoSuelo()!= null){
+						as.setSueInforUsoSuelo(getInforUsoSuelo());
+						as.setSueFechaDocUsoSuelo(getFechaDocUsoSuelo());
+						as.setSueFechaSubidaUsoSuelo(new Timestamp(getFechaSubidaUsoS().getTime()));
+						as.setSueUsuarioUsoSuelo(getUsuUsoSuelo());
+					}else{
+						as.setSueInforUsoSuelo(asignacionSuelo.getSueInforUsoSuelo());
+						as.setSueFechaDocUsoSuelo(asignacionSuelo.getSueFechaDocUsoSuelo());
+						as.setSueFechaSubidaUsoSuelo(asignacionSuelo.getSueFechaSubidaUsoSuelo());
+						as.setSueUsuarioUsoSuelo(asignacionSuelo.getSueUsuarioUsoSuelo());
+					}
+					if(getInforDisponibilidad()!= null ){
+						as.setSueInforDisponibilidad(getInforDisponibilidad());
+						as.setSueFechaDocDisponibilidad(getFechaDocDisponibil());
+						as.setSueFechaSubidaDisponibilidad(new Timestamp(getFechaSubidaDisponi().getTime()));
+						as.setSueUsuarioDisponibilidad(getUsuDisponibilidad());
+					}else{
+						as.setSueInforDisponibilidad(asignacionSuelo.getSueInforDisponibilidad());
+						as.setSueFechaDocDisponibilidad(asignacionSuelo.getSueFechaDocDisponibilidad());
+						as.setSueFechaSubidaDisponibilidad(asignacionSuelo.getSueFechaSubidaDisponibilidad());
+						as.setSueUsuarioDisponibilidad(asignacionSuelo.getSueUsuarioDisponibilidad());
+					}
+					if(getInforConsolidado()!= null){
+						as.setSueInforConsolidado(getInforConsolidado());
+						as.setSueFechaDocConsolidado(getFechaDocConsolidado());
+						as.setSueFechaSubidaConsolidado(new Timestamp(getFechaSubidaConsol().getTime()));
+						as.setSueUsuarioConsolidado(getUsuConsolidado());
+					}else{
+						as.setSueInforConsolidado(asignacionSuelo.getSueInforConsolidado());
+						as.setSueFechaDocConsolidado(asignacionSuelo.getSueFechaDocConsolidado());
+						as.setSueFechaSubidaConsolidado(asignacionSuelo.getSueFechaSubidaConsolidado());
+						as.setSueUsuarioConsolidado(asignacionSuelo.getSueUsuarioConsolidado());
+					}
+					if(getResolucion()!= null){
 						as.setSueResolucion(getResolucion());
 						as.setSueFechaDocResolucion(getFechaDocResolucion());
 						as.setSueFechaSubidaResolucion(new Timestamp(getFechaSubidaResol().getTime()));
@@ -1729,7 +1734,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaResolucion(asignacionSuelo.getSueFechaSubidaResolucion());
 						as.setSueUsuarioResolucion(asignacionSuelo.getSueUsuarioResolucion());
 					}
-					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
+					if(getActaResolutiva()!= null){
 						as.setSueActaResolutiva(getActaResolutiva());
 						as.setSueFechaDocResolutiva(getFechaDocActaResol());
 						as.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaActaRes().getTime()));
@@ -1740,7 +1745,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaResolutiva(asignacionSuelo.getSueFechaSubidaResolutiva());
 						as.setSueUsuarioResolutiva(asignacionSuelo.getSueUsuarioResolutiva());
 					}
-					if(getActaResolutiva()!= null || getActaResolutiva() != ""){
+					if(getActaResolutiva()!= null){
 						as.setSueActaResolutiva(getActaResolutiva());
 						as.setSueFechaDocResolutiva(getFechaDocActaResol());
 						as.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaActaRes().getTime()));
@@ -1751,7 +1756,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaResolutiva(asignacionSuelo.getSueFechaSubidaResolutiva());
 						as.setSueUsuarioResolutiva(asignacionSuelo.getSueUsuarioResolutiva());
 					}
-					if(getConvocatoria()!= null || getConvocatoria() != ""){
+					if(getConvocatoria()!= null){
 						as.setSueConvocatoria(getConvocatoria());
 						as.setSueFechaDocConvocatoria(getFechaDocConvoca());
 						as.setSueFechaSubidaConvocatoria(new Timestamp(getFechaSubidaConvoca().getTime()));
@@ -1762,7 +1767,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaConvocatoria(asignacionSuelo.getSueFechaSubidaConvocatoria());
 						as.setSueUsuarioConvocatoria(asignacionSuelo.getSueUsuarioConvocatoria());
 					}
-					if(getNotificacionApNe()!= null || getNotificacionApNe() != ""){
+					if(getNotificacionApNe()!= null){
 						as.setSueNotificacionApNe(getNotificacionApNe());
 						as.setSueFechaDocNotificacion(getFechaDocNotificacion());
 						as.setSueFechaSubidaNotificacion(new Timestamp(getFechaSubidaNotificacion().getTime()));
@@ -1939,46 +1944,46 @@ public class AsignacionSueloBean implements Serializable {
 //						.findAsignacionSueloById(getId());
 //
 //				if (getInforGestionTerr() != null
-//						|| getInforGestionTerr() != "") {
+//						|| !getInforGestionTerr().isEmpty()) {
 //					as.setSueInforGestionTerritorial(getInforGestionTerr());
 //				} else {
 //					as.setSueInforGestionTerritorial(asignacionSuelo
 //							.getSueInforGestionTerritorial());
 //				}
-//				if (getInforActualGT() != null || getInforActualGT() != "") {
+//				if (getInforActualGT() != null || !getInforActualGT().isEmpty()) {
 //					as.setSueInforActualGestionTerr(getInforActualGT());
 //				} else {
 //					as.setSueInforActualGestionTerr(asignacionSuelo
 //							.getSueInforActualGestionTerr());
 //				}
 //				if (getInforConsolidado() != null
-//						|| getInforConsolidado() != "") {
+//						|| !getInforConsolidado().isEmpty()) {
 //					as.setSueInforConsolidado(getInforConsolidado());
 //				} else {
 //					as.setSueInforConsolidado(asignacionSuelo
 //							.getSueInforConsolidado());
 //				}
 //				if (getInforPronJuidico() != null
-//						|| getInforPronJuidico() != "") {
+//						|| !getInforPronJuidico().isEmpty()) {
 //					as.setSueInforPronunciamientoJurid(getInforPronJuidico());
 //				} else {
 //					as.setSueInforPronunciamientoJurid(asignacionSuelo
 //							.getSueInforPronunciamientoJurid());
 //				}
 //				if (getInforConsolidado2() != null
-//						|| getInforConsolidado2() != "") {
+//						|| getInforConsolidado2().isEmpty()) {
 //					as.setSueInforConsolidado2(getInforConsolidado2());
 //				} else {
 //					as.setSueInforConsolidado2(asignacionSuelo
 //							.getSueInforConsolidado2());
 //				}
-//				if (getSolicitudComite() != null || getSolicitudComite() != "") {
+//				if (getSolicitudComite() != null || getSolicitudComite().isEmpty()) {
 //					as.setSueSolicitudComite(getSolicitudComite());
 //				} else {
 //					as.setSueSolicitudComite(asignacionSuelo
 //							.getSueSolicitudComite());
 //				}
-//				if (getActaResolucion() != null || getActaResolucion() != "") {
+//				if (getActaResolucion() != null || getActaResolucion().isEmpty()) {
 //					as.setSueActaResolucionComite(getActaResolucion());
 //				} else {
 //					as.setSueActaResolucionComite(asignacionSuelo
@@ -2003,7 +2008,7 @@ public class AsignacionSueloBean implements Serializable {
 	 * Método para buscar un funcionario
 	 */
 	public void buscarPersona() {
-		if (getBusquedaPersona() == null || getBusquedaPersona().isEmpty()) {
+		if (getBusquedaPersona() == null || !getBusquedaPersona().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setBusquedaPersona("");
 			setDniResponsablePorDir("");
@@ -2034,7 +2039,7 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void guardarEditarContrato(){
 		try{
-		if(validarCamposContrato()){ // || validarFechasContrato()){
+		if(validarCamposContrato() || validarFechasContrato()){
 			GtrContratoAsignacion ca = new GtrContratoAsignacion();
 			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
 			ca.setGtrAsignacionSuelo(getAsignacionSuelo());
@@ -2049,8 +2054,7 @@ public class AsignacionSueloBean implements Serializable {
 			ca.setCasTipo(getTipoContrato());
 			if( isEdicionContrato()){
 				GtrContratoAsignacion contrato = mngTerritorio.findContratoById(getIdContrato());
-				
-				if(getTdrContrato() != null || getTdrContrato() != ""){
+				if(getTdrContrato() != null ){
 					ca.setCasTdr(getTdrContrato());
 					ca.setCasFechaDocTdr(getFechaDocTdr());
 					ca.setCasFechaSubidaTdr(new Timestamp(getFechaSubidaTdr().getTime()));
@@ -2061,7 +2065,7 @@ public class AsignacionSueloBean implements Serializable {
 					ca.setCasFechaSubidaTdr(contrato.getCasFechaSubidaTdr());
 					ca.setCasUsuarioTdr(contrato.getCasUsuarioTdr());
 				}
-				if(getPliegoContrato() != null || getPliegoContrato() != ""){
+				if(getPliegoContrato() != null ){
 					ca.setCasPliego(getPliegoContrato());
 					ca.setCasFechaDocPliego(contrato.getCasFechaDocPliego());
 					ca.setCasFechaSubidaPliego(new Timestamp(getFechaSubPliego().getTime()));
@@ -2072,7 +2076,7 @@ public class AsignacionSueloBean implements Serializable {
 					ca.setCasFechaSubidaPliego(contrato.getCasFechaSubidaPliego());
 					ca.setCasUsuarioPliego(contrato.getCasUsuarioPliego());
 				}
-				if(getArchContrato() != null || getArchContrato() != ""){
+				if(getArchContrato() != null){
 					ca.setCasContrato(getArchContrato());
 					ca.setCasFechaDocContrato(getFechaDocContrato());
 					ca.setCasFechaSubidaContrato(new Timestamp(getFechaSubContrato().getTime()));
@@ -2144,12 +2148,12 @@ public class AsignacionSueloBean implements Serializable {
 //				ca.setCasUnidadTiempo(getUnidadTiempoContrato());
 //				GtrContratoAsignacion contrato = mngTerritorio
 //						.findContratoById(getIdContrato());
-//				if (getTdrContrato() != null || getTdrContrato() != "") {
+//				if (getTdrContrato() != null || !getTdrContrato().isEmpty()) {
 //					ca.setCasTdr(getTdrContrato());
 //				} else {
 //					ca.setCasTdr(contrato.getCasTdr());
 //				}
-//				if (getPliegoContrato() != null || getPliegoContrato() != "") {
+//				if (getPliegoContrato() != null || getPliegoContrato().isEmpty()) {
 //					ca.setCasPliego(getPliegoContrato());
 //				} else {
 //					ca.setCasPliego(contrato.getCasPliego());
@@ -2194,7 +2198,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void buscarResponsableEnt() {
-		if (getBusquedaResponsableEC() == null || getBusquedaResponsableEC().isEmpty()) {
+		if (getBusquedaResponsableEC() == null || !getBusquedaResponsableEC().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setBusquedaResponsableEC("");
 			setDniresponsableEntregable("");
@@ -2249,11 +2253,12 @@ public class AsignacionSueloBean implements Serializable {
 	public void guardarEditarEntregable(){
 		try{
 			GtrEntregablesContrato ec = new GtrEntregablesContrato();
+			ec.setGtrContratoAsignacion(mngTerritorio.findContratoById(getIdContrato()));
 			ec.setEcoId(getIdEntregable()); ec.setEcoResponsable(getDniresponsableEntregable());
 			ec.setEcoEstado(getEstadoEntregable()); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntregaDoc().getTime()));
 		if(isEdicionEntregable()){
 			GtrEntregablesContrato entregable = mngTerritorio.findEntregableById(getIdEntregable());
-			if(getDocumento() != null || !getDocumento().equals("")){
+			if(getDocumento() != null){
 				ec.setEcoDocumento(getDocumento());
 				ec.setEcoFechaSubida(new Timestamp(getFechaSubidaDoc().getTime()));
 				ec.setEcoUsuarioSubida(getUsuarioDocumento());
@@ -2314,7 +2319,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void buscarAdministrador() {
-		if (getDniAdmin() == null || getDniAdmin().isEmpty()) {
+		if (getDniAdmin() == null || !getDniAdmin().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setDniAdmin(""); setNombreAdmin(""); setDireccionAdmin("");
 		} else {
@@ -2339,7 +2344,7 @@ public class AsignacionSueloBean implements Serializable {
 				GtrAdministradorContrato ad = new GtrAdministradorContrato();
 				ad.setAdcAdministrador(getDniAdmin()); ad.setAdcDireccionAdm(getDireccionAdmin());
 				ad.setAdcFechaInicio(getFechaInicioAdmin()); ad.setAdcFechaFin(getFechaFinAdmin());
-				ad.setAdcEstado(getEstadoAdmin());
+				ad.setAdcEstado(getEstadoAdmin()); ad.setGtrContratoAsignacion(mngTerritorio.findContratoById(getIdContrato()));
 				if (isEdicionAdmin()) {
 					ad.setAdcId(getIdAdmin());
 					mngTerritorio.modificarAdministrador(ad);
@@ -2604,7 +2609,7 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void descargarInforme(String informe){
 		try {
-			if(informe == null || informe.isEmpty()){
+			if(informe == null || !informe.isEmpty()){
 				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
 			}else {
 				String contextPath = mngTerritorio.findParametroByID("direccion_informes") + File.separatorChar
@@ -2643,7 +2648,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void descargarDocumento(GtrHistorialSeguimiento seguimiento) {
 		try {
 			if (seguimiento.getHseAdjuntoDoc() == null
-					|| seguimiento.getHseAdjuntoDoc().isEmpty()) {
+					|| !seguimiento.getHseAdjuntoDoc().isEmpty()) {
 				Mensaje.crearMensajeERROR("No existe un archivo asignado.");
 			} else {
 				String contextPath = mngTerritorio.findParametroByID("direccion_ad_doc")

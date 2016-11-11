@@ -1102,7 +1102,7 @@
 								<b:column>
 									<p:commandButton immediate="true" icon="ui-icon-plus"
 										value="Ingresar Adiministrador"
-										disabled="#{asignacionSueloBean.edicionContrato}"
+										disabled="#{!asignacionSueloBean.edicionContrato}"
 										action="#{asignacionSueloBean.mostrarDlgAdministrador()}" />
 								</b:column>
 							</b:row>
@@ -1156,7 +1156,7 @@
 						<b:column>
 							<p:commandButton immediate="true" icon="ui-icon-plus"
 								value="Ingresar Entregable"
-								disabled="#{asignacionSueloBean.edicionContrato}"
+								disabled="#{!asignacionSueloBean.edicionContrato}"
 								action="#{asignacionSueloBean.mostrarDlgEntregables()}" />
 						</b:column>
 					</b:row>
@@ -1330,6 +1330,7 @@
 				<b:row style="margin-bottom:10px;">
 					<b:column col-xs="7">
 						<p:fileUpload mode="advanced" dragDropSupport="true"
+							disabled="#{!asignacionSueloBean.edicionEntregable}" 
 							update=":frm doc" sizeLimit="11000000" multiple="false"
 							invalidSizeMessage="Archivo excede limite 10 MB "
 							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
