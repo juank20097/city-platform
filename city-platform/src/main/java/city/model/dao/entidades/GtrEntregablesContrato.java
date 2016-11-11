@@ -30,6 +30,9 @@ public class GtrEntregablesContrato implements Serializable {
 
 	@Column(name="eco_fecha_subida")
 	private Timestamp ecoFechaSubida;
+	
+	@Column(name="eco_nombre_entregable")
+	private String ecoNombreEntregable;
 
 	@Column(name="eco_responsable")
 	private String ecoResponsable;
@@ -83,6 +86,14 @@ public class GtrEntregablesContrato implements Serializable {
 
 	public void setEcoFechaSubida(Timestamp ecoFechaSubida) {
 		this.ecoFechaSubida = ecoFechaSubida;
+	}
+	
+	public String getEcoNombreEntregable() {
+		return ecoNombreEntregable;
+	}
+	
+	public void setEcoNombreEntregable(String ecoNombreEntregable) {
+		this.ecoNombreEntregable = ecoNombreEntregable;
 	}
 
 	public String getEcoResponsable() {

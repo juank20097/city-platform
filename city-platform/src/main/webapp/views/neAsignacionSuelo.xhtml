@@ -475,10 +475,10 @@
 
 					</b:tabView>
 					<center style="margin-top: 20px;">
-						<p:commandButton value="Guardar" styleClass="btn btn-info"
+						<p:commandButton value="#{asignacionSueloBean.nombreBotonAS()}" styleClass="btn btn-info"
 							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
 							onclick="PF('statusDialog').show();"
-							oncomplete="PF('statusDialog').hide();" update="frm :frmIn :frmCo">***
+							oncomplete="PF('statusDialog').hide();" update="frm :frmIn :frmCo">
 							<p:confirm header="Confirmación"
 								message="¿Seguro desea guardar la información?"
 								icon="ui-icon-alert" />
@@ -495,8 +495,6 @@
 							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
 							severity="success" />
 					</center>
-					<b:growl>
-					</b:growl>
 				</h:form>
 			</b:tab>
 			<b:tab title="Descripci&oacute;n del Proceso">
@@ -527,7 +525,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm iagt"
+										update="frmIn :frm iagt"
 										disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
@@ -574,7 +572,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm igt" disabled="#{!asignacionSueloBean.edicionAS}"
+										update="frmIn :frm igt" disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
 										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -621,7 +619,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm ico1"
+										update="frmIn :frm ico1"
 										disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
@@ -669,7 +667,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm ipj" disabled="#{!asignacionSueloBean.edicionAS}"
+										update="frmIn :frm ipj" disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
 										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -715,7 +713,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm ico2"
+										update="frmIn :frm ico2"
 										disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
@@ -762,7 +760,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm scc" disabled="#{!asignacionSueloBean.edicionAS}"
+										update="frmIn :frm scc" disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
 										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -808,7 +806,7 @@
 							<b:row>
 								<b:column col-xs="7">
 									<p:fileUpload mode="advanced" dragDropSupport="true"
-										update=":frm arc" disabled="#{!asignacionSueloBean.edicionAS}"
+										update="frmIn :frm arc" disabled="#{!asignacionSueloBean.edicionAS}"
 										sizeLimit="11000000" multiple="false"
 										invalidSizeMessage="Archivo excede limite 10 MB "
 										invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -839,7 +837,7 @@
 								animation-exit="animated flipOutX" escape="true" />
 					<b:tabView orientation="left" pills="true" tabPosition="left"
 						contentStyle="border: 1px solid #ddd;padding:10px" activeIndex="0">
-						<b:tab title="Informaci&oacute;n">
+						<b:tab title="Contrato">
 							<b:row>
 								<b:column col-xs="2">
 									<h:outputLabel value="Asignaci&oacute;n Suelo:" />
@@ -948,7 +946,7 @@
 									<b:row>
 										<b:column col-xs="7">
 											<p:fileUpload mode="advanced" dragDropSupport="true"
-												update=":frm tdr"
+												update="frmCo :frm tdr"
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												sizeLimit="11000000" multiple="false"
 												invalidSizeMessage="Archivo excede limite 10 MB "
@@ -998,7 +996,7 @@
 									<b:row>
 										<b:column col-xs="7">
 											<p:fileUpload mode="advanced" dragDropSupport="true"
-												update=":frm pli"
+												update="frmCo :frm pli"
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												sizeLimit="11000000" multiple="false"
 												invalidSizeMessage="Archivo excede limite 10 MB "
@@ -1048,7 +1046,7 @@
 									<b:row>
 										<b:column col-xs="7">
 											<p:fileUpload mode="advanced" dragDropSupport="true"
-												update=":frm pli"
+												update="frmCo :frm pli"
 												disabled="#{!asignacionSueloBean.edicionContrato}"
 												sizeLimit="11000000" multiple="false"
 												invalidSizeMessage="Archivo excede limite 10 MB "
@@ -1077,13 +1075,13 @@
 								<b:column col-xs="4">
 									<p:selectOneMenu value="#{asignacionSueloBean.estadoContrato}">
 										<f:selectItems
-											value="#{asignacionSueloBean.slctEstadosContrato}" />
+											value="#{asignacionSueloBean.slctEstadosEntregable}" />
 									</p:selectOneMenu>
 								</b:column>
 							</b:row>
 							<b:row style="margin-bottom:20px;">
 								<b:column col-xs="2">
-									<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+									<b:commandButton value="#{asignacionSueloBean.nombreBotonAS()}"
 										disabled="#{!asignacionSueloBean.edicionAS}"
 										action="#{asignacionSueloBean.guardarEditarContrato()}"
 										look="info" update="frmIn :growl" style="padding:.4em;" />
@@ -1146,6 +1144,29 @@
 					</b:tabView>
 				</h:form>
 			</b:tab>
+			<h:form id="guardar">
+				<center style="margin-top: 20px;">
+						<p:commandButton value="#{asignacionSueloBean.nombreBotonAS()}*****" styleClass="btn btn-info"
+							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
+							onclick="PF('statusDialog').show();"
+							oncomplete="PF('statusDialog').hide();" update=":frm :frmIn :frmCo">
+							<p:confirm header="Confirmación"
+								message="¿Seguro desea guardar la información?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Si" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						&nbsp;&nbsp;&nbsp;
+						<b:label
+							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
+							severity="success" />
+					</center>
+			</h:form>
 			<b:tab title="Entregables">
 				<h:form id="frmlEC">
 					<b:growl id="gE" delay="4000" placementFrom="top"
@@ -1179,7 +1200,11 @@
 						<p:column headerText="Documento">
 
 						</p:column>
-						<p:column headerText="Responsable">
+						<p:column headerText="Identificaci&oacute;n Responsable">
+							<h:outputText
+								action="#{ec.ecoResponsable}" />
+						</p:column>
+						<p:column headerText="Nombre Responsable">
 							<h:outputText
 								action="#{asignacionSueloBean.buscarNombre(ec.ecoResponsable)}" />
 						</p:column>
@@ -1282,13 +1307,13 @@
 					</b:column>
 					<b:column col-xs="4">
 						<b:selectOneMenu value="#{asignacionSueloBean.estadoAdmin}">
-							<f:selectItems value="#{asignacionSueloBean.slctEstadosAdmin}" />
+							<f:selectItems value="#{asignacionSueloBean.slctEstadosEntregable}" />
 						</b:selectOneMenu>
 					</b:column>
 				</b:row>
 				<b:row style="margin-top:10px;">
 					<b:column col-xs="2">
-						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
+						<b:commandButton value="#{asignacionSueloBean.nombreBotonAd()}"
 							action="#{asignacionSueloBean.guardarEditarAdministrador()}"
 							look="info" update="mad frmAdm" style="padding:.4em;" />
 					</b:column>
@@ -1303,7 +1328,7 @@
 			</h:form>
 		</p:dialog>
 		<p:dialog id="pdEC" widgetVar="entDlg" modal="true" draggable="false"
-			width="900" height="260" closable="true" resizable="false"
+			width="900" height="300" closable="true" resizable="false"
 			showHeader="true">
 			<h:form id="frmEC">
 				<b:row>
@@ -1321,41 +1346,20 @@
 				</b:row>
 				<b:row style="margin-bottom:10px;">
 					<b:column col-xs="2">
-						<h:outputLabel value="Documento:*" />
+						<h:outputLabel value="Nombre Documento:*" />
 					</b:column>
-					<b:column col-xs="7">
-						<h:outputText id="doc" value="#{asignacionSueloBean.documento}" />
+					<b:column col-xs="4">
+						<b:inputText value="#{asignacionSueloBean.nombreEntregable}" />
 					</b:column>
-				</b:row>
-				<b:row style="margin-bottom:10px;">
-					<b:column col-xs="7">
-						<p:fileUpload mode="advanced" dragDropSupport="true"
-							disabled="#{!asignacionSueloBean.edicionEntregable}" 
-							update=":frm doc" sizeLimit="11000000" multiple="false"
-							invalidSizeMessage="Archivo excede limite 10 MB "
-							invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
-							fileLimitMessage="Solo un archivo"
-							allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
-							uploadLabel="Subir" label="Seleccionar" fileLimit="1"
-							fileUploadListener="#{asignacionSueloBean.subirDocumentoEntregable}">
-						</p:fileUpload>
-					</b:column>
-				</b:row>
-				<b:row>
 					<b:column col-xs="2">
 						<h:outputLabel value="Fecha M&aacute;xima Entrega:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<p:calendar id="fm" disabled="#{!asignacionSueloBean.edicionEntregable}" 
+						<p:calendar id="fm"
+							mindate="#{asignacionSueloBean.fechaActual}"
 							value="#{asignacionSueloBean.fechaMaxEntregaDoc}"
 							pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 							yearRange="c-30:c+5" navigator="true" />
-					</b:column>
-					<b:column col-xs="2">
-						<h:outputLabel value="Fecha Entrega:*" />
-					</b:column>
-					<b:column col-xs="4">
-						<h:outputText value="#{asignacionSueloBean.fechaSubidaDoc}" />
 					</b:column>
 				</b:row>
 				<b:row style="margin-bottom:10px;">
@@ -1389,19 +1393,62 @@
 							value="#{asignacionSueloBean.nombreResponsableEntregable}" />
 					</b:column>
 				</b:row>
+				<b:row style="margin-bottom:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Documento:*" />
+					</b:column>
+					<b:column col-xs="10">
+						<b:row style="margin-bottom:10px;">
+							<b:column col-xs="10">
+								<p:fileUpload mode="advanced" dragDropSupport="true"
+									disabled="#{!asignacionSueloBean.edicionEntregable}"
+									update="frmEC :frm doc" sizeLimit="11000000" multiple="false"
+									invalidSizeMessage="Archivo excede limite 10 MB "
+									invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
+									fileLimitMessage="Solo un archivo"
+									allowTypes="/(\.|\/)(doc|docx|pdf)$/" cancelLabel="Cancelar"
+									uploadLabel="Subir" label="Seleccionar" fileLimit="1"
+									fileUploadListener="#{asignacionSueloBean.subirDocumentoEntregable}">
+								</p:fileUpload>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column col-xs="3">
+								<h:outputText value="Fecha Entrega:" />
+							</b:column>
+							<b:column col-xs="3">
+								<h:outputText value="#{asignacionSueloBean.fechaSubidaDoc}" />
+							</b:column>
+							<b:column col-xs="6">
+								<h:outputText id="doc" value="#{asignacionSueloBean.documento}" />
+							</b:column>
+						</b:row>
+					</b:column>
+				</b:row>
 				<b:row style="margin-top:10px;">
 					<b:column col-xs="2">
-						<b:commandButton value="#{asignacionSueloBean.nombreBoton()}"
-							action="#{asignacionSueloBean.guardarEditarEntregable()}"
-							look="info" update="ec frmEC" style="padding:.4em;" />
+						<h:outputLabel value="Estado:*" />
 					</b:column>
 					<b:column col-xs="4">
-						<b:commandButton value="Limpiar"
-							actionListener="#{asignacionSueloBean.cancelarEntregable()}"
-							look="info" update="frmCo frmEC" style="padding:.4em;"
-							process="@this">
-							<p:resetInput target="frmEC" />
-						</b:commandButton>
+						<b:selectOneMenu value="#{asignacionSueloBean.estadoAdmin}">
+							<f:selectItems value="#{asignacionSueloBean.slctEstadosEntregable}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row><b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<h:outputLabel value="Estado:*" />
+					</b:column>
+					<b:column col-xs="4">
+						<b:selectOneMenu value="#{asignacionSueloBean.estadoEntregable}">
+							<f:selectItems value="#{asignacionSueloBean.slctEstadosEntregable}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row style="margin-top:10px;">
+					<b:column col-xs="2">
+						<b:commandButton value="#{asignacionSueloBean.nombreBotonEn()}"
+							action="#{asignacionSueloBean.guardarEditarEntregable()}"
+							look="info" update="ec frmEC" style="padding:.4em;" />
 					</b:column>
 					<b:column col-xs="4">
 						<b:commandButton value="Cancelar"

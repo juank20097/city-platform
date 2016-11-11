@@ -502,7 +502,7 @@ public class ManagerTerritorio {
 		mngDAO.insertar(asignacionSuelo);
 	}
 
-	public void modicarAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) throws Exception {
+	public void modificarAsignacionSuelo(GtrAsignacionSuelo asignacionSuelo) throws Exception {
 		mngDAO.actualizar(asignacionSuelo);
 	}
 

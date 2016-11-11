@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -70,6 +71,8 @@ public class AsignacionSueloBean implements Serializable {
 	
 	@Inject
 	private SesionBean session;
+	
+	private String usuarioSesion;
 
 	@NotEmpty(message = "El campo ID no debe estar vacío.")
 	@NotBlank(message = "El campo ID no debe tener solo espacios blancos.")
@@ -213,6 +216,9 @@ public class AsignacionSueloBean implements Serializable {
 	private String documento;
 	private String dniresponsableEntregable;
 	private String nombreResponsableEntregable;
+	@NotEmpty(message = "El campo NOMBRE ENTREGABLE no debe estar vacío.")
+	@NotBlank(message = "El campo NOMBRE ENTREGABLE no debe tener solo espacios blancos.")
+	private String nombreEntregable;
 	private Date fechaMaxEntregaDoc;
 	private Date fechaSubidaDoc;
 	private String usuarioDocumento;
@@ -245,6 +251,7 @@ public class AsignacionSueloBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		session.validarSesion();
+		usuarioSesion = session.getUsuario();
 		estado = ENPROCESO;
 		slctEstados = new ArrayList<SelectItem>();
 		slctEstadosContrato = new ArrayList<SelectItem>();
@@ -1220,6 +1227,14 @@ public class AsignacionSueloBean implements Serializable {
 		this.nombreResponsableEntregable = nombreResponsableEntregable;
 	}
 
+	public String getNombreEntregable() {
+		return nombreEntregable;
+	}
+	
+	public void setNombreEntregable(String nombreEntregable) {
+		this.nombreEntregable = nombreEntregable;
+	}
+	
 	public String getUsuarioDocumento() {
 		return usuarioDocumento;
 	}
@@ -1275,7 +1290,15 @@ public class AsignacionSueloBean implements Serializable {
 	public void setZona(String zona) {
 		this.zona = zona;
 	}
+	
+	public void setUsuarioSesion(String usuarioSesion) {
+		this.usuarioSesion = usuarioSesion;
+	}
 
+	public String getUsuarioSesion() {
+		return usuarioSesion;
+	}
+	
 	public String getUsuUsoSuelo() {
 		return usuUsoSuelo;
 	}
@@ -1543,11 +1566,54 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaDocNotificacion(asigSuelo.getSueFechaDocNotificacion());
 		setFechaSubidaNotificacion(asigSuelo.getSueFechaSubidaNotificacion());
 		setUsuNotificacion(asigSuelo.getSueUsuarioNotificacion());
+		// Fechas
+		if(validaFechaVacia(asigSuelo.getSueFechaArchivoRegAmb())){
+			setFechaDocRegulacionAmb(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaArchivoKmz())){
+			setFechaArcKMZ(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaArchivoPdf())){
+			
+			setFechaArcPDF(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocCaracterizacion())){
+			setFechaDocCaracte(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocUsoSuelo())){
+			setFechaDocUsoSuelo(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocDisponibilidad())){
+			setFechaDocDisponibil(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocConsolidado())){
+			setFechaDocConsolidado(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocResolucion())){
+			setFechaDocResolucion(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocResolutiva())){
+			setFechaDocActaResol(new Date()); 
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocConvocatoria())){
+			setFechaDocConvoca(new Date());
+		}
+		if(validaFechaVacia(asigSuelo.getSueFechaDocNotificacion())){
+			setFechaDocNotificacion(new Date());
+		}
 		
+		setFechaActual(new Timestamp(new Date().getTime()));
 		setEdicionAS(true);
 		cargarContratoPorAsignacion(getIdAsignacion());
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
+	public boolean validaFechaVacia(Date fecha){
+		if(fecha == null || fecha.equals("")){
+			return true;
+		}else 
+			return false;
+	}
+	
 	public void cargarContratoPorAsignacion(int idAsignacion){
 		setContrato(mngTerritorio.findContratoByIdAsignacion(idAsignacion));
 		cargarContrato(getContrato());
@@ -1578,7 +1644,16 @@ public class AsignacionSueloBean implements Serializable {
 		setUnidadTiempoContrato(contrato.getCasUnidadTiempo());
 		setEstadoContrato(contrato.getCasEstado());
 		setTipoContrato(contrato.getCasTipo());
-		
+		// Fechas
+		if(validaFechaVacia(contrato.getCasFechaDocTdr())){
+			setFechaDocTdr(new Date()); 
+		}
+		if(validaFechaVacia(contrato.getCasFechaDocPliego())){
+			setFechaDocPliego(new Date());
+		}
+		if(validaFechaVacia(contrato.getCasFechaDocContrato())){
+			setFechaDocContrato(new Date()); 
+		}
 		//cargar entregables
 		cargarLstEntregables(getIdContrato());
 		//cargar administradores
@@ -1778,7 +1853,7 @@ public class AsignacionSueloBean implements Serializable {
 						as.setSueFechaSubidaNotificacion(asignacionSuelo.getSueFechaSubidaNotificacion());
 						as.setSueUsuarioNotificacion(asignacionSuelo.getSueUsuarioNotificacion());
 					}
-					mngTerritorio.modicarAsignacionSuelo(as);
+					mngTerritorio.modificarAsignacionSuelo(as);
 					Mensaje.crearMensajeINFO("Asignación de Suelo actualizada correctamente.");
 				} else {
 					setIdAsignacion(mngTerritorio.generarIdAsignacionSuelo());
@@ -1788,6 +1863,7 @@ public class AsignacionSueloBean implements Serializable {
 					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
 				}
 				setearAsignacionSuelo(getIdAsignacion());
+				guardarEditarContrato();
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
@@ -1989,7 +2065,7 @@ public class AsignacionSueloBean implements Serializable {
 //					as.setSueActaResolucionComite(asignacionSuelo
 //							.getSueActaResolucionComite());
 //				}
-//				mngTerritorio.modicarAsignacionSuelo(as);
+//				mngTerritorio.modificarAsignacionSuelo(as);
 //			} 
 //		} catch (Exception e) {
 //			e.printStackTrace();
@@ -1997,18 +2073,35 @@ public class AsignacionSueloBean implements Serializable {
 //	}
 //
 		
-	public String nombreBoton() {
-		if (isEdicionContrato() || isEdicionEntregable()) {
+	public String nombreBotonAS() {
+		if (isEdicionAS()) {
 			return "Actualizar";
 		} else {
 			return "Insertar";
 		}
 	}
+	
+	public String nombreBotonAd() {
+		if (isEdicionAdmin()) {
+			return "Actualizar";
+		} else {
+			return "Insertar";
+		}
+	}
+	
+	public String nombreBotonEn() {
+		if (isEdicionEntregable()) {
+			return "Actualizar";
+		} else {
+			return "Insertar";
+		}
+	}
+	
 	/**
 	 * Método para buscar un funcionario
 	 */
 	public void buscarPersona() {
-		if (getBusquedaPersona() == null || !getBusquedaPersona().isEmpty()) {
+		if (getBusquedaPersona() == null || getBusquedaPersona().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setBusquedaPersona("");
 			setDniResponsablePorDir("");
@@ -2198,7 +2291,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void buscarResponsableEnt() {
-		if (getBusquedaResponsableEC() == null || !getBusquedaResponsableEC().isEmpty()) {
+		if (getBusquedaResponsableEC() == null || getBusquedaResponsableEC().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setBusquedaResponsableEC("");
 			setDniresponsableEntregable("");
@@ -2231,7 +2324,12 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaSubidaDoc(entregable.getEcoFechaSubida());
 		setUsuarioDocumento(entregable.getEcoUsuarioSubida());
 		setEstadoEntregable(entregable.getEcoEstado());
+		setNombreEntregable(entregable.getEcoNombreEntregable());
 		setNombreResponsableEntregable(buscarNombre(entregable.getEcoResponsable()));
+		// Fechas
+		if(validaFechaVacia(entregable.getEcoFechaMaxEntrega())){
+			setFechaMaxEntregaDoc(new Date()); 
+		}
 		
 		RequestContext.getCurrentInstance().execute("PF('entDlg').show();");
 	}
@@ -2255,7 +2353,8 @@ public class AsignacionSueloBean implements Serializable {
 			GtrEntregablesContrato ec = new GtrEntregablesContrato();
 			ec.setGtrContratoAsignacion(mngTerritorio.findContratoById(getIdContrato()));
 			ec.setEcoId(getIdEntregable()); ec.setEcoResponsable(getDniresponsableEntregable());
-			ec.setEcoEstado(getEstadoEntregable()); ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntregaDoc().getTime()));
+			ec.setEcoEstado(getEstadoEntregable()); ec.setEcoNombreEntregable(getNombreEntregable());
+			ec.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntregaDoc().getTime()));
 		if(isEdicionEntregable()){
 			GtrEntregablesContrato entregable = mngTerritorio.findEntregableById(getIdEntregable());
 			if(getDocumento() != null){
@@ -2319,7 +2418,7 @@ public class AsignacionSueloBean implements Serializable {
 	}
 	
 	public void buscarAdministrador() {
-		if (getDniAdmin() == null || !getDniAdmin().isEmpty()) {
+		if (getDniAdmin() == null || getDniAdmin().isEmpty()) {
 			Mensaje.crearMensajeWARN("Debe ingresar el dato para realizar la búsqueda.");
 			setDniAdmin(""); setNombreAdmin(""); setDireccionAdmin("");
 		} else {
@@ -2385,7 +2484,7 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirInforGestionT(FileUploadEvent evento) {
 		try {
 			setInforGestionTerr(cargarInformes(evento));
-//			editarAsignacionSuelo();
+			editarAsignacion(getAsignacionSuelo());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -2394,7 +2493,8 @@ public class AsignacionSueloBean implements Serializable {
 	public void editarAsignacion(GtrAsignacionSuelo asigSuelo){
 		try {
 			asigSuelo.setSueInforGestionTerritorial(getInforGestionTerr());
-			mngTerritorio.modicarAsignacionSuelo(asigSuelo);
+			System.out.println("ingreso al método");
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2405,18 +2505,44 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setInforCaracterizacion(cargarInformes(evento));
 			setFechaSubidaCaracte(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuCaracterizacion(getUsuarioSesion());
+			editarICaracterizacion(getAsignacionSuelo());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void editarICaracterizacion(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueInforCaracterizacion(getInforCaracterizacion());
+			asigSuelo.setSueFechaSubidaCaracterizacio(new Timestamp(getFechaSubidaCaracte().getTime()));
+			asigSuelo.setSueFechaDocCaracterizacion(getFechaDocCaracte());
+			asigSuelo.setSueUsuarioCaracterizacion(getUsuCaracterizacion());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void subirInforUsoSuelo(FileUploadEvent evento) {
 		try {
 			setInforUsoSuelo(cargarInformes(evento));
 			setFechaSubidaUsoS(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuUsoSuelo(getUsuarioSesion());
+			editarIUsoS(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void editarIUsoS(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueInforUsoSuelo(getInforUsoSuelo());
+			asigSuelo.setSueFechaDocUsoSuelo(getFechaDocUsoSuelo());
+			asigSuelo.setSueFechaSubidaUsoSuelo(new Timestamp(getFechaSubidaUsoS().getTime()));
+			asigSuelo.setSueUsuarioUsoSuelo(getUsuUsoSuelo());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2425,19 +2551,46 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setInforDisponibilidad(cargarInformes(evento));
 			setFechaSubidaDisponi(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuDisponibilidad(getUsuarioSesion());
+			editarIDsiponibilidad(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarIDsiponibilidad(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueInforDisponibilidad(getInforDisponibilidad());
+			asigSuelo.setSueFechaDocDisponibilidad(getFechaDocDisponibil());
+			asigSuelo.setSueFechaSubidaDisponibilidad(new Timestamp(getFechaSubidaDisponi().getTime()));
+			asigSuelo.setSueUsuarioDisponibilidad(getUsuDisponibilidad());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void subirInforConsolidado(FileUploadEvent evento) {
 		try {
-			System.out.println("Ingreso a metodo informActual");
 			setInforConsolidado(cargarInformes(evento));
 			setFechaSubidaConsol(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuConsolidado(getUsuarioSesion());
+			editarIConsolidado(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarIConsolidado(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueInforConsolidado(getInforConsolidado());
+			asigSuelo.setSueFechaDocConsolidado(getFechaDocConsolidado());
+			asigSuelo.setSueFechaSubidaConsolidado(new Timestamp(getFechaSubidaConsol().getTime()));
+			asigSuelo.setSueUsuarioConsolidado(getUsuConsolidado());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2446,8 +2599,22 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setResolucion(cargarInformes(evento));
 			setFechaSubidaResol(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuResolucion(getUsuarioSesion());
+			editarResolucion(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarResolucion(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueResolucion(getResolucion());
+			asigSuelo.setSueFechaDocResolucion(getFechaDocResolucion());
+			asigSuelo.setSueFechaSubidaResolucion(new Timestamp(getFechaSubidaResol().getTime()));
+			asigSuelo.setSueUsuarioResolucion(getUsuResolucion());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2455,9 +2622,23 @@ public class AsignacionSueloBean implements Serializable {
 	public void subirActaResolutiva(FileUploadEvent evento) {
 		try {
 			setActaResolutiva(cargarInformes(evento));
-			setFechaSubidaActaRes(new Timestamp(new Date().getTime()));;
-//			editarAsignacionSuelo();
+			setFechaSubidaActaRes(new Timestamp(new Date().getTime()));
+			setUsuActaResol(getUsuarioSesion());
+			editarActaResolutiva(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarActaResolutiva(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueActaResolutiva(getActaResolutiva());
+			asigSuelo.setSueFechaDocResolutiva(getFechaDocActaResol());
+			asigSuelo.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaActaRes().getTime()));
+			asigSuelo.setSueUsuarioResolutiva(getUsuActaResol());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2466,8 +2647,22 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setConvocatoria(cargarInformes(evento));
 			setFechaSubidaConvoca(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuConvocatoria(getUsuarioSesion());
+			editarConvocatoria(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarConvocatoria(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueConvocatoria(getConvocatoria());
+			asigSuelo.setSueFechaDocConvocatoria(getFechaDocConvoca());
+			asigSuelo.setSueFechaSubidaResolutiva(new Timestamp(getFechaSubidaConvoca().getTime()));
+			asigSuelo.setSueUsuarioResolutiva(getUsuConvocatoria());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2476,8 +2671,22 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setArchRegulacionAmb(cargarInformes(evento));
 			setFechaSubRegAmbiental(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuRegAmbiental(getUsuarioSesion());
+			editarRegulacionAmb(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarRegulacionAmb(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueArchivoRegulacionAmb(getArchRegulacionAmb());
+			asigSuelo.setSueFechaArchivoRegAmb(getFechaDocRegulacionAmb());
+			asigSuelo.setSueFechaSubidaRegAmb(new Timestamp(getFechaSubRegAmbiental().getTime()));
+			asigSuelo.setSueUsuarioSubidaRegAmb(getUsuRegAmbiental());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2486,8 +2695,22 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setArchivoKMZ(cargarInformes(evento));
 			setFechaArcKMZ(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuArchivoKMZ(getUsuarioSesion());
+			editarKMZ(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarKMZ(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueArchivoKmz(getArchivoKMZ());
+			asigSuelo.setSueFechaArchivoKmz(getFechaArcKMZ());
+			asigSuelo.setSueFechaSubidaKmz(new Timestamp(getFechaArcKMZ().getTime()));
+			asigSuelo.setSueUsuarioArchivoKmz(getUsuArchivoKMZ());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2496,8 +2719,22 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setArchivoPDF(cargarInformes(evento));
 			setFechaArcPDF(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuArchivoPDF(getUsuarioSesion());
+			editarPDF(getAsignacionSuelo());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarPDF(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueArchivoPdf(getArchRegulacionAmb());
+			asigSuelo.setSueFechaArchivoPdf(getFechaArcPDF());
+			asigSuelo.setSueFechaSubidaPdf(new Timestamp(getFechaSubidaPDF().getTime()));
+			asigSuelo.setSueUsuarioArchivoPdf(getUsuArchivoPDF());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2506,19 +2743,47 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setNotificacionApNe(cargarInformes(evento));
 			setFechaSubidaNotificacion(new Timestamp(new Date().getTime()));
-//			editarAsignacionSuelo();
+			setUsuNotificacion(getUsuarioSesion());
+			editarNotificacionAN(getAsignacionSuelo());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void editarNotificacionAN(GtrAsignacionSuelo asigSuelo){
+		try {
+			asigSuelo.setSueNotificacionApNe(getNotificacionApNe());
+			asigSuelo.setSueFechaDocNotificacion(getFechaDocNotificacion());
+			asigSuelo.setSueFechaSubidaNotificacion(new Timestamp(getFechaSubidaNotificacion().getTime()));
+			asigSuelo.setSueUsuarioNotificacion(getUsuNotificacion());
+			mngTerritorio.modificarAsignacionSuelo(asigSuelo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	// Contrato
 
 	public void subirTDR(FileUploadEvent evento) {
 		try {
 			setTdrContrato(cargarInformes(evento));
 			setFechaSubidaTdr(new Timestamp(new Date().getTime()));
-//			editarContrato();
+			setUsuTdr(getUsuarioSesion());
+			editarTDR(getContrato());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void editarTDR(GtrContratoAsignacion contrato){
+		try {
+			contrato.setCasTdr(getTdrContrato());
+			contrato.setCasFechaDocTdr(getFechaDocTdr());
+			contrato.setCasFechaSubidaTdr(new Timestamp(getFechaSubidaTdr().getTime()));
+			contrato.setCasUsuarioTdr(getUsuTdr());
+			mngTerritorio.modificarContrato(contrato);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2527,28 +2792,72 @@ public class AsignacionSueloBean implements Serializable {
 		try {
 			setPliegoContrato(cargarInformes(evento));
 			setFechaSubPliego(new Timestamp(new Date().getTime()));
-//			editarContrato();
+			setUsuPliego(getUsuarioSesion());
+			editarPliego(getContrato());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void editarPliego(GtrContratoAsignacion contrato){
+		try {
+			contrato.setCasPliego(getPliegoContrato());
+			contrato.setCasFechaDocPliego(getFechaDocPliego());
+			contrato.setCasFechaSubidaPliego(new Timestamp(getFechaSubPliego().getTime()));
+			contrato.setCasUsuarioPliego(getUsuPliego());
+			mngTerritorio.modificarContrato(contrato);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void subirContrato(FileUploadEvent evento) {
 		try {
 			setArchContrato(cargarInformes(evento));
 			setFechaSubContrato(new Timestamp(new Date().getTime()));
-//			editarContrato();
+			setUsuContrato(getUsuarioSesion());
+			editarContrato(getContrato());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void editarContrato(GtrContratoAsignacion contrato){
+		try {
+			contrato.setCasContrato(getArchContrato());
+			contrato.setCasFechaDocContrato(getFechaDocContrato());
+			contrato.setCasFechaSubidaContrato(new Timestamp(getFechaSubContrato().getTime()));
+			contrato.setCasUsuarioContrato(getUsuContrato());
+			mngTerritorio.modificarContrato(contrato);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	// Entregables
 
 	public void subirDocumentoEntregable(FileUploadEvent evento) {
 		try {
 			setDocumento(cargarInformes(evento));
-//			
+			setFechaSubidaDoc(new Timestamp(new Date().getTime()));
+			setUsuarioDocumento(getUsuarioSesion());
+			editarDocumento(getEntregableC());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editarDocumento(GtrEntregablesContrato entregable){
+		try {
+			entregable.setEcoDocumento(getDocumento());
+			entregable.setEcoFechaMaxEntrega(new Timestamp(getFechaMaxEntregaDoc().getTime()));
+			entregable.setEcoFechaSubida(new Timestamp(getFechaSubidaDoc().getTime()));
+			entregable.setEcoUsuarioSubida(getUsuarioDocumento());
+			mngTerritorio.modificarEntregable(entregable);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -2560,7 +2869,10 @@ public class AsignacionSueloBean implements Serializable {
 		OutputStream outputStream = null;
 		if (filePdf != null) {
 			try {
-				outputStream = new FileOutputStream(direccionArchivo(filePdf));
+				File directorio=new File(direccionFicheros()); 
+				directorio.mkdir(); 
+				String direccion = direccionFicheros()+"/"+generarNombreArchivo(filePdf);
+				outputStream = new FileOutputStream(direccion);
 				inputStream = filePdf.getInputstream();
 				nombreArchivo = filePdf.getFileName();
 
@@ -2571,6 +2883,7 @@ public class AsignacionSueloBean implements Serializable {
 					outputStream.write(bytes, 0, read);
 				}
 				Mensaje.crearMensajeINFO("Carga del archivo Correcta");
+				filePdf = null;
 			} catch (Exception e) {
 				Mensaje.crearMensajeERROR("No se pudo cargar el archivo");
 				e.printStackTrace();
@@ -2589,14 +2902,22 @@ public class AsignacionSueloBean implements Serializable {
 		}
 	}
 	
-	public String direccionArchivo(UploadedFile file){
+	public String direccionFicheros(){
 		try {
-			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/";
-			String nombreArchivo = file.getFileName();
-			String ubicacionArchivo = carpeta + File.separatorChar +nombreArchivo;
+			String carpeta = mngTerritorio.findParametroByID("direccion_informes") + "/"+ getAsignacionSuelo().getSueId()+"/";
 			System.out.println("Carpeta -----> "+carpeta);
+			return carpeta;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	public String generarNombreArchivo(UploadedFile file){
+		try {
+			String nombreArchivo = file.getFileName();
 			System.out.println("PAD -----> "+nombreArchivo);
-			return ubicacionArchivo;
+			return nombreArchivo;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "";
@@ -2670,5 +2991,4 @@ public class AsignacionSueloBean implements Serializable {
 			return VALORNEGADO;
 		}
 	}
-
 }
