@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -180,6 +179,12 @@ public class AsignacionSueloBean implements Serializable {
 	private List<SelectItem> lstUnidadTiempo;
 	private List<SelectItem> lstTipoUso;
 	
+	private List<SelectItem> lstFiguraLegal;
+	private List<SelectItem> lstEnteAprobador;
+	private List<SelectItem> lstTipoActividad;
+	private List<SelectItem> lstTipoContrato;
+	private List<SelectItem> lstUnidadMedida;
+	
 	// Contrato
 	private String idContrato;
 	private String tdrContrato;
@@ -265,6 +270,11 @@ public class AsignacionSueloBean implements Serializable {
 		lstUnidadTiempo = new ArrayList<SelectItem>();
 		lstTipoUso = new ArrayList<SelectItem>();
 		lstZonas = new ArrayList<SelectItem>();
+		lstUnidadMedida = new ArrayList<SelectItem>();
+		lstTipoContrato = new ArrayList<SelectItem>();
+		lstTipoActividad = new ArrayList<SelectItem>();
+		lstEnteAprobador = new ArrayList<SelectItem>();
+		lstFiguraLegal = new ArrayList<SelectItem>();
 		superficieAsignada = new BigDecimal(0);
 		superficieSolicitada = new BigDecimal(0);
 		numeroAnios = 0;
@@ -279,6 +289,11 @@ public class AsignacionSueloBean implements Serializable {
 		cargarTipoUso();
 		cargarEstados();
 		cargarBusqueda();
+		cargarTipoContrato();
+		cargarEnteAprobador();
+		cargarFiguraLegal();
+		cargarUnidadMedida();
+		cargarTipoActividad();
 		inicializarFechas();
 	}
 
@@ -1138,6 +1153,46 @@ public class AsignacionSueloBean implements Serializable {
 	public void setLstTipoUso(List<SelectItem> lstTipoUso) {
 		this.lstTipoUso = lstTipoUso;
 	}
+	
+	public List<SelectItem> getLstFiguraLegal() {
+		return lstFiguraLegal;
+	}
+
+	public void setLstFiguraLegal(List<SelectItem> lstFiguraLegal) {
+		this.lstFiguraLegal = lstFiguraLegal;
+	}
+
+	public List<SelectItem> getLstEnteAprobador() {
+		return lstEnteAprobador;
+	}
+
+	public void setLstEnteAprobador(List<SelectItem> lstEnteAprobador) {
+		this.lstEnteAprobador = lstEnteAprobador;
+	}
+
+	public List<SelectItem> getLstTipoActividad() {
+		return lstTipoActividad;
+	}
+
+	public void setLstTipoActividad(List<SelectItem> lstTipoActividad) {
+		this.lstTipoActividad = lstTipoActividad;
+	}
+
+	public List<SelectItem> getLstTipoContrato() {
+		return lstTipoContrato;
+	}
+
+	public void setLstTipoContrato(List<SelectItem> lstTipoContrato) {
+		this.lstTipoContrato = lstTipoContrato;
+	}
+
+	public List<SelectItem> getLstUnidadMedida() {
+		return lstUnidadMedida;
+	}
+
+	public void setLstUnidadMedida(List<SelectItem> lstUnidadMedida) {
+		this.lstUnidadMedida = lstUnidadMedida;
+	}
 
 	public String getTdrContrato() {
 		return tdrContrato;
@@ -1485,13 +1540,50 @@ public class AsignacionSueloBean implements Serializable {
 			getLstTipoUso().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
 		}
 	}
+	
+	public void cargarTipoActividad() {
+		getLstTipoActividad().clear();
+		getLstTipoActividad().add( new SelectItem(SELECCIONAR, " --Seleccione-- "));
+		for (GenCatalogoItemsDet i : mngTerritorio.AllofItems("cat_tipo_actividad")) {
+			getLstTipoActividad().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+	
+	public void cargarTipoContrato() {
+		getLstTipoContrato().clear();
+		getLstTipoContrato().add( new SelectItem(SELECCIONAR, " --Seleccione-- "));
+		for (GenCatalogoItemsDet i : mngTerritorio.AllofItems("cat_tipo_contrato")) {
+			getLstTipoContrato().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+	
+	public void cargarFiguraLegal() {
+	getLstFiguraLegal().clear();
+	getLstFiguraLegal().add( new SelectItem(SELECCIONAR, " --Seleccione-- "));
+		for (GenCatalogoItemsDet i : mngTerritorio.AllofItems("cat_figura_legal")) {
+			getLstFiguraLegal().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+	
+	public void cargarEnteAprobador() {
+		getLstEnteAprobador().clear();
+		getLstEnteAprobador().add(new SelectItem(SELECCIONAR, " --Seleccione-- "));
+		for (GenCatalogoItemsDet i : mngTerritorio.AllofItems("cat_ente_aprobador")) {
+			getLstEnteAprobador().add( new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
+		
+	public void cargarUnidadMedida() {
+		getLstUnidadMedida().clear();
+		getLstUnidadMedida().add( new SelectItem(SELECCIONAR, " --Seleccione-- "));
+		for (GenCatalogoItemsDet i : mngTerritorio.AllofItems("cat_unidades_medida")) {
+			getLstUnidadMedida().add(new SelectItem(i.getIteCodigo(), i.getIteNombre()));
+		}
+	}
 	public String nuevoSuelo() {
-//		setOcultarGuardar(false);
-//		limpiarDatos();
-//		date = new Date();
 		return "neAsignacionSuelo?faces-redirect=true";
 	}
-//
+
 	public String cargarEditarAsignacionSuelo(GtrAsignacionSuelo asigSuelo) {
 		setIdAsignacion(asigSuelo.getSueId());
 		setZona(asigSuelo.getGenZona().getZonId());
@@ -1906,11 +1998,25 @@ public class AsignacionSueloBean implements Serializable {
 		} else if (getTipoCatalogo().equals(SELECCIONAR)) {
 			Mensaje.crearMensajeERROR("Campo tipo requerido");
 			return false;
-		} else {
-			if (getUnidadTiempo().equals(SELECCIONAR)) {
-				Mensaje.crearMensajeERROR("Seleccione la unidad de tiempo de la Temporalidad. ");
-				return false;
-			}
+		} else if (getUnidadTiempo().equals(SELECCIONAR)) {
+			Mensaje.crearMensajeERROR("Seleccione la unidad de tiempo de la Temporalidad. ");
+			return false;
+		} else if(getEnteAprobador().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Seleccione el Ente Aprobador. ");
+			return false;
+		}else if(getFiguraLegal().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Seleccione la Figura Legal. ");
+			return false;
+		} else if(getActividad().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Seleccione la Actividad. ");
+			return false;
+		}else if(getUnidadMedSupAsignada().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Seleccione la unidad de medida de la Superficie Asignada. ");
+			return false;
+		}else if(getUnidadMedSupSol().equals(SELECCIONAR)){
+			Mensaje.crearMensajeERROR("Seleccione la unidad de medida de la Superficie Solicitada. ");
+			return false;
+		}else {
 			return true;
 		}
 	}
@@ -1923,7 +2029,7 @@ public class AsignacionSueloBean implements Serializable {
 
 	private void limpiarDatos() {
 		setIdAsignacion(0);
-		setZona(null); setActividad(""); setAsignacion("");
+		setZona(null); setActividad(SELECCIONAR); setAsignacion("");
 		setEstado(ENPROCESO); setTipoCatalogo(SELECCIONAR);
 		setObservacion(""); setUnidadTiempo(SELECCIONAR);
 		setNombre(""); setDescripcion(""); setInforGestionTerr("");
@@ -1931,7 +2037,7 @@ public class AsignacionSueloBean implements Serializable {
 		setResponsableConcesion(""); setCaudalAsignado("");
 		setCaudalTotal(""); setDniResponsablePorDir("");
 		setNombreResponsablePorDir(""); setDireccionResponsable("");
-		setFiguraLegal(""); setAsignacionSuelo(null);
+		setFiguraLegal(SELECCIONAR); setAsignacionSuelo(null);
 		setAplicaRegAmbiental(false); setArchRegulacionAmb("");
 		setFechaDocRegulacionAmb(new Date()); setUsuRegAmbiental("");
 		setFechaSubRegAmbiental(new Timestamp(new Date().getTime()));

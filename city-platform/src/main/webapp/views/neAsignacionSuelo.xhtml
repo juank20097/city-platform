@@ -83,13 +83,33 @@
 									<h:outputLabel value="Actividad:* " />
 								</b:column>
 								<b:column col-xs="4">
-									<b:inputText value="#{asignacionSueloBean.actividad}" />
+									<p:selectOneMenu value="#{asignacionSueloBean.actividad}">
+										<f:selectItems value="#{asignacionSueloBean.lstTipoActividad}" />
+									</p:selectOneMenu>
 								</b:column>
 								<b:column col-xs="2">
 									<h:outputLabel value="Asignado a:* " />
 								</b:column>
 								<b:column col-xs="4">
 									<b:inputText value="#{asignacionSueloBean.asignacion}" />
+								</b:column>
+							</b:row>
+							<b:row style="margin-bottom:10px;">
+								<b:column col-xs="2">
+									<h:outputLabel value="Figura Legal:* " />
+								</b:column>
+								<b:column col-xs="4">
+									<h:selectOneMenu value="#{asignacionSueloBean.figuraLegal}" styleClass="form-control">
+										<f:selectItems value="#{asignacionSueloBean.lstFiguraLegal}" />
+									</h:selectOneMenu>
+								</b:column>
+								<b:column col-xs="2">
+									<h:outputLabel value="Ente Aprobador:* " />
+								</b:column>
+								<b:column col-xs="4">
+									<h:selectOneMenu value="#{asignacionSueloBean.enteAprobador}" styleClass="form-control">
+										<f:selectItems value="#{asignacionSueloBean.lstEnteAprobador}" />
+									</h:selectOneMenu>
 								</b:column>
 							</b:row>
 							<b:row style="margin-bottom:10px;">
@@ -125,7 +145,7 @@
 								</b:column>
 								<b:column col-xs="2">
 									<p:selectOneMenu value="#{asignacionSueloBean.unidadMedSupSol}">
-										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+										<f:selectItems value="#{asignacionSueloBean.lstUnidadMedida}" />
 									</p:selectOneMenu>
 								</b:column>
 								<b:column col-xs="2">
@@ -137,7 +157,7 @@
 								<b:column col-xs="2">
 									<p:selectOneMenu
 										value="#{asignacionSueloBean.unidadMedSupAsignada}">
-										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+										<f:selectItems value="#{asignacionSueloBean.lstUnidadMedida}" />
 									</p:selectOneMenu>
 								</b:column>
 							</b:row>
@@ -859,7 +879,7 @@
 								</b:column>
 								<b:column col-xs="3">
 									<p:selectOneMenu value="#{asignacionSueloBean.tipoContrato}">
-										<f:selectItems value="#{asignacionSueloBean.lstUnidadTiempo}" />
+										<f:selectItems value="#{asignacionSueloBean.lstTipoContrato}" />
 									</p:selectOneMenu>
 								</b:column>
 							</b:row>
