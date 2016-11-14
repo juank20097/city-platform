@@ -218,7 +218,7 @@
 										</b:column>
 										<b:column col-xs="4">
 											<p:calendar id="ra"
-												disabled="#{!asignacionSueloBean.edicionAS}"
+												disabled="#{!asignacionSueloBean.edicionAS or !asignacionSueloBean.aplicaRegAmbiental} "
 												value="#{asignacionSueloBean.fechaDocRegulacionAmb}"
 												pattern="dd-MM-yyyy HH:mm" mask="true" showOn="button"
 												yearRange="c-5:c+5" navigator="true" />
@@ -235,7 +235,7 @@
 										<b:column col-xs="7">
 											<p:fileUpload id="fuRa" mode="advanced"
 												dragDropSupport="true" update=":frm ara"
-												disabled="#{!asignacionSueloBean.edicionAS}"
+												disabled="#{!asignacionSueloBean.edicionAS or !asignacionSueloBean.aplicaRegAmbiental}"
 												sizeLimit="11000000" multiple="false"
 												invalidSizeMessage="Archivo excede limite 10 MB "
 												invalidFileMessage="Tipo inv&aacute;lido, solo .pdf"
@@ -1144,29 +1144,6 @@
 					</b:tabView>
 				</h:form>
 			</b:tab>
-			<h:form id="guardar">
-				<center style="margin-top: 20px;">
-						<p:commandButton value="#{asignacionSueloBean.nombreBotonAS()}*****" styleClass="btn btn-info"
-							actionListener="#{asignacionSueloBean.guardarEditarAsignacionSuelos()}"
-							onclick="PF('statusDialog').show();"
-							oncomplete="PF('statusDialog').hide();" update=":frm :frmIn :frmCo">
-							<p:confirm header="Confirmación"
-								message="¿Seguro desea guardar la información?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
-
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-							<p:commandButton value="Si" type="button"
-								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-							<p:commandButton value="No" type="button"
-								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-						</p:confirmDialog>
-						&nbsp;&nbsp;&nbsp;
-						<b:label
-							text="Recuerda que al guardar se almacenará los datos de todas las pestañas"
-							severity="success" />
-					</center>
-			</h:form>
 			<b:tab title="Entregables">
 				<h:form id="frmlEC">
 					<b:growl id="gE" delay="4000" placementFrom="top"

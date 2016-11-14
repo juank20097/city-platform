@@ -57,8 +57,8 @@ public class AsignacionSueloBean implements Serializable {
 	private static String SELECCIONAR = "S/N";
 	private static String ACTIVO = "A";
 	private static String INACTIVO ="A";
-	private static String VALORACTIVO = "A";
-	private static String VALORINACTIVO ="A";
+	private static String VALORACTIVO = "Activo";
+	private static String VALORINACTIVO ="Inactivo";
 
 	@EJB
 	private ManagerTerritorio mngTerritorio;
@@ -1567,7 +1567,7 @@ public class AsignacionSueloBean implements Serializable {
 		setFechaSubidaNotificacion(asigSuelo.getSueFechaSubidaNotificacion());
 		setUsuNotificacion(asigSuelo.getSueUsuarioNotificacion());
 		// Fechas
-		if(validaFechaVacia(asigSuelo.getSueFechaArchivoRegAmb())){
+		if(validaFechaVacia(asigSuelo.getSueFechaArchivoRegAmb()) && isAplicaRegAmbiental()){
 			setFechaDocRegulacionAmb(new Date());
 		}
 		if(validaFechaVacia(asigSuelo.getSueFechaArchivoKmz())){
@@ -1863,7 +1863,6 @@ public class AsignacionSueloBean implements Serializable {
 					Mensaje.crearMensajeINFO("Asignación de Suelo ingresada correctamente.");
 				}
 				setearAsignacionSuelo(getIdAsignacion());
-				guardarEditarContrato();
 			}
 		} catch (Exception e) {
 			Mensaje.crearMensajeERROR("Error al almacenar suelo: " + e.getMessage());
@@ -1881,10 +1880,7 @@ public class AsignacionSueloBean implements Serializable {
 	private boolean validarRegAmbiental(){
 		boolean resultado = false;
 		if(isAplicaRegAmbiental()){
-			if(getArchRegulacionAmb() == null || getArchRegulacionAmb().equals("")){
-				Mensaje.crearMensajeWARN("Se debe subir el archivo de Regulación Ambiental.");
-				resultado = false;
-			}else if(getFechaDocRegulacionAmb() == null){
+			if(getFechaDocRegulacionAmb() == null){
 				Mensaje.crearMensajeWARN("Se debe seleccionar la fecha del documento.");
 				resultado = false;
 			}else {
@@ -2132,7 +2128,7 @@ public class AsignacionSueloBean implements Serializable {
 	
 	public void guardarEditarContrato(){
 		try{
-		if(validarCamposContrato() || validarFechasContrato()){
+		if(validarCamposContrato() && validarFechasContrato()){
 			GtrContratoAsignacion ca = new GtrContratoAsignacion();
 			ca.setCasId(Funciones.quitarEspacios(getIdContrato()).toUpperCase());
 			ca.setGtrAsignacionSuelo(getAsignacionSuelo());
